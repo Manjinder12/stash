@@ -14,18 +14,19 @@
 #import "Status2Screen.h"
 #import "ChatScreen.h"
 
-@interface DashboardScreen ()  {
-   }
+@interface DashboardScreen ()
+
+@property (weak, nonatomic) IBOutlet UIView *viewContainer;
 
 @end
 
 @implementation DashboardScreen
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-   
-    // Do any additional setup after loading the view.
-    self.navigationController.navigationBarHidden = NO;
+    
+    self.navigationController.navigationBarHidden = YES;
     self.navigationItem.title = @"Dashboard";
     [CommonFunctions addButton:@"menu" InNavigationItem:self.navigationItem forNavigationController:self.navigationController withTarget:self andSelector:@selector(showMenu)];
     [self addStatusScreen];
@@ -35,11 +36,8 @@
 
 }
 
-//-(void)viewWillDisappear:(BOOL)animated {
-//
-//}
-
--(void)dealloc {
+-(void)dealloc
+{
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
@@ -60,48 +58,52 @@
     [self.frostedViewController presentMenuViewController];
 }
 
--(void)addStatusScreen {
+-(void)addStatusScreen
+{
     UIView *viewToRemove = [self.view viewWithTag:18];
-    if (viewToRemove) {
+    if (viewToRemove)
+    {
         [viewToRemove removeFromSuperview];
-
     }
+    
+    _lineCreditVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
+    [_lineCreditVC.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+    _lineCreditVC.view.tag = 17;
 
-    _stVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"Status2Screen"];
-//    [self addChildViewController:_stVC];
-    [_stVC.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
-    _stVC.view.tag = 17;
-    [self.view addSubview:_stVC.view];
-//    [_stVC didMoveToParentViewController:self];
-//    TransactionScreen *stVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionScreen"];
-//    [self addChildViewController:stVC];
-//    [stVC.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
-//    [self.view addSubview:stVC.view];
-//    [stVC didMoveToParentViewController:self];
-
+//    _status2ScreenVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"Status2Screen"];
+//    [_status2ScreenVC.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+//    _status2ScreenVC.view.tag = 17;
+    
+    [_viewContainer addSubview:_lineCreditVC.view];
 }
 
--(void)showThirdStep {
+-(void)showThirdStep
+{
     
-//    [_stVC willMoveToParentViewController:nil];
-    //[_stVC.view removeFromSuperview];
-//    [_stVC removeFromParentViewController];
+//    [_status2ScreenVC willMoveToParentViewController:nil];
+    //[_status2ScreenVC.view removeFromSuperview];
+//    [_status2ScreenVC removeFromParentViewController];
     UIView *viewToRemove = [self.view viewWithTag:17];
     [viewToRemove removeFromSuperview];
     
-    _sVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"StatusScreen"];
-//    [self addChildViewController:_sVC];
-    [_sVC.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
-    _sVC.view.tag = 18;
+    _statusScreenVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"StatusScreen"];
+//    [self addChildViewController:_statusScreenVC];
+    [_statusScreenVC.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
+    _statusScreenVC.view.tag = 18;
 
-    [self.view addSubview:_sVC.view];
-//    [_sVC didMoveToParentViewController:self];
-//    [_sVC.view bringSubviewToFront:self.view];
+    [self.view addSubview:_statusScreenVC.view];
+//    [_statusScreenVC didMoveToParentViewController:self];
+//    [_statusScreenVC.view bringSubviewToFront:self.view];
 
 }
 
--(void)chatBtnTapped {
+-(void)chatBtnTapped
+{
         ChatScreen *chvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ChatScreen"];
         [self.navigationController pushViewController:chvc animated:YES];
+}
+- (IBAction)menuAction:(id)sender
+{
+    [self showMenu];
 }
 @end

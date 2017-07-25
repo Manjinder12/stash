@@ -64,7 +64,7 @@
 {
     CALayer *layer=[object layer];
     [layer setMasksToBounds:YES];
-    [layer setCornerRadius:3.0f];
+    [layer setCornerRadius:8.0];
 }
 + (UIColor *)getColorFromHexString:(NSString *)hexString
 {
@@ -195,7 +195,7 @@
 }
 + (void)showAlertWithMessage:(NSString *)message
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Franchise Scheduler" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Statshfin" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
     [alert show];
 }
 + (UIImage*)compressImageWithImage:(UIImage*)image

@@ -12,6 +12,7 @@
 #import "Utilities.h"
 #import "LandingVC.h"
 #import "LoginScreen.h"
+#import "REFrostedViewController.h"
 
 @interface AppDelegate ()
 
@@ -29,12 +30,15 @@
     ViewController *vc;
     if ([[Utilities getUserDefaultValueFromKey:@"islogin"] intValue] == 1)
     {
-       vc = (ViewController *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"LineCreditVC"] ;
+       vc = (ViewController *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"ViewController"] ;
+        
     }
     else
     {
         vc = (ViewController *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"LandingVC"] ;
     }
+    
+    
     [self.window setRootViewController:[[UINavigationController alloc] initWithRootViewController:vc]];
     return YES;
 }

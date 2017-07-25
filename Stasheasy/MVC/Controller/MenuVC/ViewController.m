@@ -16,15 +16,15 @@
 
 
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     self.frostedViewController.limitMenuViewSize = YES;
-    self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentController"];
+    self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DashboardScreen"];
     self.menuViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LeftScreen"];
 }
 

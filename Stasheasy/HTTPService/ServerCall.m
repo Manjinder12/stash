@@ -31,7 +31,7 @@
     
     NSString *deviceID = [NSString stringWithFormat:@"%@",[Utilities getDeviceUDID]];
 
-    [sessionManager.requestSerializer setValue:token forHTTPHeaderField:@"authtoken"];
+    [sessionManager.requestSerializer setValue:token forHTTPHeaderField:@"auth_token"];
     [sessionManager.requestSerializer setValue:deviceID forHTTPHeaderField:@"device_id"];
     [sessionManager POST:service_url parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
      {

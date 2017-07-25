@@ -145,4 +145,8 @@
     }
 }
 
+- (IBAction)menuAction:(id)sender
+{
+    [self showMenu];
+}
 @end
