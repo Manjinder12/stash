@@ -1850,7 +1850,7 @@ typedef NS_ENUM(NSUInteger, LGPlusButtonDescriptionsPosition)
     else if (type == LGPlusButtonAnimationTypeRotate)
     {
         CGAffineTransform transform = CGAffineTransformIdentity;
-        transform = CGAffineTransformConcat(transform, CGAffineTransformMakeRotation(kLGPlusButtonsViewDegreesToRadians(45)));
+        transform = CGAffineTransformConcat(transform, CGAffineTransformMakeRotation(kLGPlusButtonsViewDegreesToRadians(180)));
 
         if (animated)
         {

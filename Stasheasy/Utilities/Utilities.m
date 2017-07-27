@@ -64,7 +64,7 @@
 {
     CALayer *layer=[object layer];
     [layer setMasksToBounds:YES];
-    [layer setCornerRadius:8.0];
+    [layer setCornerRadius:3.0f];
 }
 + (UIColor *)getColorFromHexString:(NSString *)hexString
 {
@@ -392,6 +392,53 @@
     NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
     return [NSString stringWithFormat:@"%@",[imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]];
 }
++ ( NSDictionary *)getDayDateYear:(NSString *)date
+{
+    NSMutableDictionary *mdict = [ NSMutableDictionary new ];
+    NSDateFormatter *formatter = [ [ NSDateFormatter alloc ] init ];
+    [ formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss" ];
+    NSDate *jobDate = [ formatter dateFromString:date ];
+    
+    NSTimeZone *currentUserTimezone = [ NSTimeZone localTimeZone];
+    [ formatter setTimeZone:currentUserTimezone ];
+    
+    NSDateFormatter *newformatter = [ [ NSDateFormatter alloc ] init ];
+    [ newformatter setDateFormat:@"dd" ];
+    [ mdict setObject:[ newformatter stringFromDate:jobDate ] forKey:@"day" ];
+    
+    [ newformatter setDateFormat:@"MMM" ];
+    [ mdict setObject:[ newformatter stringFromDate:jobDate ] forKey:@"month" ];
+    
+    [ newformatter setDateFormat:@"yyyy" ];
+    [ mdict setObject:[ newformatter stringFromDate:jobDate ] forKey:@"year" ];
+    
+    [ newformatter setDateFormat:@"HH:mm:ss" ];
+    [ mdict setObject:[ newformatter stringFromDate:jobDate ] forKey:@"time" ];
+    
+    return ( NSDictionary *)mdict;
+}
++(NSString *)formateDateToDMY:(NSString *)strDate
+{
+    NSMutableDictionary *mdict = [ NSMutableDictionary new ];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyy-MM-dd"];
+    NSDate *date = [ formatter dateFromString:strDate ];
 
+    NSTimeZone *currentUserTimezone = [ NSTimeZone localTimeZone];
+    [ formatter setTimeZone:currentUserTimezone ];
+    
+    NSDateFormatter *newformatter = [ [ NSDateFormatter alloc ] init ];
+    [ newformatter setDateFormat:@"dd" ];
+    [ mdict setObject:[ newformatter stringFromDate:date ] forKey:@"day" ];
+    
+    [ newformatter setDateFormat:@"MMM" ];
+    [ mdict setObject:[ newformatter stringFromDate:date ] forKey:@"month" ];
+    
+    [ newformatter setDateFormat:@"yyyy" ];
+    [ mdict setObject:[ newformatter stringFromDate:date ] forKey:@"year" ];
 
+    [NSString stringWithFormat:@"%@ %@ %@",[mdict valueForKey:@"day"],[mdict valueForKey:@"month"],[mdict valueForKey:@"year"]];
+    
+    return ( NSString * )[NSString stringWithFormat:@"%@ %@ %@",[mdict valueForKey:@"day"],[mdict valueForKey:@"month"],[mdict valueForKey:@"year"]];
+}
 @end

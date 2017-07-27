@@ -114,5 +114,11 @@
 // Get Base64 string of Image
 + (NSString *)getBase64StringOfImage:(UIImage *)image;
 
+// Get Day Date and Year
++ ( NSDictionary *)getDayDateYear:(NSString *)date;
+
+// Formate date 
++(NSString *)formateDateToDMY:(NSString *)strDate;
+
 
 @end

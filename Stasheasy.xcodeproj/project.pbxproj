@@ -98,6 +98,9 @@
 		BBC2D4E41EFA5A9500FDC823 /* RightChatCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BBC2D4E21EFA5A9500FDC823 /* RightChatCell.m */; };
 		BBC2D4E51EFA5A9500FDC823 /* RightChatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBC2D4E31EFA5A9500FDC823 /* RightChatCell.xib */; };
 		BBC2D4E91EFA5BC700FDC823 /* ChatScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = BBC2D4E81EFA5BC700FDC823 /* ChatScreen.m */; };
+		E2305EF01F2A01BA005CDBAF /* ConsolidatedEMIVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EEF1F2A01BA005CDBAF /* ConsolidatedEMIVC.m */; };
+		E2305EF31F2A01C3005CDBAF /* ReloadCardVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EF21F2A01C3005CDBAF /* ReloadCardVC.m */; };
+		E2305EF71F2A0AD7005CDBAF /* LoanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EF61F2A0AD7005CDBAF /* LoanCell.m */; };
 		E2C60FB21F27398F00DCA206 /* LeftScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C60FAE1F27398F00DCA206 /* LeftScreen.m */; };
 		E2C60FB31F27398F00DCA206 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C60FB11F27398F00DCA206 /* ViewController.m */; };
 		E2D2CCC21F26132300E98F2E /* ServerCall.m in Sources */ = {isa = PBXBuildFile; fileRef = E2D2CCC11F26132300E98F2E /* ServerCall.m */; };
@@ -309,6 +312,12 @@
 		BBC2D4E31EFA5A9500FDC823 /* RightChatCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RightChatCell.xib; sourceTree = "<group>"; };
 		BBC2D4E71EFA5BC700FDC823 /* ChatScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatScreen.h; sourceTree = "<group>"; };
 		BBC2D4E81EFA5BC700FDC823 /* ChatScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatScreen.m; sourceTree = "<group>"; };
+		E2305EEE1F2A01BA005CDBAF /* ConsolidatedEMIVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsolidatedEMIVC.h; sourceTree = "<group>"; };
+		E2305EEF1F2A01BA005CDBAF /* ConsolidatedEMIVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsolidatedEMIVC.m; sourceTree = "<group>"; };
+		E2305EF11F2A01C3005CDBAF /* ReloadCardVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReloadCardVC.h; sourceTree = "<group>"; };
+		E2305EF21F2A01C3005CDBAF /* ReloadCardVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReloadCardVC.m; sourceTree = "<group>"; };
+		E2305EF51F2A0AD7005CDBAF /* LoanCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoanCell.h; sourceTree = "<group>"; };
+		E2305EF61F2A0AD7005CDBAF /* LoanCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoanCell.m; sourceTree = "<group>"; };
 		E2C60FAD1F27398F00DCA206 /* LeftScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftScreen.h; sourceTree = "<group>"; };
 		E2C60FAE1F27398F00DCA206 /* LeftScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftScreen.m; sourceTree = "<group>"; };
 		E2C60FB01F27398F00DCA206 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -503,6 +512,8 @@
 		781D1E411EE0885E00D82E86 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E2305EEC1F2A01AC005CDBAF /* ConsolidatedEMIVC */,
+				E2305EED1F2A01AC005CDBAF /* ReloadCardVC */,
 				E2C60FAC1F27398F00DCA206 /* LeftScreenVC */,
 				E2C60FAF1F27398F00DCA206 /* MenuVC */,
 				E2D2CCD31F2639B200E98F2E /* LineCreditVC */,
@@ -530,6 +541,7 @@
 		781D1E421EE0885E00D82E86 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E2305EF41F2A0ABC005CDBAF /* LoanCell */,
 				E2D2CCCF1F2617B100E98F2E /* LandingVC */,
 				BBC2D4E01EFA5A8600FDC823 /* RightChatCell */,
 				BBC2D4DA1EFA584400FDC823 /* ChatLeftCell */,
@@ -1025,6 +1037,33 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		E2305EEC1F2A01AC005CDBAF /* ConsolidatedEMIVC */ = {
+			isa = PBXGroup;
+			children = (
+				E2305EEE1F2A01BA005CDBAF /* ConsolidatedEMIVC.h */,
+				E2305EEF1F2A01BA005CDBAF /* ConsolidatedEMIVC.m */,
+			);
+			path = ConsolidatedEMIVC;
+			sourceTree = "<group>";
+		};
+		E2305EED1F2A01AC005CDBAF /* ReloadCardVC */ = {
+			isa = PBXGroup;
+			children = (
+				E2305EF11F2A01C3005CDBAF /* ReloadCardVC.h */,
+				E2305EF21F2A01C3005CDBAF /* ReloadCardVC.m */,
+			);
+			path = ReloadCardVC;
+			sourceTree = "<group>";
+		};
+		E2305EF41F2A0ABC005CDBAF /* LoanCell */ = {
+			isa = PBXGroup;
+			children = (
+				E2305EF51F2A0AD7005CDBAF /* LoanCell.h */,
+				E2305EF61F2A0AD7005CDBAF /* LoanCell.m */,
+			);
+			path = LoanCell;
+			sourceTree = "<group>";
+		};
 		E2C60FAC1F27398F00DCA206 /* LeftScreenVC */ = {
 			isa = PBXGroup;
 			children = (
@@ -1328,6 +1367,7 @@
 				789B720A1EF66F0100AD3887 /* TransactionCell.m in Sources */,
 				781D1E681EE0AE8100D82E86 /* UploadCell.m in Sources */,
 				7811F1C31EF77A490052973B /* ProfileScreen.m in Sources */,
+				E2305EF71F2A0AD7005CDBAF /* LoanCell.m in Sources */,
 				7811F1CD1EF794320052973B /* Status2Screen.m in Sources */,
 				78D616BD1EF8CC81004917C9 /* LoanDetailsScreen.m in Sources */,
 				BBC2D4E91EFA5BC700FDC823 /* ChatScreen.m in Sources */,
@@ -1338,6 +1378,7 @@
 				E2D2CCCA1F26155200E98F2E /* Utilities.m in Sources */,
 				786D7AB21EE5E2CA00EDEB21 /* StatusCell.m in Sources */,
 				BB583A991EEACDA1000B73AA /* TPKeyboardAvoidingCollectionView.m in Sources */,
+				E2305EF31F2A01C3005CDBAF /* ReloadCardVC.m in Sources */,
 				BB583A9B1EEACDA1000B73AA /* TPKeyboardAvoidingTableView.m in Sources */,
 				780550961F0ACC8800A1B34F /* IQUIViewController+Additions.m in Sources */,
 				BB85AF8A1EE29D4700B32986 /* LoginScreen.m in Sources */,
@@ -1346,6 +1387,7 @@
 				780550971F0ACC8800A1B34F /* IQUIWindow+Hierarchy.m in Sources */,
 				78A703FA1EDE66A9001054CC /* main.m in Sources */,
 				BBC2D4E41EFA5A9500FDC823 /* RightChatCell.m in Sources */,
+				E2305EF01F2A01BA005CDBAF /* ConsolidatedEMIVC.m in Sources */,
 				E2C60FB31F27398F00DCA206 /* ViewController.m in Sources */,
 				BB583A861EEA6DB4000B73AA /* ReachabilityManager.m in Sources */,
 				BB583A9C1EEACDA1000B73AA /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,

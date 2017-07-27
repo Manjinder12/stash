@@ -1,50 +1,64 @@
 //
-//  DashboardScreen.m
+//  ReloadCardVC.m
 //  Stasheasy
 //
-//  Created by Duke  on 03/06/17.
+//  Created by Mohd Ali Khan on 27/07/17.
 //  Copyright © 2017 duke. All rights reserved.
 //
 
-#import "DashboardScreen.h"
-#import "CommonFunctions.h"
-#import "REFrostedViewController.h"
-#import "StatusScreen.h"
-#import "TransactionScreen.h"
-#import "Status2Screen.h"
-#import "ChatScreen.h"
-#import "TPKeyboardAvoidingScrollView.h"
+#import "ReloadCardVC.h"
 #import <LGPlusButtonsView/LGPlusButtonsView.h>
+#import "ServerCall.h"
+#import "Utilities.h"
+#import "REFrostedViewController.h"
 
-@interface DashboardScreen ()<LGPlusButtonsViewDelegate>
+@interface ReloadCardVC ()<LGPlusButtonsViewDelegate,UITextFieldDelegate>
 {
     LGPlusButtonsView *stashfinButton;
-    BOOL isStashExpand;
+    BOOL isStashExpand, isButtonChecked;
+    NSString *strTenure;
+    UIImage *check, *uncheck;
+    NSInteger buttonTag;
+
 }
-@property (weak, nonatomic) IBOutlet UIView *viewContainer;
-@property (weak, nonatomic) IBOutlet TPKeyboardAvoidingScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UILabel *lblRemainLOC;
+@property (weak, nonatomic) IBOutlet UITextField *txtRequestAmount;
+@property (weak, nonatomic) IBOutlet UIButton *btn1;
+@property (weak, nonatomic) IBOutlet UIButton *btn2;
+@property (weak, nonatomic) IBOutlet UIButton *btn3;
+@property (weak, nonatomic) IBOutlet UIButton *btn4;
+@property (weak, nonatomic) IBOutlet UIButton *btn5;
+@property (weak, nonatomic) IBOutlet UIButton *btn6;
+
 
 @end
 
-@implementation DashboardScreen
+@implementation ReloadCardVC
+@synthesize strRemainLOC;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self customInitialization];
-   
-
 }
 - (void)customInitialization
 {
-    self.navigationController.navigationBarHidden = YES;
-    self.navigationItem.title = @"Dashboard";
-    [CommonFunctions addButton:@"menu" InNavigationItem:self.navigationItem forNavigationController:self.navigationController withTarget:self andSelector:@selector(showMenu)];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(showThirdStep) name:@"change" object:nil];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(addLineOfCreditScreen) name:@"change3" object:nil];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(chatBtnTapped) name:@"chat" object:nil];
+    check = [UIImage imageNamed:@"radioChecked"];
+    uncheck = [UIImage imageNamed:@"radioUncheck"];
     
-    [self addLineOfCreditScreen];
+    _lblRemainLOC.text = strRemainLOC;
+    
+    isButtonChecked = NO;
+    buttonTag = 0;
+    
+    _btn1.tag = 1;
+    _btn2.tag = 2;
+    _btn3.tag = 3;
+    _btn4.tag = 4;
+    _btn5.tag = 5;
+    _btn6.tag = 6;
+    
+    
     [self addStashfinButtonView];
     isStashExpand = NO;
 }
@@ -65,8 +79,8 @@
     [stashfinButton setDescriptionsTexts:@[@"", @"Lost/Stolen Card", @"Change Pin", @"Reload Card",@"Apply fr new loan",@"Chat"]];
     
     [stashfinButton setButtonsImages:@[[UIImage imageNamed:@"actionBtn"], [UIImage imageNamed:@"lostCardBtn"], [UIImage imageNamed:@"pinBtn"], [UIImage imageNamed:@"topupcardBtn"],[UIImage imageNamed:@"loanBtn"] ,[UIImage imageNamed:@"chatBtn"]]
-                      forState:UIControlStateNormal
-                forOrientation:LGPlusButtonsViewOrientationAll];
+                            forState:UIControlStateNormal
+                      forOrientation:LGPlusButtonsViewOrientationAll];
     if ([[self.storyboard valueForKey:@"name"] isEqual:@"iPhone"])
     {
         [stashfinButton setButtonsSize:CGSizeMake(60.f, 60.f) forOrientation:LGPlusButtonsViewOrientationAll];
@@ -116,9 +130,9 @@
         [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
             
             isStashExpand = NO;
-//            AddInvoiceQuoteVC *addInvoiceQuoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddInvoiceQuoteVC"];
-//            addInvoiceQuoteVC.isInvoice = YES;
-//            [ self.navigationController pushViewController:addInvoiceQuoteVC animated:YES ];
+            //            AddInvoiceQuoteVC *addInvoiceQuoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddInvoiceQuoteVC"];
+            //            addInvoiceQuoteVC.isInvoice = YES;
+            //            [ self.navigationController pushViewController:addInvoiceQuoteVC animated:YES ];
             
         }];
     }
@@ -128,9 +142,9 @@
         [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
             
             isStashExpand = NO;
-//            AddNoteVC *addNoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddNoteVC"];
-//            addNoteVC.tempScheduleObject = _tempScheduleObject;
-//            [ self.navigationController pushViewController:addNoteVC animated:YES ];
+            //            AddNoteVC *addNoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddNoteVC"];
+            //            addNoteVC.tempScheduleObject = _tempScheduleObject;
+            //            [ self.navigationController pushViewController:addNoteVC animated:YES ];
             
         }];
     }
@@ -149,9 +163,9 @@
         [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
             
             isStashExpand = NO;
-//            AddInvoiceQuoteVC *addInvoiceQuoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddInvoiceQuoteVC"];
-//            addInvoiceQuoteVC.isInvoice = NO;
-//            [ self.navigationController pushViewController:addInvoiceQuoteVC animated:YES ];
+            //            AddInvoiceQuoteVC *addInvoiceQuoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddInvoiceQuoteVC"];
+            //            addInvoiceQuoteVC.isInvoice = NO;
+            //            [ self.navigationController pushViewController:addInvoiceQuoteVC animated:YES ];
             
         }];
     }
@@ -165,79 +179,90 @@
         }];
     }
 }
-
--(void)dealloc
-{
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
-}
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void) showMenu
+-(IBAction)menuAction:(id)sender
 {
-    // Dismiss keyboard (optional)
-    //
     [self.view endEditing:YES];
     [self.frostedViewController.view endEditing:YES];
-    
-    // Present the view controller
     [self.frostedViewController presentMenuViewController];
-}
 
--(void)addLineOfCreditScreen
+}
+- (IBAction)radioButtonAction:(id)sender
 {
-    UIView *viewToRemove = [self.view viewWithTag:18];
-    if (viewToRemove)
+    UIButton *btn = (UIButton *)sender;
+    
+    if ([btn backgroundImageForState:UIControlStateNormal] == uncheck
+        )
     {
-        [viewToRemove removeFromSuperview];
+        isButtonChecked = YES;
+        [btn setBackgroundImage:check forState:UIControlStateNormal];
+        switch (btn.tag)
+        {
+            case 1:
+                strTenure = @"3";
+                buttonTag = btn.tag;
+                break;
+                
+            case 2:
+                strTenure = @"6";
+                buttonTag = btn.tag;
+                break;
+                
+            case 3:
+                strTenure = @"9";
+                buttonTag = btn.tag;
+                break;
+                
+            case 4:
+                strTenure = @"12";
+                buttonTag = btn.tag;
+                break;
+                
+            case 5:
+                strTenure = @"15";
+                buttonTag = btn.tag;
+                break;
+                
+            case 6:
+                strTenure = @"18";
+                buttonTag = btn.tag;
+                break;
+                
+            default:
+                break;
+        }
     }
-    
-    _lineCreditVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
-    [_lineCreditVC.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
-    _lineCreditVC.view.tag = 17;
-
-
-    _scrollView.contentSize = CGSizeMake(_lineCreditVC.view.frame.size.width, 750);
-    _scrollView.autoresizingMask = YES;
-    [_scrollView addSubview:_lineCreditVC.view];
-//    _status2ScreenVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"Status2Screen"];
-//    [_status2ScreenVC.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
-//    _status2ScreenVC.view.tag = 17;
-    
-//    [_viewContainer addSubview:_lineCreditVC.view];
+    else
+    {
+        isButtonChecked = NO;
+        [btn setBackgroundImage:uncheck forState:UIControlStateNormal];
+        strTenure = @"";
+    }
 }
-
--(void)showThirdStep
+- (IBAction)requestReloadAction:(id)sender
 {
-    
-//    [_status2ScreenVC willMoveToParentViewController:nil];
-    //[_status2ScreenVC.view removeFromSuperview];
-//    [_status2ScreenVC removeFromParentViewController];
-    UIView *viewToRemove = [self.view viewWithTag:17];
-    [viewToRemove removeFromSuperview];
-    
-    _statusScreenVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"StatusScreen"];
-//    [self addChildViewController:_statusScreenVC];
-    [_statusScreenVC.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
-    _statusScreenVC.view.tag = 18;
-
-    [self.view addSubview:_statusScreenVC.view];
-//    [_statusScreenVC didMoveToParentViewController:self];
-//    [_statusScreenVC.view bringSubviewToFront:self.view];
-
+    if (isButtonChecked)
+    {
+        [self serverCallForRequestReload];
+    }
+    else
+    {
+        [Utilities showAlertWithMessage:@"Please select tenure"];
+    }
 }
-
--(void)chatBtnTapped
+- (void)serverCallForRequestReload
 {
-        ChatScreen *chvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ChatScreen"];
-        [self.navigationController pushViewController:chvc animated:YES];
-}
-- (IBAction)menuAction:(id)sender
-{
-    [self showMenu];
+    NSDictionary *param = [ NSDictionary dictionaryWithObjectsAndKeys:@"locWithdrawalRequest",@"mode",_txtRequestAmount.text,@"amount",strTenure,@"tenure", nil];
+    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+    {
+        
+        NSLog(@"response == %@", response);
+        NSLog(@"response == %@", response);
+        
+    }];
 }
 @end

@@ -24,7 +24,7 @@
 {
     [super awakeFromNib];
     self.frostedViewController.limitMenuViewSize = YES;
-    self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DashboardScreen"];
+    self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
     self.menuViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LeftScreen"];
 }
 
