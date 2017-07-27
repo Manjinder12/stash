@@ -80,7 +80,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 1) {
+    if (indexPath.row == 1)
+    {
         EmiCalculatorScreen *evc = [self.storyboard instantiateViewControllerWithIdentifier:@"EmiCalculatorScreen"];
         UINavigationController *nav = [[UINavigationController alloc]init];
         nav.viewControllers = @[evc];
@@ -108,14 +109,13 @@
 
         
     }
-    else if(indexPath.row == 2) {
+    else if(indexPath.row == 2)
+    {
         TransactionDetailsViewController *evc = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionDetailsViewController"];
         UINavigationController *nav = [[UINavigationController alloc]init];
         nav.viewControllers = @[evc];
         [self.frostedViewController setContentViewController:nav];
         [self.frostedViewController hideMenuViewController];
-        
-        
     }
 
 }

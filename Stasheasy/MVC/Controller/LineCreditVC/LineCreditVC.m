@@ -9,6 +9,7 @@
 #import "LineCreditVC.h"
 #import "ServerCall.h"
 #import "REFrostedViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface LineCreditVC ()
 
@@ -19,6 +20,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblCash;
 @property (weak, nonatomic) IBOutlet UILabel *lblEMIDate;
 @property (weak, nonatomic) IBOutlet UILabel *lblEMIAmount;
+@property (weak, nonatomic) IBOutlet UILabel *lblRequestAmount;
+@property (weak, nonatomic) IBOutlet UILabel *lblRequestDate;
+@property (weak, nonatomic) IBOutlet UILabel *lblRequestStatus;
 
 @property (weak, nonatomic) IBOutlet UIView *viewUpper;
 @property (weak, nonatomic) IBOutlet UIView *viewLower;
@@ -35,12 +39,24 @@
 - (void)customInitialization
 {
     self.navigationController.navigationBar.hidden = YES;
-    [self serverCallForWithdrawalRequest];
     
-    [Utilities setCornerRadius:_viewUpper];
+    [Utilities setCornerRadius:_viewLower];
     [Utilities setCornerRadius:_viewLower];
     
+    _viewUpper.layer.masksToBounds = NO;
+    _viewUpper.layer.shadowOffset = CGSizeMake(1, 1);
+    _viewUpper.layer.shadowRadius = 4;
+    _viewUpper.layer.shadowOpacity = 0.5;
+    _viewUpper.layer.shadowColor = [UIColor lightGrayColor].CGColor;
     
+    _viewLower.layer.masksToBounds = NO;
+    _viewLower.layer.shadowOffset = CGSizeMake(1, 1);
+    _viewLower.layer.shadowRadius = 4;
+    _viewLower.layer.shadowOpacity = 0.5;
+    _viewLower.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    
+    [self serverCallForWithdrawalRequest];
+
 }
 - (void)didReceiveMemoryWarning
 {
@@ -97,7 +113,10 @@
     _lblCash.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"last_loc_request_amount"] intValue]];
     _lblEMIDate.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"next_emi_date"] intValue]];
     _lblEMIAmount.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"next_emi_amount"] intValue]];
-    
+    _lblRequestAmount.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"last_loc_request_amount"] intValue]];
+    _lblRequestDate.text = [NSString stringWithFormat:@"%@",[dictLOC valueForKey:@"last_loc_request_date"] ];
+    _lblEMIAmount.text = [NSString stringWithFormat:@"%@",[dictLOC valueForKey:@"last_loc_request_status"]];
+
 }
 - (IBAction)consolidatedEMIAction:(id)sender
 {

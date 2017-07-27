@@ -127,7 +127,7 @@
                 [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
                 [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
                 
-                UIViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
+                UIViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
                 [self.navigationController pushViewController:vc animated:YES];
             }
         }

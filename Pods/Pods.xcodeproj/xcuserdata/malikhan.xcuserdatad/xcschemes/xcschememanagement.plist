@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>LGPlusButtonsView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Stasheasy.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -22,17 +27,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>07A93A81A9EDB71C5D98E00564977EEF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>089927A3A78EBEB09E8A95AE9AB8BBAC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>1C3436CEA5C3D39764C5F54374794ECB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2510987496ABD928C75497FD70C9B611</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>3E1061559BBB444C70516BEA9359C65E</key>
+		<key>C3846F7F1F89A09DDD213DDEC926D548</key>
 		<dict>
 			<key>primary</key>
 			<true/>

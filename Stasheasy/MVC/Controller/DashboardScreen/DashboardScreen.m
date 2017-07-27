@@ -13,10 +13,12 @@
 #import "TransactionScreen.h"
 #import "Status2Screen.h"
 #import "ChatScreen.h"
+#import "TPKeyboardAvoidingScrollView.h"
 
 @interface DashboardScreen ()
 
 @property (weak, nonatomic) IBOutlet UIView *viewContainer;
+@property (weak, nonatomic) IBOutlet TPKeyboardAvoidingScrollView *scrollView;
 
 @end
 
@@ -25,17 +27,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self customInitialization];
+   
+
+}
+- (void)customInitialization
+{
     self.navigationController.navigationBarHidden = YES;
     self.navigationItem.title = @"Dashboard";
     [CommonFunctions addButton:@"menu" InNavigationItem:self.navigationItem forNavigationController:self.navigationController withTarget:self andSelector:@selector(showMenu)];
-    [self addStatusScreen];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(showThirdStep) name:@"change" object:nil];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(addStatusScreen) name:@"change3" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(addLineOfCreditScreen) name:@"change3" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(chatBtnTapped) name:@"chat" object:nil];
-
+    [self addLineOfCreditScreen];
 }
-
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
@@ -58,7 +63,7 @@
     [self.frostedViewController presentMenuViewController];
 }
 
--(void)addStatusScreen
+-(void)addLineOfCreditScreen
 {
     UIView *viewToRemove = [self.view viewWithTag:18];
     if (viewToRemove)
@@ -70,11 +75,15 @@
     [_lineCreditVC.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
     _lineCreditVC.view.tag = 17;
 
+
+    _scrollView.contentSize = CGSizeMake(_lineCreditVC.view.frame.size.width, 750);
+    _scrollView.autoresizingMask = YES;
+    [_scrollView addSubview:_lineCreditVC.view];
 //    _status2ScreenVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"Status2Screen"];
 //    [_status2ScreenVC.view setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height)];
 //    _status2ScreenVC.view.tag = 17;
     
-    [_viewContainer addSubview:_lineCreditVC.view];
+//    [_viewContainer addSubview:_lineCreditVC.view];
 }
 
 -(void)showThirdStep

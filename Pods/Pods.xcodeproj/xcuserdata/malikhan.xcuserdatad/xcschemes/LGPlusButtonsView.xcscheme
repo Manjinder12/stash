@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '07A93A81A9EDB71C5D98E00564977EEF'
-               BlueprintName = 'SVProgressHUD'
+               BlueprintIdentifier = 'C3846F7F1F89A09DDD213DDEC926D548'
+               BlueprintName = 'LGPlusButtonsView'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'SVProgressHUD.framework'>
+               BuildableName = 'LGPlusButtonsView.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
