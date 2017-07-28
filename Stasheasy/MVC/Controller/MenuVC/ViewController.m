@@ -13,7 +13,7 @@
 @end
 
 @implementation ViewController
-
+@synthesize identifier;
 
 
 - (void)didReceiveMemoryWarning
@@ -24,7 +24,7 @@
 {
     [super awakeFromNib];
     self.frostedViewController.limitMenuViewSize = YES;
-    self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
+    self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentController"];
     self.menuViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LeftScreen"];
 }
 

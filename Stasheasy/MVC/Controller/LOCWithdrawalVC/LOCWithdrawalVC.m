@@ -1,49 +1,36 @@
 //
-//  ReloadCardVC.m
+//  LOCWithdrawalVC.m
 //  Stasheasy
 //
-//  Created by Mohd Ali Khan on 27/07/17.
+//  Created by Mohd Ali Khan on 28/07/17.
 //  Copyright © 2017 duke. All rights reserved.
 //
 
-#import "ReloadCardVC.h"
-#import <LGPlusButtonsView/LGPlusButtonsView.h>
-#import "ServerCall.h"
-#import "Utilities.h"
-#import "REFrostedViewController.h"
-#import "RadioButton.h"
 #import "LOCWithdrawalVC.h"
+#import "ServerCall.h"
+#import <LGPlusButtonsView/LGPlusButtonsView.h>
 
-@interface ReloadCardVC ()<LGPlusButtonsViewDelegate,UITextFieldDelegate>
+@interface LOCWithdrawalVC ()<LGPlusButtonsViewDelegate,UIAlertViewDelegate>
 {
     LGPlusButtonsView *stashfinButton;
-    BOOL isStashExpand, isButtonChecked;
-    NSString *strTenure;
-    UIImage *check, *uncheck;
-    NSDictionary *param;
-
+    BOOL isStashExpand;
 }
 @property (weak, nonatomic) IBOutlet UILabel *lblRemainLOC;
-@property (weak, nonatomic) IBOutlet UITextField *txtRequestAmount;
-@property (weak, nonatomic) IBOutlet UIImageView *imageError;
+@property (weak, nonatomic) IBOutlet UILabel *lblRate;
+@property (weak, nonatomic) IBOutlet UILabel *lblRequestAmount;
+@property (weak, nonatomic) IBOutlet UILabel *lblEMIAmount;
+@property (weak, nonatomic) IBOutlet UILabel *lblTenure;
+@property (weak, nonatomic) IBOutlet UILabel *lblDate;
+@property (weak, nonatomic) IBOutlet UILabel *lblNetPayable;
 
-@property (nonatomic, strong) IBOutlet RadioButton* radioButton;
-
-
-@property (weak, nonatomic) IBOutlet UIButton *btn1;
-@property (weak, nonatomic) IBOutlet UIButton *btn2;
-@property (weak, nonatomic) IBOutlet UIButton *btn3;
-@property (weak, nonatomic) IBOutlet UIButton *btn4;
-@property (weak, nonatomic) IBOutlet UIButton *btn5;
-@property (weak, nonatomic) IBOutlet UIButton *btn6;
-
-@property (weak, nonatomic) IBOutlet UIView *viewContainer;
+@property (weak, nonatomic) IBOutlet UIView *viewUpper;
+@property (weak, nonatomic) IBOutlet UIView *viewLower;
 
 
 @end
 
-@implementation ReloadCardVC
-@synthesize strRemainLOC;
+@implementation LOCWithdrawalVC
+@synthesize dictResponce;
 
 - (void)viewDidLoad
 {
@@ -52,26 +39,33 @@
 }
 - (void)customInitialization
 {
-    check = [UIImage imageNamed:@"radioChecked"];
-    uncheck = [UIImage imageNamed:@"radioUncheck"];
+    self.navigationController.navigationBar.hidden = YES;
     
-    [Utilities setCornerRadius:_viewContainer];
-    _lblRemainLOC.text = strRemainLOC;
-    
-    _imageError.hidden = YES;
-    isButtonChecked = NO;
-    
-    _btn1.tag = 1;
-    _btn2.tag = 2;
-    _btn3.tag = 3;
-    _btn4.tag = 4;
-    _btn5.tag = 5;
-    _btn6.tag = 6;
-    
+    [Utilities setCornerRadius:_viewUpper];
+    [Utilities setCornerRadius:_viewLower];
     
     [self addStashfinButtonView];
     isStashExpand = NO;
+    
+    [self populateLOCWithrawalResponse];
 }
+- (void)populateLOCWithrawalResponse
+{
+    _lblRemainLOC.text = [NSString stringWithFormat:@"%d",[[dictResponce valueForKey:@"remaining_loc"] intValue]];
+    
+    _lblRate.text = [NSString stringWithFormat:@"%d",[[dictResponce valueForKey:@"rate_of_interest"] intValue]];
+  
+    _lblRequestAmount.text = [NSString stringWithFormat:@"%@",[dictResponce valueForKey:@"requested_amount"]] ;
+   
+    _lblEMIAmount.text = [NSString stringWithFormat:@"%@",[dictResponce valueForKey:@"emi_amount"]];
+    
+    _lblTenure.text = [NSString stringWithFormat:@"%@",[dictResponce valueForKey:@"tenure"]];
+    
+    _lblDate.text = [NSString stringWithFormat:@"%@",[dictResponce valueForKey:@"first_emi_date"]];
+    
+    _lblNetPayable.text = [NSString stringWithFormat:@"%@",[dictResponce valueForKey:@"net_amount_payable"]];
+}
+
 #pragma mark LGPlusButtonsView
 - (void)addStashfinButtonView
 {
@@ -194,86 +188,25 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark Buton Action
--(IBAction)backAction:(id)sender
+#pragma mark Button Action
+
+- (IBAction)backAction:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(IBAction)radioButtonAction:(RadioButton*)sender
+- (IBAction)confirmAction:(id)sender
 {
-    RadioButton *btn = (RadioButton *)sender;
-    isButtonChecked = YES;
-    _imageError.hidden = YES;
-    
-    switch (btn.tag)
-    {
-        case 1:
-            strTenure = @"3";
-            break;
-            
-        case 2:
-            strTenure = @"6";
-            break;
-            
-        case 3:
-            strTenure = @"9";
-            break;
-            
-        case 4:
-            strTenure = @"12";
-            break;
-            
-        case 5:
-            strTenure = @"15";
-            break;
-            
-        case 6:
-            strTenure = @"18";
-            break;
-            
-        default:
-            break;
-    }
-    
+    [self serverCammForLOCWithdrawolConfirmation];
 }
+- (void)serverCammForLOCWithdrawolConfirmation
+{
+    NSDictionary *param = [ NSDictionary dictionaryWithObjectsAndKeys:@"locWithdrawalConfirm",@"mode",_lblRemainLOC.text,@"amount",_lblTenure.text,@"tenure", nil];
 
-- (IBAction)requestReloadAction:(id)sender
-{
-    if ( [self performValidation] )
-    {
-        [self serverCallForRequestReload];
-    }
-}
-- (BOOL)performValidation
-{
-    if ([_txtRequestAmount.text isEqualToString:@""])
-    {
-        [Utilities showAlertWithMessage:@"Please enter Request Amount"];
-    }
-    else if ( !isButtonChecked )
-    {
-        _imageError.hidden = NO;
-    }
-    else if ([_txtRequestAmount.text intValue] > [strRemainLOC intValue])
-    {
-        [Utilities showAlertWithMessage:[NSString stringWithFormat:@"You have limit of ₹%@",strRemainLOC]];
-    }
-    else
-    {
-        param = [ NSDictionary dictionaryWithObjectsAndKeys:@"locWithdrawalRequest",@"mode",_txtRequestAmount.text,@"amount",strTenure,@"tenure", nil];
-        return YES;
-    }
-    return NO;
-
-    
-}
-- (void)serverCallForRequestReload
-{
     [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
     {
-        NSLog(@"response == %@", response);
         
+        NSLog(@"response === %@", response);
         if ( [response isKindOfClass:[NSDictionary class]] )
         {
             NSString *errorStr = [response objectForKey:@"error"];
@@ -283,7 +216,8 @@
             }
             else
             {
-                [self navigateToLOCWithdrawalVC:response];
+                [self showAlertWithTitle:@"Stashfin" withMessage:[response valueForKey:@"msg"]];
+
             }
         }
         else
@@ -293,11 +227,18 @@
         
     }];
 }
-- (void)navigateToLOCWithdrawalVC:(NSDictionary *)response
+#pragma mark UIAlertController Delegate
+-(void)showAlertWithTitle:(NSString *)atitle withMessage:(NSString *)message
 {
-    LOCWithdrawalVC *locWithdrawalVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"LOCWithdrawalVC"];
-    locWithdrawalVC.dictResponce = response;
-    [self.navigationController pushViewController:locWithdrawalVC animated:YES];
+    UIAlertController *alertController  = [UIAlertController alertControllerWithTitle:atitle message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction =[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action)
+    {
+        [Utilities popToNumberOfControllers:2 withNavigation:self.navigationController];
+    }];
     
+    
+    [alertController addAction:okAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
+
 @end

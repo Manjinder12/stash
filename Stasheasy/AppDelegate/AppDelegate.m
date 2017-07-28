@@ -13,6 +13,8 @@
 #import "LandingVC.h"
 #import "LoginScreen.h"
 #import "REFrostedViewController.h"
+#import "LineCreditVC.h"
+#import "LandingVC.h"
 
 @interface AppDelegate ()
 
@@ -24,25 +26,23 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 
+
     [[UINavigationBar appearance] setBarTintColor:[UIColor redColor]];
     [[UINavigationBar appearance]setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     
-    ViewController *vc;
     if ([[Utilities getUserDefaultValueFromKey:@"islogin"] intValue] == 1)
     {
-       vc = (ViewController *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"ViewController"] ;
-        
-    }
-    else
-    {
-        vc = (ViewController *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"LandingVC"] ;
+        [self navigateToLOCDashboard];
     }
     
-    
-    [self.window setRootViewController:[[UINavigationController alloc] initWithRootViewController:vc]];
     return YES;
 }
 
+- (void)navigateToLOCDashboard
+{
+    ViewController *vc = (ViewController *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"rootController"] ;
+        [self.window setRootViewController:vc];
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

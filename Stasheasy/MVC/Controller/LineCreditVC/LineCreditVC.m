@@ -14,6 +14,7 @@
 #import "TPKeyboardAvoidingScrollView.h"
 #import "ConsolidatedEMIVC.h"
 #import "ReloadCardVC.h"
+#import "REFrostedViewController.h"
 
 @interface LineCreditVC ()<LGPlusButtonsViewDelegate>
 {
@@ -65,8 +66,10 @@
     _viewLower.layer.masksToBounds = YES;
     _viewLower.layer.shadowColor = [UIColor lightGrayColor].CGColor;
     
-    _scrollView.contentSize = CGSizeMake(_viewContainer.frame.size.width, _viewContainer.frame.size.height);
-    _scrollView.autoresizingMask = YES;
+    self.automaticallyAdjustsScrollViewInsets=YES;
+    [_scrollView setContentSize:_viewContainer.frame.size];
+
+    [_scrollView setContentSize:_viewContainer.frame.size];
     _scrollView.scrollEnabled = YES;
 
     

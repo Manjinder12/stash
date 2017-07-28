@@ -63,8 +63,8 @@
 
     _tblLoans.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
-    [self addStashfinButtonView];
-    isStashExpand = NO;
+//    [self addStashfinButtonView];
+//    isStashExpand = NO;
     
     [self serverCallForConsolidatedEMIDetails];
 }

@@ -10,5 +10,7 @@
 #import "REFrostedViewController.h"
 @interface ViewController : REFrostedViewController
 
+@property NSString *identifier;
+
 @end
 

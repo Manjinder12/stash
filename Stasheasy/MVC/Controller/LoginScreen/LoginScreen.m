@@ -12,11 +12,13 @@
 #import "UserServices.h"
 #import "CommonFunctions.h"
 #import "ServerCall.h"
+#import "REFrostedViewController.h"
 
 @interface LoginScreen ()
 {
     UserServices *service;
     NSMutableDictionary *param;
+    REFrostedViewController *refrostedVC;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
@@ -120,14 +122,14 @@
             NSString *errorStr = [response objectForKey:@"error"];
             if ( errorStr.length > 0 )
             {
-                [self showAlertWithTitle:@"Stasheasy" withMessage:errorStr];
+                [Utilities showAlertWithMessage:errorStr];
             }
             else
             {
                 [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
                 [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
                 
-                UIViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+                UIViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
                 [self.navigationController pushViewController:vc animated:YES];
             }
         }
