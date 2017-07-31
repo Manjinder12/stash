@@ -9,9 +9,15 @@
 #import "ProfileScreen.h"
 #import "ProfileCell.h"
 #import "DashboardScreen.h"
+#import "REFrostedViewController.h"
+#import "ServerCall.h"
+#import "UIImageView+AFNetworking.h"
 
-@interface ProfileScreen () {
+@interface ProfileScreen ()<UICollectionViewDelegate,UICollectionViewDataSource>
+{
  
+    NSMutableArray *marrPerHeader, *marrPerText, *marrProHeader, *marrProText, *marrDoc;
+    NSDictionary *dictPersonal, *dictProfessional, *dictDocuments;
     NSArray *personalArr;
     NSArray *personalTextArr;
     NSArray *professionalArr;
@@ -25,11 +31,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *perLbl;
 @property (weak, nonatomic) IBOutlet UILabel *proLbl;
 @property (weak, nonatomic) IBOutlet UILabel *docLbl;
+@property (weak, nonatomic) IBOutlet UILabel *lblCustomerName;
+@property (weak, nonatomic) IBOutlet UILabel *lblEmail;
 
 @property (weak, nonatomic) IBOutlet UIButton *professionalBtn;
 @property (weak, nonatomic) IBOutlet UIButton *personalBtn;
 @property (weak, nonatomic) IBOutlet UIButton *docBtn;
 @property (weak, nonatomic) IBOutlet UITableView *profileTableView;
+@property (weak, nonatomic) IBOutlet UIView *viewOuter;
+@property (weak, nonatomic) IBOutlet UICollectionView *docCollection;
 
 - (IBAction)personalTapped:(id)sender;
 - (IBAction)professionalTapped:(id)sender;
@@ -42,69 +52,118 @@
 
 @implementation ProfileScreen
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    tab =0;
-    personalArr = [[NSArray alloc]initWithObjects:@"Contact No.",@"Date of Birth",@"PAN No.",@"Aadhar Card No.",@"Current Address",@"Permanent Address", nil];
+    [self customInitialization];
+}
+- (void)customInitialization
+{
+    marrPerText = [[NSMutableArray alloc] init];
+    marrProText = [[NSMutableArray alloc] init];
+    marrDoc = [[NSMutableArray alloc] init];
+
+    [_personalBtn setTitle:@"PERSONAL\nDETAIL" forState:UIControlStateNormal];
+    [_professionalBtn setTitle:@"PROFESSIONAL\nDETAIL" forState:UIControlStateNormal];
+    tab = 0;
+    marrPerHeader = [[NSMutableArray alloc]initWithObjects:@"Contact No.",@"Date of Birth",@"PAN No.",@"Aadhar Card No.",@"Current Address",@"Permanent Address", nil];
     personalTextArr = [[NSArray alloc]initWithObjects:@"9876543210",@"17 April 1973",@"BXIPX2014H",@"3181 6734 1296",@"77, jagjivan ram nagar indore-452001",@"Kastubra ward, Pipariya-461775", nil];
     
-    professionalArr = [[NSArray alloc]initWithObjects:@"Comapany Name",@"Designation",@"Employee ID",@"Work Since",@"Office Email",@"Office Landline No.",@"Company Address", nil];
+    marrProHeader = [[NSMutableArray alloc]initWithObjects:@"Comapany Name",@"Designation",@"Employee ID",@"Work Since",@"Office Email",@"Office Landline No.",@"Company Address", nil];
     proTextArr = [[NSArray alloc]initWithObjects:@"6 Degresit Pvt Ltd",@"Sr UI/UX developer",@"6D-UI-0001",@"July 2013",@"Testing@gmail.com",@"0731 -987654321",@"Geeta Bhavan Indore", nil];
-
+    
     [self setupProfileBlurScreen];
-    self.profileTableView.estimatedRowHeight = 50.0f;
+    self.profileTableView.estimatedRowHeight = 30.0f;
     self.profileTableView.rowHeight = UITableViewAutomaticDimension;
+    
+    [self serverCallForPersonalDetail];
+    _viewOuter.hidden = NO;
 }
-
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - TableView Methods
-
+#pragma mark - TableView Delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 6;
+    if (tab == 0)
+    {
+        return [marrPerText count];
+    }
+    else
+    {
+        return [marrProText count];
+    }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return UITableViewAutomaticDimension;
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *simpleTableIdentifier = @"ProfileCell";
     
     ProfileCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-    if (cell == nil) {
+    if (cell == nil)
+    {
         [self.profileTableView registerNib:[UINib nibWithNibName:@"ProfileCell" bundle:nil] forCellReuseIdentifier:simpleTableIdentifier];
         cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     }
-    if (tab ==0) {
-        cell.profileHeadinglbl.text = [personalArr objectAtIndex:indexPath.row];
-        cell.profileRightlbl.text = [personalTextArr objectAtIndex:indexPath.row];
+    if (tab == 0)
+    {
+        cell.profileHeadinglbl.text = [marrPerHeader objectAtIndex:indexPath.row];
+        cell.profileRightlbl.text = [marrPerText objectAtIndex:indexPath.row];
     }
-    else if (tab ==1) {
-        cell.profileHeadinglbl.text = [professionalArr objectAtIndex:indexPath.row];
-        cell.profileRightlbl.text = [proTextArr objectAtIndex:indexPath.row];
+    else if (tab == 1)
+    {
+        cell.profileHeadinglbl.text = [marrProHeader objectAtIndex:indexPath.row];
+        cell.profileRightlbl.text = [marrProText objectAtIndex:indexPath.row];
     }
    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor clearColor];
     return cell;
 }
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+#pragma mark Collectionview Delegate
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return [marrDoc count];
+}
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"DocCell" forIndexPath:indexPath];
+    
+    UIImageView *imageView = [cell viewWithTag:100];
+    [imageView setImageWithURL:[Utilities getFormattedImageURLFromString:[marrDoc objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"loandetail"]];
+    
+    UIButton *btnDoc = [cell viewWithTag:200];
+    
+    [btnDoc addTarget:self action:@selector(docButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    return cell;
+    
+}
+- (void)docButtonAction
+{
     
 }
 #pragma mark - Instance Methods
+-(void)setupProfileBlurScreen
+{
 
--(void)setupProfileBlurScreen {
-
-    if (!UIAccessibilityIsReduceTransparencyEnabled()) {
+    if (!UIAccessibilityIsReduceTransparencyEnabled())
+    {
         self.view.backgroundColor = [UIColor clearColor];
         
         UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
@@ -113,21 +172,31 @@
         blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         blurEffectView.alpha = 0.9f;
         [self.profileView addSubview:blurEffectView];
-    } else {
+    }
+    else
+    {
         self.profileView.backgroundColor = [UIColor blackColor];
     }
     
     self.profilepic.layer.cornerRadius = self.profilepic.frame.size.width/2.0f;
     self.profilepic.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.profilepic.layer.borderWidth = 5.0f;
+    self.profilepic.layer.borderWidth = 0.5;
     self.profilepic.clipsToBounds = YES;
 }
 
-#pragma mark - IBAction Methods
+#pragma mark Button Action
+- (IBAction)menuAction:(id)sender
+{
+    [self.view endEditing:YES];
+    [self.frostedViewController.view endEditing:YES];
+    [self.frostedViewController presentMenuViewController];
+}
 
-- (IBAction)personalTapped:(id)sender {
+- (IBAction)personalTapped:(id)sender
+{
     tab =0;
-    self.profileTableView.hidden =NO;
+    self.profileTableView.hidden = NO;
+    self.docCollection.hidden = YES;
 
     self.perLbl.backgroundColor = [UIColor colorWithRed:220.0f/255.0f green:16.0f/255.0f blue:16.0f/255.0f alpha:1.0f];
     self.personalBtn.titleLabel.textColor = [UIColor colorWithRed:220.0f/255.0f green:16.0f/255.0f blue:16.0f/255.0f alpha:1.0f];
@@ -140,9 +209,11 @@
     [self.profileTableView reloadData];
 }
 
-- (IBAction)professionalTapped:(id)sender {
+- (IBAction)professionalTapped:(id)sender
+{
     tab =1;
-    self.profileTableView.hidden =NO;
+    self.profileTableView.hidden = NO;
+    self.docCollection.hidden = YES;
 
     self.perLbl.backgroundColor = [UIColor clearColor];
     self.personalBtn.titleLabel.textColor = [UIColor darkGrayColor];
@@ -155,8 +226,14 @@
     [self.profileTableView reloadData];
 }
 
-- (IBAction)documenttapped:(id)sender {
-    self.profileTableView.hidden =YES;
+- (IBAction)documenttapped:(id)sender
+{
+    tab = 2;
+    self.profileTableView.hidden = YES;
+    self.docCollection.hidden = NO;
+
+    [self.docCollection reloadData];
+    
     self.perLbl.backgroundColor = [UIColor clearColor];
     self.personalBtn.titleLabel.textColor = [UIColor darkGrayColor];
     
@@ -173,5 +250,140 @@
     [self.frostedViewController setContentViewController:vc];
     [self.frostedViewController hideMenuViewController];
 
+}
+
+#pragma mark Server Call Profile Detail
+- (void)serverCallForPersonalDetail
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObject:@"personalDetails" forKey:@"mode"];
+    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+    {
+        NSLog(@"response === %@", response);
+        
+        if ([response isKindOfClass:[NSDictionary class]])
+        {
+            NSString *errorStr = [response objectForKey:@"error"];
+            if ( errorStr.length > 0 )
+            {
+                [Utilities showAlertWithMessage:errorStr];
+            }
+            else
+            {
+                dictPersonal = [NSDictionary dictionaryWithDictionary:response];
+                [self serverCallForProfessionalDetail];
+                
+            }
+        }
+        else
+        {
+            [Utilities showAlertWithMessage:response];
+        }
+        
+    }];
+}
+- (void)serverCallForProfessionalDetail
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObject:@"professioanlDetails" forKey:@"mode"];
+    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 dictProfessional = [NSDictionary dictionaryWithDictionary:response];
+                 [self serverCallForDocumentsDetail];
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+         
+     }];
+}
+- (void)serverCallForDocumentsDetail
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObject:@"documentsFormDetails" forKey:@"mode"];
+    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 _viewOuter.hidden = YES;
+                 
+                 [self populatePersonalDetail:dictPersonal];
+                 [self populateProfessionalDetail:dictProfessional];
+                 [self populateDocumentsDetail:response];
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+         
+     }];
+}
+- (void)populatePersonalDetail:(NSDictionary *)response
+{
+    _lblCustomerName.text = response[@"customer_details"][@"customer_name"];
+    _lblEmail.text =  response[@"customer_details"][@"email"];
+    [marrPerText addObject:response[@"customer_details"][@"phone"]];
+    [marrPerText addObject:response[@"customer_details"][@"dob"]];
+    [marrPerText addObject:response[@"customer_details"][@"pan_number"]];
+    [marrPerText addObject:response[@"customer_details"][@"aadhar_number"]];
+    
+    NSString *currentAddress = [NSString stringWithFormat:@"%@,%@",response[@"current_address"][@"address"],response[@"current_address"][@"state"]];
+   
+    NSString *permanentAddress = [NSString stringWithFormat:@"%@,%@",response[@"permanent_address"][@"address"],response[@"permanent_address"][@"state"]];
+    
+    [marrPerText addObject:currentAddress];
+    [marrPerText addObject:permanentAddress];
+    
+}
+- (void)populateProfessionalDetail:(NSDictionary *)response
+{
+    [marrProText addObject:@"Stashfin"];
+    [marrProText addObject:response[@"professional_details"][@"designation"]];
+    [marrProText addObject:response[@"professional_details"][@"designationId"]];
+    [marrProText addObject:response[@"professional_details"][@"workingSince"]];
+    [marrProText addObject:response[@"professional_details"][@"officeEmail"]];
+    [marrProText addObject:response[@"professional_details"][@"officeLandLineNo"]];
+    
+    NSString *officeAddress = [NSString stringWithFormat:@"%@,%@",response[@"office_address"][@"address"],response[@"office_address"][@"city"]];
+
+    [marrProText addObject:officeAddress];
+    
+    [self.profileTableView reloadData];
+}
+- (void)populateDocumentsDetail:(NSDictionary *)response
+{
+    [marrDoc addObject:response[@"docs"][@"address_proof"]];
+    [marrDoc addObject:response[@"docs"][@"employee_id"]];
+    [marrDoc addObject:response[@"docs"][@"id_proof"]];
+    [marrDoc addObject:response[@"docs"][@"office_id"]];
+    [marrDoc addObject:response[@"docs"][@"pan_proof"]];
+    [marrDoc addObject:response[@"docs"][@"salary_slip1"]];
+    [marrDoc addObject:response[@"docs"][@"salary_slip2"]];
+    [marrDoc addObject:response[@"docs"][@"salary_slip3"]];
+    
+    self.profileTableView.hidden = NO;
+    self.docCollection.hidden = YES;
+    
+    [self.profileTableView reloadData];
 }
 @end

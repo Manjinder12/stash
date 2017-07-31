@@ -36,6 +36,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *btn4;
 @property (weak, nonatomic) IBOutlet UIButton *btn5;
 @property (weak, nonatomic) IBOutlet UIButton *btn6;
+@property (weak, nonatomic) IBOutlet UIButton *btnRequestReload;
+
+
 
 @property (weak, nonatomic) IBOutlet UIView *viewContainer;
 
@@ -56,7 +59,7 @@
     uncheck = [UIImage imageNamed:@"radioUncheck"];
     
     [Utilities setCornerRadius:_viewContainer];
-    _lblRemainLOC.text = strRemainLOC;
+//    _lblRemainLOC.text = strRemainLOC;
     
     _imageError.hidden = YES;
     isButtonChecked = NO;
@@ -71,6 +74,8 @@
     
     [self addStashfinButtonView];
     isStashExpand = NO;
+    
+    [self serverCallForWithdrawalRerquestForm];
 }
 #pragma mark LGPlusButtonsView
 - (void)addStashfinButtonView
@@ -292,6 +297,39 @@
         }
         
     }];
+}
+- (void)serverCallForWithdrawalRerquestForm
+{
+    param = [ NSDictionary dictionaryWithObjectsAndKeys:@"locWithdrawalRequestform",@"mode", nil];
+
+    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response == %@", response);
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 param = [NSDictionary dictionary];
+                 _lblRemainLOC.text = [response valueForKey:@"remaining_loc"];
+                 if ([response valueForKey:@"false"])
+                 {
+                     [Utilities showAlertWithMessage:@""];
+                     _btnRequestReload.userInteractionEnabled = NO;
+                 }
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+         
+     }];
 }
 - (void)navigateToLOCWithdrawalVC:(NSDictionary *)response
 {

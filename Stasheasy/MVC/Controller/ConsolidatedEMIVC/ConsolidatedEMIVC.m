@@ -40,6 +40,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tblLoans;
 @property (weak, nonatomic) IBOutlet UIView *viewEMIPayable;
+@property (weak, nonatomic) IBOutlet UIView *viewOuter;
 
 @end
 
@@ -63,6 +64,7 @@
 
     _tblLoans.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
+    _viewOuter.hidden = NO;
 //    [self addStashfinButtonView];
 //    isStashExpand = NO;
     
@@ -153,6 +155,7 @@
             else
             {
                 [self populateEMIDetails:response];
+                _viewOuter.hidden = YES;
             }
         }
         else

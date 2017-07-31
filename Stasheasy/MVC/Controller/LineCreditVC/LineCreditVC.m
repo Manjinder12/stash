@@ -36,6 +36,7 @@
 @property (weak, nonatomic) IBOutlet UIView *viewContainer;
 @property (weak, nonatomic) IBOutlet UIView *viewUpper;
 @property (weak, nonatomic) IBOutlet UIView *viewLower;
+@property (weak, nonatomic) IBOutlet UIView *viewOuter;
 
 @property (weak, nonatomic) IBOutlet TPKeyboardAvoidingScrollView *scrollView;
 
@@ -72,6 +73,10 @@
     [_scrollView setContentSize:_viewContainer.frame.size];
     _scrollView.scrollEnabled = YES;
 
+    _viewOuter.hidden = NO;
+    
+    [self addStashfinButtonView];
+    isStashExpand = NO;
     
     [self serverCallForWithdrawalRequest];
 
@@ -235,6 +240,8 @@
             else
             {
                 [self populateLOCDetails:response];
+                _viewOuter.hidden = YES;
+
             }
         }
         else
@@ -273,10 +280,17 @@
 }
 -(IBAction)reloadCardAction:(id)sender
 {
-    ReloadCardVC *reloadCardVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"ReloadCardVC"];
-    reloadCardVC.strRemainLOC = strRemainLOC;
-    [self.navigationController pushViewController:reloadCardVC animated:YES];
-
+    if ([_lblRequestStatus.text isEqualToString:@"PENDING"])
+    {
+        [Utilities showAlertWithMessage:@"Can not reload card, last LOC pending"];
+    }
+    else
+    {
+        ReloadCardVC *reloadCardVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"ReloadCardVC"];
+        reloadCardVC.strRemainLOC = strRemainLOC;
+        [self.navigationController pushViewController:reloadCardVC animated:YES];
+    }
+    
     
 }
 - (IBAction)refreshAction:(id)sender
