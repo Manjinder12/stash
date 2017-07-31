@@ -12,13 +12,20 @@
 #import "REFrostedViewController.h"
 #import "ServerCall.h"
 #import "UIImageView+AFNetworking.h"
+#import <MWPhotoBrowser/MWPhotoBrowser.h>
+#import <LGPlusButtonsView/LGPlusButtonsView.h>
 
-@interface ProfileScreen ()<UICollectionViewDelegate,UICollectionViewDataSource>
+@interface ProfileScreen ()<UICollectionViewDelegate,UICollectionViewDataSource,MWPhotoBrowserDelegate,LGPlusButtonsViewDelegate>
 {
  
-    NSMutableArray *marrPerHeader, *marrPerText, *marrProHeader, *marrProText, *marrDoc;
-    NSDictionary *dictPersonal, *dictProfessional, *dictDocuments;
-    NSArray *personalArr;
+    NSMutableArray *marrPerHeader, *marrPerText, *marrProHeader, *marrProText, *marrDoc, *marrImages;
+    NSDictionary *dictPersonal, *dictProfessional, *dictDocument;
+    
+    BOOL isStashExpand;
+    
+    LGPlusButtonsView *stashfinButton;
+    
+    NSArray *personalArr ;
     NSArray *personalTextArr;
     NSArray *professionalArr;
     NSArray *proTextArr;
@@ -59,9 +66,12 @@
 }
 - (void)customInitialization
 {
+    self.navigationController.navigationBar.hidden = YES;
+    
     marrPerText = [[NSMutableArray alloc] init];
     marrProText = [[NSMutableArray alloc] init];
     marrDoc = [[NSMutableArray alloc] init];
+    marrImages = [[NSMutableArray alloc] init];
 
     [_personalBtn setTitle:@"PERSONAL\nDETAIL" forState:UIControlStateNormal];
     [_professionalBtn setTitle:@"PROFESSIONAL\nDETAIL" forState:UIControlStateNormal];
@@ -83,6 +93,122 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+#pragma mark LGPlusButtonsView
+- (void)addStashfinButtonView
+{
+    stashfinButton = [[LGPlusButtonsView alloc] initWithNumberOfButtons:5 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
+    
+    //stashfinButton = [LGPlusButtonsView plusButtonsViewWithNumberOfButtons:4 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
+    
+    stashfinButton.coverColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+    stashfinButton.position = LGPlusButtonsViewPositionBottomRight;
+    stashfinButton.plusButtonAnimationType = LGPlusButtonsAppearingAnimationTypeCrossDissolveAndPop;
+    stashfinButton.buttonsAppearingAnimationType = LGPlusButtonsAppearingAnimationTypeCrossDissolveAndSlideVertical;
+    
+    [stashfinButton setDescriptionsTexts:@[@"", @"Lost/Stolan Card", @"Change Pin", @"Reload Card",@"Chat"]];
+    
+    [stashfinButton setButtonsImages:@[[UIImage imageNamed:@"actionBtn"], [UIImage imageNamed:@"lostCardBtn"], [UIImage imageNamed:@"pinBtn"], [UIImage imageNamed:@"topupcardBtn"] ,[UIImage imageNamed:@"chatBtn"]]
+                            forState:UIControlStateNormal
+                      forOrientation:LGPlusButtonsViewOrientationAll];
+    if ([[self.storyboard valueForKey:@"name"] isEqual:@"iPhone"])
+    {
+        [stashfinButton setButtonsSize:CGSizeMake(60.f, 60.f) forOrientation:LGPlusButtonsViewOrientationAll];
+        [stashfinButton setButtonsLayerCornerRadius:60.f/2.f forOrientation:LGPlusButtonsViewOrientationAll];
+        [stashfinButton setDescriptionsFont:[UIFont systemFontOfSize:16] forOrientation:LGPlusButtonsViewOrientationAll];
+    }
+    else
+    {
+        [stashfinButton setButtonsSize:CGSizeMake(90.f, 90.f) forOrientation:LGPlusButtonsViewOrientationAll];
+        [stashfinButton setButtonsLayerCornerRadius:90.f/2.f forOrientation:LGPlusButtonsViewOrientationAll];
+        [stashfinButton setDescriptionsFont:[UIFont systemFontOfSize:26.0] forOrientation:LGPlusButtonsViewOrientationAll];
+    }
+    
+    [stashfinButton setButtonsLayerShadowColor:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1.f]];
+    // [stashfinButton setButtonsLayerShadowColor:[UIColor whiteColor]];
+    [stashfinButton setButtonsLayerShadowOpacity:0.5];
+    [stashfinButton setButtonsLayerShadowRadius:3.f];
+    [stashfinButton setButtonsLayerShadowOffset:CGSizeMake(0.f, 2.f)];
+    
+    [stashfinButton setDescriptionsTextColor:[UIColor whiteColor]];
+    [stashfinButton setDescriptionsLayerShadowColor:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1.f]];
+    [stashfinButton setDescriptionsLayerShadowOpacity:0.25];
+    [stashfinButton setDescriptionsLayerShadowRadius:1.f];
+    [stashfinButton setDescriptionsLayerShadowOffset:CGSizeMake(0.f, 1.f)];
+    [stashfinButton setDescriptionsLayerCornerRadius:6.f forOrientation:LGPlusButtonsViewOrientationAll];
+    //[stashfinButton setDescriptionsContentEdgeInsets:UIEdgeInsetsMake(4.f, 8.f, 4.f, 8.f) forOrientation:LGPlusButtonsViewOrientationAll];
+    [stashfinButton setDescriptionsContentEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0) forOrientation:LGPlusButtonsViewOrientationAll];
+    
+    [self.view addSubview:stashfinButton];
+}
+#pragma mark LGPlusButtonsView Delegate
+- (void)plusButtonsViewDidHideButtons:(LGPlusButtonsView *)plusButtonsView
+{
+    isStashExpand = NO;
+}
+- (void)plusButtonsView:(LGPlusButtonsView *)plusButtonsView buttonPressedWithTitle:(NSString *)title description:(NSString *)description index:(NSUInteger)index
+{
+    if (index == 0)
+    {
+        //        [plusButtonsView hideButtonsAnimated:YES completionHandler:^
+        //         {
+        //             isStashExpand = NO;
+        //         }];
+    }
+    else if (index == 1)
+    {
+        // Lost Card
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
+            
+            isStashExpand = NO;
+            //            AddInvoiceQuoteVC *addInvoiceQuoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddInvoiceQuoteVC"];
+            //            addInvoiceQuoteVC.isInvoice = YES;
+            //            [ self.navigationController pushViewController:addInvoiceQuoteVC animated:YES ];
+            
+        }];
+    }
+    else if (index == 2)
+    {
+        // Change Pin
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
+            
+            isStashExpand = NO;
+            //            AddNoteVC *addNoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddNoteVC"];
+            //            addNoteVC.tempScheduleObject = _tempScheduleObject;
+            //            [ self.navigationController pushViewController:addNoteVC animated:YES ];
+            
+        }];
+    }
+    else if (index == 3)
+    {
+        // Reload Card
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
+            
+            isStashExpand = NO;
+            
+        }];
+    }
+    else if (index == 4)
+    {
+        //Apply for new loan
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
+            
+            isStashExpand = NO;
+            //            AddInvoiceQuoteVC *addInvoiceQuoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddInvoiceQuoteVC"];
+            //            addInvoiceQuoteVC.isInvoice = NO;
+            //            [ self.navigationController pushViewController:addInvoiceQuoteVC animated:YES ];
+            
+        }];
+    }
+    else
+    {
+        //Chat
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
+            
+            
+            
+        }];
+    }
 }
 
 #pragma mark - TableView Delegate
@@ -143,17 +269,54 @@
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"DocCell" forIndexPath:indexPath];
     
     UIImageView *imageView = [cell viewWithTag:100];
-    [imageView setImageWithURL:[Utilities getFormattedImageURLFromString:[marrDoc objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"loandetail"]];
-    
-    UIButton *btnDoc = [cell viewWithTag:200];
-    
-    [btnDoc addTarget:self action:@selector(docButtonAction) forControlEvents:UIControlEventTouchUpInside];
-    
-    
+  
+    [imageView setImageWithURL:[Utilities getFormattedImageURLFromString:[marrDoc objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"pdficon"]];
     
     return cell;
-    
 }
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [[UIApplication sharedApplication] openURL:[Utilities getFormattedImageURLFromString:[marrDoc objectAtIndex:indexPath.row]] options:nil completionHandler:nil];;
+
+//    [self openImageInFullScreenWithIndex:indexPath.row];
+
+}
+- (void)openImageInFullScreenWithIndex:(NSInteger)index
+{
+    MWPhotoBrowser  *photoBrowser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+    photoBrowser.displayActionButton = NO; // Show action button to allow sharing, copying, etc (defaults to YES)
+    photoBrowser.displayNavArrows = NO; // Whether to display left and right nav arrows on toolbar (defaults to NO)
+    photoBrowser.displaySelectionButtons = NO; // Whether selection buttons are shown on each image (defaults to NO)
+    photoBrowser.zoomPhotosToFill = YES; // Images that almost fill the screen will be initially zoomed to fill (defaults to YES)
+    photoBrowser.alwaysShowControls = NO; // Allows to control whether the bars and controls are always visible or whether they fade away to show the photo full (defaults to NO)
+    photoBrowser.enableGrid = NO; // Whether to allow the viewing of all the photo thumbnails on a grid (defaults to YES)
+    photoBrowser.startOnGrid = NO;
+    [photoBrowser setCurrentPhotoIndex:1];
+    
+    MWPhoto *photo;
+    [marrImages removeAllObjects];
+    photo = [MWPhoto photoWithURL:[Utilities getFormattedImageURLFromString:[marrDoc objectAtIndex:index]]];
+    
+    [marrImages addObject:photo];
+    if (photo != nil)
+    {
+        [self.navigationController pushViewController:photoBrowser animated:YES];
+    }
+    else
+    {
+        [Utilities showAlertWithMessage:@"Full Screen Image is not available"];
+    }
+}
+#pragma mark MWPhotoBrowser Delegate
+- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser;
+{
+    return [marrImages count];
+}
+- (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index;
+{
+    return [marrImages objectAtIndex:index];
+}
+
 - (void)docButtonAction
 {
     
@@ -329,6 +492,9 @@
                  [self populatePersonalDetail:dictPersonal];
                  [self populateProfessionalDetail:dictProfessional];
                  [self populateDocumentsDetail:response];
+                 
+                 [self addStashfinButtonView];
+                 isStashExpand = NO;
              }
          }
          else

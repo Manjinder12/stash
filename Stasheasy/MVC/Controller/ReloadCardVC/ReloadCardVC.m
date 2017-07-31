@@ -316,7 +316,7 @@
              else
              {
                  param = [NSDictionary dictionary];
-                 _lblRemainLOC.text = [response valueForKey:@"remaining_loc"];
+                 _lblRemainLOC.text = [NSString stringWithFormat:@"%.2f",[[response valueForKey:@"remaining_loc"] doubleValue]];
                  if ([response valueForKey:@"false"])
                  {
                      [Utilities showAlertWithMessage:@""];

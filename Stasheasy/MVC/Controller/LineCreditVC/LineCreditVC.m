@@ -67,19 +67,18 @@
     _viewLower.layer.masksToBounds = YES;
     _viewLower.layer.shadowColor = [UIColor lightGrayColor].CGColor;
     
-    self.automaticallyAdjustsScrollViewInsets=YES;
-    [_scrollView setContentSize:_viewContainer.frame.size];
-
-    [_scrollView setContentSize:_viewContainer.frame.size];
-    _scrollView.scrollEnabled = YES;
-
+ 
     _viewOuter.hidden = NO;
-    
-    [self addStashfinButtonView];
-    isStashExpand = NO;
-    
     [self serverCallForWithdrawalRequest];
 
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.automaticallyAdjustsScrollViewInsets=YES;
+    [_scrollView setContentSize:_viewContainer.frame.size];
+    
+    [_scrollView setContentSize:_viewContainer.frame.size];
+    _scrollView.scrollEnabled = YES;
 }
 - (void)viewDidLayoutSubviews
 {
@@ -90,7 +89,7 @@
 #pragma mark LGPlusButtonsView
 - (void)addStashfinButtonView
 {
-    stashfinButton = [[LGPlusButtonsView alloc] initWithNumberOfButtons:6 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
+    stashfinButton = [[LGPlusButtonsView alloc] initWithNumberOfButtons:5 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
     
     //stashfinButton = [LGPlusButtonsView plusButtonsViewWithNumberOfButtons:4 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
     
@@ -99,9 +98,9 @@
     stashfinButton.plusButtonAnimationType = LGPlusButtonsAppearingAnimationTypeCrossDissolveAndPop;
     stashfinButton.buttonsAppearingAnimationType = LGPlusButtonsAppearingAnimationTypeCrossDissolveAndSlideVertical;
     
-    [stashfinButton setDescriptionsTexts:@[@"", @"Lost/Stolan Card", @"Change Pin", @"Reload Card",@"Apply fr new loan",@"Chat"]];
+    [stashfinButton setDescriptionsTexts:@[@"", @"Lost/Stolan Card", @"Change Pin", @"Reload Card",@"Chat"]];
     
-    [stashfinButton setButtonsImages:@[[UIImage imageNamed:@"actionBtn"], [UIImage imageNamed:@"lostCardBtn"], [UIImage imageNamed:@"pinBtn"], [UIImage imageNamed:@"topupcardBtn"],[UIImage imageNamed:@"loanBtn"] ,[UIImage imageNamed:@"chatBtn"]]
+    [stashfinButton setButtonsImages:@[[UIImage imageNamed:@"actionBtn"], [UIImage imageNamed:@"lostCardBtn"], [UIImage imageNamed:@"pinBtn"], [UIImage imageNamed:@"topupcardBtn"] ,[UIImage imageNamed:@"chatBtn"]]
                             forState:UIControlStateNormal
                       forOrientation:LGPlusButtonsViewOrientationAll];
     if ([[self.storyboard valueForKey:@"name"] isEqual:@"iPhone"])
@@ -240,6 +239,10 @@
             else
             {
                 [self populateLOCDetails:response];
+                
+                [self addStashfinButtonView];
+                isStashExpand = NO;
+
                 _viewOuter.hidden = YES;
 
             }

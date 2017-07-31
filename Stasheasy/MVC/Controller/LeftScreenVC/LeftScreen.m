@@ -15,12 +15,14 @@
 #import "ProfileScreen.h"
 #import "LoanDetailsScreen.h"
 #import "TransactionDetailsViewController.h"
+#import "LineCreditVC.h"
 
-@interface LeftScreen () {
-
+@interface LeftScreen ()
+{
     NSArray *leftImages;
     NSArray *leftLabels;
 }
+
 @property (weak, nonatomic) IBOutlet UITableView *leftTableView;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *backImageView;
@@ -29,40 +31,39 @@
 
 @implementation LeftScreen
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
     self.navigationController.navigationBarHidden = NO;
-    leftImages = [NSArray arrayWithObjects:@"profile",@"calculator",@"transaction",@"loandetail",@"applicationStatus",@"logout", nil];
-    leftLabels = [NSArray arrayWithObjects:@"Profile",@"EMI Calculation",@"My Transactions",@"Loan Details",@"Application Status",@"Logout", nil];
+    
+    leftImages = [NSArray arrayWithObjects:@"profile",@"profile",@"calculator",@"transaction",@"applicationStatus",@"logout", nil];
+    leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Profile",@"EMI Calculation",@"My Transactions",@"Card Overview",@"Logout", nil];
 }
 
--(void)viewWillAppear:(BOOL)animated {
+-(void)viewWillAppear:(BOOL)animated
+{
     CGFloat width = _profileImageView.frame.size.width;
     _profileImageView.layer.cornerRadius = width/2;
     _profileImageView.layer.masksToBounds =YES;
-   }
-
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
-
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
        return leftLabels.count;
 }
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return (50.0f/320.0f)*[UIApplication sharedApplication].keyWindow.frame.size.width;
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -79,8 +80,27 @@
         return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 1)
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.row == 0)
+    {
+        LineCreditVC *lineCreditVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
+        UINavigationController *nav = [[UINavigationController alloc]init];
+        nav.viewControllers = @[lineCreditVC];
+        [self.frostedViewController setContentViewController:nav];
+        [self.frostedViewController hideMenuViewController];
+        
+    }
+    else if(indexPath.row == 1)
+    {
+        ProfileScreen *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileScreen"];
+        UINavigationController *nav = [[UINavigationController alloc]init];
+        nav.viewControllers = @[pvc];
+        [self.frostedViewController setContentViewController:nav];
+        [self.frostedViewController hideMenuViewController];
+        
+    }
+    else if (indexPath.row == 2)
     {
         EmiCalculatorScreen *evc = [self.storyboard instantiateViewControllerWithIdentifier:@"EmiCalculatorScreen"];
         UINavigationController *nav = [[UINavigationController alloc]init];
@@ -88,28 +108,7 @@
         [self.frostedViewController setContentViewController:nav];
         [self.frostedViewController hideMenuViewController];
     }
-    else if(indexPath.row == 5) {
-        [CommonFunctions setUserDefault:@"islogin" value:@"0"];
-        AppDelegate *appdelegate =  (AppDelegate *)[UIApplication sharedApplication].delegate;
-        UIViewController *root = [self.storyboard instantiateViewControllerWithIdentifier:@"firstnav"];
-        appdelegate.window.rootViewController =  root;
-    }
-    else if(indexPath.row == 0) {
-        ProfileScreen *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileScreen"];
-        [self.frostedViewController setContentViewController:pvc];
-        [self.frostedViewController hideMenuViewController];
-
-    }
-    else if(indexPath.row == 3) {
-        LoanDetailsScreen *evc = [self.storyboard instantiateViewControllerWithIdentifier:@"LoanDetailsScreen"];
-        UINavigationController *nav = [[UINavigationController alloc]init];
-        nav.viewControllers = @[evc];
-        [self.frostedViewController setContentViewController:nav];
-        [self.frostedViewController hideMenuViewController];
-
-        
-    }
-    else if(indexPath.row == 2)
+    else if(indexPath.row == 3)
     {
         TransactionDetailsViewController *evc = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionDetailsViewController"];
         UINavigationController *nav = [[UINavigationController alloc]init];
@@ -117,9 +116,22 @@
         [self.frostedViewController setContentViewController:nav];
         [self.frostedViewController hideMenuViewController];
     }
-
+    
+    else if(indexPath.row == 4)
+    {
+        LoanDetailsScreen *evc = [self.storyboard instantiateViewControllerWithIdentifier:@"LoanDetailsScreen"];
+        UINavigationController *nav = [[UINavigationController alloc]init];
+        nav.viewControllers = @[evc];
+        [self.frostedViewController setContentViewController:nav];
+        [self.frostedViewController hideMenuViewController];
+    }
+    
+    else if(indexPath.row == 5)
+    {
+        [CommonFunctions setUserDefault:@"islogin" value:@"0"];
+        AppDelegate *appdelegate =  (AppDelegate *)[UIApplication sharedApplication].delegate;
+        UIViewController *root = [self.storyboard instantiateViewControllerWithIdentifier:@"firstnav"];
+        appdelegate.window.rootViewController =  root;
+    }
 }
-
-
-
 @end
