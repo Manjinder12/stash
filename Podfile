@@ -6,6 +6,6 @@ target 'Stasheasy' do
   pod 'AFNetworking', '~> 3.0'
   pod 'SVProgressHUD'
   pod 'LGPlusButtonsView', '~> 1.1.0'
-
+  pod 'MWPhotoBrowser'
 
 end

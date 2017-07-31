@@ -9,12 +9,37 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>DACircularProgress.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>LGPlusButtonsView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>MBProgressHUD.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>MWPhotoBrowser-MWPhotoBrowser.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>MWPhotoBrowser.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Stasheasy.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -27,12 +52,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>07A93A81A9EDB71C5D98E00564977EEF</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>089927A3A78EBEB09E8A95AE9AB8BBAC</key>
+		<key>14E6E2E2484806AB62B60CA2EAD41F9B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -42,7 +62,37 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>6461FF73E606AC17ECB9C28944E4F30F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>765F96847EA00A23B11FBF0762C4A1A5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>94624EC6C9739263AA965CFE2D8933F5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BE7A5E8E0FDE9CA58316BC4D6568818D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C11EC16D6F3BEE81AEF8DCD412FD5086</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>C3846F7F1F89A09DDD213DDEC926D548</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E61CE3B6DFA1FE6B3E296965C76C0E10</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "089927A3A78EBEB09E8A95AE9AB8BBAC"
+               BlueprintIdentifier = "C11EC16D6F3BEE81AEF8DCD412FD5086"
                BuildableName = "Pods_Stasheasy.framework"
                BlueprintName = "Pods-Stasheasy"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "089927A3A78EBEB09E8A95AE9AB8BBAC"
+            BlueprintIdentifier = "C11EC16D6F3BEE81AEF8DCD412FD5086"
             BuildableName = "Pods_Stasheasy.framework"
             BlueprintName = "Pods-Stasheasy"
             ReferencedContainer = "container:Pods.xcodeproj">
