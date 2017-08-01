@@ -12,8 +12,17 @@
 #import "REFrostedViewController.h"
 #import "TransactionList.h"
 #import "AnalyzeScreen.h"
+#import "ServerCall.h"
+#import <LGPlusButtonsView/LGPlusButtonsView.h>
+#import "AppDelegate.h"
 
-@interface TransactionDetailsViewController () {
+@interface TransactionDetailsViewController ()<LGPlusButtonsViewDelegate>
+{
+    AppDelegate *appDelegate;
+    LGPlusButtonsView *stashfinButton;
+    BOOL isStashExpand;
+
+    NSDictionary *dictResponse;
     int tab;
     UIViewController *currentController;
 }
@@ -22,62 +31,187 @@
 @property (weak, nonatomic) IBOutlet UILabel *proLbl;
 @property (weak, nonatomic) IBOutlet UILabel *docLbl;
 
-@property (weak, nonatomic) IBOutlet UIButton *professionalBtn;
-@property (weak, nonatomic) IBOutlet UIButton *personalBtn;
-@property (weak, nonatomic) IBOutlet UIButton *docBtn;
-@property (weak, nonatomic) IBOutlet UIView *mainView;
+@property (weak, nonatomic) IBOutlet UIButton *btnTransaction;
+@property (weak, nonatomic) IBOutlet UIButton *btnOverview;
+@property (weak, nonatomic) IBOutlet UIButton *btnAnalyze;
+
+@property (weak, nonatomic) IBOutlet UIView *viewOuter;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
 
 @end
 
 @implementation TransactionDetailsViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.navigationController.navigationBarHidden = NO;
-    self.navigationItem.title = @"Account Overview";
-    [CommonFunctions addButton:@"menu" InNavigationItem:self.navigationItem forNavigationController:self.navigationController withTarget:self andSelector:@selector(showMenu)];
-    // show account Overview
-    [self addTrasactionScreen];
+    [self customInitialization];
 }
+- (void)customInitialization
+{
+    self.navigationController.navigationBarHidden = YES;
 
-- (void)didReceiveMemoryWarning {
+    appDelegate = [AppDelegate sharedDelegate];
+    _viewOuter.hidden = NO;
+    [self serverCallForCardAnalyzeSpending];
+}
+#pragma mark LGPlusButtonsView
+- (void)addStashfinButtonView
+{
+    stashfinButton = [[LGPlusButtonsView alloc] initWithNumberOfButtons:5 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
+    
+    //stashfinButton = [LGPlusButtonsView plusButtonsViewWithNumberOfButtons:4 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
+    
+    stashfinButton.coverColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+    stashfinButton.position = LGPlusButtonsViewPositionBottomRight;
+    stashfinButton.plusButtonAnimationType = LGPlusButtonsAppearingAnimationTypeCrossDissolveAndPop;
+    stashfinButton.buttonsAppearingAnimationType = LGPlusButtonsAppearingAnimationTypeCrossDissolveAndSlideVertical;
+    
+    [stashfinButton setDescriptionsTexts:@[@"", @"Lost/Stolan Card", @"Change Pin", @"Reload Card",@"Chat"]];
+    
+    [stashfinButton setButtonsImages:@[[UIImage imageNamed:@"actionBtn"], [UIImage imageNamed:@"lostCardBtn"], [UIImage imageNamed:@"pinBtn"], [UIImage imageNamed:@"topupcardBtn"] ,[UIImage imageNamed:@"chatBtn"]]
+                            forState:UIControlStateNormal
+                      forOrientation:LGPlusButtonsViewOrientationAll];
+    if ([[self.storyboard valueForKey:@"name"] isEqual:@"iPhone"])
+    {
+        [stashfinButton setButtonsSize:CGSizeMake(60.f, 60.f) forOrientation:LGPlusButtonsViewOrientationAll];
+        [stashfinButton setButtonsLayerCornerRadius:60.f/2.f forOrientation:LGPlusButtonsViewOrientationAll];
+        [stashfinButton setDescriptionsFont:[UIFont systemFontOfSize:16] forOrientation:LGPlusButtonsViewOrientationAll];
+    }
+    else
+    {
+        [stashfinButton setButtonsSize:CGSizeMake(90.f, 90.f) forOrientation:LGPlusButtonsViewOrientationAll];
+        [stashfinButton setButtonsLayerCornerRadius:90.f/2.f forOrientation:LGPlusButtonsViewOrientationAll];
+        [stashfinButton setDescriptionsFont:[UIFont systemFontOfSize:26.0] forOrientation:LGPlusButtonsViewOrientationAll];
+    }
+    
+    [stashfinButton setButtonsLayerShadowColor:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1.f]];
+    // [stashfinButton setButtonsLayerShadowColor:[UIColor whiteColor]];
+    [stashfinButton setButtonsLayerShadowOpacity:0.5];
+    [stashfinButton setButtonsLayerShadowRadius:3.f];
+    [stashfinButton setButtonsLayerShadowOffset:CGSizeMake(0.f, 2.f)];
+    
+    [stashfinButton setDescriptionsTextColor:[UIColor whiteColor]];
+    [stashfinButton setDescriptionsLayerShadowColor:[UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1.f]];
+    [stashfinButton setDescriptionsLayerShadowOpacity:0.25];
+    [stashfinButton setDescriptionsLayerShadowRadius:1.f];
+    [stashfinButton setDescriptionsLayerShadowOffset:CGSizeMake(0.f, 1.f)];
+    [stashfinButton setDescriptionsLayerCornerRadius:6.f forOrientation:LGPlusButtonsViewOrientationAll];
+    //[stashfinButton setDescriptionsContentEdgeInsets:UIEdgeInsetsMake(4.f, 8.f, 4.f, 8.f) forOrientation:LGPlusButtonsViewOrientationAll];
+    [stashfinButton setDescriptionsContentEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0) forOrientation:LGPlusButtonsViewOrientationAll];
+    
+    [self.view addSubview:stashfinButton];
+}
+#pragma mark LGPlusButtonsView Delegate
+- (void)plusButtonsViewDidHideButtons:(LGPlusButtonsView *)plusButtonsView
+{
+    isStashExpand = NO;
+}
+- (void)plusButtonsView:(LGPlusButtonsView *)plusButtonsView buttonPressedWithTitle:(NSString *)title description:(NSString *)description index:(NSUInteger)index
+{
+    if (index == 0)
+    {
+        //        [plusButtonsView hideButtonsAnimated:YES completionHandler:^
+        //         {
+        //             isStashExpand = NO;
+        //         }];
+    }
+    else if (index == 1)
+    {
+        // Lost Card
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
+            
+            isStashExpand = NO;
+            //            AddInvoiceQuoteVC *addInvoiceQuoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddInvoiceQuoteVC"];
+            //            addInvoiceQuoteVC.isInvoice = YES;
+            //            [ self.navigationController pushViewController:addInvoiceQuoteVC animated:YES ];
+            
+        }];
+    }
+    else if (index == 2)
+    {
+        // Change Pin
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
+            
+            isStashExpand = NO;
+            //            AddNoteVC *addNoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddNoteVC"];
+            //            addNoteVC.tempScheduleObject = _tempScheduleObject;
+            //            [ self.navigationController pushViewController:addNoteVC animated:YES ];
+            
+        }];
+    }
+    else if (index == 3)
+    {
+        // Reload Card
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
+            
+            isStashExpand = NO;
+            
+        }];
+    }
+    else if (index == 4)
+    {
+        //Apply for new loan
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
+            
+            isStashExpand = NO;
+            //            AddInvoiceQuoteVC *addInvoiceQuoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddInvoiceQuoteVC"];
+            //            addInvoiceQuoteVC.isInvoice = NO;
+            //            [ self.navigationController pushViewController:addInvoiceQuoteVC animated:YES ];
+            
+        }];
+    }
+    else
+    {
+        //Chat
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
+            
+            
+            
+        }];
+    }
+}
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 
-#pragma mark - IBAction Methods
+#pragma mark Button Action
 
-- (IBAction)personalTapped:(id)sender {
-    tab =0;
-    self.mainView.hidden =NO;
+- (IBAction)overviewAction:(id)sender
+{
+    tab = 0;
+    self.containerView.hidden = NO;
 
-    self.perLbl.backgroundColor = [UIColor colorWithRed:220.0f/255.0f green:16.0f/255.0f blue:16.0f/255.0f alpha:1.0f];
-    self.personalBtn.titleLabel.textColor = [UIColor colorWithRed:220.0f/255.0f green:16.0f/255.0f blue:16.0f/255.0f alpha:1.0f];
+    self.perLbl.backgroundColor = [UIColor colorWithRed:255.0f/255.0f green:00.0f/255.0f blue:0.0f/255.0f alpha:1.0f];
+    self.btnOverview.titleLabel.textColor = [UIColor colorWithRed:255.0f/255.0f green:00.0f/255.0f blue:0.0f/255.0f alpha:1.0f];
     
     self.proLbl.backgroundColor = [UIColor clearColor];
-    self.professionalBtn.titleLabel.textColor = [UIColor darkGrayColor];
+    self.btnTransaction.titleLabel.textColor = [UIColor darkGrayColor];
     
     self.docLbl.backgroundColor = [UIColor clearColor];
-    self.docBtn.titleLabel.textColor = [UIColor darkGrayColor];
+    self.btnAnalyze.titleLabel.textColor = [UIColor darkGrayColor];
     
     TransactionScreen *stVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionScreen"];
     [self changeTransitionWithViewController:stVC];
 
 }
 
-- (IBAction)professionalTapped:(id)sender {
-    tab =1;
+- (IBAction)transactionAction:(id)sender
+{
+    tab = 1;
     self.perLbl.backgroundColor = [UIColor clearColor];
-    self.personalBtn.titleLabel.textColor = [UIColor darkGrayColor];
+    self.btnOverview.titleLabel.textColor = [UIColor darkGrayColor];
     
     self.docLbl.backgroundColor = [UIColor clearColor];
-    self.docBtn.titleLabel.textColor = [UIColor darkGrayColor];
+    self.btnAnalyze.titleLabel.textColor = [UIColor darkGrayColor];
     
-    self.proLbl.backgroundColor = [UIColor colorWithRed:220.0f/255.0f green:16.0f/255.0f blue:16.0f/255.0f alpha:1.0f];
-    [self.professionalBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.professionalBtn setTitleColor:[UIColor colorWithRed:220.0f/255.0f green:16.0f/255.0f blue:16.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+    self.proLbl.backgroundColor = [UIColor colorWithRed:255.0f/255.0f green:00.0f/255.0f blue:0.0f/255.0f alpha:1.0f];
+    [self.btnTransaction setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.btnTransaction setTitleColor:[UIColor colorWithRed:255.0f/255.0f green:00.0f/255.0f blue:0.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
 
     // show transaction list
     TransactionList *tlist = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionList"];
@@ -85,20 +219,21 @@
     
 }
 
-- (IBAction)documenttapped:(id)sender {
-    tab =2;
+- (IBAction)analyzeAction:(id)sender
+{
+    tab = 2;
 
 //    self.mainView.hidden =YES;
 
     self.perLbl.backgroundColor = [UIColor clearColor];
-    self.personalBtn.titleLabel.textColor = [UIColor darkGrayColor];
+    self.btnOverview.titleLabel.textColor = [UIColor darkGrayColor];
     
     self.proLbl.backgroundColor = [UIColor clearColor];
-    self.professionalBtn.titleLabel.textColor = [UIColor darkGrayColor];
+    self.btnTransaction.titleLabel.textColor = [UIColor darkGrayColor];
     
-    self.docLbl.backgroundColor = [UIColor colorWithRed:220.0f/255.0f green:16.0f/255.0f blue:16.0f/255.0f alpha:1.0f];
-    [self.docBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.docBtn setTitleColor:[UIColor colorWithRed:220.0f/255.0f green:16.0f/255.0f blue:16.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+    self.docLbl.backgroundColor = [UIColor colorWithRed:255.0f/255.0f green:00.0f/255.0f blue:0.0f/255.0f alpha:1.0f];
+    [self.btnAnalyze setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.btnAnalyze setTitleColor:[UIColor colorWithRed:255.0f/255.0f green:00.0f/255.0f blue:0.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
     
     AnalyzeScreen *avc = [self.storyboard instantiateViewControllerWithIdentifier:@"AnalyzeScreen"];
     [self changeTransitionWithViewController:avc];
@@ -108,20 +243,22 @@
 
 #pragma mark - Instance Methods
 
--(void)addTrasactionScreen {
+-(void)addTrasactionScreen
+{
         TransactionScreen *stVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionScreen"];
+        [stVC.view setFrame: _containerView.bounds] ;
+        [self.containerView addSubview:stVC.view];
         [self addChildViewController:stVC];
-        [stVC.view setFrame:CGRectMake(0,0,CGRectGetWidth(self.mainView.frame),CGRectGetHeight(self.mainView.frame))] ;
-        [self.mainView addSubview:stVC.view];
         [stVC didMoveToParentViewController:self];
         currentController  = stVC;
 }
 
--(void)changeTransitionWithViewController:(UIViewController *)NewVC  {
+-(void)changeTransitionWithViewController:(UIViewController *)NewVC
+{
     [self removeOldViewController];
     [self addChildViewController:NewVC];
-    [NewVC.view setFrame:CGRectMake(0,0,CGRectGetWidth(self.mainView.frame),CGRectGetHeight(self.mainView.frame))] ;
-    [self.mainView addSubview:NewVC.view];
+    [NewVC.view setFrame:self.containerView.bounds] ;
+    [self.containerView addSubview:NewVC.view];
     [NewVC didMoveToParentViewController:self];
     currentController  = NewVC;
 }
@@ -137,8 +274,10 @@
     [self.frostedViewController presentMenuViewController];
 }
 
--(void)removeOldViewController {
-    if (currentController) {
+-(void)removeOldViewController
+{
+    if (currentController)
+    {
         [currentController willMoveToParentViewController:nil];
         [currentController.view removeFromSuperview];
         [currentController removeFromParentViewController];
@@ -148,5 +287,93 @@
 - (IBAction)menuAction:(id)sender
 {
     [self showMenu];
+}
+
+- (void)populateCardDetail:(NSDictionary *)dictCard
+{
+    
+}
+#pragma mark Server Call
+- (void)serverCallForCardOverview
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObject:@"cardOverview" forKey:@"mode"];
+    
+    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"%@", response);
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 appDelegate.dictOverview = [NSDictionary dictionaryWithDictionary:response];
+                 [self addTrasactionScreen];
+                 
+             }
+         }
+         else
+         {
+         }
+     }];
+}
+- (void)serverCallForCardTransactionDetails
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObject:@"CardTransactionDetails" forKey:@"mode"];
+    
+    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"%@", response);
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 appDelegate.dictTransaction = [NSDictionary dictionaryWithDictionary:response];
+                 [self serverCallForCardOverview];
+             }
+         }
+         else
+         {
+
+         }
+     }];
+}
+- (void)serverCallForCardAnalyzeSpending
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObject:@"CardAnalyzeSpending" forKey:@"mode"];
+    
+    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"%@", response);
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 appDelegate.dictAnalyze = [NSDictionary dictionaryWithDictionary:response];
+                 [self serverCallForCardOverview];
+                 
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     }];
 }
 @end

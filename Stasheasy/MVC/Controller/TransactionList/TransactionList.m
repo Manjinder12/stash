@@ -8,8 +8,13 @@
 
 #import "TransactionList.h"
 #import "TransactionListCell.h"
+#import "TransactionCell.h"
+#import "AppDelegate.h"
 
-@interface TransactionList () {
+@interface TransactionList ()
+{
+    AppDelegate *appDelegate;
+    NSMutableArray *marrTransaction;
     NSArray *headerArr;
     NSArray *valueArr;
 }
@@ -20,54 +25,63 @@
 
 @implementation TransactionList
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     headerArr = [[NSArray alloc]initWithObjects:@"Date",@"Time",@"Amount",@"Merchant",@"Spend Category", nil];
     valueArr = [[NSArray alloc]initWithObjects:@"12-04-17",@"02:16 PM",@"2000",@"Indian Oil Corporation",@"Fuel", nil];
+    [self customInitialization];
 }
-
-- (void)didReceiveMemoryWarning {
+- (void)customInitialization
+{
+    self.navigationController.navigationBarHidden = YES;
+    appDelegate = [AppDelegate sharedDelegate];
+    
+    marrTransaction = [[NSMutableArray alloc] init];
+    marrTransaction =  appDelegate.dictOverview[@"recent_transactions"];
+    self.transactionListTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+}
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return [marrTransaction count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return (44.0f/320.0f)*[UIApplication sharedApplication].keyWindow.frame.size.width;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return (44.0f/320.0f)*[UIApplication sharedApplication].keyWindow.frame.size.width;
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *simpleTableIdentifier = @"TransactionList";
+    static NSString *simpleTableIdentifier = @"TransactionCell";
     
-    TransactionListCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    TransactionCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     if (cell == nil) {
-        [self.transactionListTableView registerNib:[UINib nibWithNibName:@"TransactionListCell" bundle:nil] forCellReuseIdentifier:simpleTableIdentifier];
+        [self.transactionListTableView registerNib:[UINib nibWithNibName:@"TransactionCell" bundle:nil] forCellReuseIdentifier:simpleTableIdentifier];
         cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     }
     
-    if (indexPath.row % 2 == 0) {
-        cell.mainview.backgroundColor = [UIColor clearColor];
-    }
-    else {
-        cell.mainview.backgroundColor = [UIColor colorWithRed:228.0f/255.0f green:228.0f/255.0f blue:228.0f/255.0f alpha:1.0f];
-    }
-    
-    cell.headerLbl.text = [headerArr objectAtIndex:indexPath.row];
-    cell.valLbl.text = [valueArr objectAtIndex:indexPath.row];
-    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    NSDictionary *dictRecent = [marrTransaction objectAtIndex:indexPath.row];
+    
+    cell.lblPartyName.text = dictRecent[@"otherPartyName"];
+    cell.lblAmount.text = [NSString stringWithFormat:@"₹%@",dictRecent[@"amount"]];
+    cell.lblDate.text = dictRecent[@"date"];
+    
     cell.backgroundColor = [UIColor clearColor];
     
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     
 }
 

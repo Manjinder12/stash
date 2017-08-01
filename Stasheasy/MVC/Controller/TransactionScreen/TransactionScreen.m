@@ -8,44 +8,84 @@
 
 #import "TransactionScreen.h"
 #import "TransactionCell.h"
+#import "ServerCall.h"
+#import "AppDelegate.h"
 
-@interface TransactionScreen () {
+@interface TransactionScreen ()<UITableViewDelegate,UITableViewDataSource>
+{
+    AppDelegate *appDelegate;
+    NSMutableArray *marrRecentTransaction;
+    
     ActionView *actionView;
     NSArray *parties;
     NSArray *valueArr;
 }
-@property (weak, nonatomic) IBOutlet UIView *chartOuterView;
-@property (weak, nonatomic) IBOutlet UITableView *transactionTableview;
+
+@property (weak, nonatomic) IBOutlet UILabel *lblCardNo;
+@property (weak, nonatomic) IBOutlet UILabel *lblCardDate;
+@property (weak, nonatomic) IBOutlet UILabel *lblLimit;
+@property (weak, nonatomic) IBOutlet UILabel *lblUsed;
+@property (weak, nonatomic) IBOutlet UILabel *lblAvailable;
+@property (weak, nonatomic) IBOutlet UILabel *lblDisbursedAmount;
+@property (weak, nonatomic) IBOutlet UILabel *lblEMIDate;
+
+@property (weak, nonatomic) IBOutlet UIView *viewBalance;
+
+@property (weak, nonatomic) IBOutlet UITableView *tblRecentTransaction;
 
 @end
 
 @implementation TransactionScreen
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    valueArr = [NSArray arrayWithObjects:[NSNumber numberWithInt:47],[NSNumber numberWithInt:47], nil];
-    // Do any additional setup after loading the view.
-    _chartOuterView.layer.cornerRadius = 5.0f;
-    _chartOuterView.layer.masksToBounds =YES;
-//    [self setupPieChartView:self.chartView];
-//    [self setDataCount:2 range:5];
+    [self customInitialization];
     
 }
+- (void)customInitialization
+{
+    self.navigationController.navigationBarHidden = YES;
+    
+    appDelegate = [AppDelegate sharedDelegate];
+    
+    marrRecentTransaction = [[NSMutableArray alloc] init];
+    
+    _tblRecentTransaction.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    [Utilities setCornerRadius:_viewBalance];
+    [self populateCardAndBalanceDetail];
+}
 
-- (void)didReceiveMemoryWarning {
+- (void)populateCardAndBalanceDetail
+{
+    _lblCardNo.text = [NSString stringWithFormat:@"%@",appDelegate.dictOverview[@"card_details"][@"card_no"]];
+    _lblCardDate.text = [NSString stringWithFormat:@"%@/%@",appDelegate.dictOverview[@"card_details"][@"expiry_month"],appDelegate.dictOverview[@"card_details"][@"expiry_year"]];
+   
+    _lblLimit.text = [NSString stringWithFormat:@"₹%@",appDelegate.dictOverview[@"balance_details"][@"limit"]];
+    
+    _lblUsed.text = [NSString stringWithFormat:@"₹%@",appDelegate.dictOverview[@"balance_details"][@"used"]];
+    
+    _lblAvailable.text = [NSString stringWithFormat:@"₹%@",appDelegate.dictOverview[@"balance_details"][@"available"]];
+    
+    _lblDisbursedAmount.text = [NSString stringWithFormat:@"₹%@",appDelegate.dictOverview[@"balance_details"][@"disbured_amount"]];
+    
+    _lblEMIDate.text = [NSString stringWithFormat:@"%@",appDelegate.dictOverview[@"balance_details"][@"next_emi_date"]];
+
+    marrRecentTransaction = appDelegate.dictOverview[@"recent_transactions"];
+    [_tblRecentTransaction reloadData];
+}
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - TableView Methods
+#pragma mark - TableView Delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return (60.0f/320.0f)*[UIApplication sharedApplication].keyWindow.frame.size.width;
+    return [marrRecentTransaction count];
 }
 
 
@@ -54,106 +94,26 @@
     static NSString *simpleTableIdentifier = @"TransactionCell";
     
     TransactionCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-    if (cell == nil) {
-        [self.transactionTableview registerNib:[UINib nibWithNibName:@"TransactionCell" bundle:nil] forCellReuseIdentifier:simpleTableIdentifier];
+    if (cell == nil)
+    {
+        [self.tblRecentTransaction registerNib:[UINib nibWithNibName:@"TransactionCell" bundle:nil] forCellReuseIdentifier:simpleTableIdentifier];
         cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if (indexPath.row % 2 != 0) {
-        cell.tView.backgroundColor = [UIColor clearColor];
-    }
+    
+    NSDictionary *dictRecent = [marrRecentTransaction objectAtIndex:indexPath.row];
+    
+    cell.lblPartyName.text = dictRecent[@"otherPartyName"];
+    cell.lblAmount.text = [NSString stringWithFormat:@"₹%@",dictRecent[@"amount"]];
+    cell.lblDate.text = dictRecent[@"date"];
+    
     cell.backgroundColor = [UIColor clearColor];
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-}
-
-#pragma mark  - IBActions Methods
-
-- (IBAction)actionTapped:(id)sender {
-    actionView = [[[NSBundle mainBundle] loadNibNamed:@"ActionView" owner:self options:nil] objectAtIndex:0];
-    actionView.frame =CGRectMake(0, 0, [UIApplication sharedApplication].keyWindow.frame.size.width, [UIApplication sharedApplication].keyWindow.frame.size.height);
-    UIButton *crossBtn = [actionView viewWithTag:5];
-    [crossBtn addTarget:self action:@selector(crossbuttonTapped) forControlEvents:UIControlEventTouchUpInside];
-    [[UIApplication sharedApplication].keyWindow addSubview:actionView];
-}
-
-- (void)crossbuttonTapped {
-    [actionView removeFromSuperview];
-}
-
-#pragma mark - Instance Methods
-
-/*- (void)setupPieChartView:(PieChartView *)chartView
-{
-    chartView.usePercentValuesEnabled = YES;
-    chartView.drawSlicesUnderHoleEnabled = NO;
-    chartView.holeRadiusPercent = 0.58;
-    chartView.transparentCircleRadiusPercent = 0.61;
-    chartView.chartDescription.enabled = NO;
-    [chartView setExtraOffsetsWithLeft:5.f top:10.f right:5.f bottom:5.f];
-    
-    chartView.drawCenterTextEnabled = YES;
-    
-    NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
-    paragraphStyle.alignment = NSTextAlignmentCenter;
-    
-    NSMutableAttributedString *centerText = [[NSMutableAttributedString alloc] initWithString:@"50K"];
-    [centerText addAttributes:@{
-                                NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Light" size:11.f],
-                                NSForegroundColorAttributeName: UIColor.blackColor
-                                } range:NSMakeRange(0, centerText.length)];
-
-    chartView.centerAttributedText = centerText;
-    
-    chartView.drawHoleEnabled = YES;
-    chartView.rotationAngle = 0.0;
-    chartView.rotationEnabled = NO;
-    chartView.highlightPerTapEnabled = NO;
-    chartView.legend.enabled = NO;
-    
-}
-
-- (void)setDataCount:(int)count range:(double)range
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    NSMutableArray *values = [[NSMutableArray alloc] init];
-    
-
-        [values addObject:[[PieChartDataEntry alloc] initWithValue:3.0f label:nil data:nil]];
-        [values addObject:[[PieChartDataEntry alloc] initWithValue:47.0f label:nil data:nil]];
-
-    
-    PieChartDataSet *dataSet = [[PieChartDataSet alloc] initWithValues:values label:nil];
-    dataSet.sliceSpace = 0.0;
-    dataSet.iconsOffset = CGPointMake(0, 0);
-    
-    // add a lot of colors
-    NSMutableArray *colors = [[NSMutableArray alloc] init];
-    [colors addObject:[UIColor colorWithRed:0.0f/255.0f  green:200.0f/255.0f blue:83.0f/255.0f alpha:1.0]];
-    [colors addObject:[UIColor redColor]];
-
-    dataSet.colors = colors;
-    
-    PieChartData *data = [[PieChartData alloc] initWithDataSet:dataSet];
-    NSNumberFormatter *pFormatter = [[NSNumberFormatter alloc] init];
-    pFormatter.numberStyle = NSNumberFormatterPercentStyle;
-    pFormatter.maximumFractionDigits = 1;
-    pFormatter.multiplier = @1.f;
-    pFormatter.percentSymbol = @" %";
-    [data setValueFormatter:[[ChartDefaultValueFormatter alloc] initWithFormatter:pFormatter]];
-    [data setValueFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:8.f]];
-    [data setValueTextColor:UIColor.whiteColor];
-    [data setValueTextColor:[UIColor blackColor]];
-    
-    
-    _chartView.data = data;
-    [_chartView highlightValues:nil];
-}*/
-
-
+}
 @end

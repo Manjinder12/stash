@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -30,15 +29,14 @@
                                     <constraint firstAttribute="width" secondItem="C1N-zw-3Qs" secondAttribute="height" multiplier="212:21" id="5JG-y7-sFO"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
-                                <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 April 2017" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FMj-5y-rL3">
-                                <rect key="frame" x="8" y="30" width="120" height="21"/>
+                                <rect key="frame" x="8" y="30" width="212" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="FMj-5y-rL3" secondAttribute="height" multiplier="40:7" id="dVL-iK-TOe"/>
+                                    <constraint firstAttribute="width" secondItem="FMj-5y-rL3" secondAttribute="height" multiplier="40:7" constant="92" id="dVL-iK-TOe"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -47,30 +45,18 @@
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="F0F-Ab-lct" secondAttribute="height" multiplier="76:21" id="hZL-j2-9rm"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                                <color key="textColor" red="0.17875534300000001" green="0.19433978199999999" blue="0.57247430089999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delhi" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QmW-X3-zFE">
-                                <rect key="frame" x="192" y="30" width="120" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="QmW-X3-zFE" secondAttribute="height" multiplier="40:7" id="yGj-GF-BHD"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
+                                <color key="textColor" red="0.1803921568627451" green="0.19433978199999999" blue="0.57247430089999995" alpha="0.90000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.89365547895431519" green="0.89433497190475464" blue="0.89376074075698853" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="C1N-zw-3Qs" firstAttribute="leading" secondItem="Qml-Xa-dt3" secondAttribute="centerX" multiplier="8:160" id="0wC-W4-4OD"/>
-                            <constraint firstItem="QmW-X3-zFE" firstAttribute="top" secondItem="Qml-Xa-dt3" secondAttribute="centerY" multiplier="30:30" id="5Ux-PD-lYO"/>
-                            <constraint firstItem="QmW-X3-zFE" firstAttribute="trailing" secondItem="F0F-Ab-lct" secondAttribute="trailing" id="8SX-9H-ohz"/>
                             <constraint firstAttribute="centerX" secondItem="F0F-Ab-lct" secondAttribute="trailing" multiplier="160:312" id="Gea-8s-IHW"/>
-                            <constraint firstItem="QmW-X3-zFE" firstAttribute="width" secondItem="Qml-Xa-dt3" secondAttribute="width" multiplier="120:320" id="M15-Eh-pr0"/>
                             <constraint firstItem="FMj-5y-rL3" firstAttribute="top" secondItem="Qml-Xa-dt3" secondAttribute="centerY" multiplier="30:30" id="MJl-bj-aho"/>
                             <constraint firstItem="C1N-zw-3Qs" firstAttribute="width" secondItem="Qml-Xa-dt3" secondAttribute="width" multiplier="212:320" id="TNi-8i-Ki7"/>
-                            <constraint firstItem="FMj-5y-rL3" firstAttribute="width" secondItem="Qml-Xa-dt3" secondAttribute="width" multiplier="120:320" id="Xkw-lQ-CeF"/>
+                            <constraint firstItem="FMj-5y-rL3" firstAttribute="width" secondItem="Qml-Xa-dt3" secondAttribute="width" multiplier="120:320" constant="92" id="Xkw-lQ-CeF"/>
                             <constraint firstItem="FMj-5y-rL3" firstAttribute="leading" secondItem="C1N-zw-3Qs" secondAttribute="leading" id="dUL-E8-Dxt"/>
                             <constraint firstItem="F0F-Ab-lct" firstAttribute="top" secondItem="C1N-zw-3Qs" secondAttribute="top" id="lpt-ZH-9wo"/>
                             <constraint firstItem="F0F-Ab-lct" firstAttribute="width" secondItem="Qml-Xa-dt3" secondAttribute="width" multiplier="76:320" id="ojt-wn-y44"/>
@@ -86,6 +72,9 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="lblAmount" destination="F0F-Ab-lct" id="rsh-sA-f8j"/>
+                <outlet property="lblDate" destination="FMj-5y-rL3" id="dVD-Qf-Lf8"/>
+                <outlet property="lblPartyName" destination="C1N-zw-3Qs" id="zPt-lM-Kr3"/>
                 <outlet property="tView" destination="Qml-Xa-dt3" id="RYV-1j-UVy"/>
             </connections>
         </tableViewCell>

@@ -56,9 +56,7 @@
     negativeSpacer.width = -20.f;
     
     [navigationItem setLeftBarButtonItems:[NSArray arrayWithObjects:negativeSpacer,barButtonBack,nil]];
-    [navigationItem setRightBarButtonItem:barbell];
-
-    
+    [navigationItem setRightBarButtonItem:barbell];   
 }
 
 +(BOOL) reachabiltyCheck

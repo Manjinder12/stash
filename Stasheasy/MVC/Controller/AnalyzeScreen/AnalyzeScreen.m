@@ -8,20 +8,25 @@
 
 #import "AnalyzeScreen.h"
 #import "AnalyzeCell.h"
+#import "AppDelegate.h"
 
-@interface AnalyzeScreen (){
+@interface AnalyzeScreen ()
+{
+    AppDelegate *appDelegate;
+    NSMutableArray *marrAnalyze;
     NSArray *items;
     NSArray *valuesArr;
+    int tab;
 }
 
-
+@property (weak, nonatomic) IBOutlet UILabel *lblTotalSpent;
 @property (weak, nonatomic) IBOutlet UIView *swicthView;
-@property (weak, nonatomic) IBOutlet UIButton *SPENDINGBTN;
-@property (weak, nonatomic) IBOutlet UIButton *transcationBtn;
+@property (weak, nonatomic) IBOutlet UIButton *btnSpending;
+@property (weak, nonatomic) IBOutlet UIButton *btnTranscation;
 @property (weak, nonatomic) IBOutlet UITableView *analyzeTableView;
 
-- (IBAction)spendingTaped:(id)sender;
-- (IBAction)transactionTapped:(id)sender;
+- (IBAction)spendingAction:(id)sender;
+- (IBAction)transactionAction:(id)sender;
 
 @end
 
@@ -31,8 +36,23 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self setupView];
+    [self customInitialization];
 }
-
+- (void)customInitialization
+{
+    appDelegate = [AppDelegate sharedDelegate];
+    marrAnalyze = [[NSMutableArray alloc] init];
+    tab = 0;
+    
+    self.analyzeTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self populateAnalyzeSpendingData];
+}
+- (void)populateAnalyzeSpendingData
+{
+    marrAnalyze = appDelegate.dictAnalyze[@"spendings"];
+    _lblTotalSpent.text = [NSString stringWithFormat:@"₹%@",appDelegate.dictAnalyze[@"total_spent"]];
+    
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -42,53 +62,56 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 4;
+    return [marrAnalyze count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return (50.0f/320.0f)*[UIApplication sharedApplication].keyWindow.frame.size.width;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return (50.0f/320.0f)*[UIApplication sharedApplication].keyWindow.frame.size.width;
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *simpleTableIdentifier = @"AnalyzeCell";
     
     AnalyzeCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-    if (cell == nil) {
+    if (cell == nil)
+    {
         [self.analyzeTableView registerNib:[UINib nibWithNibName:@"AnalyzeCell" bundle:nil] forCellReuseIdentifier:simpleTableIdentifier];
         cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     }
-    cell.headLbl.text = [items objectAtIndex:indexPath.row];
-    cell.valLbl.text = [valuesArr objectAtIndex:indexPath.row];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor clearColor];
-    if (indexPath.row % 2 == 0) {
-        cell.mainview.backgroundColor = [UIColor clearColor];
+
+    NSDictionary *dict = [marrAnalyze objectAtIndex:indexPath.row];
+    cell.lblCategory.text = [dict valueForKey:@"category"];
+    if (tab == 1)
+    {
+        cell.lblAmountCount.text = [NSString stringWithFormat:@"₹%@",[dict valueForKey:@"amount"]];
     }
-    else {
-        cell.mainview.backgroundColor = [UIColor colorWithRed:228.0f/255.0f green:228.0f/255.0f blue:228.0f/255.0f alpha:1.0f];
+    else
+    {
+        cell.lblAmountCount.text = [NSString stringWithFormat:@"%@",[dict valueForKey:@"txn_counts"]];
     }
     
-    if (indexPath.row == 0) {
-        cell.samllView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f  green:200.0f/255.0f blue:83.0f/255.0f alpha:1.0];
-    }
-    else if (indexPath.row == 1) {
-        cell.samllView.backgroundColor = [UIColor redColor];
-    }else if (indexPath.row == 2) {
-        cell.samllView.backgroundColor = [UIColor yellowColor];
-    }else if (indexPath.row == 3) {
-        cell.samllView.backgroundColor = [UIColor colorWithRed:126.0f/255.0f  green:88.0f/255.0f blue:194.0f/255.0f alpha:1.0];
-    }
+    CGFloat aRedValue = arc4random()%255;
+    CGFloat aGreenValue = arc4random()%255;
+    CGFloat aBlueValue = arc4random()%255;
+    
+    UIColor *randomColor = [UIColor colorWithRed:aRedValue/255.0f green:aGreenValue/255.0f blue:aBlueValue/255.0f alpha:1.0f];
+    cell.samllView.backgroundColor = randomColor;
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     
 }
 
 #pragma mark - Instance Methods
 
--(void)setupView {
+-(void)setupView
+{
     items = [[NSArray alloc]initWithObjects:@"Fuel",@"Food",@"Misc",@"Entertainment", nil];
     valuesArr = [[NSArray alloc]initWithObjects:@"₹2000",@"₹4766",@"₹252",@"₹1200", nil];
 //    [self setupPieChartView:self.chartView];
@@ -98,10 +121,32 @@
     self.swicthView.clipsToBounds =YES;
 }
 
-- (IBAction)spendingTaped:(id)sender {
+#pragma mark Button Action
+- (IBAction)spendingAction:(id)sender
+{
+    tab = 1;
+    
+    [_btnSpending setBackgroundColor:[UIColor redColor]];
+    [_btnSpending setTintColor:[UIColor whiteColor]];
+    
+    [_btnTranscation setBackgroundColor:[UIColor lightGrayColor]];
+    _btnTranscation.titleLabel.textColor = [UIColor blackColor];
+    
+    [_analyzeTableView reloadData];
 }
 
-- (IBAction)transactionTapped:(id)sender {
+- (IBAction)transactionAction:(id)sender
+{
+    tab = 2;
+    
+    [_btnTranscation setBackgroundColor:[UIColor redColor]];
+    [_btnTranscation setTintColor:[UIColor whiteColor]];
+    
+    [_btnSpending setBackgroundColor:[UIColor lightGrayColor]];
+    _btnSpending.titleLabel.textColor = [UIColor blackColor];
+
+    
+    [_analyzeTableView reloadData];
 }
 
 

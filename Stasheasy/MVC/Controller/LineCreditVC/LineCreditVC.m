@@ -21,6 +21,7 @@
     LGPlusButtonsView *stashfinButton;
     BOOL isStashExpand;
     NSString *strRemainLOC;
+    NSDictionary *dictLOCDetail;
 }
 @property (weak, nonatomic) IBOutlet UILabel *lblApprovedCredit;
 @property (weak, nonatomic) IBOutlet UILabel *lblUserCredit;
@@ -32,6 +33,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblRequestAmount;
 @property (weak, nonatomic) IBOutlet UILabel *lblRequestDate;
 @property (weak, nonatomic) IBOutlet UILabel *lblRequestStatus;
+@property (weak, nonatomic) IBOutlet UILabel *lblCardNo;
+@property (weak, nonatomic) IBOutlet UILabel *lblCardDate;
 
 @property (weak, nonatomic) IBOutlet UIView *viewContainer;
 @property (weak, nonatomic) IBOutlet UIView *viewUpper;
@@ -39,6 +42,7 @@
 @property (weak, nonatomic) IBOutlet UIView *viewOuter;
 
 @property (weak, nonatomic) IBOutlet TPKeyboardAvoidingScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cnsViewLOCdetailTop;
 
 @end
 
@@ -69,16 +73,16 @@
     
  
     _viewOuter.hidden = NO;
-    [self serverCallForWithdrawalRequest];
+    [self serverCallForLOCDetails];
 
 }
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.automaticallyAdjustsScrollViewInsets=YES;
-    [_scrollView setContentSize:_viewContainer.frame.size];
-    
-    [_scrollView setContentSize:_viewContainer.frame.size];
-    _scrollView.scrollEnabled = YES;
+//    self.automaticallyAdjustsScrollViewInsets=YES;
+//    [_scrollView setContentSize:_viewContainer.frame.size];
+//    
+//    [_scrollView setContentSize:_viewContainer.frame.size];
+//    _scrollView.scrollEnabled = YES;
 }
 - (void)viewDidLayoutSubviews
 {
@@ -221,7 +225,7 @@
 }
 
 #pragma mark Server Call
-- (void)serverCallForWithdrawalRequest
+- (void)serverCallForLOCDetails
 {
     NSDictionary *param = [NSDictionary dictionaryWithObject:@"locDetails" forKey:@"mode"];
     
@@ -238,13 +242,15 @@
             }
             else
             {
-                [self populateLOCDetails:response];
-                
-                [self addStashfinButtonView];
-                isStashExpand = NO;
-
-                _viewOuter.hidden = YES;
-
+                if ([[response valueForKey:@"card_found"] boolValue] == true)
+                {
+                    dictLOCDetail = [NSDictionary dictionaryWithDictionary:response];
+                    [self serverCallForCardOverview];
+                }
+                else
+                {
+                    _cnsViewLOCdetailTop.constant = 10;
+                }
             }
         }
         else
@@ -255,7 +261,36 @@
     
     }];
 }
-- (void)populateLOCDetails:(NSDictionary *)dictLOC
+- (void)serverCallForCardOverview
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObject:@"cardOverview" forKey:@"mode"];
+
+    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+    {
+        
+        if ( [response isKindOfClass:[NSDictionary class]] )
+        {
+            NSString *errorStr = [response objectForKey:@"error"];
+            if ( errorStr.length > 0 )
+            {
+                [Utilities showAlertWithMessage:errorStr];
+            }
+            else
+            {
+                [self populateLOCDetails:dictLOCDetail andCardDetail:response];
+                
+                [self addStashfinButtonView];
+                isStashExpand = NO;
+                _viewOuter.hidden = YES;
+            }
+        }
+        else
+        {
+//            [Utilities showAlertWithMessage:response];
+        }
+    }];
+}
+- (void)populateLOCDetails:(NSDictionary *)dictLOC andCardDetail:(NSDictionary *)dictCard
 {
     _lblApprovedCredit.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"loc_limit"] intValue]];
     _lblUserCredit.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"used_loc"] intValue]];
@@ -273,8 +308,9 @@
     NSDictionary *dict = [Utilities getDayDateYear:[dictLOC valueForKey:@"last_loc_request_date"]];
     
     _lblRequestDate.text = [NSString stringWithFormat:@"%@ %@ %@",[dict valueForKey:@"day"],[dict valueForKey:@"month"],[dict valueForKey:@"year"]];
-
-
+    
+    _lblCardNo.text = [NSString stringWithFormat:@"%@",dictCard[@"card_details"][@"card_no"]];
+    _lblCardDate.text = [NSString stringWithFormat:@"%@/%@",dictCard[@"card_details"][@"expiry_month"],dictCard[@"card_details"][@"expiry_year"]];
 }
 - (IBAction)consolidatedEMIAction:(id)sender
 {

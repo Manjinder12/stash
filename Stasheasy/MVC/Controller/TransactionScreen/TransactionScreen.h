@@ -11,4 +11,6 @@
 
 @interface TransactionScreen : UIViewController
 
+@property NSDictionary *dictCard;
+
 @end

@@ -11,11 +11,15 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
++ (AppDelegate *)sharedDelegate;
 @property (strong, nonatomic) UIWindow *window;
 @property (strong,nonatomic) NSString *stateid;
 @property (strong,nonatomic) NSString *cityId;
 @property (strong,nonatomic) NSString *stateName;
 @property (strong,nonatomic) NSString *cityName;
 @property (strong,nonatomic) NSString *residencePin;
+
+@property NSDictionary *dictOverview, *dictTransaction,*dictAnalyze;
+
 @end
 

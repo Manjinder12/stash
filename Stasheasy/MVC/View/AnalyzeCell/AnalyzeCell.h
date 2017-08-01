@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface AnalyzeCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *headLbl;
-@property (weak, nonatomic) IBOutlet UILabel *valLbl;
+@property (weak, nonatomic) IBOutlet UILabel *lblCategory;
+@property (weak, nonatomic) IBOutlet UILabel *lblAmountCount;
+@property (weak, nonatomic) IBOutlet UILabel *lblTxnCount;
 @property (weak, nonatomic) IBOutlet UIView *mainview;
 @property (weak, nonatomic) IBOutlet UIView *samllView;
 

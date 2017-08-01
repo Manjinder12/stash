@@ -110,9 +110,9 @@
     }
     else if(indexPath.row == 3)
     {
-        TransactionDetailsViewController *evc = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionDetailsViewController"];
+        TransactionDetailsViewController *tdvc = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionDetailsViewController"];
         UINavigationController *nav = [[UINavigationController alloc]init];
-        nav.viewControllers = @[evc];
+        nav.viewControllers = @[tdvc];
         [self.frostedViewController setContentViewController:nav];
         [self.frostedViewController hideMenuViewController];
     }
