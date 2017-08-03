@@ -10,4 +10,6 @@
 
 @interface TransactionDetailsViewController : UIViewController
 
+@property int isOverview;
+
 @end

@@ -15,8 +15,6 @@
 {
     AppDelegate *appDelegate;
     NSMutableArray *marrTransaction;
-    NSArray *headerArr;
-    NSArray *valueArr;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *transactionListTableView;
@@ -28,9 +26,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    headerArr = [[NSArray alloc]initWithObjects:@"Date",@"Time",@"Amount",@"Merchant",@"Spend Category", nil];
-    valueArr = [[NSArray alloc]initWithObjects:@"12-04-17",@"02:16 PM",@"2000",@"Indian Oil Corporation",@"Fuel", nil];
     [self customInitialization];
 }
 - (void)customInitialization

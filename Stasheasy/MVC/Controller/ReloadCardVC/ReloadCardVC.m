@@ -21,21 +21,19 @@
     NSString *strTenure;
     UIImage *check, *uncheck;
     NSDictionary *param;
+    int installmentsNo,maxTenure;
 
 }
 @property (weak, nonatomic) IBOutlet UILabel *lblRemainLOC;
+@property (weak, nonatomic) IBOutlet UILabel *lblTenure;
+@property (weak, nonatomic) IBOutlet UILabel *lblMaxTenure;
+
+@property (weak, nonatomic) IBOutlet UISlider *tenureSlider;
 @property (weak, nonatomic) IBOutlet UITextField *txtRequestAmount;
 @property (weak, nonatomic) IBOutlet UIImageView *imageError;
 
 @property (nonatomic, strong) IBOutlet RadioButton* radioButton;
 
-
-@property (weak, nonatomic) IBOutlet UIButton *btn1;
-@property (weak, nonatomic) IBOutlet UIButton *btn2;
-@property (weak, nonatomic) IBOutlet UIButton *btn3;
-@property (weak, nonatomic) IBOutlet UIButton *btn4;
-@property (weak, nonatomic) IBOutlet UIButton *btn5;
-@property (weak, nonatomic) IBOutlet UIButton *btn6;
 @property (weak, nonatomic) IBOutlet UIButton *btnRequestReload;
 
 
@@ -58,19 +56,8 @@
     check = [UIImage imageNamed:@"radioChecked"];
     uncheck = [UIImage imageNamed:@"radioUncheck"];
     
-    [Utilities setCornerRadius:_viewContainer];
-//    _lblRemainLOC.text = strRemainLOC;
-    
     _imageError.hidden = YES;
     isButtonChecked = NO;
-    
-    _btn1.tag = 1;
-    _btn2.tag = 2;
-    _btn3.tag = 3;
-    _btn4.tag = 4;
-    _btn5.tag = 5;
-    _btn6.tag = 6;
-    
     
     [self addStashfinButtonView];
     isStashExpand = NO;
@@ -80,28 +67,25 @@
 #pragma mark LGPlusButtonsView
 - (void)addStashfinButtonView
 {
-    stashfinButton = [[LGPlusButtonsView alloc] initWithNumberOfButtons:6 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
+    stashfinButton = [[LGPlusButtonsView alloc] initWithNumberOfButtons:5 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
     
     //stashfinButton = [LGPlusButtonsView plusButtonsViewWithNumberOfButtons:4 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
     
-    stashfinButton.coverColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
-    
-    stashfinButton.plusButtonAnimationType = LGPlusButtonAnimationTypeRotate;
-    
+    stashfinButton.coverColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
     stashfinButton.position = LGPlusButtonsViewPositionBottomRight;
+    stashfinButton.plusButtonAnimationType = LGPlusButtonsAppearingAnimationTypeCrossDissolveAndPop;
     stashfinButton.buttonsAppearingAnimationType = LGPlusButtonsAppearingAnimationTypeCrossDissolveAndSlideVertical;
     
-    [stashfinButton setDescriptionsTexts:@[@"", @"Lost/Stolen Card", @"Change Pin", @"Reload Card",@"Apply fr new loan",@"Chat"]];
+    [stashfinButton setDescriptionsTexts:@[@"", @"Lost/Stolan Card", @"Change Pin", @"Reload Card",@"Chat"]];
     
-    [stashfinButton setButtonsImages:@[[UIImage imageNamed:@"actionBtn"], [UIImage imageNamed:@"lostCardBtn"], [UIImage imageNamed:@"pinBtn"], [UIImage imageNamed:@"topupcardBtn"],[UIImage imageNamed:@"loanBtn"] ,[UIImage imageNamed:@"chatBtn"]]
+    [stashfinButton setButtonsImages:@[[UIImage imageNamed:@"actionBtn"], [UIImage imageNamed:@"lostCardBtn"], [UIImage imageNamed:@"pinBtn"], [UIImage imageNamed:@"topupcardBtn"] ,[UIImage imageNamed:@"chatBtn"]]
                             forState:UIControlStateNormal
                       forOrientation:LGPlusButtonsViewOrientationAll];
     if ([[self.storyboard valueForKey:@"name"] isEqual:@"iPhone"])
     {
         [stashfinButton setButtonsSize:CGSizeMake(60.f, 60.f) forOrientation:LGPlusButtonsViewOrientationAll];
         [stashfinButton setButtonsLayerCornerRadius:60.f/2.f forOrientation:LGPlusButtonsViewOrientationAll];
-        [stashfinButton setDescriptionsFont:[UIFont systemFontOfSize:13] forOrientation:LGPlusButtonsViewOrientationAll];
-        
+        [stashfinButton setDescriptionsFont:[UIFont systemFontOfSize:16] forOrientation:LGPlusButtonsViewOrientationAll];
     }
     else
     {
@@ -126,7 +110,6 @@
     [stashfinButton setDescriptionsContentEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0) forOrientation:LGPlusButtonsViewOrientationAll];
     
     [self.view addSubview:stashfinButton];
-    [self.view bringSubviewToFront:stashfinButton];
 }
 #pragma mark LGPlusButtonsView Delegate
 - (void)plusButtonsViewDidHideButtons:(LGPlusButtonsView *)plusButtonsView
@@ -137,64 +120,55 @@
 {
     if (index == 0)
     {
-        
+        //        [plusButtonsView hideButtonsAnimated:YES completionHandler:^
+        //         {
+        //             isStashExpand = NO;
+        //         }];
     }
     else if (index == 1)
     {
         // Lost Card
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
-            isStashExpand = NO;
-            //            AddInvoiceQuoteVC *addInvoiceQuoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddInvoiceQuoteVC"];
-            //            addInvoiceQuoteVC.isInvoice = YES;
-            //            [ self.navigationController pushViewController:addInvoiceQuoteVC animated:YES ];
-            
-        }];
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^
+         {
+             isStashExpand = NO;
+             [self navigateToViewControllerWithIdentifier:@"LostStolenVC"];
+         }];
     }
     else if (index == 2)
+    {
+        // Reload Card
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^
+         {
+             isStashExpand = NO;
+             [self navigateToViewControllerWithIdentifier:@"ChangePinVC"];
+         }];
+    }
+    else if (index == 3)
     {
         // Change Pin
         [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
             
             isStashExpand = NO;
-            //            AddNoteVC *addNoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddNoteVC"];
-            //            addNoteVC.tempScheduleObject = _tempScheduleObject;
-            //            [ self.navigationController pushViewController:addNoteVC animated:YES ];
-            
-        }];
-    }
-    else if (index == 3)
-    {
-        // Reload Card
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
-            isStashExpand = NO;
-            
-        }];
-    }
-    else if (index == 4)
-    {
-        //Apply for new loan
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
-            isStashExpand = NO;
-            //            AddInvoiceQuoteVC *addInvoiceQuoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddInvoiceQuoteVC"];
-            //            addInvoiceQuoteVC.isInvoice = NO;
-            //            [ self.navigationController pushViewController:addInvoiceQuoteVC animated:YES ];
-            
+            [self navigateToViewControllerWithIdentifier:@"ReloadCardVC"];
         }];
     }
     else
     {
         //Chat
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
-            
-            
-        }];
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^
+         {
+             isStashExpand = NO;
+             [self navigateToViewControllerWithIdentifier:@"ChatScreen"];
+         }];
     }
 }
-- (void)didReceiveMemoryWarning {
+- (void)navigateToViewControllerWithIdentifier:(NSString *)identifier
+{
+    UIViewController *vc = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:identifier];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -202,9 +176,23 @@
 #pragma mark Buton Action
 -(IBAction)backAction:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [Utilities navigateToLOCDashboard:self.navigationController];
 }
-
+- (IBAction)tenureSliderValueChanged:(id)sender
+{
+    float number = [_tenureSlider value];
+    int value = (int)(number * maxTenure);
+    if (value == 0)
+    {
+        installmentsNo = 3;
+        _lblTenure.text = [NSString stringWithFormat:@"%d Months",installmentsNo];
+    }
+    else
+    {
+        installmentsNo = value;
+        _lblTenure.text = [NSString stringWithFormat:@"%d Months",installmentsNo];
+    }
+}
 -(IBAction)radioButtonAction:(RadioButton*)sender
 {
     RadioButton *btn = (RadioButton *)sender;
@@ -315,8 +303,8 @@
              }
              else
              {
-                 param = [NSDictionary dictionary];
-                 _lblRemainLOC.text = [NSString stringWithFormat:@"%.2f",[[response valueForKey:@"remaining_loc"] doubleValue]];
+                 [self populateWithrawalRequestForm:response];
+                
                  if ([response valueForKey:@"false"])
                  {
                      [Utilities showAlertWithMessage:@""];
@@ -330,6 +318,16 @@
          }
          
      }];
+}
+- (void)populateWithrawalRequestForm:(NSDictionary *)response
+{
+    param = [NSDictionary dictionary];
+    
+    _lblRemainLOC.text = [NSString stringWithFormat:@"%d",[[response valueForKey:@"remaining_loc"] intValue]];
+   
+    maxTenure = [[response valueForKey:@"max_tenure"] intValue];
+    
+    _lblMaxTenure.text = [NSString stringWithFormat:@"%d",maxTenure];
 }
 - (void)navigateToLOCWithdrawalVC:(NSDictionary *)response
 {

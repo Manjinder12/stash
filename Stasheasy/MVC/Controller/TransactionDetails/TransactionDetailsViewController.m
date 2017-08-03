@@ -55,6 +55,8 @@
     appDelegate = [AppDelegate sharedDelegate];
     _viewOuter.hidden = NO;
     [self serverCallForCardAnalyzeSpending];
+    
+    [self addStashfinButtonView];
 }
 #pragma mark LGPlusButtonsView
 - (void)addStashfinButtonView
@@ -65,7 +67,7 @@
     
     stashfinButton.coverColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
     stashfinButton.position = LGPlusButtonsViewPositionBottomRight;
-    stashfinButton.plusButtonAnimationType = LGPlusButtonsAppearingAnimationTypeCrossDissolveAndPop;
+    stashfinButton.plusButtonAnimationType = LGPlusButtonAnimationTypeRotate;
     stashfinButton.buttonsAppearingAnimationType = LGPlusButtonsAppearingAnimationTypeCrossDissolveAndSlideVertical;
     
     [stashfinButton setDescriptionsTexts:@[@"", @"Lost/Stolan Card", @"Change Pin", @"Reload Card",@"Chat"]];
@@ -102,6 +104,7 @@
     [stashfinButton setDescriptionsContentEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0) forOrientation:LGPlusButtonsViewOrientationAll];
     
     [self.view addSubview:stashfinButton];
+    [self.view bringSubviewToFront:stashfinButton];
 }
 #pragma mark LGPlusButtonsView Delegate
 - (void)plusButtonsViewDidHideButtons:(LGPlusButtonsView *)plusButtonsView
@@ -120,58 +123,46 @@
     else if (index == 1)
     {
         // Lost Card
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
-            isStashExpand = NO;
-            //            AddInvoiceQuoteVC *addInvoiceQuoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddInvoiceQuoteVC"];
-            //            addInvoiceQuoteVC.isInvoice = YES;
-            //            [ self.navigationController pushViewController:addInvoiceQuoteVC animated:YES ];
-            
-        }];
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^
+         {
+             isStashExpand = NO;
+             [self navigateToViewControllerWithIdentifier:@"LostStolenVC"];
+         }];
     }
     else if (index == 2)
+    {
+        // Reload Card
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^
+         {
+             isStashExpand = NO;
+             [self navigateToViewControllerWithIdentifier:@"ChangePinVC"];
+         }];
+    }
+    else if (index == 3)
     {
         // Change Pin
         [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
             
             isStashExpand = NO;
-            //            AddNoteVC *addNoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddNoteVC"];
-            //            addNoteVC.tempScheduleObject = _tempScheduleObject;
-            //            [ self.navigationController pushViewController:addNoteVC animated:YES ];
-            
-        }];
-    }
-    else if (index == 3)
-    {
-        // Reload Card
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
-            isStashExpand = NO;
-            
-        }];
-    }
-    else if (index == 4)
-    {
-        //Apply for new loan
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
-            isStashExpand = NO;
-            //            AddInvoiceQuoteVC *addInvoiceQuoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddInvoiceQuoteVC"];
-            //            addInvoiceQuoteVC.isInvoice = NO;
-            //            [ self.navigationController pushViewController:addInvoiceQuoteVC animated:YES ];
-            
+            [self navigateToViewControllerWithIdentifier:@"ReloadCardVC"];
         }];
     }
     else
     {
         //Chat
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
-            
-            
-        }];
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^
+         {
+             isStashExpand = NO;
+             [self navigateToViewControllerWithIdentifier:@"ChatScreen"];
+         }];
     }
 }
+- (void)navigateToViewControllerWithIdentifier:(NSString *)identifier
+{
+    UIViewController *vc = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:identifier];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -243,16 +234,24 @@
 
 #pragma mark - Instance Methods
 
--(void)addTrasactionScreen
+-(void)addTrasactionListScreen
 {
-        TransactionScreen *stVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionScreen"];
-        [stVC.view setFrame: _containerView.bounds] ;
-        [self.containerView addSubview:stVC.view];
-        [self addChildViewController:stVC];
-        [stVC didMoveToParentViewController:self];
-        currentController  = stVC;
+    TransactionList *tlistVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionList"];
+    [tlistVC.view setFrame: _containerView.bounds] ;
+    [self.containerView addSubview:tlistVC.view];
+    [self addChildViewController:tlistVC];
+    [tlistVC didMoveToParentViewController:self];
+    currentController  = tlistVC;
 }
-
+-(void)addTransactionOverviewScreen
+{
+    TransactionScreen *stVC  = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionScreen"];
+    [stVC.view setFrame: _containerView.bounds] ;
+    [self.containerView addSubview:stVC.view];
+    [self addChildViewController:stVC];
+    [stVC didMoveToParentViewController:self];
+    currentController  = stVC;
+}
 -(void)changeTransitionWithViewController:(UIViewController *)NewVC
 {
     [self removeOldViewController];
@@ -312,7 +311,15 @@
              else
              {
                  appDelegate.dictOverview = [NSDictionary dictionaryWithDictionary:response];
-                 [self addTrasactionScreen];
+                 if (_isOverview == 1 )
+                 {
+                     [self overviewAction:_btnOverview];
+
+                 }
+                 else
+                 {
+                     [self transactionAction:_btnTransaction];
+                 }
                  
              }
          }

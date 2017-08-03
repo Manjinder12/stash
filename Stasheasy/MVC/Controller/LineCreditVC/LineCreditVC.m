@@ -1,4 +1,4 @@
-//
+    //
 //  LineCreditVC.m
 //  Stasheasy
 //
@@ -7,14 +7,15 @@
 //
 
 #import "LineCreditVC.h"
-#import "ServerCall.h"
-#import "REFrostedViewController.h"
 #import <QuartzCore/QuartzCore.h>
-#import <LGPlusButtonsView/LGPlusButtonsView.h>
 #import "TPKeyboardAvoidingScrollView.h"
+#import <LGPlusButtonsView/LGPlusButtonsView.h>
+#import "REFrostedViewController.h"
+#import "ServerCall.h"
 #import "ConsolidatedEMIVC.h"
 #import "ReloadCardVC.h"
 #import "REFrostedViewController.h"
+#import "ChatScreen.h"
 
 @interface LineCreditVC ()<LGPlusButtonsViewDelegate>
 {
@@ -57,39 +58,18 @@
 {
     self.navigationController.navigationBar.hidden = YES;
     
-    _viewUpper.layer.shadowOffset = CGSizeMake(1, 1);
-    _viewUpper.layer.shadowRadius = 4;
-    _viewUpper.layer.shadowOpacity = 0.5;
-    _viewUpper.layer.cornerRadius = 8.0f;
-    _viewUpper.layer.masksToBounds = YES;
-    _viewUpper.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    [ Utilities setShadowToView:_viewUpper ];
+    [ Utilities setShadowToView:_viewLower ];
     
-    _viewLower.layer.shadowOffset = CGSizeMake(1, 1);
-    _viewLower.layer.shadowRadius = 4;
-    _viewLower.layer.shadowOpacity = 0.5;
-    _viewLower.layer.cornerRadius = 8.0f;
-    _viewLower.layer.masksToBounds = YES;
-    _viewLower.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    
- 
     _viewOuter.hidden = NO;
     [self serverCallForLOCDetails];
 
 }
 - (void)viewWillAppear:(BOOL)animated
 {
-//    self.automaticallyAdjustsScrollViewInsets=YES;
-//    [_scrollView setContentSize:_viewContainer.frame.size];
-//    
-//    [_scrollView setContentSize:_viewContainer.frame.size];
-//    _scrollView.scrollEnabled = YES;
+    
 }
-- (void)viewDidLayoutSubviews
-{
-    _scrollView.contentSize = CGSizeMake(_viewContainer.frame.size.width, _viewContainer.frame.size.height);
-    _scrollView.alwaysBounceVertical = YES;
-    _scrollView.scrollEnabled = YES;
-}
+
 #pragma mark LGPlusButtonsView
 - (void)addStashfinButtonView
 {
@@ -99,7 +79,7 @@
     
     stashfinButton.coverColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
     stashfinButton.position = LGPlusButtonsViewPositionBottomRight;
-    stashfinButton.plusButtonAnimationType = LGPlusButtonsAppearingAnimationTypeCrossDissolveAndPop;
+    stashfinButton.plusButtonAnimationType = LGPlusButtonAnimationTypeRotate;
     stashfinButton.buttonsAppearingAnimationType = LGPlusButtonsAppearingAnimationTypeCrossDissolveAndSlideVertical;
     
     [stashfinButton setDescriptionsTexts:@[@"", @"Lost/Stolan Card", @"Change Pin", @"Reload Card",@"Chat"]];
@@ -154,59 +134,45 @@
     else if (index == 1)
     {
         // Lost Card
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^
+        {
             isStashExpand = NO;
-            //            AddInvoiceQuoteVC *addInvoiceQuoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddInvoiceQuoteVC"];
-            //            addInvoiceQuoteVC.isInvoice = YES;
-            //            [ self.navigationController pushViewController:addInvoiceQuoteVC animated:YES ];
-            
+            [self navigateToViewControllerWithIdentifier:@"LostStolenVC"];
         }];
     }
     else if (index == 2)
+    {
+        // Reload Card
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^
+        {
+            isStashExpand = NO;
+            [self navigateToViewControllerWithIdentifier:@"ChangePinVC"];
+        }];
+    }
+    else if (index == 3)
     {
         // Change Pin
         [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
             
             isStashExpand = NO;
-            //            AddNoteVC *addNoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddNoteVC"];
-            //            addNoteVC.tempScheduleObject = _tempScheduleObject;
-            //            [ self.navigationController pushViewController:addNoteVC animated:YES ];
-            
-        }];
-    }
-    else if (index == 3)
-    {
-        // Reload Card
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
-            isStashExpand = NO;
-            
-        }];
-    }
-    else if (index == 4)
-    {
-        //Apply for new loan
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
-            isStashExpand = NO;
-            //            AddInvoiceQuoteVC *addInvoiceQuoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddInvoiceQuoteVC"];
-            //            addInvoiceQuoteVC.isInvoice = NO;
-            //            [ self.navigationController pushViewController:addInvoiceQuoteVC animated:YES ];
-            
+            [self navigateToViewControllerWithIdentifier:@"ReloadCardVC"];
         }];
     }
     else
     {
         //Chat
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
-            
-            
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^
+        {
+            isStashExpand = NO;
+            [self navigateToViewControllerWithIdentifier:@"ChatScreen"];
         }];
     }
 }
-
+- (void)navigateToViewControllerWithIdentifier:(NSString *)identifier
+{
+    UIViewController *vc = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:identifier];
+    [self.navigationController pushViewController:vc animated:YES];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

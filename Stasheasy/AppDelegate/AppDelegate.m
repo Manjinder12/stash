@@ -14,7 +14,7 @@
 #import "LoginScreen.h"
 #import "REFrostedViewController.h"
 #import "LineCreditVC.h"
-#import "LandingVC.h"
+
 
 @interface AppDelegate ()
 
@@ -24,25 +24,27 @@
 @synthesize dictOverview,dictTransaction,dictAnalyze;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-
+{    
     [[UINavigationBar appearance] setBarTintColor:[UIColor redColor]];
     [[UINavigationBar appearance]setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    
-    if ([[Utilities getUserDefaultValueFromKey:@"islogin"] intValue] == 1)
-    {
-        [self navigateToLOCDashboard];
-    }
-    
     return YES;
 }
 
 - (void)navigateToLOCDashboard
 {
     ViewController *vc = (ViewController *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"rootController"] ;
-        [self.window setRootViewController:vc];
-}
+    UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];
+    navigationController.viewControllers = @[vc];
+    [self.window setRootViewController:navigationController];
 
+}
+- (void)navigateToLandingVC
+{
+    LandingVC *vc = (LandingVC *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"LandingVC"] ;
+    UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];
+    navigationController.viewControllers = @[vc];
+    [self.window setRootViewController:navigationController];
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

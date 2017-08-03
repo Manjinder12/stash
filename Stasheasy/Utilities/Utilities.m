@@ -441,4 +441,35 @@
     
     return ( NSString * )[NSString stringWithFormat:@"%@ %@ %@",[mdict valueForKey:@"day"],[mdict valueForKey:@"month"],[mdict valueForKey:@"year"]];
 }
+
++ (void)setLeftPaddingToTextfield:(UITextField *)textField
+{
+    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
+    textField.leftView = paddingView;
+    textField.leftViewMode = UITextFieldViewModeAlways;
+}
+
++ (void)navigateToLOCDashboard:(UINavigationController *)navigationController
+{
+    LineCreditVC *vc = (LineCreditVC *) [[self getStoryBoard] instantiateViewControllerWithIdentifier:@"LineCreditVC"];
+    
+    if ( [navigationController.viewControllers count]  == 2 )
+    {
+        [navigationController popViewControllerAnimated:YES];
+    }
+    else
+    {
+        navigationController.viewControllers = @[vc];
+        [navigationController popViewControllerAnimated:YES];
+    }
+}
++ (void)setShadowToView:(UIView *)view
+{
+    view.layer.shadowOffset = CGSizeMake(1, 10);
+    view.layer.shadowRadius = 5.0f;
+    view.layer.shadowOpacity = 0.6;
+    view.layer.cornerRadius = 5.0f;
+    view.layer.masksToBounds = NO;
+    view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+}
 @end

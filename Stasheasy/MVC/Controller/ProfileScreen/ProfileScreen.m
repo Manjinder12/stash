@@ -158,59 +158,45 @@
     else if (index == 1)
     {
         // Lost Card
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
-            isStashExpand = NO;
-            //            AddInvoiceQuoteVC *addInvoiceQuoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddInvoiceQuoteVC"];
-            //            addInvoiceQuoteVC.isInvoice = YES;
-            //            [ self.navigationController pushViewController:addInvoiceQuoteVC animated:YES ];
-            
-        }];
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^
+         {
+             isStashExpand = NO;
+             [self navigateToViewControllerWithIdentifier:@"LostStolenVC"];
+         }];
     }
     else if (index == 2)
+    {
+        // Reload Card
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^
+         {
+             isStashExpand = NO;
+             [self navigateToViewControllerWithIdentifier:@"ChangePinVC"];
+         }];
+    }
+    else if (index == 3)
     {
         // Change Pin
         [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
             
             isStashExpand = NO;
-            //            AddNoteVC *addNoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddNoteVC"];
-            //            addNoteVC.tempScheduleObject = _tempScheduleObject;
-            //            [ self.navigationController pushViewController:addNoteVC animated:YES ];
-            
-        }];
-    }
-    else if (index == 3)
-    {
-        // Reload Card
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
-            isStashExpand = NO;
-            
-        }];
-    }
-    else if (index == 4)
-    {
-        //Apply for new loan
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
-            isStashExpand = NO;
-            //            AddInvoiceQuoteVC *addInvoiceQuoteVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"AddInvoiceQuoteVC"];
-            //            addInvoiceQuoteVC.isInvoice = NO;
-            //            [ self.navigationController pushViewController:addInvoiceQuoteVC animated:YES ];
-            
+            [self navigateToViewControllerWithIdentifier:@"ReloadCardVC"];
         }];
     }
     else
     {
         //Chat
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
-            
-            
-        }];
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^
+         {
+             isStashExpand = NO;
+             [self navigateToViewControllerWithIdentifier:@"ChatScreen"];
+         }];
     }
 }
-
+- (void)navigateToViewControllerWithIdentifier:(NSString *)identifier
+{
+    UIViewController *vc = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:identifier];
+    [self.navigationController pushViewController:vc animated:YES];
+}
 #pragma mark - TableView Delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

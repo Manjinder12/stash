@@ -10,7 +10,8 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
-
+#import "ViewController.h"
+#import "LineCreditVC.h"
 
 @interface Utilities : NSObject
 
@@ -120,5 +121,13 @@
 // Formate date 
 +(NSString *)formateDateToDMY:(NSString *)strDate;
 
+// Set Left Padding To Textfield
++ (void)setLeftPaddingToTextfield:(UITextField *)textField;
+
+// Navigate to Dashboard
++ (void)navigateToLOCDashboard:(UINavigationController *)navigationController;
+
+// Set shadow to view
++ (void)setShadowToView:(UIView *)view;
 
 @end

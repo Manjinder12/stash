@@ -111,6 +111,7 @@
     else if(indexPath.row == 3)
     {
         TransactionDetailsViewController *tdvc = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionDetailsViewController"];
+        tdvc.isOverview = 0;
         UINavigationController *nav = [[UINavigationController alloc]init];
         nav.viewControllers = @[tdvc];
         [self.frostedViewController setContentViewController:nav];
@@ -119,9 +120,10 @@
     
     else if(indexPath.row == 4)
     {
-        LoanDetailsScreen *evc = [self.storyboard instantiateViewControllerWithIdentifier:@"LoanDetailsScreen"];
+        TransactionDetailsViewController *tdvc = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionDetailsViewController"];
+        tdvc.isOverview = 1;
         UINavigationController *nav = [[UINavigationController alloc]init];
-        nav.viewControllers = @[evc];
+        nav.viewControllers = @[tdvc];
         [self.frostedViewController setContentViewController:nav];
         [self.frostedViewController hideMenuViewController];
     }

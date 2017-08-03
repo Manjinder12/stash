@@ -1,42 +1,34 @@
 //
-//  EmiCalculatorScreen.m
+//  ChangePinVC.m
 //  Stasheasy
 //
-//  Created by tushar on 18/06/17.
+//  Created by Mohd Ali Khan on 03/08/17.
 //  Copyright © 2017 duke. All rights reserved.
 //
 
-#import "EmiCalculatorScreen.h"
-#import "EmiCell.h"
-#import "CommonFunctions.h"
+#import "ChangePinVC.h"
 #import "REFrostedViewController.h"
+#import "ServerCall.h"
 #import <LGPlusButtonsView/LGPlusButtonsView.h>
-#import "Utilities.h"
+#import "AppDelegate.h"
 
-@interface EmiCalculatorScreen ()<LGPlusButtonsViewDelegate>
+@interface ChangePinVC ()<UITextFieldDelegate,LGPlusButtonsViewDelegate>
 {
     LGPlusButtonsView *stashfinButton;
+    NSString *strOTP;
     BOOL isStashExpand;
-    int principal,rate,installmentsNo;
+
 }
-@property (weak, nonatomic) IBOutlet UILabel *lblAmount;
-@property (weak, nonatomic) IBOutlet UILabel *lblTenure;
-@property (weak, nonatomic) IBOutlet UILabel *lblRate;
-@property (weak, nonatomic) IBOutlet UILabel *lblEMIAmount;
-@property (weak, nonatomic) IBOutlet UILabel *lblInterest;
-@property (weak, nonatomic) IBOutlet UILabel *lblTotal;
+@property (nonatomic, strong) IBOutlet UITextField* txtOTP;
+@property (nonatomic, strong) IBOutlet UIButton* btnSubmit;
+@property (nonatomic, strong) IBOutlet UIView* viewTextfield;
 
-
-@property (weak, nonatomic) IBOutlet UITableView *emiTableView;
-@property (weak, nonatomic) IBOutlet UIView *emiView;
-
-@property (weak, nonatomic) IBOutlet UISlider *amountSlider;
-@property (weak, nonatomic) IBOutlet UISlider *tenureSlider;
-@property (weak, nonatomic) IBOutlet UISlider *rateSlider;
+@property (nonatomic, strong) IBOutlet UILabel* lblCardNo;
+@property (nonatomic, strong) IBOutlet UILabel* lblCardDate;
 
 @end
 
-@implementation EmiCalculatorScreen
+@implementation ChangePinVC
 
 - (void)viewDidLoad
 {
@@ -45,23 +37,23 @@
 }
 - (void)customInitialization
 {
-    self.navigationController.navigationBarHidden = YES;
-    principal = 100000;
-    installmentsNo = 3;
-    rate = 12;
-    
-    _lblAmount.text = [NSString stringWithFormat:@"₹%d",principal];
-    _lblTenure.text = [NSString stringWithFormat:@"%d Months",installmentsNo];
-    _lblRate.text = [NSString stringWithFormat:@"%d",rate];
-
-    [self calculateEMI];
+    _viewTextfield.hidden = YES;
     [self addStashfinButtonView];
-    isStashExpand = NO;
 }
 - (void)didReceiveMemoryWarning
 {
-    [super didReceiveMemoryWarning];
+    [super didReceiveMemoryWarning];    
+}
 
+#pragma mark Textfield Delegate
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [_txtOTP becomeFirstResponder];
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [_txtOTP resignFirstResponder];
+    return YES;
 }
 #pragma mark LGPlusButtonsView
 - (void)addStashfinButtonView
@@ -167,75 +159,143 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-#pragma mark Button Action
-- (IBAction)amountSliderValueChanged:(id)sender
-{
-    float number = [_amountSlider value];
-    int value = (int)(number * 20);
-    
-    if (value == 0)
-    {
-        principal = 10000;
-        _lblAmount.text = [NSString stringWithFormat:@"₹%d",principal];
-    }
-    else
-    {
-        principal = value * 10000;
-        _lblAmount.text = [NSString stringWithFormat:@"₹%d", principal];
-    }
-    [self calculateEMI];
-}
-- (IBAction)tenureSliderValueChanged:(id)sender
-{
-    float number = [_tenureSlider value];
-    int value = (int)(number * 15) + 3;
-    if (value == 0)
-    {
-        installmentsNo = 3;
-        _lblTenure.text = [NSString stringWithFormat:@"%d Months",installmentsNo];
-    }
-    else
-    {
-        installmentsNo = value;
-        _lblTenure.text = [NSString stringWithFormat:@"%d Months",installmentsNo];
-    }
-    [self calculateEMI];
-}
-- (IBAction)rateSliderValueChanged:(id)sender
-{
-    float number = [_rateSlider value];
-    int value = (int)(number * 60);
-    if (value == 0)
-    {
-        rate = 1;
-        _lblRate.text = [NSString stringWithFormat:@"%d",rate];
-    }
-    else
-    {
-        rate = value;
-        _lblRate.text = [NSString stringWithFormat:@"%d",rate];
-    }
-    [self calculateEMI];
-}
 - (IBAction)menuAction:(id)sender
 {
     [self.view endEditing:YES];
     [self.frostedViewController.view endEditing:YES];
     [self.frostedViewController presentMenuViewController];
-
 }
-- (void)calculateEMI
+
+- (IBAction)submitAction:(id)sender
 {
-    float r = rate / (12.0f * 100.0f);
-    double compo = pow((1 + r), installmentsNo);
-    double devo = compo - 1;
+    if ( [_btnSubmit.titleLabel.text isEqualToString:@"Generate OTP"]  )
+    {
+        [self serverCallToGetOTP];
+    }
+    else if ( [_btnSubmit.titleLabel.text isEqualToString:@"Submit"] )
+    {
+        if ( _txtOTP.text.length > 1 )
+        {
+            [self serverCallToSubmitOTP];
+        }
+        else
+        {
+            [Utilities showAlertWithMessage:@"Enter received OTP"];
+        }
+    }
+    else
+    {
+        if ( _txtOTP.text.length == 4)
+        {
+            [self serverCallToChangePin];
+        }
+        else
+        {
+            [Utilities showAlertWithMessage:@"Pin length should be of 4 digits"];
+        }
+    }
+}
+
+#pragma mark Server Call
+- (void)serverCallToGetOTP
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObject:@"sendCardPinChangeOtp" forKey:@"mode"];
+    [ServerCall getServerResponseWithParameters:param withHUD:NO withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 [Utilities showAlertWithMessage:response[@"msg"]];
+                 _viewTextfield.hidden = NO;
+                 [_txtOTP becomeFirstResponder];
+                 [_btnSubmit setTitle:@"Submit" forState:UIControlStateNormal];
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     }];
+}
+- (void)serverCallToSubmitOTP
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:@"submitCardChangePinOtp",@"mode",_txtOTP.text,@"otp", nil];
     
-    int EMI = (principal * r * compo) / devo;
-    NSLog(@"EMI ===== %d", EMI);
+    strOTP = _txtOTP.text;
     
-    _lblEMIAmount.text = [NSString stringWithFormat:@"₹%d",EMI];
-    _lblInterest.text = [NSString stringWithFormat:@"₹%d",(EMI * installmentsNo)  - principal];
-    _lblTotal.text = [NSString stringWithFormat:@"₹%d",(EMI * installmentsNo)];
+    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 [Utilities showAlertWithMessage:response[@"msg"]];
+                 _txtOTP.text = @"";
+                 _txtOTP.placeholder = @"Enter new card pin";
+                 [_txtOTP becomeFirstResponder];
+                 [_btnSubmit setTitle:@"Change" forState:UIControlStateNormal];
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     }];
+}
+- (void)serverCallToChangePin
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:@"changeCardPin",@"mode",_txtOTP.text,@"newPin",strOTP,@"otp", nil];
+    
+    strOTP = _txtOTP.text;
+    
+    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 [self showAlertWithTitle:@"Statshfin" withMessage:response[@"msg"]];
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     }];
+}
+#pragma mark UIAlertController Delegate
+-(void)showAlertWithTitle:(NSString *)atitle withMessage:(NSString *)message
+{
+    UIAlertController *alertController  = [UIAlertController alertControllerWithTitle:atitle message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction =[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action)
+    {
+        [Utilities navigateToLOCDashboard:self.navigationController];
+    }];
+    
+    [alertController addAction:okAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end
