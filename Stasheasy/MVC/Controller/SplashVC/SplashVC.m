@@ -49,6 +49,7 @@
 {
     LandingVC *vc = (LandingVC *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"LandingVC"] ;
     UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];
+    navigationController.viewControllers = @[vc];
     navigationController.navigationBar.hidden = YES;
     appDelegate.window.rootViewController = navigationController;
 }

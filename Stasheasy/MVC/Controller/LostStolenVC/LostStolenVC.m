@@ -98,7 +98,7 @@
     
     stashfinButton.coverColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
     stashfinButton.position = LGPlusButtonsViewPositionBottomRight;
-    stashfinButton.plusButtonAnimationType = LGPlusButtonsAppearingAnimationTypeCrossDissolveAndPop;
+    stashfinButton.plusButtonAnimationType = LGPlusButtonAnimationTypeRotate;
     stashfinButton.buttonsAppearingAnimationType = LGPlusButtonsAppearingAnimationTypeCrossDissolveAndSlideVertical;
     
     [stashfinButton setDescriptionsTexts:@[@"", @"Lost/Stolan Card", @"Change Pin", @"Reload Card",@"Chat"]];

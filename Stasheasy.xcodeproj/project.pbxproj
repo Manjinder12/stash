@@ -108,6 +108,9 @@
 		E2A781161F2B496500C151CC /* LOCWithdrawalVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A781151F2B496500C151CC /* LOCWithdrawalVC.m */; };
 		E2C60FB21F27398F00DCA206 /* LeftScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C60FAE1F27398F00DCA206 /* LeftScreen.m */; };
 		E2C60FB31F27398F00DCA206 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C60FB11F27398F00DCA206 /* ViewController.m */; };
+		E2D01F951F3495B900296A84 /* UIColor+HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = E2D01F8F1F3495B900296A84 /* UIColor+HexColor.m */; };
+		E2D01F961F3495B900296A84 /* VBPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = E2D01F911F3495B900296A84 /* VBPieChart.m */; };
+		E2D01F971F3495B900296A84 /* VBPiePiece.m in Sources */ = {isa = PBXBuildFile; fileRef = E2D01F931F3495B900296A84 /* VBPiePiece.m */; };
 		E2D2CCC21F26132300E98F2E /* ServerCall.m in Sources */ = {isa = PBXBuildFile; fileRef = E2D2CCC11F26132300E98F2E /* ServerCall.m */; };
 		E2D2CCC91F26155200E98F2E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E2D2CCC51F26155200E98F2E /* AppDelegate.m */; };
 		E2D2CCCA1F26155200E98F2E /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = E2D2CCC81F26155200E98F2E /* Utilities.m */; };
@@ -337,6 +340,13 @@
 		E2C60FAE1F27398F00DCA206 /* LeftScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftScreen.m; sourceTree = "<group>"; };
 		E2C60FB01F27398F00DCA206 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		E2C60FB11F27398F00DCA206 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		E2D01F8E1F3495B900296A84 /* UIColor+HexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HexColor.h"; sourceTree = "<group>"; };
+		E2D01F8F1F3495B900296A84 /* UIColor+HexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HexColor.m"; sourceTree = "<group>"; };
+		E2D01F901F3495B900296A84 /* VBPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBPieChart.h; sourceTree = "<group>"; };
+		E2D01F911F3495B900296A84 /* VBPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBPieChart.m; sourceTree = "<group>"; };
+		E2D01F921F3495B900296A84 /* VBPiePiece.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBPiePiece.h; sourceTree = "<group>"; };
+		E2D01F931F3495B900296A84 /* VBPiePiece.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBPiePiece.m; sourceTree = "<group>"; };
+		E2D01F941F3495B900296A84 /* VBPiePiece_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBPiePiece_private.h; sourceTree = "<group>"; };
 		E2D2CCC01F26132300E98F2E /* ServerCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerCall.h; sourceTree = "<group>"; };
 		E2D2CCC11F26132300E98F2E /* ServerCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerCall.m; sourceTree = "<group>"; };
 		E2D2CCC41F26155200E98F2E /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -898,6 +908,7 @@
 		BB85AF6B1EE290B600B32986 /* Rocket */ = {
 			isa = PBXGroup;
 			children = (
+				E2D01F8D1F3495B900296A84 /* VBPieChart */,
 				E2A7810F1F2B1D9400C151CC /* RadioButton */,
 				7805506D1F0ACC8800A1B34F /* IQKeyboardManager */,
 				BB583A901EEACDA1000B73AA /* TPKeyboardAvoiding */,
@@ -1145,6 +1156,20 @@
 				E2C60FB11F27398F00DCA206 /* ViewController.m */,
 			);
 			path = MenuVC;
+			sourceTree = "<group>";
+		};
+		E2D01F8D1F3495B900296A84 /* VBPieChart */ = {
+			isa = PBXGroup;
+			children = (
+				E2D01F8E1F3495B900296A84 /* UIColor+HexColor.h */,
+				E2D01F8F1F3495B900296A84 /* UIColor+HexColor.m */,
+				E2D01F901F3495B900296A84 /* VBPieChart.h */,
+				E2D01F911F3495B900296A84 /* VBPieChart.m */,
+				E2D01F921F3495B900296A84 /* VBPiePiece.h */,
+				E2D01F931F3495B900296A84 /* VBPiePiece.m */,
+				E2D01F941F3495B900296A84 /* VBPiePiece_private.h */,
+			);
+			path = VBPieChart;
 			sourceTree = "<group>";
 		};
 		E2D2CCC31F26155200E98F2E /* AppDelegate */ = {
@@ -1415,6 +1440,7 @@
 				E2A781161F2B496500C151CC /* LOCWithdrawalVC.m in Sources */,
 				7805509B1F0ACC8800A1B34F /* IQBarButtonItem.m in Sources */,
 				BB24631B1F0F5DA600E888CD /* ProfessionalEducation.m in Sources */,
+				E2D01F971F3495B900296A84 /* VBPiePiece.m in Sources */,
 				78D1D4211EE7B7F700E22864 /* TransactionScreen.m in Sources */,
 				781D1E621EE09FD900D82E86 /* DoubleTableViewCell.m in Sources */,
 				BBA1A7EE1EF8FD5400B1406A /* TransactionList.m in Sources */,
@@ -1436,6 +1462,7 @@
 				BB85AF7B1EE290C400B32986 /* REFrostedViewController.m in Sources */,
 				789B720A1EF66F0100AD3887 /* TransactionCell.m in Sources */,
 				781D1E681EE0AE8100D82E86 /* UploadCell.m in Sources */,
+				E2D01F961F3495B900296A84 /* VBPieChart.m in Sources */,
 				7811F1C31EF77A490052973B /* ProfileScreen.m in Sources */,
 				E2305EF71F2A0AD7005CDBAF /* LoanCell.m in Sources */,
 				7811F1CD1EF794320052973B /* Status2Screen.m in Sources */,
@@ -1475,6 +1502,7 @@
 				780550991F0ACC8800A1B34F /* IQKeyboardReturnKeyHandler.m in Sources */,
 				BB583A7C1EEA6A14000B73AA /* HTTPService.m in Sources */,
 				E2D2CCC91F26155200E98F2E /* AppDelegate.m in Sources */,
+				E2D01F951F3495B900296A84 /* UIColor+HexColor.m in Sources */,
 				E2A781121F2B1D9400C151CC /* RadioButton.m in Sources */,
 				780550941F0ACC8800A1B34F /* IQUITextFieldView+Additions.m in Sources */,
 				789B72141EF681BE00AD3887 /* EmiCell.m in Sources */,

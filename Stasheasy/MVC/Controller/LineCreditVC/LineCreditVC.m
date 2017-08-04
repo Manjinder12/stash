@@ -16,6 +16,7 @@
 #import "ReloadCardVC.h"
 #import "REFrostedViewController.h"
 #import "ChatScreen.h"
+#import "VBPieChart.h"
 
 @interface LineCreditVC ()<LGPlusButtonsViewDelegate>
 {
@@ -23,6 +24,8 @@
     BOOL isStashExpand;
     NSString *strRemainLOC;
     NSDictionary *dictLOCDetail;
+    int approvedLOC, usedLOC, remainingLOC, usedValue, remainValue ;
+    double pieProgress;
 }
 @property (weak, nonatomic) IBOutlet UILabel *lblApprovedCredit;
 @property (weak, nonatomic) IBOutlet UILabel *lblUserCredit;
@@ -42,6 +45,8 @@
 @property (weak, nonatomic) IBOutlet UIView *viewLower;
 @property (weak, nonatomic) IBOutlet UIView *viewOuter;
 
+@property (weak, nonatomic) IBOutlet VBPieChart *viewPieChart;
+
 @property (weak, nonatomic) IBOutlet TPKeyboardAvoidingScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *cnsViewLOCdetailTop;
 
@@ -60,6 +65,11 @@
     
     [ Utilities setShadowToView:_viewUpper ];
     [ Utilities setShadowToView:_viewLower ];
+    
+    approvedLOC = 0;
+    usedLOC = 0;
+    remainingLOC = 0;
+    pieProgress = 0;
     
     _viewOuter.hidden = NO;
     [self serverCallForLOCDetails];
@@ -259,9 +269,14 @@
 - (void)populateLOCDetails:(NSDictionary *)dictLOC andCardDetail:(NSDictionary *)dictCard
 {
     _lblApprovedCredit.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"loc_limit"] intValue]];
-    _lblUserCredit.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"used_loc"] intValue]];
     
+    approvedLOC = [[dictLOC valueForKey:@"loc_limit"] intValue];
+    
+    _lblUserCredit.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"used_loc"] intValue]];
+    usedLOC = [[dictLOC valueForKey:@"used_loc"] intValue];
+
     strRemainLOC = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"remaining_loc"] intValue]];
+    remainingLOC = [[dictLOC valueForKey:@"remaining_loc"] intValue];
     _lblRemainCredit.text = strRemainLOC;
     
     _lblBalance.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"total_balance"] intValue]];
@@ -277,6 +292,25 @@
     
     _lblCardNo.text = [NSString stringWithFormat:@"%@",dictCard[@"card_details"][@"card_no"]];
     _lblCardDate.text = [NSString stringWithFormat:@"%@/%@",dictCard[@"card_details"][@"expiry_month"],dictCard[@"card_details"][@"expiry_year"]];
+    
+    [self setUpPieChart];
+}
+- (void)setUpPieChart
+{
+    usedValue = (usedLOC * 100) / approvedLOC;
+    remainValue = (remainingLOC * 100 ) / approvedLOC;
+   
+    _viewPieChart.startAngle = M_PI+M_PI_2;
+    [_viewPieChart setHoleRadiusPrecent:0.5];
+    
+    
+    
+    NSArray *chartValues = @[
+                         @{@"name":@"Apple", @"value":[NSNumber numberWithInt:usedValue], @"color":[UIColor redColor], @"strokeColor":[UIColor whiteColor]},
+                         @{@"name":@"Orange", @"value":[NSNumber numberWithInt:remainValue], @"color":[UIColor greenColor], @"strokeColor":[UIColor whiteColor]}
+                         ];
+
+    [_viewPieChart setChartValues:chartValues animation:YES duration:2 options:VBPieChartAnimationDefault];
 }
 - (IBAction)consolidatedEMIAction:(id)sender
 {

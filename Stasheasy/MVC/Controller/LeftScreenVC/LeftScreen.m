@@ -16,6 +16,7 @@
 #import "LoanDetailsScreen.h"
 #import "TransactionDetailsViewController.h"
 #import "LineCreditVC.h"
+#import "LandingVC.h"
 
 @interface LeftScreen ()
 {
@@ -70,7 +71,8 @@
     static NSString *simpleTableIdentifier = @"leftCell";
  
         LeftViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-        if (cell == nil) {
+        if (cell == nil)
+        {
             cell =[[[NSBundle mainBundle] loadNibNamed:@"LeftViewCell" owner:self options:nil] objectAtIndex:0];
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -132,8 +134,11 @@
     {
         [CommonFunctions setUserDefault:@"islogin" value:@"0"];
         AppDelegate *appdelegate =  (AppDelegate *)[UIApplication sharedApplication].delegate;
-        UIViewController *root = [self.storyboard instantiateViewControllerWithIdentifier:@"firstnav"];
-        appdelegate.window.rootViewController =  root;
+        LandingVC *vc = (LandingVC *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"LandingVC"] ;
+        UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];
+        navigationController.viewControllers = @[vc];
+        navigationController.navigationBar.hidden = YES;
+        appdelegate.window.rootViewController = navigationController;
     }
 }
 @end

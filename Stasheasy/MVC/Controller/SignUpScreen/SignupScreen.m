@@ -37,7 +37,7 @@ enum signupStep {
     NSArray *idDetailArray;
     NSArray *professionalArray;
     NSArray *docArray;
-    UserServices *service;
+    UserServices *userService;
     NSMutableDictionary *basicInfoDic;
     BasicInfo *basicInfoModalObj;
     NSMutableArray *cityArr;
@@ -76,28 +76,40 @@ enum signupStep {
 
 @implementation SignupScreen
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    [self setupView];
+    
+    [self customInitialization];
+    
+    
     
     //get basic loan details
     [self loanApplicationWebserviceCall];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupAddress) name:@"address" object:nil];
 }
+- (void)customInitialization
+{
+    appdelagate = [AppDelegate sharedDelegate];
+    userService = [[UserServices alloc]init];
+    
+    basicInfoDic = [NSMutableDictionary dictionary];
+    
+    [self setupView];
 
-- (void)didReceiveMemoryWarning {
+    
+}
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - Instance Methods
 
--(void)setupView {
-     appdelagate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-
+-(void)setupView
+{
     signupStep = 1;
-    service = [[UserServices alloc]init];
-    basicInfoDic = [NSMutableDictionary dictionary];
     NSDictionary *loanDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Loan Amount",@"First",@"Tenure",@"Second",nil];
     NSDictionary *dobDic = [NSDictionary dictionaryWithObjectsAndKeys:@"DOB",@"First",@"Gender",@"Second",nil];
     NSDictionary *eduDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Linkedin",@"First",@"Education",@"Second",nil];
@@ -272,7 +284,8 @@ enum signupStep {
     }
 }
 
--(BOOL)performStepOneValidation {
+-(BOOL)performStepOneValidation
+{
 
     for (NSString *key in [basicInfoModalObj giveKeysArray])
     {
@@ -302,7 +315,8 @@ enum signupStep {
 
 
 
--(void)changeStepColour:(int)signupstep {
+-(void)changeStepColour:(int)signupstep
+{
    
     switch (signupstep)
     {
@@ -390,9 +404,8 @@ enum signupStep {
     }
 }
 
--(void)setupAddress {
-    appdelagate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-  
+-(void)setupAddress
+{
     NSString *addressString = [NSString stringWithFormat:@"%@,%@,%@",appdelagate.stateName,appdelagate.cityName,appdelagate.residencePin];
     selTextfield.text = addressString;
     [loanApplicationObj setValue:addressString forKey:@"address"];
@@ -657,8 +670,8 @@ enum signupStep {
 
 #pragma mark - TextField Delegate
 
-- (BOOL) textFieldShouldBeginEditing:(UITextField *)textField {
-
+- (BOOL) textFieldShouldBeginEditing:(UITextField *)textField
+{
     if (signupStep == 2  && (textField.tag == 1 || textField.tag == 6 || textField.tag == 9 || textField.tag == 2 || textField.tag == 8)) {
         if ((textField.tag == 1 || textField.tag == 6 || textField.tag == 9)) {
             [self setPickerArray:textField];
@@ -738,14 +751,16 @@ enum signupStep {
     return YES;
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
     if ((signupStep == 2 && (textField.tag == 1 || textField.tag == 6 || textField.tag == 9 || textField.tag == 2 || textField.tag == 8 ) )|| (signupStep == 3 && (textField.tag == 0 || textField.tag == 2))) {
         [textField addCancelDoneOnKeyboardWithTarget:self cancelAction:@selector(cancelAction:) doneAction:@selector(doneAction:)];
     }
 }
 
 
--(void)doneAction:(id)baritem {
+-(void)doneAction:(id)baritem
+{
     
     if (signupStep ==2) {
         
@@ -813,7 +828,8 @@ enum signupStep {
 
 }
 
--(void)cancelAction:(UIBarButtonItem *)sender {
+-(void)cancelAction:(UIBarButtonItem *)sender
+{
     selTextfield.text =@"";
     [selTextfield resignFirstResponder];
     [self.view endEditing:YES];
@@ -892,9 +908,11 @@ enum signupStep {
 
 #pragma mark - Webservice Methods
 
--(void)basicInfoWebserviceCall {
+-(void)basicInfoWebserviceCall
+{
     
-    if ([CommonFunctions reachabiltyCheck]) {
+    if ([CommonFunctions reachabiltyCheck])
+    {
         NSString *fullname = [NSString stringWithFormat:@"%@ %@",[basicInfoModalObj valueForKey:@"fname"],[basicInfoModalObj valueForKey:@"lname"]];
         [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
        
@@ -910,8 +928,10 @@ enum signupStep {
         
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-        [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            dispatch_async (dispatch_get_main_queue(), ^{
+        [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
+        {
+            dispatch_async (dispatch_get_main_queue(), ^
+            {
                 [CommonFunctions removeActivityIndicator];
                 NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                 NSLog(@"%@",responseDic);
@@ -919,7 +939,8 @@ enum signupStep {
                 if (errorStr.length>0) {
                     [self showAlertWithTitle:@"stasheasy" withMessage:errorStr];
                 }
-                else {
+                else
+                {
                     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                     [defaults setObject:responseDic forKey:@"userinfo"];
                     [defaults synchronize];
@@ -936,9 +957,10 @@ enum signupStep {
 
 }
 
--(void)loanApplicationWebserviceCall {
-    
-    if ([CommonFunctions reachabiltyCheck]) {
+-(void)loanApplicationWebserviceCall
+{
+    if ([CommonFunctions reachabiltyCheck])
+    {
         [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
         
         NSString *post =[NSString stringWithFormat:@"mode=loanApplicationDetails"];
@@ -954,15 +976,18 @@ enum signupStep {
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            dispatch_async (dispatch_get_main_queue(), ^{
+            dispatch_async (dispatch_get_main_queue(), ^
+            {
                 [CommonFunctions removeActivityIndicator];
                 NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                 NSLog(@"%@",responseDic);
                 NSString *errorStr = [responseDic objectForKey:@"error"];
-                if (errorStr.length>0) {
-                    [self showAlertWithTitle:@"stasheasy" withMessage:errorStr];
+                if ( errorStr.length > 0 )
+                {
+                    [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
                 }
-                else {
+                else
+                {
                     pickerObj.responseDic = responseDic;
                 }
             });
@@ -976,7 +1001,8 @@ enum signupStep {
     
 }
 
--(void)statesWebserviceCall {
+-(void)statesWebserviceCall
+{
     
     if ([CommonFunctions reachabiltyCheck]) {
         [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
@@ -1018,7 +1044,8 @@ enum signupStep {
 
 
 
--(void)saveloanApplication {
+-(void)saveloanApplication
+{
     
     if ([CommonFunctions reachabiltyCheck]) {
         [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
@@ -1064,7 +1091,8 @@ enum signupStep {
 }
 
 
--(void)professionalDetailsServiceCall {
+-(void)professionalDetailsServiceCall
+{
     if ([CommonFunctions reachabiltyCheck]) {
         [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
         
@@ -1111,7 +1139,8 @@ enum signupStep {
 
 }
 
--(void)submitProfessionDetails {
+-(void)submitProfessionDetails
+{
 
     if ([CommonFunctions reachabiltyCheck]) {
         [CommonFunctions showActivityIndicatorWithText:@"Wait..."];

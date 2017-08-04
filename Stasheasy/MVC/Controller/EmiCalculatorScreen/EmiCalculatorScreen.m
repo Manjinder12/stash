@@ -12,12 +12,15 @@
 #import "REFrostedViewController.h"
 #import <LGPlusButtonsView/LGPlusButtonsView.h>
 #import "Utilities.h"
+#import "VBPieChart.h"
 
 @interface EmiCalculatorScreen ()<LGPlusButtonsViewDelegate>
 {
     LGPlusButtonsView *stashfinButton;
     BOOL isStashExpand;
-    int principal,rate,installmentsNo;
+    int principal,rate,installmentsNo, approvedLOC, usedLOC, remainingLOC, usedValue, remainValue ;
+    double pieProgress;
+
 }
 @property (weak, nonatomic) IBOutlet UILabel *lblAmount;
 @property (weak, nonatomic) IBOutlet UILabel *lblTenure;
@@ -26,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblInterest;
 @property (weak, nonatomic) IBOutlet UILabel *lblTotal;
 
+@property (weak, nonatomic) IBOutlet VBPieChart *viewPieChart;
 
 @property (weak, nonatomic) IBOutlet UITableView *emiTableView;
 @property (weak, nonatomic) IBOutlet UIView *emiView;
@@ -49,14 +53,35 @@
     principal = 100000;
     installmentsNo = 3;
     rate = 12;
+    usedValue = 55;
+    remainValue = 45;
     
     _lblAmount.text = [NSString stringWithFormat:@"₹%d",principal];
     _lblTenure.text = [NSString stringWithFormat:@"%d Months",installmentsNo];
     _lblRate.text = [NSString stringWithFormat:@"%d",rate];
 
+    
     [self calculateEMI];
+    [self setUpPieChart];
     [self addStashfinButtonView];
     isStashExpand = NO;
+}
+- (void)setUpPieChart
+{
+//    usedValue = (usedLOC * 100) / approvedLOC;
+//    remainValue = (remainingLOC * 100 ) / approvedLOC;
+    
+    _viewPieChart.startAngle = M_PI+M_PI_2;
+    [_viewPieChart setHoleRadiusPrecent:0.5];
+    
+    
+    
+    NSArray *chartValues = @[
+                             @{@"name":@"Apple", @"value":[NSNumber numberWithInt:usedValue], @"color":[UIColor redColor], @"strokeColor":[UIColor whiteColor]},
+                             @{@"name":@"Orange", @"value":[NSNumber numberWithInt:remainValue], @"color":[UIColor greenColor], @"strokeColor":[UIColor whiteColor]}
+                             ];
+    
+    [_viewPieChart setChartValues:chartValues animation:YES duration:2 options:VBPieChartAnimationDefault];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -204,7 +229,7 @@
 - (IBAction)rateSliderValueChanged:(id)sender
 {
     float number = [_rateSlider value];
-    int value = (int)(number * 60);
+    int value = (int)(number * 48) + 12;
     if (value == 0)
     {
         rate = 1;
