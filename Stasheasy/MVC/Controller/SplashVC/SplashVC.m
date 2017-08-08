@@ -42,6 +42,7 @@
     UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];
     navigationController.viewControllers = @[vc];
     navigationController.navigationBar.hidden = YES;
+    navigationController.interactivePopGestureRecognizer.enabled = NO;
     appDelegate.window.rootViewController = navigationController;
     
 }
@@ -51,6 +52,7 @@
     UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];
     navigationController.viewControllers = @[vc];
     navigationController.navigationBar.hidden = YES;
+    navigationController.interactivePopGestureRecognizer.enabled = NO;
     appDelegate.window.rootViewController = navigationController;
 }
 - (void)serverCallToCheckTokenValidity

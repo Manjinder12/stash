@@ -9,6 +9,7 @@
 #import "AnalyzeScreen.h"
 #import "AnalyzeCell.h"
 #import "AppDelegate.h"
+#import "VBPieChart.h"
 
 @interface AnalyzeScreen ()
 {
@@ -16,7 +17,9 @@
     NSMutableArray *marrAnalyze;
     NSArray *items;
     NSArray *valuesArr;
-    int tab;
+    int tab ,approvedLOC, usedLOC, remainingLOC, usedValue, remainValue ;
+    double pieProgress;
+
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *lblTotalSpent;
@@ -24,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnSpending;
 @property (weak, nonatomic) IBOutlet UIButton *btnTranscation;
 @property (weak, nonatomic) IBOutlet UITableView *analyzeTableView;
+@property (weak, nonatomic) IBOutlet VBPieChart *viewPieChart;
 
 - (IBAction)spendingAction:(id)sender;
 - (IBAction)transactionAction:(id)sender;
@@ -42,10 +46,34 @@
 {
     appDelegate = [AppDelegate sharedDelegate];
     marrAnalyze = [[NSMutableArray alloc] init];
+   
     tab = 0;
+    usedLOC = 50;
+    remainingLOC = 60;
+    pieProgress = 0;
+    approvedLOC = 100;
+
     
     self.analyzeTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self setUpPieChart];
     [self populateAnalyzeSpendingData];
+}
+- (void)setUpPieChart
+{
+    usedValue = (usedLOC * 100) / approvedLOC;
+    remainValue = (remainingLOC * 100 ) / approvedLOC;
+    
+    _viewPieChart.startAngle = M_PI+M_PI_2;
+    [_viewPieChart setHoleRadiusPrecent:0.5];
+    
+    
+    
+    NSArray *chartValues = @[
+                             @{@"name":@"Apple", @"value":[NSNumber numberWithInt:usedValue], @"color":[UIColor redColor], @"strokeColor":[UIColor whiteColor]},
+                             @{@"name":@"Orange", @"value":[NSNumber numberWithInt:remainValue], @"color":[UIColor greenColor], @"strokeColor":[UIColor whiteColor]}
+                             ];
+    
+    [_viewPieChart setChartValues:chartValues animation:YES duration:2 options:VBPieChartAnimationDefault];
 }
 - (void)populateAnalyzeSpendingData
 {

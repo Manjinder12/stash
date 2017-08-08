@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="brp-q3-2rw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="brp-q3-2rw">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -1530,7 +1530,7 @@
                                 </constraints>
                             </scrollView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7LC-bg-Nhz">
-                                <rect key="frame" x="0.0" y="2000" width="320" height="792"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="792"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="7LC-bg-Nhz" secondAttribute="height" multiplier="40:99" id="Djr-au-gS3"/>
@@ -3950,15 +3950,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Agb-VV-ZL0">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EOm-nc-lZw" customClass="PieChartView" customModule="Charts">
-                                        <rect key="frame" x="0.0" y="36.5" width="320" height="196.5"/>
-                                        <color key="backgroundColor" red="0.92146831750869751" green="0.92162626981735229" blue="0.92145836353302002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="EOm-nc-lZw" secondAttribute="height" multiplier="75:46" id="h5I-9O-O6r"/>
-                                        </constraints>
-                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bun-fw-TgY">
-                                        <rect key="frame" x="26.5" y="15" width="267" height="28"/>
+                                        <rect key="frame" x="26" y="15" width="267" height="28"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="FrW-ej-cJy">
                                                 <rect key="frame" x="0.0" y="0.0" width="267" height="28"/>
@@ -3997,10 +3990,26 @@
                                             <constraint firstAttribute="height" constant="28" id="pv4-5V-2Qt"/>
                                         </constraints>
                                     </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EOm-nc-lZw" customClass="VBPieChart">
+                                        <rect key="frame" x="0.0" y="36.5" width="320" height="196.5"/>
+                                        <color key="backgroundColor" red="0.92146831750869751" green="0.92162626981735229" blue="0.92145836353302002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="EOm-nc-lZw" secondAttribute="height" multiplier="75:46" id="h5I-9O-O6r"/>
+                                        </constraints>
+                                    </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Spent" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VIv-ee-Nmv">
                                         <rect key="frame" x="126.5" y="299" width="67.5" height="14.5"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="₹8216" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RAC-az-vub">
+                                        <rect key="frame" x="60" y="281" width="200" height="18"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="RAC-az-vub" secondAttribute="height" multiplier="27:7" constant="130.57142857142856" id="mEa-df-jEH"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                        <color key="textColor" red="1" green="0.019411784309804947" blue="0.038137143261309125" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="vNp-Xb-Nx2">
@@ -4011,15 +4020,6 @@
                                             <outlet property="delegate" destination="wei-L3-Bc9" id="jW1-Hg-Rcz"/>
                                         </connections>
                                     </tableView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="₹8216" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RAC-az-vub">
-                                        <rect key="frame" x="60" y="281" width="200" height="18"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="RAC-az-vub" secondAttribute="height" multiplier="27:7" constant="130.57142857142856" id="mEa-df-jEH"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                                        <color key="textColor" red="1" green="0.019411784309804947" blue="0.038137143261309125" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -4055,6 +4055,7 @@
                         <outlet property="btnTranscation" destination="V1k-xe-gTt" id="ICR-59-9Zp"/>
                         <outlet property="lblTotalSpent" destination="RAC-az-vub" id="PaX-77-80P"/>
                         <outlet property="swicthView" destination="Bun-fw-TgY" id="qfa-Mo-wfM"/>
+                        <outlet property="viewPieChart" destination="EOm-nc-lZw" id="AKf-sW-Ifh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h9R-qv-Kp2" userLabel="First Responder" sceneMemberID="firstResponder"/>

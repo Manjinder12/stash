@@ -53,6 +53,7 @@
 }
 - (void)customInitialization
 {
+    
     check = [UIImage imageNamed:@"radioChecked"];
     uncheck = [UIImage imageNamed:@"radioUncheck"];
     
