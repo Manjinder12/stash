@@ -54,8 +54,19 @@
 
     appDelegate = [AppDelegate sharedDelegate];
     _viewOuter.hidden = NO;
-    [self serverCallForCardAnalyzeSpending];
     
+    if ([appDelegate.dictOverview count] == 0)
+    {
+        [self serverCallForCardOverview];
+    }
+    else
+    {
+        if (_isOverview == 0 )
+            [self overviewAction:_btnOverview];
+            
+        else
+            [self transactionAction:_btnTransaction];
+    }
     [self addStashfinButtonView];
 }
 #pragma mark LGPlusButtonsView
@@ -311,75 +322,17 @@
              else
              {
                  appDelegate.dictOverview = [NSDictionary dictionaryWithDictionary:response];
-                 if (_isOverview == 1 )
-                 {
+               
+                 if (_isOverview == 0 )
                      [self overviewAction:_btnOverview];
-
-                 }
+                 
                  else
-                 {
                      [self transactionAction:_btnTransaction];
-                 }
-                 
-             }
-         }
-         else
-         {
-         }
-     }];
-}
-- (void)serverCallForCardTransactionDetails
-{
-    NSDictionary *param = [NSDictionary dictionaryWithObject:@"CardTransactionDetails" forKey:@"mode"];
-    
-    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
-     {
-         NSLog(@"%@", response);
-         
-         if ( [response isKindOfClass:[NSDictionary class]] )
-         {
-             NSString *errorStr = [response objectForKey:@"error"];
-             if ( errorStr.length > 0 )
-             {
-                 [Utilities showAlertWithMessage:errorStr];
-             }
-             else
-             {
-                 appDelegate.dictTransaction = [NSDictionary dictionaryWithDictionary:response];
-                 [self serverCallForCardOverview];
-             }
-         }
-         else
-         {
 
-         }
-     }];
-}
-- (void)serverCallForCardAnalyzeSpending
-{
-    NSDictionary *param = [NSDictionary dictionaryWithObject:@"CardAnalyzeSpending" forKey:@"mode"];
-    
-    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
-     {
-         NSLog(@"%@", response);
-         
-         if ( [response isKindOfClass:[NSDictionary class]] )
-         {
-             NSString *errorStr = [response objectForKey:@"error"];
-             if ( errorStr.length > 0 )
-             {
-                 [Utilities showAlertWithMessage:errorStr];
-             }
-             else
-             {
-                 appDelegate.dictAnalyze = [NSDictionary dictionaryWithDictionary:response];
-                 [self serverCallForCardOverview];
-                 
              }
          }
          else
          {
-             [Utilities showAlertWithMessage:response];
          }
      }];
 }

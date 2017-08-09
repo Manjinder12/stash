@@ -205,7 +205,10 @@
 {
     NSDictionary *param = [NSDictionary dictionaryWithObject:@"locDetails" forKey:@"mode"];
     
-    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
+    [SVProgressHUD show];
+    
+    [ServerCall getServerResponseWithParameters:param withHUD:NO withCompletion:^(id response)
     {
         NSLog(@"response === %@", response);
 
@@ -241,7 +244,7 @@
 {
     NSDictionary *param = [NSDictionary dictionaryWithObject:@"cardOverview" forKey:@"mode"];
 
-    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+    [ServerCall getServerResponseWithParameters:param withHUD:NO withCompletion:^(id response)
     {
         
         if ( [response isKindOfClass:[NSDictionary class]] )
@@ -264,6 +267,8 @@
         {
 //            [Utilities showAlertWithMessage:response];
         }
+        
+        [SVProgressHUD dismiss];
     }];
 }
 - (void)populateLOCDetails:(NSDictionary *)dictLOC andCardDetail:(NSDictionary *)dictCard

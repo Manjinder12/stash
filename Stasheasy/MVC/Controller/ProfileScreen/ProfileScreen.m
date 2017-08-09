@@ -15,8 +15,10 @@
 #import <MWPhotoBrowser/MWPhotoBrowser.h>
 #import <LGPlusButtonsView/LGPlusButtonsView.h>
 
-@interface ProfileScreen ()<UICollectionViewDelegate,UICollectionViewDataSource,MWPhotoBrowserDelegate,LGPlusButtonsViewDelegate>
+@interface ProfileScreen ()<UICollectionViewDelegate,UICollectionViewDataSource,MWPhotoBrowserDelegate,LGPlusButtonsViewDelegate, UIActionSheetDelegate,UIImagePickerControllerDelegate>
 {
+    UIImagePickerController *imagePicker;
+    UIImage *selectedImage;
  
     NSMutableArray *marrPerHeader, *marrPerText, *marrProHeader, *marrProText, *marrDoc, *marrImages;
     NSDictionary *dictPersonal, *dictProfessional, *dictDocument;
@@ -34,6 +36,7 @@
 }
 @property (weak, nonatomic) IBOutlet UIView *profileView;
 @property (weak, nonatomic) IBOutlet UIImageView *profilepic;
+@property (weak, nonatomic) IBOutlet UIImageView *imageBanner;
 
 @property (weak, nonatomic) IBOutlet UILabel *perLbl;
 @property (weak, nonatomic) IBOutlet UILabel *proLbl;
@@ -67,7 +70,9 @@
 - (void)customInitialization
 {
     self.navigationController.navigationBar.hidden = YES;
-    
+   
+    imagePicker = [[UIImagePickerController alloc] init];
+
     marrPerText = [[NSMutableArray alloc] init];
     marrProText = [[NSMutableArray alloc] init];
     marrDoc = [[NSMutableArray alloc] init];
@@ -88,6 +93,17 @@
     
     [self serverCallForPersonalDetail];
     _viewOuter.hidden = NO;
+}
+#pragma mark UIImagePickerController delegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
+{
+    selectedImage = [info valueForKey:UIImagePickerControllerEditedImage];
+    
+    [self serverCallForUpdateProfile];
+}
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -310,7 +326,6 @@
 #pragma mark - Instance Methods
 -(void)setupProfileBlurScreen
 {
-
     if (!UIAccessibilityIsReduceTransparencyEnabled())
     {
         self.view.backgroundColor = [UIColor clearColor];
@@ -340,7 +355,11 @@
     [self.frostedViewController.view endEditing:YES];
     [self.frostedViewController presentMenuViewController];
 }
-
+- (IBAction)imageChangeAction:(id)sender
+{
+    UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
+    [imagePop showInView:self.view];
+}
 - (IBAction)personalTapped:(id)sender
 {
     tab =0;
@@ -394,18 +413,23 @@
     [self.profileTableView reloadData];
 }
 
-- (IBAction)backBtnTapped:(id)sender {
+- (IBAction)backBtnTapped:(id)sender
+{
     UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"contentController"];
     [self.frostedViewController setContentViewController:vc];
     [self.frostedViewController hideMenuViewController];
 
 }
 
-#pragma mark Server Call Profile Detail
+#pragma mark Server Call
 - (void)serverCallForPersonalDetail
 {
     NSDictionary *param = [NSDictionary dictionaryWithObject:@"personalDetails" forKey:@"mode"];
-    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+    
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
+    [SVProgressHUD show];
+    
+    [ServerCall getServerResponseWithParameters:param withHUD:NO withCompletion:^(id response)
     {
         NSLog(@"response === %@", response);
         
@@ -419,21 +443,21 @@
             else
             {
                 dictPersonal = [NSDictionary dictionaryWithDictionary:response];
-                [self serverCallForProfessionalDetail];
-                
             }
         }
         else
         {
             [Utilities showAlertWithMessage:response];
+            [SVProgressHUD dismiss];
         }
-        
+        [self serverCallForProfessionalDetail];
     }];
 }
 - (void)serverCallForProfessionalDetail
 {
     NSDictionary *param = [NSDictionary dictionaryWithObject:@"professioanlDetails" forKey:@"mode"];
-    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+   
+    [ServerCall getServerResponseWithParameters:param withHUD:NO withCompletion:^(id response)
      {
          NSLog(@"response === %@", response);
          
@@ -447,20 +471,23 @@
              else
              {
                  dictProfessional = [NSDictionary dictionaryWithDictionary:response];
-                 [self serverCallForDocumentsDetail];
              }
          }
          else
          {
              [Utilities showAlertWithMessage:response];
+             [SVProgressHUD dismiss];
          }
+         
+         [self serverCallForDocumentsDetail];
          
      }];
 }
 - (void)serverCallForDocumentsDetail
 {
     NSDictionary *param = [NSDictionary dictionaryWithObject:@"documentsFormDetails" forKey:@"mode"];
-    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+    
+    [ServerCall getServerResponseWithParameters:param withHUD:NO withCompletion:^(id response)
      {
          NSLog(@"response === %@", response);
          
@@ -488,6 +515,7 @@
              [Utilities showAlertWithMessage:response];
          }
          
+         [SVProgressHUD dismiss];
      }];
 }
 - (void)populatePersonalDetail:(NSDictionary *)response
@@ -524,18 +552,129 @@
 }
 - (void)populateDocumentsDetail:(NSDictionary *)response
 {
-    [marrDoc addObject:response[@"docs"][@"address_proof"]];
-    [marrDoc addObject:response[@"docs"][@"employee_id"]];
-    [marrDoc addObject:response[@"docs"][@"id_proof"]];
-    [marrDoc addObject:response[@"docs"][@"office_id"]];
-    [marrDoc addObject:response[@"docs"][@"pan_proof"]];
-    [marrDoc addObject:response[@"docs"][@"salary_slip1"]];
-    [marrDoc addObject:response[@"docs"][@"salary_slip2"]];
-    [marrDoc addObject:response[@"docs"][@"salary_slip3"]];
     
+    if ( ![response[@"docs"][@"address_proof"] isEqualToString:@""] )
+    {
+        [marrDoc addObject:response[@"docs"][@"address_proof"]];
+    }
+    else if ( ![response[@"docs"][@"employee_id"] isEqualToString:@""] )
+    {
+        [marrDoc addObject:response[@"docs"][@"employee_id"]];
+    }
+    
+    else if ( ![response[@"docs"][@"id_proof"] isEqualToString:@""] )
+    {
+        [marrDoc addObject:response[@"docs"][@"id_proof"]];
+    }
+    
+    else if ( ![response[@"docs"][@"office_id"] isEqualToString:@""] )
+    {
+        [marrDoc addObject:response[@"docs"][@"office_id"]];
+    }
+    
+    else if ( ![response[@"docs"][@"pan_proof"] isEqualToString:@""] )
+    {
+        [marrDoc addObject:response[@"docs"][@"pan_proof"]];
+    }
+    else if ( ![response[@"docs"][@"salary_slip1"] isEqualToString:@""] )
+    {
+        [marrDoc addObject:response[@"docs"][@"salary_slip1"]];
+    }
+    
+    else if ( ![response[@"docs"][@"salary_slip2"] isEqualToString:@""] )
+    {
+        [marrDoc addObject:response[@"docs"][@"salary_slip2"]];
+    }
+    else if ( ![response[@"docs"][@"salary_slip3"] isEqualToString:@""] )
+    {
+        [marrDoc addObject:response[@"docs"][@"salary_slip3"]];
+    }
+    
+    NSArray *otherDoc = response[@"other_selected_docs"];
+    if ( [otherDoc count] != 0 )
+    {
+        for (NSDictionary *dictOther in otherDoc)
+        {
+            [marrDoc addObject:dictOther[@"document_path"]];
+        }
+    }
     self.profileTableView.hidden = NO;
     self.docCollection.hidden = YES;
     
     [self.profileTableView reloadData];
+}
+#pragma mark UIActionSheet Delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex)
+    {
+        case 0:
+            [self takePhoto];
+            break;
+        case 1:
+            [self choosePhotoFromLibrary];
+            break;
+        default:
+            break;
+    }
+}
+- (void)takePhoto
+{
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Error" message:@"Device has no camera" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        imagePicker.delegate = self;
+        imagePicker.allowsEditing = YES;
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    }
+}
+- (void)choosePhotoFromLibrary
+{
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    imagePicker.delegate = self;
+    imagePicker.allowsEditing = YES;
+    [self presentViewController:imagePicker animated:YES completion:nil];
+}
+- (void)serverCallForUpdateProfile
+{
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient];
+    
+    NSString *base64String = [Utilities getBase64EncodedStringOfImage:selectedImage];
+
+    NSDictionary *dictParam = [[NSDictionary alloc] initWithObjectsAndKeys:@"updateProfilePic",@"mode",base64String,@"image", nil];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
+    {
+        NSLog(@"%@", response);
+        
+        if ( [response isKindOfClass:[NSDictionary class]] )
+        {
+            NSString *errorStr = [response objectForKey:@"error"];
+            if ( errorStr.length > 0 )
+            {
+                [Utilities showAlertWithMessage:errorStr];
+            }
+            else
+            {
+                _profilepic.image = selectedImage;
+                _imageBanner.image = selectedImage;
+
+            }
+        }
+        else
+        {
+            
+        }
+
+    }];
+    
+    
+    
+    [imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
 @end

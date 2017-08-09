@@ -190,8 +190,11 @@
     }
     else
     {
-        installmentsNo = value;
-        _lblTenure.text = [NSString stringWithFormat:@"%d Months",installmentsNo];
+        if (value > 3 )
+        {
+            installmentsNo = value;
+            _lblTenure.text = [NSString stringWithFormat:@"%d Months",installmentsNo];
+        }
     }
 }
 -(IBAction)radioButtonAction:(RadioButton*)sender

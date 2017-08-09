@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface SingleTableViewCell : UITableViewCell
+
 @property (strong, nonatomic) IBOutlet UITextField *singleTextField;
 
 @end

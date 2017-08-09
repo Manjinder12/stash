@@ -13,6 +13,7 @@
 #import "CommonFunctions.h"
 #import "ServerCall.h"
 #import "REFrostedViewController.h"
+#import "RejectedVC.h"
 
 @interface LoginScreen ()
 {
@@ -58,6 +59,7 @@
 {
     if ([self performValidation])
     {
+        [self.view endEditing:YES];
         [self serverCallForLogin];
     }
 }
@@ -126,11 +128,34 @@
             }
             else
             {
-                [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
-                [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
+                if ( [response[@"landing_page"] isEqualToString:@"rejected"] )
+                {
+                    RejectedVC *rejectedVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"RejectedVC"];
+                    rejectedVC.dictDate = [Utilities getDayDateYear:response[@"latest_loan_details"][@"loan_creation_date"]];
+                    [self.navigationController pushViewController:rejectedVC animated:YES];
+                }
                 
-                ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
-                [self.navigationController pushViewController:vc animated:YES];
+                else if ( [response[@"landing_page"] isEqualToString:@"id_detail"] )
+                {
+                    
+                }
+                
+                else if ( [response[@"landing_page"] isEqualToString:@"professional_info"] )
+                {
+                    
+                }
+                else if ( [response[@"landing_page"] isEqualToString:@"doc_upload"] )
+                {
+                    
+                }
+                else
+                {
+                    [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
+                    [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
+                    
+                    ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
             }
         }
         else

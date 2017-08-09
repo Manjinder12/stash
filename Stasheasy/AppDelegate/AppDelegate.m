@@ -24,7 +24,11 @@
 @synthesize dictOverview,dictTransaction,dictAnalyze;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{    
+{
+    dictOverview = [[NSDictionary alloc] init];
+    dictAnalyze = [[NSDictionary alloc] init];
+    dictTransaction = [[NSDictionary alloc] init];
+    
     [[UINavigationBar appearance] setBarTintColor:[UIColor redColor]];
     [[UINavigationBar appearance]setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     return YES;

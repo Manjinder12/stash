@@ -36,10 +36,11 @@
 
 @implementation AnalyzeScreen
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self setupView];
+//    [self setupView];
     [self customInitialization];
 }
 - (void)customInitialization
@@ -53,10 +54,19 @@
     pieProgress = 0;
     approvedLOC = 100;
 
-    
     self.analyzeTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    [self setUpPieChart];
-    [self populateAnalyzeSpendingData];
+   
+    if ( [appDelegate.dictAnalyze count] == 0 )
+    {
+        [self serverCallForCardAnalyzeSpending];
+    }
+    else
+    {
+        [self populateAnalyzeSpendingData:appDelegate.dictAnalyze];
+
+    }
+    
+    
 }
 - (void)setUpPieChart
 {
@@ -75,10 +85,12 @@
     
     [_viewPieChart setChartValues:chartValues animation:YES duration:2 options:VBPieChartAnimationDefault];
 }
-- (void)populateAnalyzeSpendingData
+- (void)populateAnalyzeSpendingData:(NSDictionary *)dict
 {
-    marrAnalyze = appDelegate.dictAnalyze[@"spendings"];
-    _lblTotalSpent.text = [NSString stringWithFormat:@"₹%@",appDelegate.dictAnalyze[@"total_spent"]];
+    marrAnalyze = dict[@"spendings"];
+    _lblTotalSpent.text = [NSString stringWithFormat:@"₹%@",dict[@"total_spent"]];
+    [self setUpPieChart];
+    [ _analyzeTableView reloadData ];
     
 }
 - (void)didReceiveMemoryWarning {
@@ -142,8 +154,6 @@
 {
     items = [[NSArray alloc]initWithObjects:@"Fuel",@"Food",@"Misc",@"Entertainment", nil];
     valuesArr = [[NSArray alloc]initWithObjects:@"₹2000",@"₹4766",@"₹252",@"₹1200", nil];
-//    [self setupPieChartView:self.chartView];
-//    [self setDataCount:2 range:5];
 
     self.swicthView.layer.cornerRadius = 12.0f;
     self.swicthView.clipsToBounds =YES;
@@ -251,5 +261,33 @@
     _chartView.data = data;
     [_chartView highlightValues:nil];
 }*/
+- (void)serverCallForCardAnalyzeSpending
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObject:@"CardAnalyzeSpending" forKey:@"mode"];
+    
+    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"%@", response);
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 appDelegate.dictAnalyze = [NSDictionary dictionaryWithDictionary:response];
+                 [self populateAnalyzeSpendingData:response];
 
+                 
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     }];
+}
 @end

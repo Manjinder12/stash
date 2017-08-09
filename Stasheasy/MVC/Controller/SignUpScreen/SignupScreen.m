@@ -22,6 +22,7 @@
 #import "IQUIView+IQKeyboardToolbar.h"
 #import "EducationPicker.h"
 #import "ProfessionalEducation.h"
+#import "Utilities.h"
 
 enum signupStep {
   basicInfo = 1,
@@ -83,10 +84,6 @@ enum signupStep {
     [self customInitialization];
     
     
-    
-    //get basic loan details
-    [self loanApplicationWebserviceCall];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupAddress) name:@"address" object:nil];
 }
 - (void)customInitialization
@@ -97,7 +94,6 @@ enum signupStep {
     basicInfoDic = [NSMutableDictionary dictionary];
     
     [self setupView];
-
     
 }
 - (void)didReceiveMemoryWarning
@@ -130,6 +126,9 @@ enum signupStep {
     pickerObj = [[Pickers alloc]init];
     eduPicker = [[EducationPicker alloc]init];
     pfobj = [[ProfessionalEducation alloc]init];
+    
+    
+    
 }
 
 #pragma mark Button Action
@@ -271,12 +270,15 @@ enum signupStep {
 -(void)getEmployementType:(UIButton *)sender
 {
     salaryTableView *salaryCell  = (salaryTableView *) [[[sender superview] superview] superview];
-    if (sender.tag  == 0) {
+    if (sender.tag  == 0)
+    {
         [salaryCell.businessBtn setBackgroundImage:[UIImage imageNamed:@"checkoff"] forState:UIControlStateNormal];
         [salaryCell.salBtn setBackgroundImage: [UIImage imageNamed:@"check"] forState:UIControlStateNormal];
 //        [basicInfoDic setObject:@"Salaried" forKey:@"employmentType"];
         [basicInfoModalObj setValue:@"Salaried" forKey:@"employmentType"];
-    } else {
+    }
+    else
+    {
         [salaryCell.businessBtn setBackgroundImage: [UIImage imageNamed:@"check"] forState:UIControlStateNormal];
         [salaryCell.salBtn setBackgroundImage: [UIImage imageNamed:@"checkoff"] forState:UIControlStateNormal];
 //        [basicInfoDic setObject:@"business" forKey:@"employmentType"];
@@ -286,7 +288,6 @@ enum signupStep {
 
 -(BOOL)performStepOneValidation
 {
-
     for (NSString *key in [basicInfoModalObj giveKeysArray])
     {
         NSError *error;
@@ -297,7 +298,7 @@ enum signupStep {
         if (error)
         {
             
-            UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"Staheasy" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"Stashfin" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
             
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                 
@@ -317,7 +318,6 @@ enum signupStep {
 
 -(void)changeStepColour:(int)signupstep
 {
-   
     switch (signupstep)
     {
         case basicInfo:
@@ -357,9 +357,11 @@ enum signupStep {
             break;
     }
    
-    if (signupStep < 4) {
+    if (signupStep < 4)
+    {
         signupStep += 1;
-        if (signupStep == 3) {
+        if (signupStep == 3)
+        {
             [ _btnNext setBackgroundImage:[UIImage imageNamed:@"register"] forState:UIControlStateNormal];
         }
         [self.signupTableview reloadData];
@@ -442,27 +444,34 @@ enum signupStep {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    switch (signupStep) {
-        case basicInfo: {
-            if ([[basicInfoArray objectAtIndex:indexPath.row] isEqualToString:@"check"]) {
+    switch (signupStep)
+    {
+        case basicInfo:
+        {
+            if ([[basicInfoArray objectAtIndex:indexPath.row] isEqualToString:@"check"])
+            {
                 return (45.0f/320.0f) * self.view.frame.size.width;
-            } else {
+            }
+            else
+            {
                 return (35.0f/320.0f) * self.view.frame.size.width;
             }
             
             break;
         }
-        case idDetails: {
+        case idDetails:
+        {
             return (38.0f/320.0f) * self.view.frame.size.width;
             break;
         }
-        case personalInfo: {
+        case personalInfo:
+        {
             return (38.0f/320.0f) * self.view.frame.size.width;
             break;
         }
-        case docUpload: {
+        case docUpload:
+        {
             return (44.0f/320.0f) * self.view.frame.size.width;
-
             break;
         }
         default:
@@ -474,26 +483,35 @@ enum signupStep {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (signupStep) {
-        case basicInfo: {
-            if ([[basicInfoArray objectAtIndex:indexPath.row] isEqualToString:@"check"]) {
+    switch (signupStep)
+    {
+        case basicInfo:
+        {
+            if ([[basicInfoArray objectAtIndex:indexPath.row] isEqualToString:@"check"])
+            {
               static NSString *salaryTableIdentifier = @"salaryTableView";
               salaryTableView *salaryCell  =  [tableView dequeueReusableCellWithIdentifier:salaryTableIdentifier];
-                if (salaryCell == nil) {
+                if (salaryCell == nil)
+                {
                     salaryCell =[[[NSBundle mainBundle] loadNibNamed:@"salaryTableView" owner:self options:nil] objectAtIndex:0];
                 }
+                
                 [salaryCell.salBtn addTarget:self action:@selector(getEmployementType:) forControlEvents:UIControlEventTouchUpInside];
+                
                 [salaryCell.businessBtn addTarget:self action:@selector(getEmployementType:) forControlEvents:UIControlEventTouchUpInside];
 
                 salaryCell.selectionStyle = UITableViewCellSelectionStyleNone;
                 return salaryCell;
                 
             }
-            else {
+            else
+            {
                 static NSString *singleTableIdentifier = @"SingleTableViewCell";
                 SingleTableViewCell *singleCell  =  [tableView dequeueReusableCellWithIdentifier:singleTableIdentifier];
-                if (singleCell == nil) {
+                if (singleCell == nil)
+                {
                     singleCell =[[[NSBundle mainBundle] loadNibNamed:@"SingleTableViewCell" owner:self options:nil] objectAtIndex:0];
+                    
                     singleCell.singleTextField.delegate = self;
                     [singleCell.singleTextField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
 
@@ -936,14 +954,14 @@ enum signupStep {
                 NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                 NSLog(@"%@",responseDic);
                 NSString *errorStr = [responseDic objectForKey:@"error"];
-                if (errorStr.length>0) {
-                    [self showAlertWithTitle:@"stasheasy" withMessage:errorStr];
+                
+                if (errorStr.length>0)
+                {
+                    [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
                 }
                 else
                 {
-                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                    [defaults setObject:responseDic forKey:@"userinfo"];
-                    [defaults synchronize];
+                    [Utilities setUserDefaultWithObject:responseDic andKey:@"userinfo"];
                     [self changeStepColour:signupStep];
                 }
             });
@@ -959,45 +977,56 @@ enum signupStep {
 
 -(void)loanApplicationWebserviceCall
 {
-    if ([CommonFunctions reachabiltyCheck])
+    NSDictionary *dictParam = [[NSDictionary alloc] initWithObjectsAndKeys:@"loanApplicationDetails",@"mode", nil];
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
     {
-        [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
-        
-        NSString *post =[NSString stringWithFormat:@"mode=loanApplicationDetails"];
-        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-        NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:[NSURL URLWithString:@"https://devapi.stasheasy.com/webServicesMobile/StasheasyApp"]];
-        [request setHTTPMethod:@"POST"];
-        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-        [request setHTTPBody:postData];
+        NSLog(@"%@", response);
+        NSLog(@"%@", response);
+        NSLog(@"%@", response);
         
         
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-        [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            dispatch_async (dispatch_get_main_queue(), ^
-            {
-                [CommonFunctions removeActivityIndicator];
-                NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-                NSLog(@"%@",responseDic);
-                NSString *errorStr = [responseDic objectForKey:@"error"];
-                if ( errorStr.length > 0 )
-                {
-                    [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
-                }
-                else
-                {
-                    pickerObj.responseDic = responseDic;
-                }
-            });
-        }]
-         
-         resume
-         ];
-    } else {
-        [self showAlertWithTitle:@"Stasheasy" withMessage:@"Please check internet"];
-    }
+        
+    }];
+    
+//    if ([CommonFunctions reachabiltyCheck])
+//    {
+//        [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
+//        
+//        NSString *post =[NSString stringWithFormat:@"mode=loanApplicationDetails"];
+//        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+//        NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
+//        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+//        [request setURL:[NSURL URLWithString:@"https://devapi.stasheasy.com/webServicesMobile/StasheasyApp"]];
+//        [request setHTTPMethod:@"POST"];
+//        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+//        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+//        [request setHTTPBody:postData];
+//        
+//        
+//        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+//        [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+//            dispatch_async (dispatch_get_main_queue(), ^
+//            {
+//                [CommonFunctions removeActivityIndicator];
+//                NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+//                NSLog(@"%@",responseDic);
+//                NSString *errorStr = [responseDic objectForKey:@"error"];
+//                if ( errorStr.length > 0 )
+//                {
+//                    [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
+//                }
+//                else
+//                {
+//                    pickerObj.responseDic = responseDic;
+//                }
+//            });
+//        }]
+//         
+//         resume
+//         ];
+//    } else {
+//        [self showAlertWithTitle:@"Stasheasy" withMessage:@"Please check internet"];
+//    }
     
 }
 

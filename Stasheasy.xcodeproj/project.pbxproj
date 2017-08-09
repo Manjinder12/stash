@@ -101,6 +101,7 @@
 		E208E5A31F3308E3006EBF9F /* SplashVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E208E5A21F3308E3006EBF9F /* SplashVC.m */; };
 		E208E5A81F331948006EBF9F /* ChangePinVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E208E5A71F331948006EBF9F /* ChangePinVC.m */; };
 		E208E5AB1F331955006EBF9F /* LostStolenVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E208E5AA1F331955006EBF9F /* LostStolenVC.m */; };
+		E20FDE971F3B3038001A438E /* RejectedVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E20FDE961F3B3038001A438E /* RejectedVC.m */; };
 		E2305EF01F2A01BA005CDBAF /* ConsolidatedEMIVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EEF1F2A01BA005CDBAF /* ConsolidatedEMIVC.m */; };
 		E2305EF31F2A01C3005CDBAF /* ReloadCardVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EF21F2A01C3005CDBAF /* ReloadCardVC.m */; };
 		E2305EF71F2A0AD7005CDBAF /* LoanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EF61F2A0AD7005CDBAF /* LoanCell.m */; };
@@ -326,6 +327,8 @@
 		E208E5A71F331948006EBF9F /* ChangePinVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePinVC.m; sourceTree = "<group>"; };
 		E208E5A91F331955006EBF9F /* LostStolenVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LostStolenVC.h; sourceTree = "<group>"; };
 		E208E5AA1F331955006EBF9F /* LostStolenVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LostStolenVC.m; sourceTree = "<group>"; };
+		E20FDE951F3B3038001A438E /* RejectedVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectedVC.h; sourceTree = "<group>"; };
+		E20FDE961F3B3038001A438E /* RejectedVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectedVC.m; sourceTree = "<group>"; };
 		E2305EEE1F2A01BA005CDBAF /* ConsolidatedEMIVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsolidatedEMIVC.h; sourceTree = "<group>"; };
 		E2305EEF1F2A01BA005CDBAF /* ConsolidatedEMIVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsolidatedEMIVC.m; sourceTree = "<group>"; };
 		E2305EF11F2A01C3005CDBAF /* ReloadCardVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReloadCardVC.h; sourceTree = "<group>"; };
@@ -537,6 +540,7 @@
 		781D1E411EE0885E00D82E86 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E20FDE941F3B302E001A438E /* RejectedVC */,
 				E208E5A41F331931006EBF9F /* ChangePinVC */,
 				E208E5A51F331931006EBF9F /* LostStolenVC */,
 				E208E5A01F33086F006EBF9F /* SplashVC */,
@@ -1095,6 +1099,15 @@
 			path = LostStolenVC;
 			sourceTree = "<group>";
 		};
+		E20FDE941F3B302E001A438E /* RejectedVC */ = {
+			isa = PBXGroup;
+			children = (
+				E20FDE951F3B3038001A438E /* RejectedVC.h */,
+				E20FDE961F3B3038001A438E /* RejectedVC.m */,
+			);
+			path = RejectedVC;
+			sourceTree = "<group>";
+		};
 		E2305EEC1F2A01AC005CDBAF /* ConsolidatedEMIVC */ = {
 			isa = PBXGroup;
 			children = (
@@ -1471,6 +1484,7 @@
 				BBA1A7F31EF8FE0E00B1406A /* TransactionListCell.m in Sources */,
 				7805509C1F0ACC8800A1B34F /* IQPreviousNextView.m in Sources */,
 				BB85AF6A1EE28C0D00B32986 /* PreCardScreen.m in Sources */,
+				E20FDE971F3B3038001A438E /* RejectedVC.m in Sources */,
 				BB85AF7C1EE290C400B32986 /* UIImage+REFrostedViewController.m in Sources */,
 				E2D2CCCA1F26155200E98F2E /* Utilities.m in Sources */,
 				786D7AB21EE5E2CA00EDEB21 /* StatusCell.m in Sources */,

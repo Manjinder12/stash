@@ -10,6 +10,7 @@
 #import "TransactionListCell.h"
 #import "TransactionCell.h"
 #import "AppDelegate.h"
+#import "ServerCall.h"
 
 @interface TransactionList ()
 {
@@ -34,8 +35,16 @@
     appDelegate = [AppDelegate sharedDelegate];
     
     marrTransaction = [[NSMutableArray alloc] init];
-    marrTransaction =  appDelegate.dictOverview[@"recent_transactions"];
+
     self.transactionListTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+//    if ([appDelegate.dictTransaction count] == 0)
+//    {
+//        [self serverCallForCardTransactionDetails];
+//    }
+    marrTransaction =  appDelegate.dictOverview[@"recent_transactions"];
+    [ _transactionListTableView reloadData ];
+
 }
 - (void)didReceiveMemoryWarning
 {
@@ -78,6 +87,34 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
+}
+- (void)serverCallForCardTransactionDetails
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObject:@"CardTransactionDetails" forKey:@"mode"];
+    
+    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"%@", response);
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 appDelegate.dictTransaction = [NSDictionary dictionaryWithDictionary:response];
+                 marrTransaction =  response[@"recent_transactions"];
+                 [ _transactionListTableView reloadData ];
+             }
+         }
+         else
+         {
+             
+         }
+     }];
 }
 
 @end

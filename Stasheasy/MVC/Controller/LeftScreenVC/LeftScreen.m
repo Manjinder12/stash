@@ -113,7 +113,7 @@
     else if(indexPath.row == 3)
     {
         TransactionDetailsViewController *tdvc = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionDetailsViewController"];
-        tdvc.isOverview = 0;
+        tdvc.isOverview = 1;
         UINavigationController *nav = [[UINavigationController alloc]init];
         nav.viewControllers = @[tdvc];
         [self.frostedViewController setContentViewController:nav];
@@ -123,7 +123,7 @@
     else if(indexPath.row == 4)
     {
         TransactionDetailsViewController *tdvc = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionDetailsViewController"];
-        tdvc.isOverview = 1;
+        tdvc.isOverview = 0;
         UINavigationController *nav = [[UINavigationController alloc]init];
         nav.viewControllers = @[tdvc];
         [self.frostedViewController setContentViewController:nav];
@@ -132,7 +132,8 @@
     
     else if(indexPath.row == 5)
     {
-        [CommonFunctions setUserDefault:@"islogin" value:@"0"];
+        [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
+        [Utilities setUserDefaultWithObject:nil andKey:@"auth_token"];
         AppDelegate *appdelegate =  (AppDelegate *)[UIApplication sharedApplication].delegate;
         LandingVC *vc = (LandingVC *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"LandingVC"] ;
         UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];

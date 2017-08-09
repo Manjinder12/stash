@@ -29,7 +29,17 @@
     appDelegate = [AppDelegate sharedDelegate];
     [self serverCallToCheckTokenValidity];
 }
-
+- (void)checkTokenAndNavigate
+{
+    if ([[Utilities getUserDefaultValueFromKey:@"islogin"] intValue] == 0 && [Utilities getUserDefaultValueFromKey:@"auth_token"] == nil )
+    {
+        [self navigateToLandingVC];
+    }
+    else
+    {
+        [self navigateToLOCDashboard];
+    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

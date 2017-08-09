@@ -10,6 +10,7 @@
 #import "TransactionCell.h"
 #import "ServerCall.h"
 #import "AppDelegate.h"
+#import "VBPieChart.h"
 
 @interface TransactionScreen ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -30,6 +31,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblEMIDate;
 
 @property (weak, nonatomic) IBOutlet UIView *viewBalance;
+@property (weak, nonatomic) IBOutlet VBPieChart *viewPieChart;
 
 @property (weak, nonatomic) IBOutlet UITableView *tblRecentTransaction;
 
@@ -54,9 +56,27 @@
     _tblRecentTransaction.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     [Utilities setCornerRadius:_viewBalance];
+    
+    [self setUpPieChart];
     [self populateCardAndBalanceDetail];
 }
-
+- (void)setUpPieChart
+{
+    int usedValue = (50 * 100) / 100;
+    int remainValue = (40 * 100 ) / 100;
+    
+    _viewPieChart.startAngle = M_PI+M_PI_2;
+    [_viewPieChart setHoleRadiusPrecent:0.5];
+    
+    
+    
+    NSArray *chartValues = @[
+                             @{@"name":@"Apple", @"value":[NSNumber numberWithInt:usedValue], @"color":[UIColor redColor], @"strokeColor":[UIColor whiteColor]},
+                             @{@"name":@"Orange", @"value":[NSNumber numberWithInt:remainValue], @"color":[UIColor greenColor], @"strokeColor":[UIColor whiteColor]}
+                             ];
+    
+    [_viewPieChart setChartValues:chartValues animation:YES duration:2 options:VBPieChartAnimationDefault];
+}
 - (void)populateCardAndBalanceDetail
 {
     _lblCardNo.text = [NSString stringWithFormat:@"%@",appDelegate.dictOverview[@"card_details"][@"card_no"]];
