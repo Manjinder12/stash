@@ -10,4 +10,6 @@
 
 @interface SignupScreen : UIViewController<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 
+@property int signupStep;
+
 @end

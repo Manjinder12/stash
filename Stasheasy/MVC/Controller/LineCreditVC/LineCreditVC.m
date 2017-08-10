@@ -20,6 +20,7 @@
 
 @interface LineCreditVC ()<LGPlusButtonsViewDelegate>
 {
+    AppDelegate *appDelegate;
     LGPlusButtonsView *stashfinButton;
     BOOL isStashExpand;
     NSString *strRemainLOC;
@@ -62,6 +63,9 @@
 - (void)customInitialization
 {
     self.navigationController.navigationBar.hidden = YES;
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    
+    appDelegate = [AppDelegate sharedDelegate];
     
     [ Utilities setShadowToView:_viewUpper ];
     [ Utilities setShadowToView:_viewLower ];
@@ -162,10 +166,17 @@
     else if (index == 3)
     {
         // Change Pin
-        [plusButtonsView hideButtonsAnimated:YES completionHandler:^{
-            
+        [plusButtonsView hideButtonsAnimated:YES completionHandler:^
+        {
             isStashExpand = NO;
-            [self navigateToViewControllerWithIdentifier:@"ReloadCardVC"];
+            if ( [appDelegate.loanRequestStatus  isEqual: @"PENDING"])
+            {
+                [Utilities showAlertWithMessage:@"Can not reload card, last LOC pending"];
+            }
+            else
+            {
+                [self navigateToViewControllerWithIdentifier:@"ReloadCardVC"];
+            }
         }];
     }
     else
@@ -289,7 +300,8 @@
     _lblEMIDate.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"next_emi_date"] intValue]];
     _lblEMIAmount.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"next_emi_amount"] intValue]];
     _lblRequestAmount.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"last_loc_request_amount"] intValue]];
-    _lblRequestStatus.text = [NSString stringWithFormat:@"%@",[dictLOC valueForKey:@"last_loc_request_status"]].uppercaseString;
+    appDelegate.loanRequestStatus = [NSString stringWithFormat:@"%@",[dictLOC valueForKey:@"last_loc_request_status"]].uppercaseString;
+    _lblRequestStatus.text = appDelegate.loanRequestStatus;
     
     NSDictionary *dict = [Utilities getDayDateYear:[dictLOC valueForKey:@"last_loc_request_date"]];
     
@@ -324,7 +336,7 @@
 }
 -(IBAction)reloadCardAction:(id)sender
 {
-    if ([_lblRequestStatus.text isEqualToString:@"PENDING"])
+    if ([appDelegate.loanRequestStatus isEqualToString:@"PENDING"])
     {
         [Utilities showAlertWithMessage:@"Can not reload card, last LOC pending"];
     }

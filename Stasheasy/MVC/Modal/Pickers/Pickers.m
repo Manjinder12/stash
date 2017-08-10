@@ -10,11 +10,13 @@
 
 @implementation Pickers
 
--(NSMutableArray *)giveLoanPickerArr {
+-(NSMutableArray *)giveLoanPickerArr
+{
    self.loanReasonArr = [NSMutableArray array];
    NSArray *loanresponseArr = [_responseDic objectForKey:@"loan_reasons"];
 
-    for (NSDictionary *dic in loanresponseArr) {
+    for (NSDictionary *dic in loanresponseArr)
+    {
         Pickers *loanpicker = [[Pickers alloc]init];
         loanpicker.id_loaon_reason = [dic objectForKey:@"id"];
         loanpicker.loanreason = [dic objectForKey:@"loan_reason"];

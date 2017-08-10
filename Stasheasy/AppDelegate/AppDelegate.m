@@ -21,13 +21,14 @@
 @end
 
 @implementation AppDelegate
-@synthesize dictOverview,dictTransaction,dictAnalyze;
+@synthesize dictOverview,dictTransaction,dictAnalyze,loanRequestStatus;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     dictOverview = [[NSDictionary alloc] init];
     dictAnalyze = [[NSDictionary alloc] init];
     dictTransaction = [[NSDictionary alloc] init];
+    loanRequestStatus = @"";
     
     [[UINavigationBar appearance] setBarTintColor:[UIColor redColor]];
     [[UINavigationBar appearance]setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];

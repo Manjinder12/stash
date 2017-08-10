@@ -58,7 +58,8 @@
     [actionView removeFromSuperview];
 }
 
--(void)chatBtnTapped {
+-(void)chatBtnTapped
+{
     [actionView removeFromSuperview];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"chat" object:nil];
     

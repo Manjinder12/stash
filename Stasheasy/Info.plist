@@ -36,7 +36,7 @@
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>App uses Library photo</string>
-	<key>Privacy - Photo Camera Usage Description</key>
+	<key>NSCameraUsageDescription</key>
 	<string>App uses camera to capture photo</string>
 </dict>
 </plist>

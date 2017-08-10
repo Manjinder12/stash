@@ -8,6 +8,7 @@
 
 #import "LandingVC.h"
 #import "Utilities.h"
+#import "SignupScreen.h"
 
 @interface LandingVC ()
 
@@ -35,7 +36,9 @@
 
 - (IBAction)newUserAction:(id)sender
 {
-    [self navigateToViewControllerWithIdentifier:@"SignupScreen"];
+    SignupScreen *vc = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"SignupScreen"];
+    vc.signupStep = 1;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 - (IBAction)PreApprovedAction:(id)sender
 {

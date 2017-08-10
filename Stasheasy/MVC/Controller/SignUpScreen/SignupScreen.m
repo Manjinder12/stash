@@ -31,7 +31,7 @@ enum signupStep {
   docUpload = 4
 };
 
-@interface SignupScreen ()
+@interface SignupScreen ()<UIActionSheetDelegate,UIImagePickerControllerDelegate>
 {
     UIPickerView * picker;
     NSArray *basicInfoArray;
@@ -42,7 +42,6 @@ enum signupStep {
     NSMutableDictionary *basicInfoDic;
     BasicInfo *basicInfoModalObj;
     NSMutableArray *cityArr;
-    int signupStep;
     City *cityObj;
     UITextField *selTextfield;
     Pickers *pickerObj;
@@ -54,6 +53,9 @@ enum signupStep {
     UIDatePicker *date;
     EducationPicker *eduPicker;
     ProfessionalEducation *pfobj;
+    UIImage *checkImage, *checkoffImage, *uploadActive, *uploadDeactive, *selectedImage;
+    UIImagePickerController *imagePicker;
+    UIButton *btnUpload;
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *btnFirst;
@@ -76,24 +78,114 @@ enum signupStep {
 @end
 
 @implementation SignupScreen
+@synthesize signupStep;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [self customInitialization];
-    
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupAddress) name:@"address" object:nil];
 }
 - (void)customInitialization
 {
+    checkImage = [UIImage imageNamed:@"check"];
+    checkoffImage = [UIImage imageNamed:@"checkoff"];
+    uploadDeactive = [UIImage imageNamed:@"upload"];
+    uploadActive = [UIImage imageNamed:@"uploadBtn"];
+    
+    imagePicker = [[UIImagePickerController alloc] init];
+    
     appdelagate = [AppDelegate sharedDelegate];
     userService = [[UserServices alloc]init];
     
     basicInfoDic = [NSMutableDictionary dictionary];
     
     [self setupView];
+
+    if (signupStep > 1)
+    {
+        [self setSignUpStepView];
+    }
+    
+    [self.signupTableview reloadData];
+
+}
+#pragma mark UIImagePickerController delegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
+{
+    selectedImage = [info valueForKey:UIImagePickerControllerEditedImage];
+
+    if (selectedImage != nil )
+    {
+        [btnUpload setBackgroundImage:uploadActive forState:UIControlStateNormal];
+    }
+    
+    [imagePicker dismissViewControllerAnimated:YES completion:nil];
+}
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [imagePicker dismissViewControllerAnimated:YES completion:nil];
+}
+- (void)setSignUpStepView
+{
+    switch (signupStep)
+    {
+        case idDetails:
+        {
+            _firstView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
+            [_btnFirst setBackgroundImage:[UIImage imageNamed:@"greenBtn"] forState:UIControlStateNormal];
+            self.basicinfoLbl.textColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
+            [_btnSecond setBackgroundImage:[UIImage imageNamed:@"two"] forState:UIControlStateNormal];
+            self.idDetailLbl.textColor = [UIColor blackColor];
+            break;
+        }
+        case personalInfo:
+        {
+            _firstView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
+            [_btnFirst setBackgroundImage:[UIImage imageNamed:@"greenBtn"] forState:UIControlStateNormal];
+            self.basicinfoLbl.textColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
+            
+            _secondView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
+            [_btnSecond setBackgroundImage:[UIImage imageNamed:@"greenBtn"] forState:UIControlStateNormal];
+            self.idDetailLbl.textColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
+            
+            [_btnThird setBackgroundImage:[UIImage imageNamed:@"three"] forState:UIControlStateNormal];
+            self.personalInfoLbl.textColor = [UIColor blackColor];
+            [self professionalDetailsServiceCall];
+            break;
+
+        }
+        case docUpload:
+        {
+            _firstView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
+            [_btnFirst setBackgroundImage:[UIImage imageNamed:@"greenBtn"] forState:UIControlStateNormal];
+            self.basicinfoLbl.textColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
+            
+            _secondView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
+            [_btnSecond setBackgroundImage:[UIImage imageNamed:@"greenBtn"] forState:UIControlStateNormal];
+            self.idDetailLbl.textColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
+
+            _thirdView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
+            [_btnThird setBackgroundImage:[UIImage imageNamed:@"greenBtn"] forState:UIControlStateNormal];
+            self.personalInfoLbl.textColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
+            
+            [_btnFourth setBackgroundImage:[UIImage imageNamed:@"four"] forState:UIControlStateNormal];
+            self.docLbl.textColor = [UIColor blackColor];
+            break;
+        }
+        default:
+            break;
+    }
+    
+    if (signupStep < 5)
+    {
+        if (signupStep == 4)
+        {
+            [ _btnNext setBackgroundImage:[UIImage imageNamed:@"register"] forState:UIControlStateNormal];
+        }
+        [self.signupTableview reloadData];
+    }
     
 }
 - (void)didReceiveMemoryWarning
@@ -105,7 +197,7 @@ enum signupStep {
 
 -(void)setupView
 {
-    signupStep = 1;
+//    signupStep = 1;
     NSDictionary *loanDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Loan Amount",@"First",@"Tenure",@"Second",nil];
     NSDictionary *dobDic = [NSDictionary dictionaryWithObjectsAndKeys:@"DOB",@"First",@"Gender",@"Second",nil];
     NSDictionary *eduDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Linkedin",@"First",@"Education",@"Second",nil];
@@ -126,15 +218,12 @@ enum signupStep {
     pickerObj = [[Pickers alloc]init];
     eduPicker = [[EducationPicker alloc]init];
     pfobj = [[ProfessionalEducation alloc]init];
-    
-    
-    
 }
 
 #pragma mark Button Action
 - (IBAction)backAAction:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [Utilities popToNumberOfControllers:2 withNavigation:self.navigationController];
 }
 - (IBAction)firstAction:(id)sender
 {
@@ -162,17 +251,26 @@ enum signupStep {
              {
                  [self basicInfoWebserviceCall];
              }
-          }
+        }
             break;
         
         case 2:
-             [self saveloanApplication];
-             break;
+        {
+            if ( [self performStepTwoValidation] )
+            {
+                [self saveloanApplication];
+            }
+        }
+            break;
         
         case 3:
-             [self submitProfessionDetails];
-             break;
-            
+        {
+            if ( [self performStepThreeValidation] )
+            {
+                [self submitProfessionDetails];
+            }
+        }
+            break;
          case 4:
             [self changeStepColour:docUpload];
              break;
@@ -184,7 +282,7 @@ enum signupStep {
 
 - (void)updateUserInput:(UITextField *)txtInput
 {
-        switch (signupStep)
+    switch (signupStep)
     {
             case 1:
             {
@@ -196,12 +294,14 @@ enum signupStep {
             
             case 2:
             {
+         
                 NSArray *loanKeys = [loanApplicationObj giveKeysArray];
                 id key = [loanKeys objectAtIndex:txtInput.tag];
                 if ([key isKindOfClass:[NSDictionary class]])
                 {
                     if (txtInput.tag == 0)
                     {
+                        [txtInput setKeyboardType:UIKeyboardTypeNumberPad];
                         if ([txtInput.placeholder isEqualToString:@"Loan Amount"])
                         {
                             [loanApplicationObj setValue:txtInput.text forKey:@"loanAmount"];
@@ -297,7 +397,6 @@ enum signupStep {
     
         if (error)
         {
-            
             UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"Stashfin" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
             
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
@@ -314,8 +413,112 @@ enum signupStep {
     return YES;
 }
 
+-(BOOL)performStepTwoValidation
+{
+    for (id key in [loanApplicationObj giveKeysArray])
+    {
+        NSError *error;
+        id fieldValue;
 
-
+        if ( [key isKindOfClass:[NSDictionary class]] )
+        {
+            for (id dictKey in key)
+            {
+                fieldValue = [loanApplicationObj valueForKey:[key valueForKey:dictKey]];
+                [loanApplicationObj validateValue:&fieldValue forKey:[key valueForKey:dictKey] error:&error];
+                
+                if (error)
+                {
+                    UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"Stashfin" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                        
+                    }];
+                    
+                    [alert addAction:ok];
+                    
+                    [self presentViewController:alert animated:YES completion:nil];
+                    return NO;
+                }
+            }
+        }
+        else
+        {
+            fieldValue = [loanApplicationObj valueForKey:key];
+            [loanApplicationObj validateValue:&fieldValue forKey:key error:&error];
+            
+            if (error)
+            {
+                UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"Stashfin" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                    
+                }];
+                
+                [alert addAction:ok];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+                return NO;
+                
+            }
+        }
+        
+    }
+    return YES;
+}
+-(BOOL)performStepThreeValidation
+{
+    for (id key in [pfobj giveprofKeysArray])
+    {
+        NSError *error;
+        id fieldValue;
+        
+        if ( [key isKindOfClass:[NSDictionary class]] )
+        {
+            for (id dictKey in key)
+            {
+                fieldValue = [pfobj valueForKey:[key valueForKey:dictKey]];
+                [pfobj validateValue:&fieldValue forKey:[key valueForKey:dictKey] error:&error];
+                
+                if (error)
+                {
+                    UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"Stashfin" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                        
+                    }];
+                    
+                    [alert addAction:ok];
+                    
+                    [self presentViewController:alert animated:YES completion:nil];
+                    return NO;
+                }
+            }
+        }
+        else
+        {
+            fieldValue = [pfobj valueForKey:key];
+            [pfobj validateValue:&fieldValue forKey:key error:&error];
+            
+            if (error)
+            {
+                UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"Stashfin" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                    
+                }];
+                
+                [alert addAction:ok];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+                return NO;
+                
+            }
+        }
+        
+    }
+    return YES;
+}
 -(void)changeStepColour:(int)signupstep
 {
     switch (signupstep)
@@ -417,22 +620,26 @@ enum signupStep {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch (signupStep) {
-        case basicInfo: {
+    switch (signupStep)
+    {
+        case basicInfo:
+        {
             return basicInfoArray.count;
             break;
         }
-        case idDetails: {
+        case idDetails:
+        {
             return idDetailArray.count;
             break;
         }
-        case personalInfo: {
+        case personalInfo:
+        {
             return professionalArray.count;
             break;
         }
-        case docUpload: {
+        case docUpload:
+        {
             return docArray.count;
-
             break;
         }
         default:
@@ -519,7 +726,8 @@ enum signupStep {
                 NSArray *keysarr = [basicInfoModalObj giveKeysArray];
                 NSString *key = [keysarr objectAtIndex:indexPath.row];
                 NSString *valStr = [basicInfoModalObj valueForKey:key];
-                if (valStr.length>0) {
+                if ( valStr.length > 0)
+                {
                     singleCell.singleTextField.text = valStr;
                 }
                 singleCell.singleTextField.tag = indexPath.row;
@@ -532,11 +740,14 @@ enum signupStep {
             
             break;
         }
-        case idDetails: {
-            if ([[idDetailArray objectAtIndex:indexPath.row] isKindOfClass:[NSDictionary class]]) {
+        case idDetails:
+        {
+            if ([[idDetailArray objectAtIndex:indexPath.row] isKindOfClass:[NSDictionary class]])
+            {
                 static NSString *doubleTableIdentifier = @"DoubleTableViewCell";
                 DoubleTableViewCell *doubleCell =  [tableView dequeueReusableCellWithIdentifier:doubleTableIdentifier];
-                if (doubleCell == nil) {
+                if (doubleCell == nil)
+                {
                     doubleCell =[[[NSBundle mainBundle] loadNibNamed:@"DoubleTableViewCell" owner:self options:nil] objectAtIndex:0];
                     [doubleCell.firstField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
                     [doubleCell.secondField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
@@ -555,7 +766,7 @@ enum signupStep {
                 doubleCell.firstField.delegate =self;
                 doubleCell.secondField.delegate =self;
                 
-                if ([[rowDic objectForKey:@"First"] isEqualToString:@"DOB"]) {
+                if ([[rowDic objectForKey:@"first"] isEqualToString:@"DOB"]) {
                     doubleCell.calendarBtn.hidden = NO;
                 }
                 doubleCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -563,7 +774,8 @@ enum signupStep {
                 return doubleCell;
 
             }
-            else {
+            else
+            {
                 static NSString *singleTableIdentifier = @"SingleTableViewCell";
                 SingleTableViewCell *singleCell  =  [tableView dequeueReusableCellWithIdentifier:singleTableIdentifier];
                 if (singleCell == nil) {
@@ -588,7 +800,8 @@ enum signupStep {
             
             break;
         }
-        case personalInfo: {
+        case personalInfo:
+        {
             if ([[professionalArray objectAtIndex:indexPath.row] isKindOfClass:[NSDictionary class]]) {
                 static NSString *doubleTableIdentifier = @"professionalTableViewCell";
                 DoubleTableViewCell *doubleCell =  [tableView dequeueReusableCellWithIdentifier:doubleTableIdentifier];
@@ -625,7 +838,8 @@ enum signupStep {
                 return doubleCell;
                 
             }
-            else {
+            else
+            {
                 static NSString *singleTableIdentifier = @"SingleTableViewCell";
                 SingleTableViewCell *singleCell  =  [tableView dequeueReusableCellWithIdentifier:singleTableIdentifier];
                 if (singleCell == nil) {
@@ -642,8 +856,10 @@ enum signupStep {
 
             break;
         }
-        case docUpload: {
-            if ([[docArray objectAtIndex:indexPath.row]isEqualToString:@"Mention"]) {
+        case docUpload:
+        {
+            if ([[docArray objectAtIndex:indexPath.row]isEqualToString:@"Mention"])
+            {
                 static NSString *singleTableIdentifier = @"SingleTableViewCell";
                 SingleTableViewCell *singleCell  =  [tableView dequeueReusableCellWithIdentifier:singleTableIdentifier];
                 if (singleCell == nil) {
@@ -656,7 +872,8 @@ enum signupStep {
                 return singleCell;
 
             }
-            else {
+            else
+            {
                 static NSString *uploadTableIdentifier = @"UploadCell";
                 UploadCell *uploadCell  =  [tableView dequeueReusableCellWithIdentifier:uploadTableIdentifier];
                 if (uploadCell == nil) {
@@ -664,6 +881,13 @@ enum signupStep {
                 }
                 uploadCell.uploadLbl.text = [docArray objectAtIndex:indexPath.row];
                 uploadCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                uploadCell.checkBtn.tag = indexPath.row;
+                [uploadCell.checkBtn addTarget:self action:@selector(checkButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+                
+                uploadCell.uploadBtn.tag = indexPath.row;
+                [uploadCell.uploadBtn addTarget:self action:@selector(uploadButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+
                 return uploadCell;
 
             }
@@ -676,25 +900,59 @@ enum signupStep {
     return 0;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (signupStep == 4) {
-        UploadCell *uploadCell = [tableView cellForRowAtIndexPath:indexPath];
-        [uploadCell.checkBtn setBackgroundImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
-        [uploadCell.uploadBtn setBackgroundImage:[UIImage imageNamed:@"uploadBtn"] forState:UIControlStateNormal];
-        uploadCell.uploadLbl.textColor = [UIColor blackColor];
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (signupStep == 4)
+    {
+//        UploadCell *uploadCell = [tableView cellForRowAtIndexPath:indexPath];
+//        [uploadCell.uploadBtn setBackgroundImage:[UIImage imageNamed:@"uploadBtn"] forState:UIControlStateNormal];
+//        uploadCell.uploadLbl.textColor = [UIColor blackColor];
     }
 }
-
-#pragma mark - TextField Delegate
+- (void)checkButtonAction:(id)sender
+{
+    UIButton *btn = (UIButton *)sender;
+    if ( [ btn currentBackgroundImage ] == checkoffImage )
+    {
+        [ btn setBackgroundImage:checkImage forState:UIControlStateNormal ];
+    }
+    else
+    {
+        [ btn setBackgroundImage:checkoffImage forState:UIControlStateNormal ];
+    }
+}
+- (void)updateUploadButton:(id)sender
+{
+    UIButton *btn = (UIButton *)sender;
+    if ( [ btn currentBackgroundImage ] == uploadDeactive )
+    {
+        [ btn setBackgroundImage:uploadActive forState:UIControlStateNormal ];
+    }
+    else
+    {
+        [ btn setBackgroundImage:uploadDeactive forState:UIControlStateNormal ];
+    }
+}
+- (void)uploadButtonAction:(id)sender
+{
+    btnUpload = (UIButton *)sender;
+    
+    UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
+    [imagePop showInView:self.view];
+    
+}
+#pragma mark TextField Delegate
 
 - (BOOL) textFieldShouldBeginEditing:(UITextField *)textField
 {
-    if (signupStep == 2  && (textField.tag == 1 || textField.tag == 6 || textField.tag == 9 || textField.tag == 2 || textField.tag == 8)) {
-        if ((textField.tag == 1 || textField.tag == 6 || textField.tag == 9)) {
+    if (signupStep == 2  && (textField.tag == 1 || textField.tag == 6 || textField.tag == 9 || textField.tag == 2 || textField.tag == 8))
+    {
+        if ((textField.tag == 1 || textField.tag == 6 || textField.tag == 9))
+        {
             [self setPickerArray:textField];
         }
-        else if (textField.tag == 2) {
+        else if (textField.tag == 2)
+        {
             if ([textField.placeholder isEqualToString:@"Gender"]) {
                 // gender textfield
                 pickerArr = [NSMutableArray arrayWithArray:[NSArray arrayWithObjects:@"Male",@"Female", nil]];
@@ -928,7 +1186,6 @@ enum signupStep {
 
 -(void)basicInfoWebserviceCall
 {
-    
     if ([CommonFunctions reachabiltyCheck])
     {
         NSString *fullname = [NSString stringWithFormat:@"%@ %@",[basicInfoModalObj valueForKey:@"fname"],[basicInfoModalObj valueForKey:@"lname"]];
@@ -955,7 +1212,7 @@ enum signupStep {
                 NSLog(@"%@",responseDic);
                 NSString *errorStr = [responseDic objectForKey:@"error"];
                 
-                if (errorStr.length>0)
+                if ( errorStr.length> 0)
                 {
                     [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
                 }
@@ -977,56 +1234,56 @@ enum signupStep {
 
 -(void)loanApplicationWebserviceCall
 {
-    NSDictionary *dictParam = [[NSDictionary alloc] initWithObjectsAndKeys:@"loanApplicationDetails",@"mode", nil];
-    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
-    {
-        NSLog(@"%@", response);
-        NSLog(@"%@", response);
-        NSLog(@"%@", response);
-        
-        
-        
-    }];
-    
-//    if ([CommonFunctions reachabiltyCheck])
+//    NSDictionary *dictParam = [[NSDictionary alloc] initWithObjectsAndKeys:@"loanApplicationDetails",@"mode", nil];
+//    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
 //    {
-//        [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
-//        
-//        NSString *post =[NSString stringWithFormat:@"mode=loanApplicationDetails"];
-//        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-//        NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
-//        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-//        [request setURL:[NSURL URLWithString:@"https://devapi.stasheasy.com/webServicesMobile/StasheasyApp"]];
-//        [request setHTTPMethod:@"POST"];
-//        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-//        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-//        [request setHTTPBody:postData];
+//        NSLog(@"%@", response);
+//        NSLog(@"%@", response);
+//        NSLog(@"%@", response);
 //        
 //        
-//        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-//        [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-//            dispatch_async (dispatch_get_main_queue(), ^
-//            {
-//                [CommonFunctions removeActivityIndicator];
-//                NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-//                NSLog(@"%@",responseDic);
-//                NSString *errorStr = [responseDic objectForKey:@"error"];
-//                if ( errorStr.length > 0 )
-//                {
-//                    [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
-//                }
-//                else
-//                {
-//                    pickerObj.responseDic = responseDic;
-//                }
-//            });
-//        }]
-//         
-//         resume
-//         ];
-//    } else {
-//        [self showAlertWithTitle:@"Stasheasy" withMessage:@"Please check internet"];
-//    }
+//        
+//    }];
+    
+    if ([CommonFunctions reachabiltyCheck])
+    {
+        [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
+        
+        NSString *post =[NSString stringWithFormat:@"mode=loanApplicationDetails"];
+        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+        NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+        [request setURL:[NSURL URLWithString:@"https://devapi.stasheasy.com/webServicesMobile/StasheasyApp"]];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:postData];
+        
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            dispatch_async (dispatch_get_main_queue(), ^
+            {
+                [CommonFunctions removeActivityIndicator];
+                NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                NSLog(@"%@",responseDic);
+                NSString *errorStr = [responseDic objectForKey:@"error"];
+                if ( errorStr.length > 0 )
+                {
+                    [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
+                }
+                else
+                {
+                    pickerObj.responseDic = responseDic;
+                }
+            });
+        }]
+         
+         resume
+         ];
+    } else {
+        [self showAlertWithTitle:@"Stasheasy" withMessage:@"Please check internet"];
+    }
     
 }
 
@@ -1068,15 +1325,12 @@ enum signupStep {
     } else {
         [self showAlertWithTitle:@"Stasheasy" withMessage:@"Please check internet"];
     }
-    
 }
 
-
-
--(void)saveloanApplication
+- (void)saveloanApplication
 {
-    
-    if ([CommonFunctions reachabiltyCheck]) {
+    if ([CommonFunctions reachabiltyCheck])
+    {
         [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *userInfo = [defaults valueForKey:@"userinfo"];
@@ -1212,5 +1466,41 @@ enum signupStep {
     }
 
 }
-
+#pragma mark UIActionSheet Delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex)
+    {
+        case 0:
+            [self takePhoto];
+            break;
+        case 1:
+            [self choosePhotoFromLibrary];
+            break;
+        default:
+            break;
+    }
+}
+- (void)takePhoto
+{
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Error" message:@"Device has no camera" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        imagePicker.delegate = self;
+        imagePicker.allowsEditing = YES;
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    }
+}
+- (void)choosePhotoFromLibrary
+{
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    imagePicker.delegate = self;
+    imagePicker.allowsEditing = YES;
+    [self presentViewController:imagePicker animated:YES completion:nil];
+}
 @end

@@ -53,6 +53,7 @@
 }
 - (void)customInitialization
 {
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     
     check = [UIImage imageNamed:@"radioChecked"];
     uncheck = [UIImage imageNamed:@"radioUncheck"];
@@ -182,7 +183,7 @@
 - (IBAction)tenureSliderValueChanged:(id)sender
 {
     float number = [_tenureSlider value];
-    int value = (int)(number * maxTenure);
+    int value = (int)(number * maxTenure) + 3;
     if (value == 0)
     {
         installmentsNo = 3;
@@ -190,11 +191,8 @@
     }
     else
     {
-        if (value > 3 )
-        {
             installmentsNo = value;
             _lblTenure.text = [NSString stringWithFormat:@"%d Months",installmentsNo];
-        }
     }
 }
 -(IBAction)radioButtonAction:(RadioButton*)sender
@@ -330,8 +328,9 @@
     _lblRemainLOC.text = [NSString stringWithFormat:@"%d",[[response valueForKey:@"remaining_loc"] intValue]];
    
     maxTenure = [[response valueForKey:@"max_tenure"] intValue];
-    
     _lblMaxTenure.text = [NSString stringWithFormat:@"%d",maxTenure];
+    maxTenure = maxTenure - 3;
+
 }
 - (void)navigateToLOCWithdrawalVC:(NSDictionary *)response
 {

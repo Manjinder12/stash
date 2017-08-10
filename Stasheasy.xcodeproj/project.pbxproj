@@ -105,6 +105,7 @@
 		E2305EF01F2A01BA005CDBAF /* ConsolidatedEMIVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EEF1F2A01BA005CDBAF /* ConsolidatedEMIVC.m */; };
 		E2305EF31F2A01C3005CDBAF /* ReloadCardVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EF21F2A01C3005CDBAF /* ReloadCardVC.m */; };
 		E2305EF71F2A0AD7005CDBAF /* LoanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EF61F2A0AD7005CDBAF /* LoanCell.m */; };
+		E2847C671F3C952000C5D3A3 /* StatusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2847C661F3C952000C5D3A3 /* StatusVC.m */; };
 		E2A781121F2B1D9400C151CC /* RadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A781111F2B1D9400C151CC /* RadioButton.m */; };
 		E2A781161F2B496500C151CC /* LOCWithdrawalVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A781151F2B496500C151CC /* LOCWithdrawalVC.m */; };
 		E2C60FB21F27398F00DCA206 /* LeftScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C60FAE1F27398F00DCA206 /* LeftScreen.m */; };
@@ -335,6 +336,8 @@
 		E2305EF21F2A01C3005CDBAF /* ReloadCardVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReloadCardVC.m; sourceTree = "<group>"; };
 		E2305EF51F2A0AD7005CDBAF /* LoanCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoanCell.h; sourceTree = "<group>"; };
 		E2305EF61F2A0AD7005CDBAF /* LoanCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoanCell.m; sourceTree = "<group>"; };
+		E2847C651F3C952000C5D3A3 /* StatusVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusVC.h; sourceTree = "<group>"; };
+		E2847C661F3C952000C5D3A3 /* StatusVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusVC.m; sourceTree = "<group>"; };
 		E2A781101F2B1D9400C151CC /* RadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioButton.h; sourceTree = "<group>"; };
 		E2A781111F2B1D9400C151CC /* RadioButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioButton.m; sourceTree = "<group>"; };
 		E2A781141F2B496500C151CC /* LOCWithdrawalVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOCWithdrawalVC.h; sourceTree = "<group>"; };
@@ -540,6 +543,7 @@
 		781D1E411EE0885E00D82E86 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E2847C641F3C950D00C5D3A3 /* StatusVC */,
 				E20FDE941F3B302E001A438E /* RejectedVC */,
 				E208E5A41F331931006EBF9F /* ChangePinVC */,
 				E208E5A51F331931006EBF9F /* LostStolenVC */,
@@ -1135,6 +1139,15 @@
 			path = LoanCell;
 			sourceTree = "<group>";
 		};
+		E2847C641F3C950D00C5D3A3 /* StatusVC */ = {
+			isa = PBXGroup;
+			children = (
+				E2847C651F3C952000C5D3A3 /* StatusVC.h */,
+				E2847C661F3C952000C5D3A3 /* StatusVC.m */,
+			);
+			path = StatusVC;
+			sourceTree = "<group>";
+		};
 		E2A7810F1F2B1D9400C151CC /* RadioButton */ = {
 			isa = PBXGroup;
 			children = (
@@ -1460,6 +1473,7 @@
 				7805509A1F0ACC8800A1B34F /* IQTextView.m in Sources */,
 				E208E5A31F3308E3006EBF9F /* SplashVC.m in Sources */,
 				BBC2D4DE1EFA585A00FDC823 /* ChatLeftCell.m in Sources */,
+				E2847C671F3C952000C5D3A3 /* StatusVC.m in Sources */,
 				BB85AF821EE299F900B32986 /* DashboardScreen.m in Sources */,
 				BB583A8B1EEA6EE5000B73AA /* MBProgressHUD.m in Sources */,
 				BB9821A71F0B93DF00D70EF8 /* Pickers.m in Sources */,

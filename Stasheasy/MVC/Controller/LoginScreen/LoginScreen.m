@@ -14,6 +14,8 @@
 #import "ServerCall.h"
 #import "REFrostedViewController.h"
 #import "RejectedVC.h"
+#import "SignupScreen.h"
+#import "StatusVC.h"
 
 @interface LoginScreen ()
 {
@@ -128,33 +130,13 @@
             }
             else
             {
-                if ( [response[@"landing_page"] isEqualToString:@"rejected"] )
+                if ( [response[@"landing_page"] isEqualToString:@"profile"] )
                 {
-                    RejectedVC *rejectedVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"RejectedVC"];
-                    rejectedVC.dictDate = [Utilities getDayDateYear:response[@"latest_loan_details"][@"loan_creation_date"]];
-                    [self.navigationController pushViewController:rejectedVC animated:YES];
-                }
-                
-                else if ( [response[@"landing_page"] isEqualToString:@"id_detail"] )
-                {
-                    
-                }
-                
-                else if ( [response[@"landing_page"] isEqualToString:@"professional_info"] )
-                {
-                    
-                }
-                else if ( [response[@"landing_page"] isEqualToString:@"doc_upload"] )
-                {
-                    
+                    [self navigateAccordingToCurrentStatus:response];
                 }
                 else
                 {
-                    [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
-                    [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
-                    
-                    ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
-                    [self.navigationController pushViewController:vc animated:YES];
+                    [self navigateAccordingLandingPageStatus:response];
                 }
             }
         }
@@ -217,6 +199,59 @@
     [alertController addAction:okAction];
     [self presentViewController:alertController animated:YES completion:nil];
 }
+- (void)navigateAccordingLandingPageStatus:(NSDictionary *)response
+{
+    if ( [response[@"landing_page"] isEqualToString:@"rejected"] )
+    {
+        RejectedVC *rejectedVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"RejectedVC"];
+        rejectedVC.dictDate = [Utilities getDayDateYear:response[@"latest_loan_details"][@"loan_creation_date"]];
+        [self.navigationController pushViewController:rejectedVC animated:YES];
+    }
+    
+    else if ( [response[@"landing_page"] isEqualToString:@"id_detail"] )
+    {
+        SignupScreen *signupScreen = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"SignupScreen"];
+        signupScreen.signupStep = 2;
+        [self.navigationController pushViewController:signupScreen animated:YES];
+    }
+    
+    else if ( [response[@"landing_page"] isEqualToString:@"professional_info"] )
+    {
+        SignupScreen *signupScreen = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"SignupScreen"];
+        signupScreen.signupStep = 3;
+        [self.navigationController pushViewController:signupScreen animated:YES];
+    }
+    else if ( [response[@"landing_page"] isEqualToString:@"doc_upload"] )
+    {
+        SignupScreen *signupScreen = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"SignupScreen"];
+        signupScreen.signupStep = 4;
+        [self.navigationController pushViewController:signupScreen animated:YES];
+    }
+}
+- (void)navigateAccordingToCurrentStatus:(NSDictionary *)response
+{
+    if ( [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] )
+    {
+        // Navigate To LOC Dashboard
 
+        [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
+        [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
 
+        ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else if ( [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"rejected"] )
+    {
+        RejectedVC *rejectedVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"RejectedVC"];
+        rejectedVC.dictDate = [Utilities getDayDateYear:response[@"latest_loan_details"][@"loan_creation_date"]];
+        [self.navigationController pushViewController:rejectedVC animated:YES];
+    }
+    
+    else
+    {
+        StatusVC *statusVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"StatusVC"];
+        statusVC.dictLoandetail = response[@"latest_loan_details"];
+        [self.navigationController pushViewController:statusVC animated:YES];
+    }
+}
 @end

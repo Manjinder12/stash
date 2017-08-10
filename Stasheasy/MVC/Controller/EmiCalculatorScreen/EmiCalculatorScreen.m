@@ -50,6 +50,8 @@
 - (void)customInitialization
 {
     self.navigationController.navigationBarHidden = YES;
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    
     principal = 100000;
     installmentsNo = 3;
     rate = 12;

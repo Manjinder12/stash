@@ -20,6 +20,7 @@
 @property (strong,nonatomic) NSString *stateName;
 @property (strong,nonatomic) NSString *cityName;
 @property (strong,nonatomic) NSString *residencePin;
+@property (weak,nonatomic) NSString *loanRequestStatus;
 
 @property NSDictionary *dictOverview, *dictTransaction,*dictAnalyze;
 
