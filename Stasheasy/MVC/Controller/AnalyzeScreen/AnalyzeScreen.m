@@ -280,8 +280,6 @@
              {
                  appDelegate.dictAnalyze = [NSDictionary dictionaryWithDictionary:response];
                  [self populateAnalyzeSpendingData:response];
-
-                 
              }
          }
          else

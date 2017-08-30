@@ -66,7 +66,7 @@
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     
     appDelegate = [AppDelegate sharedDelegate];
-    
+        
     [ Utilities setShadowToView:_viewUpper ];
     [ Utilities setShadowToView:_viewLower ];
     
