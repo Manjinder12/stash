@@ -26,6 +26,9 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
 @property (weak, nonatomic) IBOutlet UITextField *txtPassword;
+@property (weak, nonatomic) IBOutlet UITextField *txtOTP;
+@property (weak, nonatomic) IBOutlet UIView *viewPopUp;
+@property (weak, nonatomic) IBOutlet UIButton *btnSendOTP;
 
 @end
 
@@ -42,6 +45,9 @@
     param = [NSMutableDictionary dictionary];
     
     self.navigationController.navigationBar.hidden = YES;
+    
+    _viewPopUp.hidden = YES;
+    [ Utilities setBorderAndColor:_btnSendOTP ];
     
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:gesture];
@@ -69,17 +75,19 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-- (IBAction)facebookAction:(id)sender
+- (IBAction)otpLoginAction:(id)sender
 {
     
 }
-- (IBAction)googleAction:(id)sender
+- (IBAction)sendOTPAction:(id)sender
 {
     
 }
+
 - (IBAction)forgotPasswordAction:(id)sender
 {
-    
+    _viewPopUp.hidden = NO;
+    [ self showPopupView:_viewPopUp onViewController:self ];
 }
 
 -(BOOL)performValidation
@@ -254,4 +262,48 @@
         [self.navigationController pushViewController:statusVC animated:YES];
     }
 }
+
+#pragma mark Helper Method
+- (void)showPopupView:(UIView *)popupView onViewController:(UIViewController *)viewcontroller
+{
+    UIView *overlayView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [overlayView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5]];
+    [overlayView setTag:786];
+    [popupView setHidden:NO];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedOnOverlay:)];
+    [overlayView addGestureRecognizer:tapGesture];
+    
+    [viewcontroller.view addSubview:overlayView];
+    [viewcontroller.view bringSubviewToFront:popupView];
+    popupView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        
+        popupView.transform = CGAffineTransformIdentity;
+    } completion:^(BOOL finished)
+    {
+        
+    }];
+    
+}
+- (void)tappedOnOverlay:(UIGestureRecognizer *)gesture
+{
+    [self hidePopupView:_viewPopUp fromViewController:self];
+}
+- (void)hidePopupView:(UIView *)popupView fromViewController:(UIViewController *)viewcontroller
+{
+    UIView *overlayView = [viewcontroller.view viewWithTag:786];
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^
+     {
+         popupView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+     }
+                     completion:^(BOOL finished)
+     {
+         [popupView setHidden:YES];
+         
+     }];
+    [overlayView removeFromSuperview];
+}
+
+
 @end

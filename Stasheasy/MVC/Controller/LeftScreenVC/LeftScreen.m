@@ -17,9 +17,12 @@
 #import "TransactionDetailsViewController.h"
 #import "LineCreditVC.h"
 #import "LandingVC.h"
+#import "ChangePinVC.h"
+#import "LostStolenVC.h"
 
 @interface LeftScreen ()
 {
+    AppDelegate *appDelegate;
     NSArray *leftImages;
     NSArray *leftLabels;
 }
@@ -35,17 +38,28 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    appDelegate = [AppDelegate sharedDelegate];
+    
     self.navigationController.navigationBarHidden = NO;
     
-    leftImages = [NSArray arrayWithObjects:@"profile",@"profile",@"calculator",@"transaction",@"applicationStatus",@"logout", nil];
-    leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Profile",@"EMI Calculation",@"My Transactions",@"Card Overview",@"Logout", nil];
+    if ( appDelegate.isCardFound == YES )
+    {
+        leftImages = [NSArray arrayWithObjects:@"profile",@"profile",@"calculator",@"transaction",@"applicationStatus",@"applicationStatus",@"calculator",@"logout", nil];
+        leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Card Overview",@"My Transactions",@"Change Pin",@"Block Card",@"EMI Calculation",@"Profile",@"Logout", nil];
+    }
+    else
+    {
+        leftImages = [NSArray arrayWithObjects:@"profile",@"calculator",@"transaction",@"applicationStatus",@"calculator",@"logout", nil];
+        leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Get Stashfin Card",@"EMI Calculation",@"Profile",@"Logout", nil];
+    }
+    
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    CGFloat width = _profileImageView.frame.size.width;
-    _profileImageView.layer.cornerRadius = width/2;
+    _profileImageView.layer.cornerRadius = _profileImageView.frame.size.width/2;
     _profileImageView.layer.masksToBounds =YES;
 }
 
@@ -61,10 +75,10 @@
 {
        return leftLabels.count;
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return (50.0f/320.0f)*[UIApplication sharedApplication].keyWindow.frame.size.width;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return (50.0f/320.0f)*[UIApplication sharedApplication].keyWindow.frame.size.width;
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -84,62 +98,131 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row == 0)
+    if ( appDelegate.isCardFound == YES )
     {
-        LineCreditVC *lineCreditVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
-        UINavigationController *nav = [[UINavigationController alloc]init];
-        nav.viewControllers = @[lineCreditVC];
-        [self.frostedViewController setContentViewController:nav];
-        [self.frostedViewController hideMenuViewController];
+        if(indexPath.row == 0)
+        {
+            LineCreditVC *lineCreditVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
+            UINavigationController *nav = [[UINavigationController alloc]init];
+            nav.viewControllers = @[lineCreditVC];
+            [self.frostedViewController setContentViewController:nav];
+            [self.frostedViewController hideMenuViewController];
+            
+        }
+        else if(indexPath.row == 1)
+        {
+            TransactionDetailsViewController *tdvc = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionDetailsViewController"];
+            tdvc.isOverview = 0;
+            UINavigationController *nav = [[UINavigationController alloc]init];
+            nav.viewControllers = @[tdvc];
+            [self.frostedViewController setContentViewController:nav];
+            [self.frostedViewController hideMenuViewController];
+            
+        }
+        else if (indexPath.row == 2)
+        {
+            TransactionDetailsViewController *tdvc = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionDetailsViewController"];
+            tdvc.isOverview = 1;
+            UINavigationController *nav = [[UINavigationController alloc]init];
+            nav.viewControllers = @[tdvc];
+            [self.frostedViewController setContentViewController:nav];
+            [self.frostedViewController hideMenuViewController];
+        }
+        else if(indexPath.row == 3)
+        {
+            ChangePinVC *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ChangePinVC"];
+            UINavigationController *nav = [[UINavigationController alloc]init];
+            nav.viewControllers = @[pvc];
+            [self.frostedViewController setContentViewController:nav];
+            [self.frostedViewController hideMenuViewController];
+        }
         
+        else if(indexPath.row == 4)
+        {
+            LostStolenVC *lsvc = [self.storyboard instantiateViewControllerWithIdentifier:@"LostStolenVC"];
+            UINavigationController *nav = [[UINavigationController alloc]init];
+            nav.viewControllers = @[lsvc];
+            [self.frostedViewController setContentViewController:nav];
+            [self.frostedViewController hideMenuViewController];
+            
+        }
+        else if(indexPath.row == 5)
+        {
+            EmiCalculatorScreen *evc = [self.storyboard instantiateViewControllerWithIdentifier:@"EmiCalculatorScreen"];
+            UINavigationController *nav = [[UINavigationController alloc]init];
+            nav.viewControllers = @[evc];
+            [self.frostedViewController setContentViewController:nav];
+            [self.frostedViewController hideMenuViewController];
+        }
+        else if(indexPath.row == 6)
+        {
+            ProfileScreen *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileScreen"];
+            UINavigationController *nav = [[UINavigationController alloc]init];
+            nav.viewControllers = @[pvc];
+            [self.frostedViewController setContentViewController:nav];
+            [self.frostedViewController hideMenuViewController];
+        }
+        else if(indexPath.row == 7)
+        {
+            [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
+            [Utilities setUserDefaultWithObject:nil andKey:@"auth_token"];
+            AppDelegate *appdelegate =  (AppDelegate *)[UIApplication sharedApplication].delegate;
+            LandingVC *vc = (LandingVC *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"LandingVC"] ;
+            UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];
+            navigationController.viewControllers = @[vc];
+            navigationController.navigationBar.hidden = YES;
+            appdelegate.window.rootViewController = navigationController;
+        }
     }
-    else if(indexPath.row == 1)
+    else
     {
-        ProfileScreen *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileScreen"];
-        UINavigationController *nav = [[UINavigationController alloc]init];
-        nav.viewControllers = @[pvc];
-        [self.frostedViewController setContentViewController:nav];
-        [self.frostedViewController hideMenuViewController];
+        if(indexPath.row == 0)
+        {
+            LineCreditVC *lineCreditVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
+            UINavigationController *nav = [[UINavigationController alloc]init];
+            nav.viewControllers = @[lineCreditVC];
+            [self.frostedViewController setContentViewController:nav];
+            [self.frostedViewController hideMenuViewController];
+            
+        }
+        else if(indexPath.row == 1)
+        {
+            LineCreditVC *lineCreditVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
+            UINavigationController *nav = [[UINavigationController alloc]init];
+            nav.viewControllers = @[lineCreditVC];
+            [self.frostedViewController setContentViewController:nav];
+            [self.frostedViewController hideMenuViewController];
+            
+        }
+        else if (indexPath.row == 2)
+        {
+            EmiCalculatorScreen *evc = [self.storyboard instantiateViewControllerWithIdentifier:@"EmiCalculatorScreen"];
+            UINavigationController *nav = [[UINavigationController alloc]init];
+            nav.viewControllers = @[evc];
+            [self.frostedViewController setContentViewController:nav];
+            [self.frostedViewController hideMenuViewController];
+        }
         
-    }
-    else if (indexPath.row == 2)
-    {
-        EmiCalculatorScreen *evc = [self.storyboard instantiateViewControllerWithIdentifier:@"EmiCalculatorScreen"];
-        UINavigationController *nav = [[UINavigationController alloc]init];
-        nav.viewControllers = @[evc];
-        [self.frostedViewController setContentViewController:nav];
-        [self.frostedViewController hideMenuViewController];
-    }
-    else if(indexPath.row == 3)
-    {
-        TransactionDetailsViewController *tdvc = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionDetailsViewController"];
-        tdvc.isOverview = 1;
-        UINavigationController *nav = [[UINavigationController alloc]init];
-        nav.viewControllers = @[tdvc];
-        [self.frostedViewController setContentViewController:nav];
-        [self.frostedViewController hideMenuViewController];
+        else if(indexPath.row == 3)
+        {
+            ProfileScreen *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileScreen"];
+            UINavigationController *nav = [[UINavigationController alloc]init];
+            nav.viewControllers = @[pvc];
+            [self.frostedViewController setContentViewController:nav];
+            [self.frostedViewController hideMenuViewController];
+        }
+        else if(indexPath.row == 4)
+        {
+            [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
+            [Utilities setUserDefaultWithObject:nil andKey:@"auth_token"];
+            AppDelegate *appdelegate =  (AppDelegate *)[UIApplication sharedApplication].delegate;
+            LandingVC *vc = (LandingVC *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"LandingVC"] ;
+            UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];
+            navigationController.viewControllers = @[vc];
+            navigationController.navigationBar.hidden = YES;
+            appdelegate.window.rootViewController = navigationController;
+        }
     }
     
-    else if(indexPath.row == 4)
-    {
-        TransactionDetailsViewController *tdvc = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionDetailsViewController"];
-        tdvc.isOverview = 0;
-        UINavigationController *nav = [[UINavigationController alloc]init];
-        nav.viewControllers = @[tdvc];
-        [self.frostedViewController setContentViewController:nav];
-        [self.frostedViewController hideMenuViewController];
-    }
-    
-    else if(indexPath.row == 5)
-    {
-        [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
-        [Utilities setUserDefaultWithObject:nil andKey:@"auth_token"];
-        AppDelegate *appdelegate =  (AppDelegate *)[UIApplication sharedApplication].delegate;
-        LandingVC *vc = (LandingVC *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"LandingVC"] ;
-        UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];
-        navigationController.viewControllers = @[vc];
-        navigationController.navigationBar.hidden = YES;
-        appdelegate.window.rootViewController = navigationController;
-    }
 }
 @end

@@ -23,6 +23,6 @@
 @property (weak,nonatomic) NSString *loanRequestStatus;
 
 @property NSDictionary *dictOverview, *dictTransaction,*dictAnalyze;
-
+@property BOOL isCardFound;
 @end
 

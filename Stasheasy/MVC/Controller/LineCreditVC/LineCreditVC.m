@@ -40,6 +40,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblRequestStatus;
 @property (weak, nonatomic) IBOutlet UILabel *lblCardNo;
 @property (weak, nonatomic) IBOutlet UILabel *lblCardDate;
+@property (weak, nonatomic) IBOutlet UILabel *lblName;
 
 @property (weak, nonatomic) IBOutlet UIView *viewContainer;
 @property (weak, nonatomic) IBOutlet UIView *viewUpper;
@@ -66,9 +67,13 @@
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     
     appDelegate = [AppDelegate sharedDelegate];
-        
-    [ Utilities setShadowToView:_viewUpper ];
-    [ Utilities setShadowToView:_viewLower ];
+    
+    [ Utilities setCornerRadius:_viewUpper ];
+    [ Utilities setCornerRadius:_viewLower ];
+    
+    
+//    [ Utilities setShadowToView:_viewUpper ];
+//    [ Utilities setShadowToView:_viewLower ];
     
     approvedLOC = 0;
     usedLOC = 0;
@@ -232,15 +237,22 @@
             }
             else
             {
+                dictLOCDetail = [NSDictionary dictionaryWithDictionary:response];
+
                 if ([[response valueForKey:@"card_found"] boolValue] == true)
                 {
-                    dictLOCDetail = [NSDictionary dictionaryWithDictionary:response];
+                    appDelegate.isCardFound = YES;
                     [self serverCallForCardOverview];
                 }
                 else
                 {
-                    _cnsViewLOCdetailTop.constant = 10;
+                    appDelegate.isCardFound = NO;
+                    [self populateLOCDetails:dictLOCDetail andCardDetail:nil];
+
+                    [SVProgressHUD dismiss];
                 }
+                
+
             }
         }
         else
@@ -267,9 +279,9 @@
             }
             else
             {
-                [self populateLOCDetails:dictLOCDetail andCardDetail:response];
+                [self populateLOCDetails:dictLOCDetail andCardDetail:response[@"card_details"]];
                 
-                [self addStashfinButtonView];
+//                [self addStashfinButtonView];
                 isStashExpand = NO;
                 _viewOuter.hidden = YES;
             }
@@ -297,19 +309,18 @@
     
     _lblBalance.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"total_balance"] intValue]];
     _lblCash.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"last_loc_request_amount"] intValue]];
-    _lblEMIDate.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"next_emi_date"] intValue]];
+    _lblEMIDate.text = [NSString stringWithFormat:@"%@",[dictLOC valueForKey:@"next_emi_date"]];
     _lblEMIAmount.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"next_emi_amount"] intValue]];
     _lblRequestAmount.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"last_loc_request_amount"] intValue]];
     appDelegate.loanRequestStatus = [NSString stringWithFormat:@"%@",[dictLOC valueForKey:@"last_loc_request_status"]].uppercaseString;
     _lblRequestStatus.text = appDelegate.loanRequestStatus;
     
-    NSDictionary *dict = [Utilities getDayDateYear:[dictLOC valueForKey:@"last_loc_request_date"]];
     
-    _lblRequestDate.text = [NSString stringWithFormat:@"%@ %@ %@",[dict valueForKey:@"day"],[dict valueForKey:@"month"],[dict valueForKey:@"year"]];
+    _lblRequestDate.text = [dictLOC valueForKey:@"last_loc_request_date"];
     
-    _lblCardNo.text = [NSString stringWithFormat:@"%@",dictCard[@"card_details"][@"card_no"]];
-    _lblCardDate.text = [NSString stringWithFormat:@"%@/%@",dictCard[@"card_details"][@"expiry_month"],dictCard[@"card_details"][@"expiry_year"]];
-    
+    _lblCardNo.text = [NSString stringWithFormat:@"%@",dictCard[@"card_no"]];
+    _lblCardDate.text = [NSString stringWithFormat:@"%@/%@",dictCard[@"expiry_month"],dictCard[@"expiry_year"]];
+    _lblName.text = [NSString stringWithFormat:@"%@",dictCard[@"name"]].uppercaseString;
     [self setUpPieChart];
 }
 - (void)setUpPieChart

@@ -27,7 +27,7 @@
     
     self.navigationController.navigationBar.hidden = YES;
     appDelegate = [AppDelegate sharedDelegate];
-    [self serverCallToCheckTokenValidity];
+    [self serverCallForCardOverview];
 }
 - (void)checkTokenAndNavigate
 {
@@ -87,6 +87,34 @@
          {
                 [self navigateToLandingVC];
          }
+     }];
+}
+- (void)serverCallForCardOverview
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObject:@"cardOverview" forKey:@"mode"];
+    
+    [ServerCall getServerResponseWithParameters:param withHUD:NO withCompletion:^(id response)
+     {
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 appDelegate.isCardFound = NO;
+             }
+             else
+             {
+                 
+                 appDelegate.isCardFound = YES;
+             }
+         }
+         else
+         {
+         }
+         
+         [ self serverCallToCheckTokenValidity ];
+         
      }];
 }
 @end

@@ -38,7 +38,8 @@
 - (void)customInitialization
 {
     _viewTextfield.hidden = YES;
-    [self addStashfinButtonView];
+    self.navigationController.navigationBar.hidden = YES;
+//    [self addStashfinButtonView];
 }
 - (void)didReceiveMemoryWarning
 {

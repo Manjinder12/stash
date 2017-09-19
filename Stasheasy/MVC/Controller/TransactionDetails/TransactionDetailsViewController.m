@@ -67,7 +67,7 @@
         else
             [self transactionAction:_btnTransaction];
     }
-    [self addStashfinButtonView];
+//    [self addStashfinButtonView];
 }
 #pragma mark LGPlusButtonsView
 - (void)addStashfinButtonView

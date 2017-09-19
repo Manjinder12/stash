@@ -38,8 +38,8 @@
     [Utilities setCornerRadius:_txtDetail];
     
     strLostStolen = @"";
-    
-    [self addStashfinButtonView];
+    self.navigationController.navigationBar.hidden = YES;
+//    [self addStashfinButtonView];
 }
 - (void)didReceiveMemoryWarning
 {
