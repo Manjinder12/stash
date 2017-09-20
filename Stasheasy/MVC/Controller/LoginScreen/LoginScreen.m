@@ -16,12 +16,15 @@
 #import "RejectedVC.h"
 #import "SignupScreen.h"
 #import "StatusVC.h"
+#import "AppDelegate.h"
 
 @interface LoginScreen ()
 {
+    AppDelegate *appDelegate;
     UserServices *service;
     NSMutableDictionary *param;
     REFrostedViewController *refrostedVC;
+    NSDictionary *dictLoginResponse;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
@@ -41,6 +44,7 @@
   }
 - (void)customInitialization
 {
+    appDelegate = [ AppDelegate sharedDelegate ];
     service = [[UserServices alloc] init];
     param = [NSMutableDictionary dictionary];
     
@@ -138,14 +142,10 @@
             }
             else
             {
-                if ( [response[@"landing_page"] isEqualToString:@"profile"] )
-                {
-                    [self navigateAccordingToCurrentStatus:response];
-                }
-                else
-                {
-                    [self navigateAccordingLandingPageStatus:response];
-                }
+                [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
+                [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
+                dictLoginResponse = response;
+                [ self serverCallForCardOverview ];
             }
         }
         else
@@ -153,6 +153,41 @@
             [Utilities showAlertWithMessage:response];
         }
     }];
+}
+- (void)serverCallForCardOverview
+{
+    NSDictionary *dictParam = [NSDictionary dictionaryWithObject:@"cardOverview" forKey:@"mode"];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
+     {
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 appDelegate.isCardFound = NO;
+             }
+             else
+             {
+                 
+                 appDelegate.isCardFound = YES;
+             }
+         }
+         else
+         {
+         }
+         
+         if ( [dictLoginResponse[@"landing_page"] isEqualToString:@"profile"] )
+         {
+             [self navigateAccordingToCurrentStatus:dictLoginResponse];
+         }
+         else
+         {
+             [self navigateAccordingLandingPageStatus:dictLoginResponse];
+         }
+         
+     }];
 }
 -(void)loginApiCall
 {
@@ -242,8 +277,8 @@
     {
         // Navigate To LOC Dashboard
 
-        [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
-        [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
+//        [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
+//        [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
 
         ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
         [self.navigationController pushViewController:vc animated:YES];

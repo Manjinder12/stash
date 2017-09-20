@@ -38,6 +38,11 @@
 @property (weak, nonatomic) IBOutlet UIImageView *profilepic;
 @property (weak, nonatomic) IBOutlet UIImageView *imageBanner;
 
+@property (weak, nonatomic) IBOutlet UITextField *txtOld;
+@property (weak, nonatomic) IBOutlet UITextField *txtNew;
+@property (weak, nonatomic) IBOutlet UITextField *txtRetype;
+
+
 @property (weak, nonatomic) IBOutlet UILabel *perLbl;
 @property (weak, nonatomic) IBOutlet UILabel *proLbl;
 @property (weak, nonatomic) IBOutlet UILabel *docLbl;
@@ -47,8 +52,15 @@
 @property (weak, nonatomic) IBOutlet UIButton *professionalBtn;
 @property (weak, nonatomic) IBOutlet UIButton *personalBtn;
 @property (weak, nonatomic) IBOutlet UIButton *docBtn;
+@property (weak, nonatomic) IBOutlet UIButton *btnPicture;
+@property (weak, nonatomic) IBOutlet UIButton *btnPassword;
+
 @property (weak, nonatomic) IBOutlet UITableView *profileTableView;
+
 @property (weak, nonatomic) IBOutlet UIView *viewOuter;
+@property (weak, nonatomic) IBOutlet UIView *viewPopup;
+
+
 @property (weak, nonatomic) IBOutlet UICollectionView *docCollection;
 
 - (IBAction)personalTapped:(id)sender;
@@ -71,6 +83,7 @@
 {
     self.navigationController.navigationBar.hidden = YES;
    
+    _viewPopup.hidden = YES;
     imagePicker = [[UIImagePickerController alloc] init];
 
     marrPerText = [[NSMutableArray alloc] init];
@@ -420,7 +433,18 @@
     [self.frostedViewController hideMenuViewController];
 
 }
-
+- (IBAction)changePictureAction:(id)sender
+{
+    
+}
+- (IBAction)changePasswordAction:(id)sender
+{
+    
+}
+- (IBAction)popupAction:(id)sender
+{
+    [ self showPopupView:_viewPopup onViewController:self ];
+}
 #pragma mark Server Call
 - (void)serverCallForPersonalDetail
 {
@@ -673,8 +697,48 @@
 
     }];
     
-    
-    
     [imagePicker dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma marl Helper Method
+- (void)showPopupView:(UIView *)popupView onViewController:(UIViewController *)viewcontroller
+{
+    UIView *overlayView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [overlayView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5]];
+    [overlayView setTag:786];
+    [popupView setHidden:NO];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedOnOverlay:)];
+    [overlayView addGestureRecognizer:tapGesture];
+    
+    [viewcontroller.view addSubview:overlayView];
+    [viewcontroller.view bringSubviewToFront:popupView];
+    popupView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        
+        popupView.transform = CGAffineTransformIdentity;
+    } completion:^(BOOL finished) {
+        
+        //        [self.view bringSubviewToFront:_viewPicker];
+    }];
+    
+}
+- (void)tappedOnOverlay:(UIGestureRecognizer *)gesture
+{
+    [self hidePopupView:_viewPopup fromViewController:self];
+}
+- (void)hidePopupView:(UIView *)popupView fromViewController:(UIViewController *)viewcontroller
+{
+    UIView *overlayView = [viewcontroller.view viewWithTag:786];
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^
+     {
+         popupView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+     }
+                     completion:^(BOOL finished)
+     {
+         [popupView setHidden:YES];
+         
+     }];
+    [overlayView removeFromSuperview];
 }
 @end

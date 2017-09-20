@@ -254,6 +254,9 @@
          }
      }];
 }
+
+#pragma marl Helper Method
+
 -(void)showAlertWithTitle:(NSString *)atitle withMessage:(NSString *)message
 {
     UIAlertController *alertController  = [UIAlertController alertControllerWithTitle:atitle message:message preferredStyle:UIAlertControllerStyleAlert];

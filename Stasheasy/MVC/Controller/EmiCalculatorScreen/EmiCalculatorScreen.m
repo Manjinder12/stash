@@ -64,7 +64,7 @@
 
     
     [self calculateEMI];
-    [self setUpPieChart];
+//    [self setUpPieChart];
     [self addStashfinButtonView];
     isStashExpand = NO;
 }
