@@ -24,7 +24,6 @@
     LGPlusButtonsView *stashfinButton;
     BOOL isStashExpand;
     NSString *strRemainLOC;
-    NSDictionary *dictLOCDetail;
     int approvedLOC, usedLOC, remainingLOC, usedValue, remainValue ;
     double pieProgress;
 }
@@ -237,7 +236,7 @@
             }
             else
             {
-                dictLOCDetail = [NSDictionary dictionaryWithDictionary:response];
+                appDelegate.dictLOCDetail = [NSDictionary dictionaryWithDictionary:response];
 
                 if ([[response valueForKey:@"card_found"] boolValue] == true)
                 {
@@ -247,7 +246,7 @@
                 else
                 {
                     appDelegate.isCardFound = NO;
-                    [self populateLOCDetails:dictLOCDetail andCardDetail:nil];
+                    [self populateLOCDetails:appDelegate.dictLOCDetail andCardDetail:nil];
 
                     [SVProgressHUD dismiss];
                 }
@@ -259,7 +258,8 @@
         {
             [Utilities showAlertWithMessage:response];
         }
-    
+        
+        [SVProgressHUD dismiss];
     
     }];
 }
@@ -279,7 +279,9 @@
             }
             else
             {
-                [self populateLOCDetails:dictLOCDetail andCardDetail:response[@"card_details"]];
+                appDelegate.dictCard = response[@"card_details"];
+                
+                [self populateLOCDetails:appDelegate.dictLOCDetail andCardDetail:appDelegate.dictCard];
                 
 //                [self addStashfinButtonView];
                 isStashExpand = NO;

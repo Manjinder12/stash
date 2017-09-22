@@ -105,6 +105,7 @@
 		E2305EF01F2A01BA005CDBAF /* ConsolidatedEMIVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EEF1F2A01BA005CDBAF /* ConsolidatedEMIVC.m */; };
 		E2305EF31F2A01C3005CDBAF /* ReloadCardVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EF21F2A01C3005CDBAF /* ReloadCardVC.m */; };
 		E2305EF71F2A0AD7005CDBAF /* LoanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EF61F2A0AD7005CDBAF /* LoanCell.m */; };
+		E2625E711F752F3800AA74C0 /* JMMarkSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E2625E701F752F3800AA74C0 /* JMMarkSlider.m */; };
 		E2847C671F3C952000C5D3A3 /* StatusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2847C661F3C952000C5D3A3 /* StatusVC.m */; };
 		E2A781121F2B1D9400C151CC /* RadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A781111F2B1D9400C151CC /* RadioButton.m */; };
 		E2A781161F2B496500C151CC /* LOCWithdrawalVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A781151F2B496500C151CC /* LOCWithdrawalVC.m */; };
@@ -336,6 +337,8 @@
 		E2305EF21F2A01C3005CDBAF /* ReloadCardVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReloadCardVC.m; sourceTree = "<group>"; };
 		E2305EF51F2A0AD7005CDBAF /* LoanCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoanCell.h; sourceTree = "<group>"; };
 		E2305EF61F2A0AD7005CDBAF /* LoanCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoanCell.m; sourceTree = "<group>"; };
+		E2625E6F1F752F3800AA74C0 /* JMMarkSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMMarkSlider.h; sourceTree = "<group>"; };
+		E2625E701F752F3800AA74C0 /* JMMarkSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMMarkSlider.m; sourceTree = "<group>"; };
 		E2847C651F3C952000C5D3A3 /* StatusVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusVC.h; sourceTree = "<group>"; };
 		E2847C661F3C952000C5D3A3 /* StatusVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusVC.m; sourceTree = "<group>"; };
 		E2A781101F2B1D9400C151CC /* RadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioButton.h; sourceTree = "<group>"; };
@@ -916,6 +919,7 @@
 		BB85AF6B1EE290B600B32986 /* Rocket */ = {
 			isa = PBXGroup;
 			children = (
+				E2625E6E1F752F3800AA74C0 /* JMMarkSlider */,
 				E2D01F8D1F3495B900296A84 /* VBPieChart */,
 				E2A7810F1F2B1D9400C151CC /* RadioButton */,
 				7805506D1F0ACC8800A1B34F /* IQKeyboardManager */,
@@ -1137,6 +1141,15 @@
 				E2305EF61F2A0AD7005CDBAF /* LoanCell.m */,
 			);
 			path = LoanCell;
+			sourceTree = "<group>";
+		};
+		E2625E6E1F752F3800AA74C0 /* JMMarkSlider */ = {
+			isa = PBXGroup;
+			children = (
+				E2625E6F1F752F3800AA74C0 /* JMMarkSlider.h */,
+				E2625E701F752F3800AA74C0 /* JMMarkSlider.m */,
+			);
+			path = JMMarkSlider;
 			sourceTree = "<group>";
 		};
 		E2847C641F3C950D00C5D3A3 /* StatusVC */ = {
@@ -1545,6 +1558,7 @@
 				BB583A7D1EEA6A14000B73AA /* UserServices.m in Sources */,
 				BB583A851EEA6DB4000B73AA /* Reachability.m in Sources */,
 				781D1E561EE08CA600D82E86 /* SingleTableViewCell.m in Sources */,
+				E2625E711F752F3800AA74C0 /* JMMarkSlider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

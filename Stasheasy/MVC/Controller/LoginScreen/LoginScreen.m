@@ -176,6 +176,7 @@
          }
          else
          {
+             [ Utilities showAlertWithMessage:response ];
          }
          
          if ( [dictLoginResponse[@"landing_page"] isEqualToString:@"profile"] )

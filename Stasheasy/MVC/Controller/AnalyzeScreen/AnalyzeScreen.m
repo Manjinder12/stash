@@ -14,10 +14,10 @@
 @interface AnalyzeScreen ()
 {
     AppDelegate *appDelegate;
-    NSMutableArray *marrAnalyze;
+    NSMutableArray *marrAnalyze, *marrColor, *marrAmount, *marrTaxCount;
     NSArray *items;
     NSArray *valuesArr;
-    int tab ,approvedLOC, usedLOC, remainingLOC, usedValue, remainValue ;
+    int tab ,totalSpent, usedLOC, remainingLOC, usedValue, remainValue ;
     double pieProgress;
 
 }
@@ -39,7 +39,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
 //    [self setupView];
     [self customInitialization];
 }
@@ -47,50 +46,82 @@
 {
     appDelegate = [AppDelegate sharedDelegate];
     marrAnalyze = [[NSMutableArray alloc] init];
-   
+    marrColor = [[NSMutableArray alloc] init];
+    marrAmount = [[NSMutableArray alloc] init];
+    marrTaxCount = [[NSMutableArray alloc] init];
+
+    _swicthView.layer.cornerRadius = 20 ;
+    _swicthView.layer.masksToBounds = YES;
+    
+    [_btnSpending setBackgroundColor:[UIColor redColor]];
+    _btnSpending.titleLabel.textColor = [UIColor whiteColor];
+    
+    [_btnTranscation setBackgroundColor:[UIColor lightGrayColor]];
+    _btnTranscation.titleLabel.textColor = [UIColor blackColor];
+
     tab = 0;
     usedLOC = 50;
     remainingLOC = 60;
     pieProgress = 0;
-    approvedLOC = 100;
 
     self.analyzeTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
    
-    if ( [appDelegate.dictAnalyze count] == 0 )
-    {
-        [self serverCallForCardAnalyzeSpending];
-    }
-    else
-    {
-        [self populateAnalyzeSpendingData:appDelegate.dictAnalyze];
-
-    }
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+//    if ( [appDelegate.dictAnalyze count] == 0 )
+//    {
+//        [self serverCallForCardAnalyzeSpending];
+//    }
+//    else
+//    {
+//        [self populateAnalyzeSpendingData:appDelegate.dictAnalyze];
+//    }
     
+    
+    [self serverCallForCardAnalyzeSpending];
+
     
 }
 - (void)setUpPieChart
 {
-    usedValue = (usedLOC * 100) / approvedLOC;
-    remainValue = (remainingLOC * 100 ) / approvedLOC;
+    NSMutableArray *marrChartValue = [ NSMutableArray new ];
+    
+    int graphValue, amount;
+    
+    for ( int i = 0 ; i < marrAnalyze.count; i++)
+    {
+        amount = [ (NSNumber *) [ marrAmount objectAtIndex:i ] intValue];
+        graphValue = ( amount * 100 ) / totalSpent;
+        [ marrChartValue addObject:@{@"name":@"", @"value":[NSNumber numberWithInt:graphValue], @"color":[marrColor objectAtIndex:i], @"strokeColor":[UIColor whiteColor]}];
+    }
     
     _viewPieChart.startAngle = M_PI+M_PI_2;
     [_viewPieChart setHoleRadiusPrecent:0.5];
     
-    
-    
-    NSArray *chartValues = @[
-                             @{@"name":@"Apple", @"value":[NSNumber numberWithInt:usedValue], @"color":[UIColor redColor], @"strokeColor":[UIColor whiteColor]},
-                             @{@"name":@"Orange", @"value":[NSNumber numberWithInt:remainValue], @"color":[UIColor greenColor], @"strokeColor":[UIColor whiteColor]}
-                             ];
-    
-    [_viewPieChart setChartValues:chartValues animation:YES duration:2 options:VBPieChartAnimationDefault];
+    [_viewPieChart setChartValues:marrChartValue animation:YES duration:2 options:VBPieChartAnimationDefault];
 }
 - (void)populateAnalyzeSpendingData:(NSDictionary *)dict
 {
     marrAnalyze = dict[@"spendings"];
+    
+    for ( NSDictionary *temp in marrAnalyze )
+    {
+        CGFloat aRedValue = arc4random()%255;
+        CGFloat aGreenValue = arc4random()%255;
+        CGFloat aBlueValue = arc4random()%255;
+        
+        UIColor *randomColor = [UIColor colorWithRed:aRedValue/255.0f green:aGreenValue/255.0f blue:aBlueValue/255.0f alpha:1.0f];
+        
+        [ marrColor addObject:randomColor ];
+        [ marrAmount addObject:[temp valueForKey:@"amount"]];
+    }
+    
     _lblTotalSpent.text = [NSString stringWithFormat:@"₹%@",dict[@"total_spent"]];
-    [self setUpPieChart];
+    totalSpent = [dict[@"total_spent"] intValue];
+
     [ _analyzeTableView reloadData ];
+    [self setUpPieChart];
     
 }
 - (void)didReceiveMemoryWarning {
@@ -134,12 +165,7 @@
         cell.lblAmountCount.text = [NSString stringWithFormat:@"%@",[dict valueForKey:@"txn_counts"]];
     }
     
-    CGFloat aRedValue = arc4random()%255;
-    CGFloat aGreenValue = arc4random()%255;
-    CGFloat aBlueValue = arc4random()%255;
-    
-    UIColor *randomColor = [UIColor colorWithRed:aRedValue/255.0f green:aGreenValue/255.0f blue:aBlueValue/255.0f alpha:1.0f];
-    cell.samllView.backgroundColor = randomColor;
+    cell.samllView.backgroundColor = [ marrColor objectAtIndex:indexPath.row ];
     return cell;
 }
 
@@ -163,9 +189,10 @@
 - (IBAction)spendingAction:(id)sender
 {
     tab = 1;
+    [ marrAmount removeAllObjects ];
     
     [_btnSpending setBackgroundColor:[UIColor redColor]];
-    [_btnSpending setTintColor:[UIColor whiteColor]];
+    _btnSpending.titleLabel.textColor = [UIColor whiteColor];
     
     [_btnTranscation setBackgroundColor:[UIColor lightGrayColor]];
     _btnTranscation.titleLabel.textColor = [UIColor blackColor];
@@ -176,13 +203,13 @@
 - (IBAction)transactionAction:(id)sender
 {
     tab = 2;
+    [ marrAmount removeAllObjects ];
     
     [_btnTranscation setBackgroundColor:[UIColor redColor]];
-    [_btnTranscation setTintColor:[UIColor whiteColor]];
+    _btnTranscation.titleLabel.textColor = [UIColor whiteColor];
     
     [_btnSpending setBackgroundColor:[UIColor lightGrayColor]];
     _btnSpending.titleLabel.textColor = [UIColor blackColor];
-
     
     [_analyzeTableView reloadData];
 }

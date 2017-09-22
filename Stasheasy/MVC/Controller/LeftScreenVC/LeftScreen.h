@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 
-@interface LeftScreen : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@interface LeftScreen : UIViewController<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate>
 
 @end

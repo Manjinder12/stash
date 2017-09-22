@@ -21,10 +21,12 @@
 @end
 
 @implementation AppDelegate
-@synthesize dictOverview,dictTransaction,dictAnalyze,loanRequestStatus;
+@synthesize dictLOCDetail,dictCard,dictOverview,dictTransaction,dictAnalyze,loanRequestStatus;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    dictLOCDetail = [[NSDictionary alloc] init];
+    dictCard = [[NSDictionary alloc] init];
     dictOverview = [[NSDictionary alloc] init];
     dictAnalyze = [[NSDictionary alloc] init];
     dictTransaction = [[NSDictionary alloc] init];

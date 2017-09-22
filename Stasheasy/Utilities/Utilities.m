@@ -255,7 +255,7 @@
 +(void)setBorderAndColor:(id)object
 {
     CALayer *layer = [object layer];
-    layer.borderWidth = 0.7;
+    layer.borderWidth = 0.5;
     layer.borderColor = [UIColor darkGrayColor].CGColor;
 }
 

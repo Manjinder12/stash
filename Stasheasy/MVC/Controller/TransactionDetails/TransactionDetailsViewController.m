@@ -311,7 +311,6 @@
     [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
      {
          NSLog(@"%@", response);
-         
          if ( [response isKindOfClass:[NSDictionary class]] )
          {
              NSString *errorStr = [response objectForKey:@"error"];

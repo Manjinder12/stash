@@ -19,6 +19,7 @@
 #import "LandingVC.h"
 #import "ChangePinVC.h"
 #import "LostStolenVC.h"
+#import "ChatScreen.h"
 
 @interface LeftScreen ()
 {
@@ -30,6 +31,9 @@
 @property (weak, nonatomic) IBOutlet UITableView *leftTableView;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *backImageView;
+
+@property (weak, nonatomic) IBOutlet UILabel *lblPhoneNumber;
+@property (weak, nonatomic) IBOutlet UILabel *lblEmail;
 
 @end
 
@@ -223,6 +227,35 @@
             appdelegate.window.rootViewController = navigationController;
         }
     }
-    
+}
+
+#pragma mark Button Action
+- (IBAction)chatAction:(id)sender
+{
+    ChatScreen *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ChatScreen"];
+    UINavigationController *nav = [[UINavigationController alloc]init];
+    nav.viewControllers = @[pvc];
+    [self.frostedViewController setContentViewController:nav];
+    [self.frostedViewController hideMenuViewController];
+}
+- (IBAction)numberAction:(id)sender
+{
+    NSString *phoneNumber = [@"tel://" stringByAppendingString:_lblPhoneNumber.text];
+    [[UIApplication sharedApplication ] openURL:[NSURL URLWithString:phoneNumber]];
+}
+- (IBAction)emailAction:(id)sender
+{
+    if ( [ MFMailComposeViewController canSendMail ])
+    {
+        MFMailComposeViewController *mfMailVC = [[ MFMailComposeViewController alloc ] initWithNibName:nil bundle:nil];
+        [ mfMailVC setMailComposeDelegate:self ];
+        [ mfMailVC setToRecipients:@[ _lblEmail.text]];
+        [ mfMailVC setSubject:@"Support STatshfin" ];
+        [ self presentViewController:mfMailVC animated:YES completion:nil ];
+    }
+}
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    [ self dismissViewControllerAnimated:YES completion:nil ];
 }
 @end

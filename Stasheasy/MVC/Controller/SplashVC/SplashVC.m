@@ -27,7 +27,7 @@
     
     self.navigationController.navigationBar.hidden = YES;
     appDelegate = [AppDelegate sharedDelegate];
-    [self serverCallForCardOverview];
+    [self serverCallToCheckTokenValidity];
 }
 - (void)checkTokenAndNavigate
 {
@@ -80,7 +80,7 @@
              }
              else
              {
-                 [self navigateToLOCDashboard];
+                 [self serverCallForCardOverview];
              }
          }
          else
@@ -95,7 +95,6 @@
     
     [ServerCall getServerResponseWithParameters:param withHUD:NO withCompletion:^(id response)
      {
-         
          if ( [response isKindOfClass:[NSDictionary class]] )
          {
              NSString *errorStr = [response objectForKey:@"error"];
@@ -105,7 +104,6 @@
              }
              else
              {
-                 
                  appDelegate.isCardFound = YES;
              }
          }
@@ -113,7 +111,7 @@
          {
          }
          
-         [ self serverCallToCheckTokenValidity ];
+         [self navigateToLOCDashboard];
          
      }];
 }

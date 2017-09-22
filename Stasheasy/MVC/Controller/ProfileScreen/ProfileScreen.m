@@ -54,6 +54,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *docBtn;
 @property (weak, nonatomic) IBOutlet UIButton *btnPicture;
 @property (weak, nonatomic) IBOutlet UIButton *btnPassword;
+@property (weak, nonatomic) IBOutlet UIButton *btnUpload;
 
 @property (weak, nonatomic) IBOutlet UITableView *profileTableView;
 
@@ -85,7 +86,10 @@
    
     _viewPopup.hidden = YES;
     imagePicker = [[UIImagePickerController alloc] init];
-
+    
+    [ Utilities setBorderAndColor:_btnPicture ];
+    [ Utilities setBorderAndColor:_btnUpload ];
+    
     marrPerText = [[NSMutableArray alloc] init];
     marrProText = [[NSMutableArray alloc] init];
     marrDoc = [[NSMutableArray alloc] init];
@@ -368,7 +372,7 @@
     [self.frostedViewController.view endEditing:YES];
     [self.frostedViewController presentMenuViewController];
 }
-- (IBAction)imageChangeAction:(id)sender
+- (IBAction)changePictureAction:(id)sender
 {
     UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
     [imagePop showInView:self.view];
@@ -378,6 +382,8 @@
     tab =0;
     self.profileTableView.hidden = NO;
     self.docCollection.hidden = YES;
+    self.btnUpload.hidden = YES;
+
 
     self.perLbl.backgroundColor = [UIColor colorWithRed:220.0f/255.0f green:16.0f/255.0f blue:16.0f/255.0f alpha:1.0f];
     self.personalBtn.titleLabel.textColor = [UIColor colorWithRed:220.0f/255.0f green:16.0f/255.0f blue:16.0f/255.0f alpha:1.0f];
@@ -395,6 +401,7 @@
     tab =1;
     self.profileTableView.hidden = NO;
     self.docCollection.hidden = YES;
+    self.btnUpload.hidden = YES;
 
     self.perLbl.backgroundColor = [UIColor clearColor];
     self.personalBtn.titleLabel.textColor = [UIColor darkGrayColor];
@@ -412,6 +419,8 @@
     tab = 2;
     self.profileTableView.hidden = YES;
     self.docCollection.hidden = NO;
+    self.btnUpload.hidden = NO;
+
 
     [self.docCollection reloadData];
     
@@ -433,7 +442,7 @@
     [self.frostedViewController hideMenuViewController];
 
 }
-- (IBAction)changePictureAction:(id)sender
+- (IBAction)uploadDocumentAction:(id)sender
 {
     
 }
@@ -530,7 +539,7 @@
                  [self populateProfessionalDetail:dictProfessional];
                  [self populateDocumentsDetail:response];
                  
-                 [self addStashfinButtonView];
+//                 [self addStashfinButtonView];
                  isStashExpand = NO;
              }
          }
@@ -624,6 +633,7 @@
     }
     self.profileTableView.hidden = NO;
     self.docCollection.hidden = YES;
+    self.btnUpload.hidden = YES;
     
     [self.profileTableView reloadData];
 }
@@ -725,6 +735,7 @@
 }
 - (void)tappedOnOverlay:(UIGestureRecognizer *)gesture
 {
+    [ self.view endEditing:YES ];
     [self hidePopupView:_viewPopup fromViewController:self];
 }
 - (void)hidePopupView:(UIView *)popupView fromViewController:(UIViewController *)viewcontroller

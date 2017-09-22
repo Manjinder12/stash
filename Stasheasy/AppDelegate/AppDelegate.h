@@ -22,7 +22,7 @@
 @property (strong,nonatomic) NSString *residencePin;
 @property (weak,nonatomic) NSString *loanRequestStatus;
 
-@property NSDictionary *dictOverview, *dictTransaction,*dictAnalyze;
+@property NSDictionary *dictLOCDetail, *dictCard, *dictOverview, *dictTransaction,*dictAnalyze;
 @property BOOL isCardFound;
 @end
 
