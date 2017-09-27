@@ -292,7 +292,7 @@
 {
     NSDictionary *param = [NSDictionary dictionaryWithObject:@"CardAnalyzeSpending" forKey:@"mode"];
     
-    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+    [ServerCall getServerResponseWithParameters:param withHUD:NO withCompletion:^(id response)
      {
          NSLog(@"%@", response);
          

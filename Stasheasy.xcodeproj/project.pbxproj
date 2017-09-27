@@ -106,6 +106,7 @@
 		E2305EF31F2A01C3005CDBAF /* ReloadCardVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EF21F2A01C3005CDBAF /* ReloadCardVC.m */; };
 		E2305EF71F2A0AD7005CDBAF /* LoanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EF61F2A0AD7005CDBAF /* LoanCell.m */; };
 		E2625E711F752F3800AA74C0 /* JMMarkSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E2625E701F752F3800AA74C0 /* JMMarkSlider.m */; };
+		E276F1B51F7A33A10005A199 /* DocumentUploadVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E276F1B41F7A33A10005A199 /* DocumentUploadVC.m */; };
 		E2847C671F3C952000C5D3A3 /* StatusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2847C661F3C952000C5D3A3 /* StatusVC.m */; };
 		E2A781121F2B1D9400C151CC /* RadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A781111F2B1D9400C151CC /* RadioButton.m */; };
 		E2A781161F2B496500C151CC /* LOCWithdrawalVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A781151F2B496500C151CC /* LOCWithdrawalVC.m */; };
@@ -339,6 +340,8 @@
 		E2305EF61F2A0AD7005CDBAF /* LoanCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoanCell.m; sourceTree = "<group>"; };
 		E2625E6F1F752F3800AA74C0 /* JMMarkSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMMarkSlider.h; sourceTree = "<group>"; };
 		E2625E701F752F3800AA74C0 /* JMMarkSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMMarkSlider.m; sourceTree = "<group>"; };
+		E276F1B31F7A33A10005A199 /* DocumentUploadVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentUploadVC.h; sourceTree = "<group>"; };
+		E276F1B41F7A33A10005A199 /* DocumentUploadVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentUploadVC.m; sourceTree = "<group>"; };
 		E2847C651F3C952000C5D3A3 /* StatusVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusVC.h; sourceTree = "<group>"; };
 		E2847C661F3C952000C5D3A3 /* StatusVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusVC.m; sourceTree = "<group>"; };
 		E2A781101F2B1D9400C151CC /* RadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioButton.h; sourceTree = "<group>"; };
@@ -546,6 +549,7 @@
 		781D1E411EE0885E00D82E86 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E276F1B21F7A33890005A199 /* DocumentUploadVC */,
 				E2847C641F3C950D00C5D3A3 /* StatusVC */,
 				E20FDE941F3B302E001A438E /* RejectedVC */,
 				E208E5A41F331931006EBF9F /* ChangePinVC */,
@@ -1152,6 +1156,15 @@
 			path = JMMarkSlider;
 			sourceTree = "<group>";
 		};
+		E276F1B21F7A33890005A199 /* DocumentUploadVC */ = {
+			isa = PBXGroup;
+			children = (
+				E276F1B31F7A33A10005A199 /* DocumentUploadVC.h */,
+				E276F1B41F7A33A10005A199 /* DocumentUploadVC.m */,
+			);
+			path = DocumentUploadVC;
+			sourceTree = "<group>";
+		};
 		E2847C641F3C950D00C5D3A3 /* StatusVC */ = {
 			isa = PBXGroup;
 			children = (
@@ -1550,6 +1563,7 @@
 				BB583A9A1EEACDA1000B73AA /* TPKeyboardAvoidingScrollView.m in Sources */,
 				E208E5A81F331948006EBF9F /* ChangePinVC.m in Sources */,
 				781D1E4C1EE0892800D82E86 /* SignupScreen.m in Sources */,
+				E276F1B51F7A33A10005A199 /* DocumentUploadVC.m in Sources */,
 				BB9821AF1F0BB31C00D70EF8 /* CityVC.m in Sources */,
 				7804BD361F05FE550068B621 /* LoanApplication.m in Sources */,
 				BB85AF7D1EE290C400B32986 /* UIView+REFrostedViewController.m in Sources */,

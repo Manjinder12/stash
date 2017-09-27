@@ -14,13 +14,14 @@
 #import "UIImageView+AFNetworking.h"
 #import <MWPhotoBrowser/MWPhotoBrowser.h>
 #import <LGPlusButtonsView/LGPlusButtonsView.h>
+#import "DocumentUploadVC.h"
 
 @interface ProfileScreen ()<UICollectionViewDelegate,UICollectionViewDataSource,MWPhotoBrowserDelegate,LGPlusButtonsViewDelegate, UIActionSheetDelegate,UIImagePickerControllerDelegate>
 {
     UIImagePickerController *imagePicker;
     UIImage *selectedImage;
  
-    NSMutableArray *marrPerHeader, *marrPerText, *marrProHeader, *marrProText, *marrDoc, *marrImages;
+    NSMutableArray *marrPerHeader, *marrPerText, *marrProHeader, *marrProText, *marrDoc, *marrImages, *marrDocTitle;
     NSDictionary *dictPersonal, *dictProfessional, *dictDocument;
     
     BOOL isStashExpand;
@@ -87,8 +88,11 @@
     _viewPopup.hidden = YES;
     imagePicker = [[UIImagePickerController alloc] init];
     
+    _imageBanner.image = _profilepic.image;
+    
     [ Utilities setBorderAndColor:_btnPicture ];
     [ Utilities setBorderAndColor:_btnUpload ];
+    [ Utilities setBorderAndColor:_btnPassword ];
     
     marrPerText = [[NSMutableArray alloc] init];
     marrProText = [[NSMutableArray alloc] init];
@@ -98,11 +102,15 @@
     [_personalBtn setTitle:@"PERSONAL\nDETAIL" forState:UIControlStateNormal];
     [_professionalBtn setTitle:@"PROFESSIONAL\nDETAIL" forState:UIControlStateNormal];
     tab = 0;
+    
+    
     marrPerHeader = [[NSMutableArray alloc]initWithObjects:@"Contact No.",@"Date of Birth",@"PAN No.",@"Aadhar Card No.",@"Current Address",@"Permanent Address", nil];
     personalTextArr = [[NSArray alloc]initWithObjects:@"9876543210",@"17 April 1973",@"BXIPX2014H",@"3181 6734 1296",@"77, jagjivan ram nagar indore-452001",@"Kastubra ward, Pipariya-461775", nil];
     
     marrProHeader = [[NSMutableArray alloc]initWithObjects:@"Comapany Name",@"Designation",@"Employee ID",@"Work Since",@"Office Email",@"Office Landline No.",@"Company Address", nil];
     proTextArr = [[NSArray alloc]initWithObjects:@"6 Degresit Pvt Ltd",@"Sr UI/UX developer",@"6D-UI-0001",@"July 2013",@"Testing@gmail.com",@"0731 -987654321",@"Geeta Bhavan Indore", nil];
+    
+    marrDocTitle = [[ NSMutableArray alloc ] initWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip1",@"Salary Slip2",@"Salary Slip3",@"Office ID", nil];
     
     [self setupProfileBlurScreen];
     self.profileTableView.estimatedRowHeight = 30.0f;
@@ -287,9 +295,12 @@
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"DocCell" forIndexPath:indexPath];
     
-    UIImageView *imageView = [cell viewWithTag:100];
-  
+    UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
+
     [imageView setImageWithURL:[Utilities getFormattedImageURLFromString:[marrDoc objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"pdficon"]];
+
+    UILabel *lblTitle = (UILabel *)[cell viewWithTag:101];
+    lblTitle.text = @"";
     
     return cell;
 }
@@ -444,14 +455,39 @@
 }
 - (IBAction)uploadDocumentAction:(id)sender
 {
-    
+    DocumentUploadVC *docVC = [ self.storyboard instantiateViewControllerWithIdentifier:@"DocumentUploadVC" ];
+    [self.navigationController pushViewController:docVC animated:YES];
 }
 - (IBAction)changePasswordAction:(id)sender
 {
-    
+    if ( _txtOld.text.length == 0 )
+    {
+        [ Utilities showAlertWithMessage:@"Enter old password." ];
+    }
+    else if ( _txtNew.text.length == 0 )
+    {
+        [ Utilities showAlertWithMessage:@"Enter new password." ];
+    }
+    else if ( _txtRetype.text.length == 0 )
+    {
+        [ Utilities showAlertWithMessage:@"Retype password." ];
+    }
+    else if ( _txtNew.text != _txtRetype.text )
+    {
+        [ Utilities showAlertWithMessage:@"Password does not match!" ];
+    }
+    else
+    {
+        [ self.view endEditing:YES ];
+        [ self serverCallForChangePassword ];
+    }
 }
 - (IBAction)popupAction:(id)sender
 {
+    _txtOld.text = @"";
+    _txtNew.text = @"";
+    _txtRetype.text = @"";
+    
     [ self showPopupView:_viewPopup onViewController:self ];
 }
 #pragma mark Server Call
@@ -585,8 +621,17 @@
 }
 - (void)populateDocumentsDetail:(NSDictionary *)response
 {
+    NSDictionary *dict = response[@"docs"];
+    for ( id key in dict)
+    {
+        if ( ![[dict valueForKey:key] isEqualToString:@""] )
+        {
+            [marrDoc addObject:[dict valueForKey:key]];
+        }
+    }
     
-    if ( ![response[@"docs"][@"address_proof"] isEqualToString:@""] )
+    
+    /*if ( ![response[@"docs"][@"address_proof"] isEqualToString:@""] )
     {
         [marrDoc addObject:response[@"docs"][@"address_proof"]];
     }
@@ -621,7 +666,7 @@
     else if ( ![response[@"docs"][@"salary_slip3"] isEqualToString:@""] )
     {
         [marrDoc addObject:response[@"docs"][@"salary_slip3"]];
-    }
+    }*/
     
     NSArray *otherDoc = response[@"other_selected_docs"];
     if ( [otherDoc count] != 0 )
@@ -629,6 +674,7 @@
         for (NSDictionary *dictOther in otherDoc)
         {
             [marrDoc addObject:dictOther[@"document_path"]];
+            [marrDocTitle addObject:dictOther[@"document_name"]];
         }
     }
     self.profileTableView.hidden = NO;
@@ -636,6 +682,36 @@
     self.btnUpload.hidden = YES;
     
     [self.profileTableView reloadData];
+}
+- (void)serverCallForChangePassword
+{
+    NSDictionary *param = [NSMutableDictionary new];
+   
+    [ param setValue:@"changePassword" forKey:@"mode" ];
+    [ param setValue:_txtOld.text forKey:@"oldPassword" ];
+    [ param setValue:_txtNew.text forKey:@"newPassword" ];
+    
+    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     }];
+
 }
 #pragma mark UIActionSheet Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
