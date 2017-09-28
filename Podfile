@@ -7,6 +7,5 @@ target 'Stasheasy' do
   pod 'SVProgressHUD'
   pod 'LGPlusButtonsView', '~> 1.1.0'
   pod 'MWPhotoBrowser'
-  pod 'PNChart’
 
 end
