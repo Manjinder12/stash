@@ -51,7 +51,7 @@
     self.navigationController.navigationBarHidden = YES;
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     
-    principal = 100000;
+    principal = 10000;
     installmentsNo = 3;
     rate = 12;
   
@@ -75,21 +75,21 @@
     _amountSlider.markPositions = @[@0];
     _amountSlider.markWidth = 1.0;
     _amountSlider.selectedBarColor = [UIColor greenColor];
-    _amountSlider.unselectedBarColor = [UIColor blueColor];
+    _amountSlider.unselectedBarColor = [UIColor lightGrayColor];
     _amountSlider.handlerImage = [UIImage imageNamed:@"sliderHandle"];
     
     _tenureSlider.markColor = [UIColor colorWithWhite:1 alpha:0.5];
     _tenureSlider.markPositions = @[@0];
     _tenureSlider.markWidth = 0.5;
     _tenureSlider.selectedBarColor = [UIColor greenColor];
-    _tenureSlider.unselectedBarColor = [UIColor blueColor];
+    _tenureSlider.unselectedBarColor = [UIColor lightGrayColor];
     _tenureSlider.handlerImage = [UIImage imageNamed:@"sliderHandle"];
     
     _rateSlider.markColor = [UIColor colorWithWhite:1 alpha:0.5];
     _rateSlider.markPositions = @[@0];
     _rateSlider.markWidth = 0.5;
     _rateSlider.selectedBarColor = [UIColor greenColor];
-    _rateSlider.unselectedBarColor = [UIColor blueColor];
+    _rateSlider.unselectedBarColor = [UIColor lightGrayColor];
     _rateSlider.handlerImage = [UIImage imageNamed:@"sliderHandle"];
     
 }
@@ -97,14 +97,12 @@
 {
     int loan = ( emiAmount * 100 ) / totalPayable;
     int intPayable = ( interest * 100 ) / totalPayable;
+    
 //    usedValue = (usedLOC * 100) / approvedLOC;
 //    remainValue = (remainingLOC * 100 ) / approvedLOC;
     
-    _viewPieChart.backgroundColor = [ UIColor lightGrayColor ];
     _viewPieChart.startAngle = M_PI+M_PI_2;
     [_viewPieChart setHoleRadiusPrecent:0.5];
-    
-    
     
     NSArray *chartValues = @[
                              @{@"name":@"Apple", @"value":[NSNumber numberWithInt:loan], @"color":[UIColor redColor], @"strokeColor":[UIColor whiteColor]},

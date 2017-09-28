@@ -16,7 +16,7 @@
 #import <LGPlusButtonsView/LGPlusButtonsView.h>
 #import "DocumentUploadVC.h"
 
-@interface ProfileScreen ()<UICollectionViewDelegate,UICollectionViewDataSource,MWPhotoBrowserDelegate,LGPlusButtonsViewDelegate, UIActionSheetDelegate,UIImagePickerControllerDelegate>
+@interface ProfileScreen ()<UICollectionViewDelegate,UICollectionViewDataSource,MWPhotoBrowserDelegate,LGPlusButtonsViewDelegate, UIActionSheetDelegate,UIImagePickerControllerDelegate, UIAlertViewDelegate>
 {
     UIImagePickerController *imagePicker;
     UIImage *selectedImage;
@@ -103,6 +103,7 @@
     [_professionalBtn setTitle:@"PROFESSIONAL\nDETAIL" forState:UIControlStateNormal];
     tab = 0;
     
+    marrDocTitle = [ NSMutableArray new ];
     
     marrPerHeader = [[NSMutableArray alloc]initWithObjects:@"Contact No.",@"Date of Birth",@"PAN No.",@"Aadhar Card No.",@"Current Address",@"Permanent Address", nil];
     personalTextArr = [[NSArray alloc]initWithObjects:@"9876543210",@"17 April 1973",@"BXIPX2014H",@"3181 6734 1296",@"77, jagjivan ram nagar indore-452001",@"Kastubra ward, Pipariya-461775", nil];
@@ -110,7 +111,7 @@
     marrProHeader = [[NSMutableArray alloc]initWithObjects:@"Comapany Name",@"Designation",@"Employee ID",@"Work Since",@"Office Email",@"Office Landline No.",@"Company Address", nil];
     proTextArr = [[NSArray alloc]initWithObjects:@"6 Degresit Pvt Ltd",@"Sr UI/UX developer",@"6D-UI-0001",@"July 2013",@"Testing@gmail.com",@"0731 -987654321",@"Geeta Bhavan Indore", nil];
     
-    marrDocTitle = [[ NSMutableArray alloc ] initWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip1",@"Salary Slip2",@"Salary Slip3",@"Office ID", nil];
+//    marrDocTitle = [[ NSMutableArray alloc ] initWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip1",@"Salary Slip2",@"Salary Slip3",@"Office ID", nil];
     
     [self setupProfileBlurScreen];
     self.profileTableView.estimatedRowHeight = 30.0f;
@@ -300,7 +301,7 @@
     [imageView setImageWithURL:[Utilities getFormattedImageURLFromString:[marrDoc objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"pdficon"]];
 
     UILabel *lblTitle = (UILabel *)[cell viewWithTag:101];
-    lblTitle.text = @"";
+    lblTitle.text = [ marrDocTitle objectAtIndex: indexPath.row];
     
     return cell;
 }
@@ -626,46 +627,95 @@
     {
         if ( ![[dict valueForKey:key] isEqualToString:@""] )
         {
+            if ( [key isEqualToString:@"address_proof"])
+            {
+                [ marrDocTitle addObject:@"Address Proof" ];
+            }
+            
+            else if ( [key isEqualToString:@"employee_id"])
+            {
+                [ marrDocTitle addObject:@"Employee ID" ];
+            }
+            
+            else if ( [key isEqualToString:@"id_proof"])
+            {
+                [ marrDocTitle addObject:@"ID Proof" ];
+            }
+            
+            else if ( [key isEqualToString:@"office_id"])
+            {
+                [ marrDocTitle addObject:@"Office ID" ];
+            }
+            
+            else if ( [key isEqualToString:@"pan_proof"])
+            {
+                [ marrDocTitle addObject:@"PAN Card" ];
+            }
+            else if ( [key isEqualToString:@"salary_slip1"])
+            {
+                [ marrDocTitle addObject:@"Salary Slip1" ];
+            }
+            
+            else if ( [key isEqualToString:@"salary_slip2"])
+            {
+                [ marrDocTitle addObject:@"Salary Slip2" ];
+            }
+
+            else if ( [key isEqualToString:@"salary_slip3"])
+            {
+                [ marrDocTitle addObject:@"Salary Slip3" ];
+            }
             [marrDoc addObject:[dict valueForKey:key]];
         }
     }
     
     
-    /*if ( ![response[@"docs"][@"address_proof"] isEqualToString:@""] )
+   /* for (int i = 0; i < [response[@"docs"] count]; i++ )
     {
-        [marrDoc addObject:response[@"docs"][@"address_proof"]];
-    }
-    else if ( ![response[@"docs"][@"employee_id"] isEqualToString:@""] )
-    {
-        [marrDoc addObject:response[@"docs"][@"employee_id"]];
-    }
-    
-    else if ( ![response[@"docs"][@"id_proof"] isEqualToString:@""] )
-    {
-        [marrDoc addObject:response[@"docs"][@"id_proof"]];
-    }
-    
-    else if ( ![response[@"docs"][@"office_id"] isEqualToString:@""] )
-    {
-        [marrDoc addObject:response[@"docs"][@"office_id"]];
-    }
-    
-    else if ( ![response[@"docs"][@"pan_proof"] isEqualToString:@""] )
-    {
-        [marrDoc addObject:response[@"docs"][@"pan_proof"]];
-    }
-    else if ( ![response[@"docs"][@"salary_slip1"] isEqualToString:@""] )
-    {
-        [marrDoc addObject:response[@"docs"][@"salary_slip1"]];
-    }
-    
-    else if ( ![response[@"docs"][@"salary_slip2"] isEqualToString:@""] )
-    {
-        [marrDoc addObject:response[@"docs"][@"salary_slip2"]];
-    }
-    else if ( ![response[@"docs"][@"salary_slip3"] isEqualToString:@""] )
-    {
-        [marrDoc addObject:response[@"docs"][@"salary_slip3"]];
+        if ( ![response[@"docs"][@"address_proof"] isEqualToString:@""] )
+        {
+            [marrDoc addObject:response[@"docs"][@"address_proof"]];
+            [ marrDocTitle addObject:@"Address Proof" ];
+        }
+        else if ( ![response[@"docs"][@"employee_id"] isEqualToString:@""] )
+        {
+            [marrDoc addObject:response[@"docs"][@"employee_id"]];
+            [ marrDocTitle addObject:@"Employee ID" ];
+        }
+        
+        else if ( ![response[@"docs"][@"id_proof"] isEqualToString:@""] )
+        {
+            [marrDoc addObject:response[@"docs"][@"id_proof"]];
+            [ marrDocTitle addObject:@"ID Proof" ];
+        }
+        
+        else if ( ![response[@"docs"][@"office_id"] isEqualToString:@""] )
+        {
+            [marrDoc addObject:response[@"docs"][@"office_id"]];
+            [ marrDocTitle addObject:@"Office ID" ];
+        }
+        
+        else if ( ![response[@"docs"][@"pan_proof"] isEqualToString:@""] )
+        {
+            [marrDoc addObject:response[@"docs"][@"pan_proof"]];
+            [ marrDocTitle addObject:@"PAN Card" ];
+        }
+        else if ( ![response[@"docs"][@"salary_slip1"] isEqualToString:@""] )
+        {
+            [marrDoc addObject:response[@"docs"][@"salary_slip1"]];
+            [ marrDocTitle addObject:@"Salary Slip1" ];
+        }
+        
+        else if ( ![response[@"docs"][@"salary_slip2"] isEqualToString:@""] )
+        {
+            [marrDoc addObject:response[@"docs"][@"salary_slip2"]];
+            [ marrDocTitle addObject:@"Salary Slip2" ];
+        }
+        else if ( ![response[@"docs"][@"salary_slip3"] isEqualToString:@""] )
+        {
+            [marrDoc addObject:response[@"docs"][@"salary_slip3"]];
+            [ marrDocTitle addObject:@"Salary Slip3" ];
+        }
     }*/
     
     NSArray *otherDoc = response[@"other_selected_docs"];
@@ -677,6 +727,7 @@
             [marrDocTitle addObject:dictOther[@"document_name"]];
         }
     }
+
     self.profileTableView.hidden = NO;
     self.docCollection.hidden = YES;
     self.btnUpload.hidden = YES;
@@ -704,6 +755,8 @@
              }
              else
              {
+                 UIAlertView *alert = [[ UIAlertView alloc ] initWithTitle:@"Stashfin" message:response[@"msg"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                 [ alert show ];
              }
          }
          else
@@ -828,4 +881,13 @@
      }];
     [overlayView removeFromSuperview];
 }
+
+#pragma mark UIAlertview Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [ self.view endEditing:YES ];
+    [ self hidePopupView:_viewPopup fromViewController:self ];
+}
+
+
 @end

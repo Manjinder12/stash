@@ -49,6 +49,7 @@
     param = [NSMutableDictionary dictionary];
     
     self.navigationController.navigationBar.hidden = YES;
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     
     _viewPopUp.hidden = YES;
     [ Utilities setBorderAndColor:_btnSendOTP ];

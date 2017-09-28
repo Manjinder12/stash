@@ -21,15 +21,19 @@ PODS:
     - DACircularProgress (~> 2.3)
     - MBProgressHUD (~> 0.9)
     - SDWebImage (!= 3.7.2, ~> 3.7)
+  - PNChart (0.8.9):
+    - UICountingLabel (~> 1.2.0)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
   - SVProgressHUD (2.1.2)
+  - UICountingLabel (1.2.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
   - LGPlusButtonsView (~> 1.1.0)
   - MWPhotoBrowser
+  - PNChart
   - SVProgressHUD
 
 SPEC CHECKSUMS:
@@ -38,9 +42,11 @@ SPEC CHECKSUMS:
   LGPlusButtonsView: 57878cd3d461d0ee2042f5b7b25d1c017e22a084
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MWPhotoBrowser: 5836d7aa041dc05a13de380c246826578adc5ea5
+  PNChart: 84774d225c2126ded6c93d4dbe6ae98c3a73c2d2
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
+  UICountingLabel: 1db4e7d023e1762171eb226d6dff47a7a84f27aa
 
-PODFILE CHECKSUM: d50d791afabf064d9e64467e2571ce569ce938b6
+PODFILE CHECKSUM: d09da73595bb8416405ffb84673a9e9f7f669215
 
 COCOAPODS: 1.0.1
