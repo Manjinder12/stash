@@ -16,16 +16,22 @@
 #import "RejectedVC.h"
 #import "SignupScreen.h"
 #import "StatusVC.h"
+#import "AppDelegate.h"
 
 @interface LoginScreen ()
 {
+    AppDelegate *appDelegate;
     UserServices *service;
     NSMutableDictionary *param;
     REFrostedViewController *refrostedVC;
+    NSDictionary *dictLoginResponse;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
 @property (weak, nonatomic) IBOutlet UITextField *txtPassword;
+@property (weak, nonatomic) IBOutlet UITextField *txtOTP;
+@property (weak, nonatomic) IBOutlet UIView *viewPopUp;
+@property (weak, nonatomic) IBOutlet UIButton *btnSendOTP;
 
 @end
 
@@ -38,10 +44,15 @@
   }
 - (void)customInitialization
 {
+    appDelegate = [ AppDelegate sharedDelegate ];
     service = [[UserServices alloc] init];
     param = [NSMutableDictionary dictionary];
     
     self.navigationController.navigationBar.hidden = YES;
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    
+    _viewPopUp.hidden = YES;
+    [ Utilities setBorderAndColor:_btnSendOTP ];
     
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:gesture];
@@ -69,17 +80,19 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-- (IBAction)facebookAction:(id)sender
+- (IBAction)otpLoginAction:(id)sender
 {
     
 }
-- (IBAction)googleAction:(id)sender
+- (IBAction)sendOTPAction:(id)sender
 {
     
 }
+
 - (IBAction)forgotPasswordAction:(id)sender
 {
-    
+    _viewPopUp.hidden = NO;
+    [ self showPopupView:_viewPopUp onViewController:self ];
 }
 
 -(BOOL)performValidation
@@ -130,14 +143,10 @@
             }
             else
             {
-                if ( [response[@"landing_page"] isEqualToString:@"profile"] )
-                {
-                    [self navigateAccordingToCurrentStatus:response];
-                }
-                else
-                {
-                    [self navigateAccordingLandingPageStatus:response];
-                }
+                [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
+                [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
+                dictLoginResponse = response;
+                [ self serverCallForCardOverview ];
             }
         }
         else
@@ -145,6 +154,42 @@
             [Utilities showAlertWithMessage:response];
         }
     }];
+}
+- (void)serverCallForCardOverview
+{
+    NSDictionary *dictParam = [NSDictionary dictionaryWithObject:@"cardOverview" forKey:@"mode"];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
+     {
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 appDelegate.isCardFound = NO;
+             }
+             else
+             {
+                 
+                 appDelegate.isCardFound = YES;
+             }
+         }
+         else
+         {
+             [ Utilities showAlertWithMessage:response ];
+         }
+         
+         if ( [dictLoginResponse[@"landing_page"] isEqualToString:@"profile"] )
+         {
+             [self navigateAccordingToCurrentStatus:dictLoginResponse];
+         }
+         else
+         {
+             [self navigateAccordingLandingPageStatus:dictLoginResponse];
+         }
+         
+     }];
 }
 -(void)loginApiCall
 {
@@ -234,8 +279,8 @@
     {
         // Navigate To LOC Dashboard
 
-        [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
-        [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
+//        [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
+//        [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
 
         ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
         [self.navigationController pushViewController:vc animated:YES];
@@ -254,4 +299,48 @@
         [self.navigationController pushViewController:statusVC animated:YES];
     }
 }
+
+#pragma mark Helper Method
+- (void)showPopupView:(UIView *)popupView onViewController:(UIViewController *)viewcontroller
+{
+    UIView *overlayView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [overlayView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5]];
+    [overlayView setTag:786];
+    [popupView setHidden:NO];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedOnOverlay:)];
+    [overlayView addGestureRecognizer:tapGesture];
+    
+    [viewcontroller.view addSubview:overlayView];
+    [viewcontroller.view bringSubviewToFront:popupView];
+    popupView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        
+        popupView.transform = CGAffineTransformIdentity;
+    } completion:^(BOOL finished)
+    {
+        
+    }];
+    
+}
+- (void)tappedOnOverlay:(UIGestureRecognizer *)gesture
+{
+    [self hidePopupView:_viewPopUp fromViewController:self];
+}
+- (void)hidePopupView:(UIView *)popupView fromViewController:(UIViewController *)viewcontroller
+{
+    UIView *overlayView = [viewcontroller.view viewWithTag:786];
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^
+     {
+         popupView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+     }
+                     completion:^(BOOL finished)
+     {
+         [popupView setHidden:YES];
+         
+     }];
+    [overlayView removeFromSuperview];
+}
+
+
 @end

@@ -58,10 +58,12 @@
 }
 - (void)customInitialization
 {
+    self.navigationController.navigationBar.hidden = YES;
+    
     _tblChat.hidden = YES;
     _lblMessage.hidden = NO;
     
-    [self addStashfinButtonView];
+//    [self addStashfinButtonView];
 }
 - (void)didReceiveMemoryWarning
 {

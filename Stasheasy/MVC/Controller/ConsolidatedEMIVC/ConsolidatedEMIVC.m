@@ -11,7 +11,7 @@
 #import "LoanCell.h"
 #import "Utilities.h"
 #import <LGPlusButtonsView/LGPlusButtonsView.h>
-@interface ConsolidatedEMIVC ()<UITableViewDelegate,UITableViewDataSource,LGPlusButtonsViewDelegate>
+@interface ConsolidatedEMIVC ()<UITableViewDelegate,UITableViewDataSource,LGPlusButtonsViewDelegate,UIAlertViewDelegate>
 {
     LGPlusButtonsView *stashfinButton;
     NSMutableArray *marrLoans;
@@ -150,7 +150,9 @@
             NSString *errorStr = [response objectForKey:@"error"];
             if ( errorStr.length > 0 )
             {
-                [Utilities showAlertWithMessage:errorStr];
+                UIAlertView *alert = [ [ UIAlertView alloc ] initWithTitle:@"Stashfin" message:errorStr delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil ];
+                [ alert show ];
+                
             }
             else
             {
@@ -254,5 +256,10 @@
             [self.navigationController popViewControllerAnimated:YES];
         }];
     }
+}
+#pragma mark AlertView Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [ self.navigationController popViewControllerAnimated:YES];
 }
 @end

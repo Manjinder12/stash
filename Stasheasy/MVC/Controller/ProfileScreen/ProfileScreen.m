@@ -14,13 +14,14 @@
 #import "UIImageView+AFNetworking.h"
 #import <MWPhotoBrowser/MWPhotoBrowser.h>
 #import <LGPlusButtonsView/LGPlusButtonsView.h>
+#import "DocumentUploadVC.h"
 
-@interface ProfileScreen ()<UICollectionViewDelegate,UICollectionViewDataSource,MWPhotoBrowserDelegate,LGPlusButtonsViewDelegate, UIActionSheetDelegate,UIImagePickerControllerDelegate>
+@interface ProfileScreen ()<UICollectionViewDelegate,UICollectionViewDataSource,MWPhotoBrowserDelegate,LGPlusButtonsViewDelegate, UIActionSheetDelegate,UIImagePickerControllerDelegate, UIAlertViewDelegate>
 {
     UIImagePickerController *imagePicker;
     UIImage *selectedImage;
  
-    NSMutableArray *marrPerHeader, *marrPerText, *marrProHeader, *marrProText, *marrDoc, *marrImages;
+    NSMutableArray *marrPerHeader, *marrPerText, *marrProHeader, *marrProText, *marrDoc, *marrImages, *marrDocTitle;
     NSDictionary *dictPersonal, *dictProfessional, *dictDocument;
     
     BOOL isStashExpand;
@@ -38,6 +39,11 @@
 @property (weak, nonatomic) IBOutlet UIImageView *profilepic;
 @property (weak, nonatomic) IBOutlet UIImageView *imageBanner;
 
+@property (weak, nonatomic) IBOutlet UITextField *txtOld;
+@property (weak, nonatomic) IBOutlet UITextField *txtNew;
+@property (weak, nonatomic) IBOutlet UITextField *txtRetype;
+
+
 @property (weak, nonatomic) IBOutlet UILabel *perLbl;
 @property (weak, nonatomic) IBOutlet UILabel *proLbl;
 @property (weak, nonatomic) IBOutlet UILabel *docLbl;
@@ -47,8 +53,16 @@
 @property (weak, nonatomic) IBOutlet UIButton *professionalBtn;
 @property (weak, nonatomic) IBOutlet UIButton *personalBtn;
 @property (weak, nonatomic) IBOutlet UIButton *docBtn;
+@property (weak, nonatomic) IBOutlet UIButton *btnPicture;
+@property (weak, nonatomic) IBOutlet UIButton *btnPassword;
+@property (weak, nonatomic) IBOutlet UIButton *btnUpload;
+
 @property (weak, nonatomic) IBOutlet UITableView *profileTableView;
+
 @property (weak, nonatomic) IBOutlet UIView *viewOuter;
+@property (weak, nonatomic) IBOutlet UIView *viewPopup;
+
+
 @property (weak, nonatomic) IBOutlet UICollectionView *docCollection;
 
 - (IBAction)personalTapped:(id)sender;
@@ -71,8 +85,15 @@
 {
     self.navigationController.navigationBar.hidden = YES;
    
+    _viewPopup.hidden = YES;
     imagePicker = [[UIImagePickerController alloc] init];
-
+    
+    _imageBanner.image = _profilepic.image;
+    
+    [ Utilities setBorderAndColor:_btnPicture ];
+    [ Utilities setBorderAndColor:_btnUpload ];
+    [ Utilities setBorderAndColor:_btnPassword ];
+    
     marrPerText = [[NSMutableArray alloc] init];
     marrProText = [[NSMutableArray alloc] init];
     marrDoc = [[NSMutableArray alloc] init];
@@ -81,11 +102,16 @@
     [_personalBtn setTitle:@"PERSONAL\nDETAIL" forState:UIControlStateNormal];
     [_professionalBtn setTitle:@"PROFESSIONAL\nDETAIL" forState:UIControlStateNormal];
     tab = 0;
+    
+    marrDocTitle = [ NSMutableArray new ];
+    
     marrPerHeader = [[NSMutableArray alloc]initWithObjects:@"Contact No.",@"Date of Birth",@"PAN No.",@"Aadhar Card No.",@"Current Address",@"Permanent Address", nil];
     personalTextArr = [[NSArray alloc]initWithObjects:@"9876543210",@"17 April 1973",@"BXIPX2014H",@"3181 6734 1296",@"77, jagjivan ram nagar indore-452001",@"Kastubra ward, Pipariya-461775", nil];
     
     marrProHeader = [[NSMutableArray alloc]initWithObjects:@"Comapany Name",@"Designation",@"Employee ID",@"Work Since",@"Office Email",@"Office Landline No.",@"Company Address", nil];
     proTextArr = [[NSArray alloc]initWithObjects:@"6 Degresit Pvt Ltd",@"Sr UI/UX developer",@"6D-UI-0001",@"July 2013",@"Testing@gmail.com",@"0731 -987654321",@"Geeta Bhavan Indore", nil];
+    
+//    marrDocTitle = [[ NSMutableArray alloc ] initWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip1",@"Salary Slip2",@"Salary Slip3",@"Office ID", nil];
     
     [self setupProfileBlurScreen];
     self.profileTableView.estimatedRowHeight = 30.0f;
@@ -270,9 +296,12 @@
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"DocCell" forIndexPath:indexPath];
     
-    UIImageView *imageView = [cell viewWithTag:100];
-  
+    UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
+
     [imageView setImageWithURL:[Utilities getFormattedImageURLFromString:[marrDoc objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"pdficon"]];
+
+    UILabel *lblTitle = (UILabel *)[cell viewWithTag:101];
+    lblTitle.text = [ marrDocTitle objectAtIndex: indexPath.row];
     
     return cell;
 }
@@ -355,7 +384,7 @@
     [self.frostedViewController.view endEditing:YES];
     [self.frostedViewController presentMenuViewController];
 }
-- (IBAction)imageChangeAction:(id)sender
+- (IBAction)changePictureAction:(id)sender
 {
     UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
     [imagePop showInView:self.view];
@@ -365,6 +394,8 @@
     tab =0;
     self.profileTableView.hidden = NO;
     self.docCollection.hidden = YES;
+    self.btnUpload.hidden = YES;
+
 
     self.perLbl.backgroundColor = [UIColor colorWithRed:220.0f/255.0f green:16.0f/255.0f blue:16.0f/255.0f alpha:1.0f];
     self.personalBtn.titleLabel.textColor = [UIColor colorWithRed:220.0f/255.0f green:16.0f/255.0f blue:16.0f/255.0f alpha:1.0f];
@@ -382,6 +413,7 @@
     tab =1;
     self.profileTableView.hidden = NO;
     self.docCollection.hidden = YES;
+    self.btnUpload.hidden = YES;
 
     self.perLbl.backgroundColor = [UIColor clearColor];
     self.personalBtn.titleLabel.textColor = [UIColor darkGrayColor];
@@ -399,6 +431,8 @@
     tab = 2;
     self.profileTableView.hidden = YES;
     self.docCollection.hidden = NO;
+    self.btnUpload.hidden = NO;
+
 
     [self.docCollection reloadData];
     
@@ -420,7 +454,43 @@
     [self.frostedViewController hideMenuViewController];
 
 }
-
+- (IBAction)uploadDocumentAction:(id)sender
+{
+    DocumentUploadVC *docVC = [ self.storyboard instantiateViewControllerWithIdentifier:@"DocumentUploadVC" ];
+    [self.navigationController pushViewController:docVC animated:YES];
+}
+- (IBAction)changePasswordAction:(id)sender
+{
+    if ( _txtOld.text.length == 0 )
+    {
+        [ Utilities showAlertWithMessage:@"Enter old password." ];
+    }
+    else if ( _txtNew.text.length == 0 )
+    {
+        [ Utilities showAlertWithMessage:@"Enter new password." ];
+    }
+    else if ( _txtRetype.text.length == 0 )
+    {
+        [ Utilities showAlertWithMessage:@"Retype password." ];
+    }
+    else if ( _txtNew.text != _txtRetype.text )
+    {
+        [ Utilities showAlertWithMessage:@"Password does not match!" ];
+    }
+    else
+    {
+        [ self.view endEditing:YES ];
+        [ self serverCallForChangePassword ];
+    }
+}
+- (IBAction)popupAction:(id)sender
+{
+    _txtOld.text = @"";
+    _txtNew.text = @"";
+    _txtRetype.text = @"";
+    
+    [ self showPopupView:_viewPopup onViewController:self ];
+}
 #pragma mark Server Call
 - (void)serverCallForPersonalDetail
 {
@@ -506,7 +576,7 @@
                  [self populateProfessionalDetail:dictProfessional];
                  [self populateDocumentsDetail:response];
                  
-                 [self addStashfinButtonView];
+//                 [self addStashfinButtonView];
                  isStashExpand = NO;
              }
          }
@@ -552,43 +622,101 @@
 }
 - (void)populateDocumentsDetail:(NSDictionary *)response
 {
+    NSDictionary *dict = response[@"docs"];
+    for ( id key in dict)
+    {
+        if ( ![[dict valueForKey:key] isEqualToString:@""] )
+        {
+            if ( [key isEqualToString:@"address_proof"])
+            {
+                [ marrDocTitle addObject:@"Address Proof" ];
+            }
+            
+            else if ( [key isEqualToString:@"employee_id"])
+            {
+                [ marrDocTitle addObject:@"Employee ID" ];
+            }
+            
+            else if ( [key isEqualToString:@"id_proof"])
+            {
+                [ marrDocTitle addObject:@"ID Proof" ];
+            }
+            
+            else if ( [key isEqualToString:@"office_id"])
+            {
+                [ marrDocTitle addObject:@"Office ID" ];
+            }
+            
+            else if ( [key isEqualToString:@"pan_proof"])
+            {
+                [ marrDocTitle addObject:@"PAN Card" ];
+            }
+            else if ( [key isEqualToString:@"salary_slip1"])
+            {
+                [ marrDocTitle addObject:@"Salary Slip1" ];
+            }
+            
+            else if ( [key isEqualToString:@"salary_slip2"])
+            {
+                [ marrDocTitle addObject:@"Salary Slip2" ];
+            }
+
+            else if ( [key isEqualToString:@"salary_slip3"])
+            {
+                [ marrDocTitle addObject:@"Salary Slip3" ];
+            }
+            [marrDoc addObject:[dict valueForKey:key]];
+        }
+    }
     
-    if ( ![response[@"docs"][@"address_proof"] isEqualToString:@""] )
-    {
-        [marrDoc addObject:response[@"docs"][@"address_proof"]];
-    }
-    else if ( ![response[@"docs"][@"employee_id"] isEqualToString:@""] )
-    {
-        [marrDoc addObject:response[@"docs"][@"employee_id"]];
-    }
     
-    else if ( ![response[@"docs"][@"id_proof"] isEqualToString:@""] )
+   /* for (int i = 0; i < [response[@"docs"] count]; i++ )
     {
-        [marrDoc addObject:response[@"docs"][@"id_proof"]];
-    }
-    
-    else if ( ![response[@"docs"][@"office_id"] isEqualToString:@""] )
-    {
-        [marrDoc addObject:response[@"docs"][@"office_id"]];
-    }
-    
-    else if ( ![response[@"docs"][@"pan_proof"] isEqualToString:@""] )
-    {
-        [marrDoc addObject:response[@"docs"][@"pan_proof"]];
-    }
-    else if ( ![response[@"docs"][@"salary_slip1"] isEqualToString:@""] )
-    {
-        [marrDoc addObject:response[@"docs"][@"salary_slip1"]];
-    }
-    
-    else if ( ![response[@"docs"][@"salary_slip2"] isEqualToString:@""] )
-    {
-        [marrDoc addObject:response[@"docs"][@"salary_slip2"]];
-    }
-    else if ( ![response[@"docs"][@"salary_slip3"] isEqualToString:@""] )
-    {
-        [marrDoc addObject:response[@"docs"][@"salary_slip3"]];
-    }
+        if ( ![response[@"docs"][@"address_proof"] isEqualToString:@""] )
+        {
+            [marrDoc addObject:response[@"docs"][@"address_proof"]];
+            [ marrDocTitle addObject:@"Address Proof" ];
+        }
+        else if ( ![response[@"docs"][@"employee_id"] isEqualToString:@""] )
+        {
+            [marrDoc addObject:response[@"docs"][@"employee_id"]];
+            [ marrDocTitle addObject:@"Employee ID" ];
+        }
+        
+        else if ( ![response[@"docs"][@"id_proof"] isEqualToString:@""] )
+        {
+            [marrDoc addObject:response[@"docs"][@"id_proof"]];
+            [ marrDocTitle addObject:@"ID Proof" ];
+        }
+        
+        else if ( ![response[@"docs"][@"office_id"] isEqualToString:@""] )
+        {
+            [marrDoc addObject:response[@"docs"][@"office_id"]];
+            [ marrDocTitle addObject:@"Office ID" ];
+        }
+        
+        else if ( ![response[@"docs"][@"pan_proof"] isEqualToString:@""] )
+        {
+            [marrDoc addObject:response[@"docs"][@"pan_proof"]];
+            [ marrDocTitle addObject:@"PAN Card" ];
+        }
+        else if ( ![response[@"docs"][@"salary_slip1"] isEqualToString:@""] )
+        {
+            [marrDoc addObject:response[@"docs"][@"salary_slip1"]];
+            [ marrDocTitle addObject:@"Salary Slip1" ];
+        }
+        
+        else if ( ![response[@"docs"][@"salary_slip2"] isEqualToString:@""] )
+        {
+            [marrDoc addObject:response[@"docs"][@"salary_slip2"]];
+            [ marrDocTitle addObject:@"Salary Slip2" ];
+        }
+        else if ( ![response[@"docs"][@"salary_slip3"] isEqualToString:@""] )
+        {
+            [marrDoc addObject:response[@"docs"][@"salary_slip3"]];
+            [ marrDocTitle addObject:@"Salary Slip3" ];
+        }
+    }*/
     
     NSArray *otherDoc = response[@"other_selected_docs"];
     if ( [otherDoc count] != 0 )
@@ -596,12 +724,47 @@
         for (NSDictionary *dictOther in otherDoc)
         {
             [marrDoc addObject:dictOther[@"document_path"]];
+            [marrDocTitle addObject:dictOther[@"document_name"]];
         }
     }
+
     self.profileTableView.hidden = NO;
     self.docCollection.hidden = YES;
+    self.btnUpload.hidden = YES;
     
     [self.profileTableView reloadData];
+}
+- (void)serverCallForChangePassword
+{
+    NSDictionary *param = [NSMutableDictionary new];
+   
+    [ param setValue:@"changePassword" forKey:@"mode" ];
+    [ param setValue:_txtOld.text forKey:@"oldPassword" ];
+    [ param setValue:_txtNew.text forKey:@"newPassword" ];
+    
+    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 UIAlertView *alert = [[ UIAlertView alloc ] initWithTitle:@"Stashfin" message:response[@"msg"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                 [ alert show ];
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     }];
+
 }
 #pragma mark UIActionSheet Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -673,8 +836,58 @@
 
     }];
     
-    
-    
     [imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
+
+#pragma marl Helper Method
+- (void)showPopupView:(UIView *)popupView onViewController:(UIViewController *)viewcontroller
+{
+    UIView *overlayView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [overlayView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5]];
+    [overlayView setTag:786];
+    [popupView setHidden:NO];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedOnOverlay:)];
+    [overlayView addGestureRecognizer:tapGesture];
+    
+    [viewcontroller.view addSubview:overlayView];
+    [viewcontroller.view bringSubviewToFront:popupView];
+    popupView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        
+        popupView.transform = CGAffineTransformIdentity;
+    } completion:^(BOOL finished) {
+        
+        //        [self.view bringSubviewToFront:_viewPicker];
+    }];
+    
+}
+- (void)tappedOnOverlay:(UIGestureRecognizer *)gesture
+{
+    [ self.view endEditing:YES ];
+    [self hidePopupView:_viewPopup fromViewController:self];
+}
+- (void)hidePopupView:(UIView *)popupView fromViewController:(UIViewController *)viewcontroller
+{
+    UIView *overlayView = [viewcontroller.view viewWithTag:786];
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^
+     {
+         popupView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+     }
+                     completion:^(BOOL finished)
+     {
+         [popupView setHidden:YES];
+         
+     }];
+    [overlayView removeFromSuperview];
+}
+
+#pragma mark UIAlertview Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [ self.view endEditing:YES ];
+    [ self hidePopupView:_viewPopup fromViewController:self ];
+}
+
+
 @end

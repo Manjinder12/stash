@@ -13,6 +13,7 @@
 #import "REFrostedViewController.h"
 #import "RadioButton.h"
 #import "LOCWithdrawalVC.h"
+#import "JMMarkSlider.h"
 
 @interface ReloadCardVC ()<LGPlusButtonsViewDelegate,UITextFieldDelegate>
 {
@@ -21,14 +22,22 @@
     NSString *strTenure;
     UIImage *check, *uncheck;
     NSDictionary *param;
-    int installmentsNo,maxTenure;
+    int installmentsNo, maxTenure, minTenure , minCredit, maxCredit;
+    float rate;
 
 }
 @property (weak, nonatomic) IBOutlet UILabel *lblRemainLOC;
 @property (weak, nonatomic) IBOutlet UILabel *lblTenure;
+@property (weak, nonatomic) IBOutlet UILabel *lblMaxCredit;
+@property (weak, nonatomic) IBOutlet UILabel *lblMinCredit;
 @property (weak, nonatomic) IBOutlet UILabel *lblMaxTenure;
+@property (weak, nonatomic) IBOutlet UILabel *lblMinTenure;
+@property (weak, nonatomic) IBOutlet UILabel *lblCredit;
+@property (weak, nonatomic) IBOutlet UILabel *lblEMI;
 
-@property (weak, nonatomic) IBOutlet UISlider *tenureSlider;
+@property (weak, nonatomic) IBOutlet JMMarkSlider *tenureSlider;
+@property (weak, nonatomic) IBOutlet JMMarkSlider *creditSlider;
+
 @property (weak, nonatomic) IBOutlet UITextField *txtRequestAmount;
 @property (weak, nonatomic) IBOutlet UIImageView *imageError;
 
@@ -61,11 +70,31 @@
     _imageError.hidden = YES;
     isButtonChecked = NO;
     
-    [self addStashfinButtonView];
+//    [self addStashfinButtonView];
     isStashExpand = NO;
+    
+    [ self setAllSlider ];
     
     [self serverCallForWithdrawalRerquestForm];
 }
+
+- (void)setAllSlider
+{
+    _creditSlider.markColor = [UIColor colorWithWhite:1 alpha:0.5];
+    _creditSlider.markPositions = @[@0];
+    _creditSlider.markWidth = 1.0;
+    _creditSlider.selectedBarColor = [UIColor greenColor];
+    _creditSlider.unselectedBarColor = [UIColor lightGrayColor];
+    _creditSlider.handlerImage = [UIImage imageNamed:@"sliderHandle"];
+    
+    _tenureSlider.markColor = [UIColor colorWithWhite:1 alpha:0.5];
+    _tenureSlider.markPositions = @[@0];
+    _tenureSlider.markWidth = 0.5;
+    _tenureSlider.selectedBarColor = [UIColor greenColor];
+    _tenureSlider.unselectedBarColor = [UIColor lightGrayColor];
+    _tenureSlider.handlerImage = [UIImage imageNamed:@"sliderHandle"];
+}
+
 #pragma mark LGPlusButtonsView
 - (void)addStashfinButtonView
 {
@@ -193,6 +222,19 @@
     {
             installmentsNo = value;
             _lblTenure.text = [NSString stringWithFormat:@"%d Months",installmentsNo];
+    }
+}
+- (IBAction)creditSliderValueChanged:(id)sender
+{
+    float number = [_creditSlider value];
+    int value = (int)(number * maxCredit);
+    if (value == 0)
+    {
+        _lblCredit.text = [NSString stringWithFormat:@"%d",minCredit];
+    }
+    else
+    {
+        _lblCredit.text = [NSString stringWithFormat:@"%d",value];
     }
 }
 -(IBAction)radioButtonAction:(RadioButton*)sender
@@ -326,9 +368,26 @@
     param = [NSDictionary dictionary];
     
     _lblRemainLOC.text = [NSString stringWithFormat:@"%d",[[response valueForKey:@"remaining_loc"] intValue]];
+    
+    _lblCredit.text = [NSString stringWithFormat:@"%d",[[response valueForKey:@"minimum_request_amount"] intValue]];
+    
+    _lblMinCredit.text = [NSString stringWithFormat:@"%d",[[response valueForKey:@"minimum_request_amount"] intValue]];
+
+    _lblMaxCredit.text = [NSString stringWithFormat:@"%d",[[response valueForKey:@"remaining_loc"] intValue]];
    
+    minCredit = [[response valueForKey:@"minimum_request_amount"] intValue];
+    maxCredit = [[response valueForKey:@"remaining_loc"] intValue];
+    
+    rate = [[response valueForKey:@"rate_of_interest"] floatValue];
+    
+    minTenure = [[response valueForKey:@"min_tenure"] intValue];
     maxTenure = [[response valueForKey:@"max_tenure"] intValue];
-    _lblMaxTenure.text = [NSString stringWithFormat:@"%d",maxTenure];
+
+    _lblMinTenure.text = [NSString stringWithFormat:@"%d Months",minTenure];
+    _lblMaxTenure.text = [NSString stringWithFormat:@"%d Months",maxTenure];
+
+    
+    
     maxTenure = maxTenure - 3;
 
 }

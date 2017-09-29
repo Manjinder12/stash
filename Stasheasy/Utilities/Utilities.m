@@ -256,7 +256,7 @@
 {
     CALayer *layer = [object layer];
     layer.borderWidth = 0.5;
-    layer.borderColor = [UIColor lightGrayColor].CGColor;
+    layer.borderColor = [UIColor darkGrayColor].CGColor;
 }
 
 + (UINavigationController *)getNavigationControllerForViewController:(UIViewController *)controller

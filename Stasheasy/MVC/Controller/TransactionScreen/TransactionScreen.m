@@ -24,6 +24,10 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *lblCardNo;
 @property (weak, nonatomic) IBOutlet UILabel *lblCardDate;
+@property (weak, nonatomic) IBOutlet UILabel *lblName;
+
+
+
 @property (weak, nonatomic) IBOutlet UILabel *lblLimit;
 @property (weak, nonatomic) IBOutlet UILabel *lblUsed;
 @property (weak, nonatomic) IBOutlet UILabel *lblAvailable;
@@ -79,8 +83,10 @@
 }
 - (void)populateCardAndBalanceDetail
 {
-    _lblCardNo.text = [NSString stringWithFormat:@"%@",appDelegate.dictOverview[@"card_details"][@"card_no"]];
-    _lblCardDate.text = [NSString stringWithFormat:@"%@/%@",appDelegate.dictOverview[@"card_details"][@"expiry_month"],appDelegate.dictOverview[@"card_details"][@"expiry_year"]];
+    _lblCardNo.text = appDelegate.dictCard[@"card_no"];
+    _lblCardDate.text = [NSString stringWithFormat:@"%@/%@",appDelegate.dictCard[@"expiry_month"],appDelegate.dictCard[@"expiry_year"]];
+    _lblName.text = [NSString stringWithFormat:@"%@",appDelegate.dictCard[@"name"]].uppercaseString;
+
    
     _lblLimit.text = [NSString stringWithFormat:@"₹%@",appDelegate.dictOverview[@"balance_details"][@"limit"]];
     

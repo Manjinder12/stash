@@ -14,6 +14,7 @@
 
 @interface ChangePinVC ()<UITextFieldDelegate,LGPlusButtonsViewDelegate>
 {
+    AppDelegate *appDelegate;
     LGPlusButtonsView *stashfinButton;
     NSString *strOTP;
     BOOL isStashExpand;
@@ -25,6 +26,7 @@
 
 @property (nonatomic, strong) IBOutlet UILabel* lblCardNo;
 @property (nonatomic, strong) IBOutlet UILabel* lblCardDate;
+@property (weak, nonatomic) IBOutlet UILabel *lblName;
 
 @end
 
@@ -37,8 +39,17 @@
 }
 - (void)customInitialization
 {
+    self.navigationController.navigationBar.hidden = YES;
+    
+    appDelegate = [ AppDelegate sharedDelegate ];
+    
+    _lblCardNo.text = appDelegate.dictCard[@"card_no"];
+    _lblCardDate.text = [NSString stringWithFormat:@"%@/%@",appDelegate.dictCard[@"expiry_month"],appDelegate.dictCard[@"expiry_year"]];
+    _lblName.text = [NSString stringWithFormat:@"%@",appDelegate.dictCard[@"name"]].uppercaseString;
+    
     _viewTextfield.hidden = YES;
-    [self addStashfinButtonView];
+    
+//    [self addStashfinButtonView];
 }
 - (void)didReceiveMemoryWarning
 {

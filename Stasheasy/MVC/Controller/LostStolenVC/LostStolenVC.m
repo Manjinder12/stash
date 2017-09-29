@@ -38,8 +38,8 @@
     [Utilities setCornerRadius:_txtDetail];
     
     strLostStolen = @"";
-    
-    [self addStashfinButtonView];
+    self.navigationController.navigationBar.hidden = YES;
+//    [self addStashfinButtonView];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -254,6 +254,9 @@
          }
      }];
 }
+
+#pragma marl Helper Method
+
 -(void)showAlertWithTitle:(NSString *)atitle withMessage:(NSString *)message
 {
     UIAlertController *alertController  = [UIAlertController alertControllerWithTitle:atitle message:message preferredStyle:UIAlertControllerStyleAlert];

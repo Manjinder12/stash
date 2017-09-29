@@ -67,7 +67,7 @@
         else
             [self transactionAction:_btnTransaction];
     }
-    [self addStashfinButtonView];
+//    [self addStashfinButtonView];
 }
 #pragma mark LGPlusButtonsView
 - (void)addStashfinButtonView
@@ -311,7 +311,6 @@
     [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
      {
          NSLog(@"%@", response);
-         
          if ( [response isKindOfClass:[NSDictionary class]] )
          {
              NSString *errorStr = [response objectForKey:@"error"];

@@ -105,6 +105,8 @@
 		E2305EF01F2A01BA005CDBAF /* ConsolidatedEMIVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EEF1F2A01BA005CDBAF /* ConsolidatedEMIVC.m */; };
 		E2305EF31F2A01C3005CDBAF /* ReloadCardVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EF21F2A01C3005CDBAF /* ReloadCardVC.m */; };
 		E2305EF71F2A0AD7005CDBAF /* LoanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E2305EF61F2A0AD7005CDBAF /* LoanCell.m */; };
+		E2625E711F752F3800AA74C0 /* JMMarkSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E2625E701F752F3800AA74C0 /* JMMarkSlider.m */; };
+		E276F1B51F7A33A10005A199 /* DocumentUploadVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E276F1B41F7A33A10005A199 /* DocumentUploadVC.m */; };
 		E2847C671F3C952000C5D3A3 /* StatusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2847C661F3C952000C5D3A3 /* StatusVC.m */; };
 		E2A781121F2B1D9400C151CC /* RadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A781111F2B1D9400C151CC /* RadioButton.m */; };
 		E2A781161F2B496500C151CC /* LOCWithdrawalVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A781151F2B496500C151CC /* LOCWithdrawalVC.m */; };
@@ -336,6 +338,10 @@
 		E2305EF21F2A01C3005CDBAF /* ReloadCardVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReloadCardVC.m; sourceTree = "<group>"; };
 		E2305EF51F2A0AD7005CDBAF /* LoanCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoanCell.h; sourceTree = "<group>"; };
 		E2305EF61F2A0AD7005CDBAF /* LoanCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoanCell.m; sourceTree = "<group>"; };
+		E2625E6F1F752F3800AA74C0 /* JMMarkSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMMarkSlider.h; sourceTree = "<group>"; };
+		E2625E701F752F3800AA74C0 /* JMMarkSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMMarkSlider.m; sourceTree = "<group>"; };
+		E276F1B31F7A33A10005A199 /* DocumentUploadVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentUploadVC.h; sourceTree = "<group>"; };
+		E276F1B41F7A33A10005A199 /* DocumentUploadVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentUploadVC.m; sourceTree = "<group>"; };
 		E2847C651F3C952000C5D3A3 /* StatusVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusVC.h; sourceTree = "<group>"; };
 		E2847C661F3C952000C5D3A3 /* StatusVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusVC.m; sourceTree = "<group>"; };
 		E2A781101F2B1D9400C151CC /* RadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioButton.h; sourceTree = "<group>"; };
@@ -543,6 +549,7 @@
 		781D1E411EE0885E00D82E86 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E276F1B21F7A33890005A199 /* DocumentUploadVC */,
 				E2847C641F3C950D00C5D3A3 /* StatusVC */,
 				E20FDE941F3B302E001A438E /* RejectedVC */,
 				E208E5A41F331931006EBF9F /* ChangePinVC */,
@@ -916,6 +923,7 @@
 		BB85AF6B1EE290B600B32986 /* Rocket */ = {
 			isa = PBXGroup;
 			children = (
+				E2625E6E1F752F3800AA74C0 /* JMMarkSlider */,
 				E2D01F8D1F3495B900296A84 /* VBPieChart */,
 				E2A7810F1F2B1D9400C151CC /* RadioButton */,
 				7805506D1F0ACC8800A1B34F /* IQKeyboardManager */,
@@ -1137,6 +1145,24 @@
 				E2305EF61F2A0AD7005CDBAF /* LoanCell.m */,
 			);
 			path = LoanCell;
+			sourceTree = "<group>";
+		};
+		E2625E6E1F752F3800AA74C0 /* JMMarkSlider */ = {
+			isa = PBXGroup;
+			children = (
+				E2625E6F1F752F3800AA74C0 /* JMMarkSlider.h */,
+				E2625E701F752F3800AA74C0 /* JMMarkSlider.m */,
+			);
+			path = JMMarkSlider;
+			sourceTree = "<group>";
+		};
+		E276F1B21F7A33890005A199 /* DocumentUploadVC */ = {
+			isa = PBXGroup;
+			children = (
+				E276F1B31F7A33A10005A199 /* DocumentUploadVC.h */,
+				E276F1B41F7A33A10005A199 /* DocumentUploadVC.m */,
+			);
+			path = DocumentUploadVC;
 			sourceTree = "<group>";
 		};
 		E2847C641F3C950D00C5D3A3 /* StatusVC */ = {
@@ -1537,6 +1563,7 @@
 				BB583A9A1EEACDA1000B73AA /* TPKeyboardAvoidingScrollView.m in Sources */,
 				E208E5A81F331948006EBF9F /* ChangePinVC.m in Sources */,
 				781D1E4C1EE0892800D82E86 /* SignupScreen.m in Sources */,
+				E276F1B51F7A33A10005A199 /* DocumentUploadVC.m in Sources */,
 				BB9821AF1F0BB31C00D70EF8 /* CityVC.m in Sources */,
 				7804BD361F05FE550068B621 /* LoanApplication.m in Sources */,
 				BB85AF7D1EE290C400B32986 /* UIView+REFrostedViewController.m in Sources */,
@@ -1545,6 +1572,7 @@
 				BB583A7D1EEA6A14000B73AA /* UserServices.m in Sources */,
 				BB583A851EEA6DB4000B73AA /* Reachability.m in Sources */,
 				781D1E561EE08CA600D82E86 /* SingleTableViewCell.m in Sources */,
+				E2625E711F752F3800AA74C0 /* JMMarkSlider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1703,6 +1731,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1720,6 +1749,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
