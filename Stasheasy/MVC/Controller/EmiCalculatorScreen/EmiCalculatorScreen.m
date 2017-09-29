@@ -14,12 +14,14 @@
 #import "Utilities.h"
 #import "VBPieChart.h"
 #import "JMMarkSlider.h"
+#import "PNChart.h"
 
 @interface EmiCalculatorScreen ()<LGPlusButtonsViewDelegate>
 {
     LGPlusButtonsView *stashfinButton;
+    PNPieChart *pieChart;
     BOOL isStashExpand;
-    int principal,rate,installmentsNo, approvedLOC, usedLOC, remainingLOC, emiAmount, interest,totalPayable ;
+    double principal,rate,installmentsNo, approvedLOC, usedLOC, remainingLOC, emiAmount, interest,totalPayable ;
     double pieProgress;
 
 }
@@ -30,7 +32,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblInterest;
 @property (weak, nonatomic) IBOutlet UILabel *lblTotal;
 
-@property (weak, nonatomic) IBOutlet VBPieChart *viewPieChart;
+@property (weak, nonatomic) IBOutlet UIView *viewPieChart;
 
 @property (weak, nonatomic) IBOutlet JMMarkSlider *amountSlider;
 @property (weak, nonatomic) IBOutlet JMMarkSlider *tenureSlider;
@@ -59,9 +61,9 @@
     interest = 0;
     totalPayable = 0;
     
-    _lblAmount.text = [NSString stringWithFormat:@"₹%d",principal];
-    _lblTenure.text = [NSString stringWithFormat:@"%d Months",installmentsNo];
-    _lblRate.text = [NSString stringWithFormat:@"%d",rate];
+    _lblAmount.text = [NSString stringWithFormat:@"₹%.0f",principal];
+    _lblTenure.text = [NSString stringWithFormat:@"%.0f Months",installmentsNo];
+    _lblRate.text = [NSString stringWithFormat:@"%.0f",rate];
 
     [ self setAllSlider ];
     
@@ -76,21 +78,21 @@
     _amountSlider.markWidth = 1.0;
     _amountSlider.selectedBarColor = [UIColor greenColor];
     _amountSlider.unselectedBarColor = [UIColor lightGrayColor];
-    _amountSlider.handlerImage = [UIImage imageNamed:@"sliderHandle"];
+    _amountSlider.handlerImage = [UIImage imageNamed:@"silderbtn"];
     
     _tenureSlider.markColor = [UIColor colorWithWhite:1 alpha:0.5];
     _tenureSlider.markPositions = @[@0];
-    _tenureSlider.markWidth = 0.5;
+    _tenureSlider.markWidth = 1.0;
     _tenureSlider.selectedBarColor = [UIColor greenColor];
     _tenureSlider.unselectedBarColor = [UIColor lightGrayColor];
-    _tenureSlider.handlerImage = [UIImage imageNamed:@"sliderHandle"];
+    _tenureSlider.handlerImage = [UIImage imageNamed:@"silderbtn"];
     
     _rateSlider.markColor = [UIColor colorWithWhite:1 alpha:0.5];
     _rateSlider.markPositions = @[@0];
-    _rateSlider.markWidth = 0.5;
+    _rateSlider.markWidth = 1.0;
     _rateSlider.selectedBarColor = [UIColor greenColor];
     _rateSlider.unselectedBarColor = [UIColor lightGrayColor];
-    _rateSlider.handlerImage = [UIImage imageNamed:@"sliderHandle"];
+    _rateSlider.handlerImage = [UIImage imageNamed:@"silderbtn"];
     
 }
 - (void)setUpPieChart
@@ -98,18 +100,30 @@
     int loan = ( emiAmount * 100 ) / totalPayable;
     int intPayable = ( interest * 100 ) / totalPayable;
     
+    NSArray *items = @[
+                       [PNPieChartDataItem dataItemWithValue:loan color:[UIColor redColor] description:@""],
+                       [PNPieChartDataItem dataItemWithValue:intPayable color:[UIColor greenColor] description:@""],
+                       ];
+    
+    
+    pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(0, 0, 58, 58) items:items];
+    [self.viewPieChart addSubview:pieChart];
+
+    
+    
+    
 //    usedValue = (usedLOC * 100) / approvedLOC;
 //    remainValue = (remainingLOC * 100 ) / approvedLOC;
     
-    _viewPieChart.startAngle = M_PI+M_PI_2;
-    [_viewPieChart setHoleRadiusPrecent:0.5];
-    
-    NSArray *chartValues = @[
-                             @{@"name":@"Apple", @"value":[NSNumber numberWithInt:loan], @"color":[UIColor redColor], @"strokeColor":[UIColor whiteColor]},
-                             @{@"name":@"Orange", @"value":[NSNumber numberWithInt:intPayable], @"color":[UIColor greenColor], @"strokeColor":[UIColor whiteColor]}
-                             ];
-    
-    [_viewPieChart setChartValues:chartValues animation:YES duration:2 options:VBPieChartAnimationDefault];
+//    _viewPieChart.startAngle = M_PI+M_PI_2;
+//    [_viewPieChart setHoleRadiusPrecent:0.5];
+//    
+//    NSArray *chartValues = @[
+//                             @{@"name":@"Apple", @"value":[NSNumber numberWithInt:loan], @"color":[UIColor redColor], @"strokeColor":[UIColor whiteColor]},
+//                             @{@"name":@"Orange", @"value":[NSNumber numberWithInt:intPayable], @"color":[UIColor greenColor], @"strokeColor":[UIColor whiteColor]}
+//                             ];
+//    
+//    [_viewPieChart setChartValues:chartValues animation:YES duration:2 options:VBPieChartAnimationDefault];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -229,13 +243,20 @@
     if (value == 0)
     {
         principal = 10000;
-        _lblAmount.text = [NSString stringWithFormat:@"₹%d",principal];
+        _lblAmount.text = [NSString stringWithFormat:@"₹%.0f",principal];
     }
     else
     {
         principal = value * 10000;
-        _lblAmount.text = [NSString stringWithFormat:@"₹%d", principal];
+        _lblAmount.text = [NSString stringWithFormat:@"₹%.0f", principal];
     }
+}
+- (IBAction)allSliderAction:(id)sender
+{
+    [ _amountSlider setContinuous:YES];
+    [ _tenureSlider setContinuous:YES];
+    [ _rateSlider setContinuous:YES];
+    
     [self calculateEMI];
 }
 - (IBAction)tenureSliderValueChanged:(id)sender
@@ -245,14 +266,14 @@
     if (value == 0)
     {
         installmentsNo = 3;
-        _lblTenure.text = [NSString stringWithFormat:@"%d Months",installmentsNo];
+        _lblTenure.text = [NSString stringWithFormat:@"%.0f Months",installmentsNo];
     }
     else
     {
         installmentsNo = value;
-        _lblTenure.text = [NSString stringWithFormat:@"%d Months",installmentsNo];
+        _lblTenure.text = [NSString stringWithFormat:@"%.0f Months",installmentsNo];
     }
-    [self calculateEMI];
+//    [self calculateEMI];
 }
 - (IBAction)rateSliderValueChanged:(id)sender
 {
@@ -261,14 +282,14 @@
     if (value == 0)
     {
         rate = 1;
-        _lblRate.text = [NSString stringWithFormat:@"%d",rate];
+        _lblRate.text = [NSString stringWithFormat:@"%.0f",rate];
     }
     else
     {
         rate = value;
-        _lblRate.text = [NSString stringWithFormat:@"%d",rate];
+        _lblRate.text = [NSString stringWithFormat:@"%.0f",rate];
     }
-    [self calculateEMI];
+//    [self calculateEMI];
 }
 - (IBAction)menuAction:(id)sender
 {
@@ -277,26 +298,27 @@
     [self.frostedViewController presentMenuViewController];
 
 }
+
 - (void)calculateEMI
 {
     float r = rate / (12.0f * 100.0f);
     double compo = pow((1 + r), installmentsNo);
     double devo = compo - 1;
     
-    int EMI = (principal * r * compo) / devo;
-    NSLog(@"EMI ===== %d", EMI);
+    
+    double EMI =  (principal * r * compo) / devo;;
+    
+    NSLog(@"EMI ===== %.0f", EMI);
     
     emiAmount = EMI;
     interest = (EMI * installmentsNo) - principal;
     totalPayable = emiAmount + interest;
     
-    _lblEMIAmount.text = [NSString stringWithFormat:@"₹%d",EMI];
-    _lblInterest.text = [NSString stringWithFormat:@"₹%d",(EMI * installmentsNo)  - principal];
-    _lblTotal.text = [NSString stringWithFormat:@"₹%d",(EMI * installmentsNo)];
+    _lblEMIAmount.text = [NSString stringWithFormat:@"₹ %.0f",EMI];
+    _lblInterest.text = [NSString stringWithFormat:@"₹ %.0f",(EMI * installmentsNo)  - principal];
+    _lblTotal.text = [NSString stringWithFormat:@"₹ %.0f",(EMI * installmentsNo)];
     
     [self setUpPieChart];
-
-    
 }
 
 @end

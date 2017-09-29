@@ -21,7 +21,7 @@
     }
     
     AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
-    [sessionManager.requestSerializer setTimeoutInterval:300];
+    [sessionManager.requestSerializer setTimeoutInterval:60];
     sessionManager.responseSerializer = [AFHTTPResponseSerializer serializer];
     sessionManager.requestSerializer.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
     sessionManager.responseSerializer.acceptableContentTypes = [sessionManager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];

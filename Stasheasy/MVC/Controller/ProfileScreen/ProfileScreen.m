@@ -18,6 +18,7 @@
 
 @interface ProfileScreen ()<UICollectionViewDelegate,UICollectionViewDataSource,MWPhotoBrowserDelegate,LGPlusButtonsViewDelegate, UIActionSheetDelegate,UIImagePickerControllerDelegate, UIAlertViewDelegate>
 {
+    AppDelegate *appDelegate;
     UIImagePickerController *imagePicker;
     UIImage *selectedImage;
  
@@ -85,6 +86,7 @@
 {
     self.navigationController.navigationBar.hidden = YES;
    
+    appDelegate = [ AppDelegate sharedDelegate ];
     _viewPopup.hidden = YES;
     imagePicker = [[UIImagePickerController alloc] init];
     
@@ -375,6 +377,9 @@
     self.profilepic.layer.borderColor = [UIColor whiteColor].CGColor;
     self.profilepic.layer.borderWidth = 0.5;
     self.profilepic.clipsToBounds = YES;
+    self.profilepic.image = [UIImage imageNamed:@""];
+    
+    [self.profilepic setImageWithURL:[Utilities getFormattedImageURLFromString:[NSString stringWithFormat:@"%@",appDelegate.dictCustomer[@"profile_pic"]]] placeholderImage:[UIImage imageNamed:@"profile"]];
 }
 
 #pragma mark Button Action

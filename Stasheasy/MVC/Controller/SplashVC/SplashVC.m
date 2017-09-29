@@ -80,7 +80,7 @@
              }
              else
              {
-                 [self serverCallForCardOverview];
+                 [self serverCallForPersonalDetail];
              }
          }
          else
@@ -89,6 +89,35 @@
          }
      }];
 }
+- (void)serverCallForPersonalDetail
+{
+    NSDictionary *dictParam = [NSDictionary dictionaryWithObject:@"getLoginData" forKey:@"mode"];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 appDelegate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
+                 [ self serverCallForCardOverview ];
+             }
+             
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     }];
+}
+
 - (void)serverCallForCardOverview
 {
     NSDictionary *param = [NSDictionary dictionaryWithObject:@"cardOverview" forKey:@"mode"];

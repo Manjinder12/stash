@@ -341,15 +341,18 @@
 }
 + (UIStoryboard *)getStoryBoard
 {
-    NSString *deviceType = [UIDevice currentDevice].model;
-    if ([deviceType isEqualToString:@"iPhone"])
-    {
-        return [ UIStoryboard storyboardWithName:@"iPhone" bundle:nil ];
-    }
-    else
-    {
-        return [ UIStoryboard storyboardWithName:@"iPad" bundle:nil ];
-    }
+    return [ UIStoryboard storyboardWithName:@"iPhone" bundle:nil ];
+
+//    NSString *deviceType = [UIDevice currentDevice].model;
+//    if ([deviceType isEqualToString:@"iPhone"])
+//    {
+//        return [ UIStoryboard storyboardWithName:@"iPhone" bundle:nil ];
+//    }
+//    else
+//    {
+//        return [ UIStoryboard storyboardWithName:@"iPad" bundle:nil ];
+//    }
+    
 }
 + (UIViewController *)instantiateViewControllerWithIdentifier:(NSString *)identifier
 {

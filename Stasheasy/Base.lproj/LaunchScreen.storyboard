@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -17,18 +17,30 @@
                         <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="newSplash" translatesAutoresizingMaskIntoConstraints="NO" id="V0A-Bg-PAa">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Making Access to Personal Loans Easier and Quicker!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RkJ-rh-Bu9">
+                                <rect key="frame" x="29" y="425" width="262" height="65"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="262" id="Ctu-RH-E6m"/>
+                                    <constraint firstAttribute="height" constant="65" id="TxV-3X-jip"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="V0A-Bg-PAa" secondAttribute="bottom" id="3mT-Ei-zVP"/>
+                            <constraint firstItem="RkJ-rh-Bu9" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="425" id="FCO-Wb-9hA"/>
                             <constraint firstAttribute="trailing" secondItem="V0A-Bg-PAa" secondAttribute="trailing" id="OAo-h9-Ac5"/>
                             <constraint firstItem="V0A-Bg-PAa" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="baB-E8-tnt"/>
+                            <constraint firstItem="RkJ-rh-Bu9" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="enq-qV-ZYn"/>
                             <constraint firstItem="V0A-Bg-PAa" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="u9X-RE-VGo"/>
                         </constraints>
                     </view>

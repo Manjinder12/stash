@@ -17,11 +17,13 @@
 #import "REFrostedViewController.h"
 #import "ChatScreen.h"
 #import "VBPieChart.h"
+#import "PNChart.h"
 
 @interface LineCreditVC ()<LGPlusButtonsViewDelegate>
 {
     AppDelegate *appDelegate;
     LGPlusButtonsView *stashfinButton;
+    PNPieChart *pieChart;
     BOOL isStashExpand;
     NSString *strRemainLOC;
     int approvedLOC, usedLOC, remainingLOC, usedValue, remainValue ;
@@ -46,7 +48,7 @@
 @property (weak, nonatomic) IBOutlet UIView *viewLower;
 @property (weak, nonatomic) IBOutlet UIView *viewOuter;
 
-@property (weak, nonatomic) IBOutlet VBPieChart *viewPieChart;
+@property (weak, nonatomic) IBOutlet UIView *viewPieChart;
 
 @property (weak, nonatomic) IBOutlet TPKeyboardAvoidingScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *cnsViewLOCdetailTop;
@@ -330,17 +332,28 @@
     usedValue = (usedLOC * 100) / approvedLOC;
     remainValue = (remainingLOC * 100 ) / approvedLOC;
    
-    _viewPieChart.startAngle = M_PI+M_PI_2;
-    [_viewPieChart setHoleRadiusPrecent:0.5];
+    NSArray *items = @[
+                       [PNPieChartDataItem dataItemWithValue:usedValue color:[UIColor redColor] description:@""],
+                       [PNPieChartDataItem dataItemWithValue:remainValue color:[UIColor greenColor] description:@""],
+                       ];
     
     
-    
-    NSArray *chartValues = @[
-                         @{@"name":@"Apple", @"value":[NSNumber numberWithInt:usedValue], @"color":[UIColor redColor], @"strokeColor":[UIColor whiteColor]},
-                         @{@"name":@"Orange", @"value":[NSNumber numberWithInt:remainValue], @"color":[UIColor greenColor], @"strokeColor":[UIColor whiteColor]}
-                         ];
+    pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(0, 0, 80, 80) items:items];
+    [self.viewPieChart addSubview:pieChart];
 
-    [_viewPieChart setChartValues:chartValues animation:YES duration:2 options:VBPieChartAnimationDefault];
+    
+    
+//    _viewPieChart.startAngle = M_PI+M_PI_2;
+//    [_viewPieChart setHoleRadiusPrecent:0.5];
+//    
+//    
+//    
+//    NSArray *chartValues = @[
+//                         @{@"name":@"Apple", @"value":[NSNumber numberWithInt:usedValue], @"color":[UIColor redColor], @"strokeColor":[UIColor whiteColor]},
+//                         @{@"name":@"Orange", @"value":[NSNumber numberWithInt:remainValue], @"color":[UIColor greenColor], @"strokeColor":[UIColor whiteColor]}
+//                         ];
+//
+//    [_viewPieChart setChartValues:chartValues animation:YES duration:2 options:VBPieChartAnimationDefault];
 }
 - (IBAction)consolidatedEMIAction:(id)sender
 {

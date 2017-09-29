@@ -18,10 +18,12 @@
 @interface ReloadCardVC ()<LGPlusButtonsViewDelegate,UITextFieldDelegate>
 {
     LGPlusButtonsView *stashfinButton;
-    BOOL isStashExpand, isButtonChecked;
+    BOOL isStashExpand, isButtonChecked , isCreditSlider;
     NSString *strTenure;
     UIImage *check, *uncheck;
     NSDictionary *param;
+    double principal;
+
     int installmentsNo, maxTenure, minTenure , minCredit, maxCredit;
     float rate;
 
@@ -67,9 +69,11 @@
     check = [UIImage imageNamed:@"radioChecked"];
     uncheck = [UIImage imageNamed:@"radioUncheck"];
     
+    isCreditSlider = NO;
     _imageError.hidden = YES;
-    isButtonChecked = NO;
-    
+
+    installmentsNo = 3;
+
 //    [self addStashfinButtonView];
     isStashExpand = NO;
     
@@ -85,14 +89,14 @@
     _creditSlider.markWidth = 1.0;
     _creditSlider.selectedBarColor = [UIColor greenColor];
     _creditSlider.unselectedBarColor = [UIColor lightGrayColor];
-    _creditSlider.handlerImage = [UIImage imageNamed:@"sliderHandle"];
+    _creditSlider.handlerImage = [UIImage imageNamed:@"silderbtn"];
     
     _tenureSlider.markColor = [UIColor colorWithWhite:1 alpha:0.5];
     _tenureSlider.markPositions = @[@0];
-    _tenureSlider.markWidth = 0.5;
+    _tenureSlider.markWidth = 1.0;
     _tenureSlider.selectedBarColor = [UIColor greenColor];
     _tenureSlider.unselectedBarColor = [UIColor lightGrayColor];
-    _tenureSlider.handlerImage = [UIImage imageNamed:@"sliderHandle"];
+    _tenureSlider.handlerImage = [UIImage imageNamed:@"silderbtn"];
 }
 
 #pragma mark LGPlusButtonsView
@@ -211,6 +215,8 @@
 }
 - (IBAction)tenureSliderValueChanged:(id)sender
 {
+    isCreditSlider = NO;
+
     float number = [_tenureSlider value];
     int value = (int)(number * maxTenure) + 3;
     if (value == 0)
@@ -226,15 +232,34 @@
 }
 - (IBAction)creditSliderValueChanged:(id)sender
 {
+    isCreditSlider = YES;
+    
     float number = [_creditSlider value];
     int value = (int)(number * maxCredit);
+    principal = value;
+
     if (value == 0)
     {
-        _lblCredit.text = [NSString stringWithFormat:@"%d",minCredit];
+        principal = minCredit;
+        _lblCredit.text = [NSString stringWithFormat:@"%.0f",principal];
     }
     else
     {
-        _lblCredit.text = [NSString stringWithFormat:@"%d",value];
+        _lblCredit.text = [NSString stringWithFormat:@"%.0f",principal];
+    }
+}
+- (IBAction)allsliderAction:(id)sender
+{
+    [ _tenureSlider setContinuous:YES ];
+    [ _creditSlider setContinuous:YES ];
+    
+    if ( isCreditSlider )
+    {
+        [ self serverCallToGetTenure ];
+    }
+    else
+    {
+        [ self calculateEMI ];
     }
 }
 -(IBAction)radioButtonAction:(RadioButton*)sender
@@ -274,42 +299,36 @@
     }
     
 }
-
-- (IBAction)requestReloadAction:(id)sender
+- (void)calculateEMI
 {
-    if ( [self performValidation] )
-    {
-        [self serverCallForRequestReload];
-    }
-}
-- (BOOL)performValidation
-{
-    if ([_txtRequestAmount.text isEqualToString:@""])
-    {
-        [Utilities showAlertWithMessage:@"Please enter Request Amount"];
-    }
-    else if ( !isButtonChecked )
-    {
-        _imageError.hidden = NO;
-    }
-    else if ([_txtRequestAmount.text intValue] > [strRemainLOC intValue])
-    {
-        [Utilities showAlertWithMessage:[NSString stringWithFormat:@"You have limit of ₹%@",strRemainLOC]];
-    }
-    else
-    {
-        param = [ NSDictionary dictionaryWithObjectsAndKeys:@"locWithdrawalRequest",@"mode",_txtRequestAmount.text,@"amount",strTenure,@"tenure", nil];
-        return YES;
-    }
-    return NO;
-
+    float r = rate / (12.0f * 100.0f);
+    double compo = pow((1 + r), installmentsNo);
+    double devo = compo - 1;
+    
+    double EMI =  (principal * r * compo) / devo;;
+    
+    NSLog(@"EMI ===== %.0f", EMI);
+    
+    _lblEMI.text = [NSString stringWithFormat:@"EMI ₹ %.0f",EMI];
     
 }
+- (IBAction)requestReloadAction:(id)sender
+{
+    [self serverCallForRequestReload];
+
+}
+
+#pragma mark Server Call
 - (void)serverCallForRequestReload
 {
-    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+    NSMutableDictionary *mdictParam = [NSMutableDictionary new];
+    [ mdictParam setValue:@"locWithdrawalRequest" forKey:@"mode"];
+    [ mdictParam setValue:_lblCredit.text forKey:@"amount"];
+    [ mdictParam setValue:_lblTenure.text forKey:@"tenure"];
+    
+    [ServerCall getServerResponseWithParameters:mdictParam withHUD:YES withCompletion:^(id response)
     {
-        NSLog(@"response == %@", response);
+        NSLog(@"locWithdrawalRequest response == %@", response);
         
         if ( [response isKindOfClass:[NSDictionary class]] )
         {
@@ -363,6 +382,47 @@
          
      }];
 }
+- (void)serverCallToGetTenure
+{
+   NSDictionary *dictParam = [ NSDictionary dictionaryWithObjectsAndKeys:@"locWithdrawalRequestform",@"mode",_lblCredit.text,@"amount", nil];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response == %@", response);
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 [ self populateTenureDetail:response ];
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+         
+     }];
+}
+
+#pragma mark Helper Method
+- (void)populateTenureDetail:(NSDictionary *)response
+{
+    rate = [[response valueForKey:@"rate_of_interest"] floatValue];
+    
+    minTenure = [[response valueForKey:@"min_tenure"] intValue];
+    maxTenure = [[response valueForKey:@"max_tenure"] intValue];
+    
+    _lblMinTenure.text = [NSString stringWithFormat:@"%d Months",minTenure];
+    _lblMaxTenure.text = [NSString stringWithFormat:@"%d Months",maxTenure];
+    
+    [ self calculateEMI ];
+}
 - (void)populateWithrawalRequestForm:(NSDictionary *)response
 {
     param = [NSDictionary dictionary];
@@ -372,30 +432,53 @@
     _lblCredit.text = [NSString stringWithFormat:@"%d",[[response valueForKey:@"minimum_request_amount"] intValue]];
     
     _lblMinCredit.text = [NSString stringWithFormat:@"%d",[[response valueForKey:@"minimum_request_amount"] intValue]];
-
+    
     _lblMaxCredit.text = [NSString stringWithFormat:@"%d",[[response valueForKey:@"remaining_loc"] intValue]];
-   
+    
     minCredit = [[response valueForKey:@"minimum_request_amount"] intValue];
     maxCredit = [[response valueForKey:@"remaining_loc"] intValue];
+    principal = minCredit;
     
     rate = [[response valueForKey:@"rate_of_interest"] floatValue];
     
     minTenure = [[response valueForKey:@"min_tenure"] intValue];
     maxTenure = [[response valueForKey:@"max_tenure"] intValue];
-
+    
     _lblMinTenure.text = [NSString stringWithFormat:@"%d Months",minTenure];
     _lblMaxTenure.text = [NSString stringWithFormat:@"%d Months",maxTenure];
-
-    
     
     maxTenure = maxTenure - 3;
-
+    
+    [ self calculateEMI ];
+    
 }
 - (void)navigateToLOCWithdrawalVC:(NSDictionary *)response
 {
     LOCWithdrawalVC *locWithdrawalVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"LOCWithdrawalVC"];
     locWithdrawalVC.dictResponce = response;
     [self.navigationController pushViewController:locWithdrawalVC animated:YES];
+    
+}
+- (BOOL)performValidation
+{
+    if ([_txtRequestAmount.text isEqualToString:@""])
+    {
+        [Utilities showAlertWithMessage:@"Please enter Request Amount"];
+    }
+    else if ( !isButtonChecked )
+    {
+        _imageError.hidden = NO;
+    }
+    else if ([_txtRequestAmount.text intValue] > [strRemainLOC intValue])
+    {
+        [Utilities showAlertWithMessage:[NSString stringWithFormat:@"You have limit of ₹%@",strRemainLOC]];
+    }
+    else
+    {
+        param = [ NSDictionary dictionaryWithObjectsAndKeys:@"locWithdrawalRequest",@"mode",_txtRequestAmount.text,@"amount",strTenure,@"tenure", nil];
+        return YES;
+    }
+    return NO;
     
 }
 @end

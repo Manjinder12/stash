@@ -174,21 +174,49 @@
                  
                  appDelegate.isCardFound = YES;
              }
+             
+             [ self serverCallForPersonalDetail ];
          }
          else
          {
              [ Utilities showAlertWithMessage:response ];
          }
+    }];
+}
+- (void)serverCallForPersonalDetail
+{
+    NSDictionary *dictParam = [NSDictionary dictionaryWithObject:@"getLoginData" forKey:@"mode"];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
          
-         if ( [dictLoginResponse[@"landing_page"] isEqualToString:@"profile"] )
+         if ([response isKindOfClass:[NSDictionary class]])
          {
-             [self navigateAccordingToCurrentStatus:dictLoginResponse];
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 appDelegate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
+             }
+             
+             if ( [dictLoginResponse[@"landing_page"] isEqualToString:@"profile"] )
+             {
+                 [self navigateAccordingToCurrentStatus:dictLoginResponse];
+             }
+             else
+             {
+                 [self navigateAccordingLandingPageStatus:dictLoginResponse];
+             }
+
          }
          else
          {
-             [self navigateAccordingLandingPageStatus:dictLoginResponse];
+             [Utilities showAlertWithMessage:response];
          }
-         
      }];
 }
 -(void)loginApiCall

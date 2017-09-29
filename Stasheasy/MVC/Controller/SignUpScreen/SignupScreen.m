@@ -204,7 +204,7 @@ enum signupStep {
     NSDictionary *desDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Designation",@"First",@"Since",@"Second",nil];
     NSDictionary *expDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Total Exp",@"First",@"Official Email ID",@"Second",nil];
     
-    basicInfoArray = [NSArray arrayWithObjects:@"First Name",@"Last Name",@"Email",@"Mobile No.",@"Company Name",@"check",@"Salary in Hand",@"City", nil];
+    basicInfoArray = [NSArray arrayWithObjects:@"First Name",@"Last Name",@"Email",@"Mobile Number",@"Company Name",@"check",@"Monthly Salary in Hand",@"City", nil];
     idDetailArray = [NSArray arrayWithObjects:loanDic,@"Reason of Loan",dobDic,@"PAN No.",@"Aadhaar No.",@"Name in Aadhar Card",@"Salary Rcpt Mode",@"Current Address(State,City,Pin)",@"Since",@"Residence Type", nil];
     professionalArray = [NSArray arrayWithObjects:eduDic,@"Company Name",desDic,expDic,@"Office Landline No.",@"Office Address(State,City,Pin)", nil];
     docArray = [NSArray arrayWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip 1",@"Salary Slip 2",@"Salary Slip 3",@"Office ID",@"Another Document",@"Mention", nil];

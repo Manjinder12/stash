@@ -21,7 +21,7 @@
 @end
 
 @implementation AppDelegate
-@synthesize dictLOCDetail,dictCard,dictOverview,dictTransaction,dictAnalyze,loanRequestStatus;
+@synthesize dictLOCDetail,dictCard,dictOverview,dictTransaction,dictAnalyze,dictCustomer,loanRequestStatus;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -30,6 +30,8 @@
     dictOverview = [[NSDictionary alloc] init];
     dictAnalyze = [[NSDictionary alloc] init];
     dictTransaction = [[NSDictionary alloc] init];
+    dictCustomer = [[NSDictionary alloc] init];
+
     loanRequestStatus = @"";
     
     [[UINavigationBar appearance] setBarTintColor:[UIColor redColor]];

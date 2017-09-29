@@ -21,7 +21,7 @@
 #import "LostStolenVC.h"
 #import "ChatScreen.h"
 
-@interface LeftScreen ()
+@interface LeftScreen ()<UIAlertViewDelegate>
 {
     AppDelegate *appDelegate;
     NSArray *leftImages;
@@ -33,7 +33,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *backImageView;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblPhoneNumber;
-@property (weak, nonatomic) IBOutlet UILabel *lblEmail;
+@property (weak, nonatomic) IBOutlet UILabel *lblSupportEmail;
+@property (weak, nonatomic) IBOutlet UILabel *lblUserEmail;
 
 @end
 
@@ -58,8 +59,10 @@
         leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Get Stashfin Card",@"EMI Calculation",@"Profile",@"Logout", nil];
     }
     
+    _lblUserEmail.text  = appDelegate.dictCustomer[@"email"];
     
 }
+
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -168,14 +171,9 @@
         }
         else if(indexPath.row == 7)
         {
-            [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
-            [Utilities setUserDefaultWithObject:nil andKey:@"auth_token"];
-            AppDelegate *appdelegate =  (AppDelegate *)[UIApplication sharedApplication].delegate;
-            LandingVC *vc = (LandingVC *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"LandingVC"] ;
-            UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];
-            navigationController.viewControllers = @[vc];
-            navigationController.navigationBar.hidden = YES;
-            appdelegate.window.rootViewController = navigationController;
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Stathfin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+            [ alert show];
+            [self.frostedViewController hideMenuViewController];
         }
     }
     else
@@ -249,13 +247,30 @@
     {
         MFMailComposeViewController *mfMailVC = [[ MFMailComposeViewController alloc ] initWithNibName:nil bundle:nil];
         [ mfMailVC setMailComposeDelegate:self ];
-        [ mfMailVC setToRecipients:@[ _lblEmail.text]];
-        [ mfMailVC setSubject:@"Support STatshfin" ];
+        [ mfMailVC setToRecipients:@[ _lblSupportEmail.text]];
+        [ mfMailVC setSubject:@"Support Streloatshfin" ];
         [ self presentViewController:mfMailVC animated:YES completion:nil ];
     }
 }
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     [ self dismissViewControllerAnimated:YES completion:nil ];
+}
+
+#pragma marl UIAlertview Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ( buttonIndex == 1)
+    {
+        [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
+        [Utilities setUserDefaultWithObject:nil andKey:@"auth_token"];
+        AppDelegate *appdelegate =  (AppDelegate *)[UIApplication sharedApplication].delegate;
+        LandingVC *vc = (LandingVC *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"LandingVC"] ;
+        UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];
+        navigationController.viewControllers = @[vc];
+        navigationController.navigationBar.hidden = YES;
+        appdelegate.window.rootViewController = navigationController;
+
+    }
 }
 @end
