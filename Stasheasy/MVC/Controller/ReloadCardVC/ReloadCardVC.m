@@ -218,16 +218,15 @@
     isCreditSlider = NO;
 
     float number = [_tenureSlider value];
-    int value = (int)(number * maxTenure) + 3;
+    float value = (float)(number * maxTenure) ;
     if (value == 0)
     {
-        installmentsNo = 3;
+        installmentsNo = minTenure;
         _lblTenure.text = [NSString stringWithFormat:@"%d Months",installmentsNo];
     }
     else
     {
-            installmentsNo = value;
-            _lblTenure.text = [NSString stringWithFormat:@"%d Months",installmentsNo];
+            _lblTenure.text = [NSString stringWithFormat:@"%.0f Months",value + minTenure];
     }
 }
 - (IBAction)creditSliderValueChanged:(id)sender
@@ -421,6 +420,8 @@
     _lblMinTenure.text = [NSString stringWithFormat:@"%d Months",minTenure];
     _lblMaxTenure.text = [NSString stringWithFormat:@"%d Months",maxTenure];
     
+    maxTenure = maxTenure - minTenure;
+
     [ self calculateEMI ];
 }
 - (void)populateWithrawalRequestForm:(NSDictionary *)response
@@ -447,7 +448,7 @@
     _lblMinTenure.text = [NSString stringWithFormat:@"%d Months",minTenure];
     _lblMaxTenure.text = [NSString stringWithFormat:@"%d Months",maxTenure];
     
-    maxTenure = maxTenure - 3;
+    maxTenure = maxTenure - minTenure;
     
     [ self calculateEMI ];
     

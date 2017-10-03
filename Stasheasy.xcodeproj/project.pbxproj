@@ -1348,7 +1348,7 @@
 				TargetAttributes = {
 					78A703F41EDE66A9001054CC = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = NKF7DZ3X72;
+						DevelopmentTeam = U4GT9Q44Q2;
 						ProvisioningStyle = Automatic;
 					};
 					78A7040D1EDE66AA001054CC = {
@@ -1724,7 +1724,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = NKF7DZ3X72;
+				DEVELOPMENT_TEAM = U4GT9Q44Q2;
 				INFOPLIST_FILE = Stasheasy/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Stashfin.iOS;
@@ -1742,7 +1742,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = NKF7DZ3X72;
+				DEVELOPMENT_TEAM = U4GT9Q44Q2;
 				INFOPLIST_FILE = Stasheasy/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Stashfin.iOS;

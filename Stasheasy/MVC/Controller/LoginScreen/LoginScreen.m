@@ -17,6 +17,7 @@
 #import "SignupScreen.h"
 #import "StatusVC.h"
 #import "AppDelegate.h"
+#import "LandingVC.h"
 
 @interface LoginScreen ()
 {
@@ -25,13 +26,32 @@
     NSMutableDictionary *param;
     REFrostedViewController *refrostedVC;
     NSDictionary *dictLoginResponse;
+    BOOL isGenerateOTPView;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
 @property (weak, nonatomic) IBOutlet UITextField *txtPassword;
-@property (weak, nonatomic) IBOutlet UITextField *txtOTP;
-@property (weak, nonatomic) IBOutlet UIView *viewPopUp;
+@property (weak, nonatomic) IBOutlet UITextField *txtForgotMobile;
+@property (weak, nonatomic) IBOutlet UITextField *txtForgotOTP;
+@property (weak, nonatomic) IBOutlet UITextField *txtNewPassord;
+@property (weak, nonatomic) IBOutlet UILabel *lblAlert;
+@property (weak, nonatomic) IBOutlet UIButton *btnChangePassword;
+@property (weak, nonatomic) IBOutlet UIView *viewForgotInner;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cnsForgotViewHeight;
+
+
+@property (weak, nonatomic) IBOutlet UITextField *txtMobile;
+
+@property (weak, nonatomic) IBOutlet UIView *viewForgotPopUp;
+@property (weak, nonatomic) IBOutlet UIView *viewOTPLogin;
+@property (weak, nonatomic) IBOutlet UIView *viewEmailLogin;
+
 @property (weak, nonatomic) IBOutlet UIButton *btnSendOTP;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cnsMobileOtpHeight;
+@property (weak, nonatomic) IBOutlet UIView *viewMobileOTP;
+@property (weak, nonatomic) IBOutlet UIButton *btnGenerateOTP;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cnsForgotInnerViewHeight;
 
 @end
 
@@ -51,8 +71,22 @@
     self.navigationController.navigationBar.hidden = YES;
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     
-    _viewPopUp.hidden = YES;
+    _viewForgotPopUp.hidden = YES;
+    _viewForgotInner.hidden = YES;
+    _viewMobileOTP.hidden = YES;
+    _viewOTPLogin.hidden = YES;
+    
+    _lblAlert.hidden = YES;
+
+    _cnsMobileOtpHeight.constant = 0;
+    
+    isGenerateOTPView = NO;
+    
     [ Utilities setBorderAndColor:_btnSendOTP ];
+    [ Utilities setBorderAndColor:_btnChangePassword ];
+    
+    _cnsForgotViewHeight.constant = _cnsForgotViewHeight.constant - _cnsForgotInnerViewHeight.constant;
+    _cnsForgotInnerViewHeight.constant = 0;
     
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:gesture];
@@ -78,21 +112,79 @@
 }
 - (IBAction)backAction:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if ( !appDelegate.isPreApproved )
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+    {
+        AppDelegate *appdelegate =  (AppDelegate *)[UIApplication sharedApplication].delegate;
+        LandingVC *vc = (LandingVC *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"LandingVC"] ;
+        UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];
+        navigationController.viewControllers = @[vc];
+        navigationController.navigationBar.hidden = YES;
+        appdelegate.window.rootViewController = navigationController;
+    }
 }
 - (IBAction)otpLoginAction:(id)sender
 {
-    
+    _viewEmailLogin.hidden = YES;
+    _viewOTPLogin.hidden = NO;
 }
 - (IBAction)sendOTPAction:(id)sender
 {
-    
+    if ( _txtForgotMobile.text.length == 0 )
+    {
+        [ Utilities showAlertWithMessage:@"Enter mobile number." ];
+    }
+    else if ( _txtForgotMobile.text.length < 10 || _txtMobile.text.length > 10)
+    {
+        [ Utilities showAlertWithMessage:@"Enter valid mobile number." ];
+    }
+    else
+    {
+        _viewForgotInner.hidden = NO;
+        _cnsForgotViewHeight.constant = 270;
+        _cnsForgotInnerViewHeight.constant = 127;
+        [_btnSendOTP setTitle:@"RESEND OTP" forState:UIControlStateNormal];
+    }
 }
+- (IBAction)generateOtpAction:(id)sender
+{
+    if ( _txtMobile.text.length == 0 )
+    {
+        [ Utilities showAlertWithMessage:@"Enter mobile number." ];
+    }
+    else if ( _txtMobile.text.length < 10 || _txtMobile.text.length > 10)
+    {
+        [ Utilities showAlertWithMessage:@"Enter valid mobile number." ];
+    }
+    else
+    {
+        [ _txtMobile resignFirstResponder ];
+        
+        if ( ! isGenerateOTPView )
+        {
+            [ _btnGenerateOTP setTitle:@"RESEND OTP" forState:UIControlStateNormal];
+            
+            isGenerateOTPView = YES;
+            _viewMobileOTP.hidden = NO;
+            _cnsMobileOtpHeight.constant = 26;
+        }
+    }
+    
 
+}
+- (IBAction)emailLoginAction:(id)sender
+{
+    _viewEmailLogin.hidden = NO;
+    _viewOTPLogin.hidden = YES;
+
+}
 - (IBAction)forgotPasswordAction:(id)sender
 {
-    _viewPopUp.hidden = NO;
-    [ self showPopupView:_viewPopUp onViewController:self ];
+    _viewForgotPopUp.hidden = NO;
+    [ self showPopupView:_viewForgotPopUp onViewController:self ];
 }
 
 -(BOOL)performValidation
@@ -353,7 +445,12 @@
 }
 - (void)tappedOnOverlay:(UIGestureRecognizer *)gesture
 {
-    [self hidePopupView:_viewPopUp fromViewController:self];
+    [self hidePopupView:_viewForgotPopUp fromViewController:self];
+    _viewForgotInner.hidden = YES;
+    _cnsForgotViewHeight.constant = 143;
+    _cnsForgotInnerViewHeight.constant = 0;
+    [_btnSendOTP setTitle:@"SEND OTP" forState:UIControlStateNormal];
+
 }
 - (void)hidePopupView:(UIView *)popupView fromViewController:(UIViewController *)viewcontroller
 {
@@ -367,6 +464,8 @@
          [popupView setHidden:YES];
          
      }];
+    
+    
     [overlayView removeFromSuperview];
 }
 
