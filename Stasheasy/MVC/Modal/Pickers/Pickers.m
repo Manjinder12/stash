@@ -26,10 +26,12 @@
     return self.loanReasonArr;
 }
 
--(NSMutableArray *)giveStatesPickerArr {
-    NSArray *statesArr = [_responseDic objectForKey:@"operational_states"];
+-(NSMutableArray *)giveStatesPickerArr
+{
+    NSArray *statesArr = [_responseDic objectForKey:@"states"];
     self.statesArr = [NSMutableArray array];
-    for (NSDictionary *dic in statesArr) {
+    for (NSDictionary *dic in statesArr)
+    {
         Pickers *statespicker = [[Pickers alloc]init];
         statespicker.id_state = [dic objectForKey:@"id"];
         statespicker.maxpin = [dic objectForKey:@"maxPinPrefix"];

@@ -264,6 +264,8 @@
     {
         [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
         [Utilities setUserDefaultWithObject:nil andKey:@"auth_token"];
+        [Utilities setUserDefaultWithObject:@"1" andKey:@"signupStep"];
+
         AppDelegate *appdelegate =  (AppDelegate *)[UIApplication sharedApplication].delegate;
         LandingVC *vc = (LandingVC *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"LandingVC"] ;
         UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];

@@ -18,6 +18,7 @@
 #import "StatusVC.h"
 #import "AppDelegate.h"
 #import "LandingVC.h"
+#import "SignupScreen.h"
 
 @interface LoginScreen ()
 {
@@ -26,7 +27,8 @@
     NSMutableDictionary *param;
     REFrostedViewController *refrostedVC;
     NSDictionary *dictLoginResponse;
-    BOOL isGenerateOTPView;
+    BOOL isGenerateOTPView, isLoginWithOTP;
+    NSString *strMobileOTP;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
@@ -34,6 +36,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtForgotMobile;
 @property (weak, nonatomic) IBOutlet UITextField *txtForgotOTP;
 @property (weak, nonatomic) IBOutlet UITextField *txtNewPassord;
+@property (weak, nonatomic) IBOutlet UITextField *txtMobileOTP;
 @property (weak, nonatomic) IBOutlet UILabel *lblAlert;
 @property (weak, nonatomic) IBOutlet UIButton *btnChangePassword;
 @property (weak, nonatomic) IBOutlet UIView *viewForgotInner;
@@ -71,6 +74,8 @@
     self.navigationController.navigationBar.hidden = YES;
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     
+    isLoginWithOTP = NO;
+    strMobileOTP = @"";
     _viewForgotPopUp.hidden = YES;
     _viewForgotInner.hidden = YES;
     _viewMobileOTP.hidden = YES;
@@ -108,6 +113,17 @@
     {
         [self.view endEditing:YES];
         [self serverCallForLogin];
+
+        /*if ( !isLoginWithOTP )
+        {
+            [self.view endEditing:YES];
+            [self serverCallForLogin];
+        }
+        else
+        {
+            [self.view endEditing:YES];
+            [self serverCallForOTPLogin];
+        }*/
     }
 }
 - (IBAction)backAction:(id)sender
@@ -128,6 +144,7 @@
 }
 - (IBAction)otpLoginAction:(id)sender
 {
+    isLoginWithOTP = YES;
     _viewEmailLogin.hidden = YES;
     _viewOTPLogin.hidden = NO;
 }
@@ -162,21 +179,23 @@
     else
     {
         [ _txtMobile resignFirstResponder ];
-        
-        if ( ! isGenerateOTPView )
+        [ self serverCallToGenerateOTP ];
+      
+        /*if ( ! isGenerateOTPView )
         {
             [ _btnGenerateOTP setTitle:@"RESEND OTP" forState:UIControlStateNormal];
             
             isGenerateOTPView = YES;
             _viewMobileOTP.hidden = NO;
             _cnsMobileOtpHeight.constant = 26;
-        }
+        }*/
     }
     
 
 }
 - (IBAction)emailLoginAction:(id)sender
 {
+    isLoginWithOTP = NO;
     _viewEmailLogin.hidden = NO;
     _viewOTPLogin.hidden = YES;
 
@@ -189,40 +208,54 @@
 
 -(BOOL)performValidation
 {
-    NSString *message;
-    if ([_txtEmail.text isEqualToString:@""])
+    if ( !isLoginWithOTP )
     {
-        message = @"Please enter email";
-    }
-    else if ([_txtPassword.text isEqualToString:@""])
-    {
-        message = @"Please enter password";
+        NSString *message;
+        if ([_txtEmail.text isEqualToString:@""])
+        {
+            message = @"Please enter email";
+        }
+        else if ([_txtPassword.text isEqualToString:@""])
+        {
+            message = @"Please enter password";
+        }
+        else
+        {
+            [param setObject:_txtEmail.text forKey:@"email"];
+            [param setObject:_txtPassword.text forKey:@"password"];
+            [param setObject:@"login" forKey:@"mode"];
+            [param setObject:[NSString stringWithFormat:@"%@",[Utilities getDeviceUDID]] forKey:@"device_id"];
+            return YES;
+        }
+        
+        UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"Staheasy" message:message preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            
+        }];
+        
+        [alert addAction:ok];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+        return NO;
     }
     else
     {
-        [param setObject:_txtEmail.text forKey:@"email"];
-        [param setObject:_txtPassword.text forKey:@"password"];
+        [param setObject:_txtMobile.text forKey:@"number"];
+        [param setObject:_txtMobileOTP.text forKey:@"otp"];
         [param setObject:@"login" forKey:@"mode"];
         [param setObject:[NSString stringWithFormat:@"%@",[Utilities getDeviceUDID]] forKey:@"device_id"];
         return YES;
     }
-    
-    UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"Staheasy" message:message preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        
-    }];
-    
-    [alert addAction:ok];
-    
-    [self presentViewController:alert animated:YES completion:nil];
-    return NO;
 }
 
 #pragma mark - Server Call
 - (void)serverCallForLogin
 {
-    [ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+    [ SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack ];
+    [ SVProgressHUD show ];
+    
+    [ServerCall getServerResponseWithParameters:param withHUD:NO withCompletion:^(id response)
     {
         NSLog(@"response === %@", response);
 
@@ -232,28 +265,40 @@
             if ( errorStr.length > 0 )
             {
                 [Utilities showAlertWithMessage:errorStr];
+                [ SVProgressHUD dismiss ];
             }
             else
             {
-                [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
-                [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
+//                [ self populateLoginResponse:response ];
                 dictLoginResponse = response;
-                [ self serverCallForCardOverview ];
+                [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
+
+                if ( [response[@"landing_page"] isEqualToString:@"profile"] )
+                {
+                    [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
+                    [ self serverCallForCardOverview ];
+                }
+                else
+                {
+                    [self navigateAccordingLandingPageStatus:dictLoginResponse];
+                }
+                
             }
         }
         else
         {
             [Utilities showAlertWithMessage:response];
+            
         }
     }];
 }
+
 - (void)serverCallForCardOverview
 {
     NSDictionary *dictParam = [NSDictionary dictionaryWithObject:@"cardOverview" forKey:@"mode"];
     
-    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withCompletion:^(id response)
      {
-         
          if ( [response isKindOfClass:[NSDictionary class]] )
          {
              NSString *errorStr = [response objectForKey:@"error"];
@@ -271,15 +316,18 @@
          }
          else
          {
-             [ Utilities showAlertWithMessage:response ];
+//             [ Utilities showAlertWithMessage:response ];
+            
+             [ SVProgressHUD dismiss ];
          }
+         
     }];
 }
 - (void)serverCallForPersonalDetail
 {
     NSDictionary *dictParam = [NSDictionary dictionaryWithObject:@"getLoginData" forKey:@"mode"];
     
-    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withCompletion:^(id response)
      {
          NSLog(@"response === %@", response);
          
@@ -295,21 +343,116 @@
                  appDelegate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
              }
              
-             if ( [dictLoginResponse[@"landing_page"] isEqualToString:@"profile"] )
+             if ( [ dictLoginResponse[@"landing_page"] isEqualToString:@"profile"] )//landing_page
              {
                  [self navigateAccordingToCurrentStatus:dictLoginResponse];
              }
-             else
+             else if ( [dictLoginResponse[@"landing_page"] isEqualToString:@"id_detail"] )//landing_page
              {
                  [self navigateAccordingLandingPageStatus:dictLoginResponse];
              }
-
+             
+//             [ self navigateAccordingLandingPageStatus:dictLoginResponse ];
+         }
+         else
+         {
+//             [Utilities showAlertWithMessage:response];
+         }
+         
+         [ SVProgressHUD dismiss ];
+     }];
+}
+- (void)serverCallToGenerateOTP
+{
+    NSMutableDictionary *dictParam = [ NSMutableDictionary dictionary ];
+    [ dictParam setObject:@"generateOTPForLogin" forKey:@"mode" ];
+    [ dictParam setObject:_txtMobile.text forKey:@"number" ];
+    [ dictParam setObject:strMobileOTP forKey:@"otp" ];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             _txtMobileOTP.text = @"";
+             
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 [Utilities showAlertWithMessage:response[@"msg"]];
+                 strMobileOTP = [ NSString stringWithFormat:@"%d", [response[@"otp"] intValue]];
+                 [ _btnGenerateOTP setTitle:@"RESEND OTP" forState:UIControlStateNormal];
+                
+                 isGenerateOTPView = YES;
+                 _viewMobileOTP.hidden = NO;
+                 _cnsMobileOtpHeight.constant = 26;
+            }
          }
          else
          {
              [Utilities showAlertWithMessage:response];
          }
      }];
+
+}
+- (void)serverCallToSubmitOTP
+{
+    NSDictionary *dictParam = [ NSDictionary dictionaryWithObjectsAndKeys:@"mode",@"submitOtp",_txtMobile.text,@"number", nil];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     }];
+    
+}
+- (void)serverCallToGenerateForgotPasswordOTP
+{
+    NSDictionary *dictParam = [NSDictionary dictionaryWithObject:@"generateForgotPasswordOTP" forKey:@"mode"];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     }];
+    
 }
 -(void)loginApiCall
 {
@@ -376,6 +519,7 @@
     else if ( [response[@"landing_page"] isEqualToString:@"id_detail"] )
     {
         SignupScreen *signupScreen = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"SignupScreen"];
+        [Utilities setUserDefaultWithObject:@"2" andKey:@"signupStep"];
         signupScreen.signupStep = 2;
         [self.navigationController pushViewController:signupScreen animated:YES];
     }
@@ -383,28 +527,90 @@
     else if ( [response[@"landing_page"] isEqualToString:@"professional_info"] )
     {
         SignupScreen *signupScreen = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"SignupScreen"];
+        [Utilities setUserDefaultWithObject:@"3" andKey:@"signupStep"];
         signupScreen.signupStep = 3;
         [self.navigationController pushViewController:signupScreen animated:YES];
     }
     else if ( [response[@"landing_page"] isEqualToString:@"doc_upload"] )
     {
         SignupScreen *signupScreen = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"SignupScreen"];
+        [Utilities setUserDefaultWithObject:@"4" andKey:@"signupStep"];
         signupScreen.signupStep = 4;
         [self.navigationController pushViewController:signupScreen animated:YES];
     }
+    else
+    {
+        if ( [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] )
+        {
+            // Navigate To LOC Dashboard
+            
+            [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
+            [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
+            
+            ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        else if ( [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"rejected"] )
+        {
+            RejectedVC *rejectedVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"RejectedVC"];
+            rejectedVC.dictDate = [Utilities getDayDateYear:response[@"latest_loan_details"][@"loan_creation_date"]];
+            [self.navigationController pushViewController:rejectedVC animated:YES];
+        }
+        
+        else if ( [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"rejected"] )
+        {
+            RejectedVC *rejectedVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"RejectedVC"];
+            rejectedVC.dictDate = [Utilities getDayDateYear:response[@"latest_loan_details"][@"loan_creation_date"]];
+            [self.navigationController pushViewController:rejectedVC animated:YES];
+        }
+        
+        else
+        {
+            StatusVC *statusVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"StatusVC"];
+            statusVC.dictLoandetail = response[@"latest_loan_details"];
+            [self.navigationController pushViewController:statusVC animated:YES];
+        }
+        
+    }
+    
+    [ SVProgressHUD dismiss ];
+    
 }
 - (void)navigateAccordingToCurrentStatus:(NSDictionary *)response
 {
+    
+    /*if ( [response[@"landing_page"] isEqualToString:@"profile"] && [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"]) //landing_page
+    {
+        // Navigate to LOC Dashboard
+        
+        [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
+        [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
+        
+        ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
+        [self.navigationController pushViewController:vc animated:YES];
+
+    }
+    else if ( [response[@"landing_page"] isEqualToString:@"id_detail"] )//landing_page
+    {
+        
+    }*/
+
+    
+    
     if ( [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] )
     {
         // Navigate To LOC Dashboard
 
-//        [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
-//        [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
-
         ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
         [self.navigationController pushViewController:vc animated:YES];
     }
+    else if ( [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"rejected"] )
+    {
+        RejectedVC *rejectedVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"RejectedVC"];
+        rejectedVC.dictDate = [Utilities getDayDateYear:response[@"latest_loan_details"][@"loan_creation_date"]];
+        [self.navigationController pushViewController:rejectedVC animated:YES];
+    }
+    
     else if ( [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"rejected"] )
     {
         RejectedVC *rejectedVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"RejectedVC"];
@@ -421,6 +627,12 @@
 }
 
 #pragma mark Helper Method
+- (void)populateLoginResponse:(NSDictionary *)response
+{
+    dictLoginResponse = response;
+//    [ self navigateAccordingLandingPageStatus:response ];
+    
+}
 - (void)showPopupView:(UIView *)popupView onViewController:(UIViewController *)viewcontroller
 {
     UIView *overlayView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];

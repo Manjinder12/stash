@@ -9,8 +9,12 @@
 #import "StateVC.h"
 #import "Pickers.h"
 #import "CityVC.h"
+#import "ServerCall.h"
 
 @interface StateVC ()
+{
+    NSMutableArray *marrState;
+}
 @property (weak, nonatomic) IBOutlet UITableView *stateTableView;
 - (IBAction)backBtntapped:(id)sender;
 
@@ -18,9 +22,15 @@
 
 @implementation StateVC
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    marrState = [ NSMutableArray new ];
+    
+    _stateTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];;
+    
+    [ self getStateFromServer ];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -63,7 +73,38 @@
 }
 
 
-- (IBAction)backBtntapped:(id)sender {
+- (IBAction)backBtntapped:(id)sender
+{
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark Serverc Call
+- (void)getStateFromServer
+{
+    NSDictionary *dictParam = [NSDictionary dictionaryWithObjectsAndKeys:@"getStates",@"mode",@"1",@"operational", nil];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withCompletion:^(id response)
+     {
+         NSLog(@"state response == %@", response);
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [ Utilities showAlertWithMessage:errorStr ];
+             }
+             else
+             {
+                 [marrState removeAllObjects];
+                 marrState = response[@"states"];
+                 
+             }
+         }
+         else
+         {
+         }
+         
+     }];
 }
 @end

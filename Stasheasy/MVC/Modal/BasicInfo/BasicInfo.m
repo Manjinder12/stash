@@ -9,7 +9,8 @@
 #import "BasicInfo.h"
 
 @implementation BasicInfo
-- (NSArray *)giveKeysArray {
+- (NSArray *)giveKeysArray
+{
     NSArray *keysArr = [[NSArray alloc]initWithObjects:@"fname",@"lname",@"email",@"phone",@"company",@"employmentType",@"salary",@"city", nil];
     return keysArr;
 }

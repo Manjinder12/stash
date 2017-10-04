@@ -21,7 +21,7 @@
 @end
 
 @implementation AppDelegate
-@synthesize dictLOCDetail,dictCard,dictOverview,dictTransaction,dictAnalyze,dictCustomer,loanRequestStatus;
+@synthesize dictLOCDetail,dictCard,dictOverview,dictTransaction,dictAnalyze,dictCustomer,loanRequestStatus,strLandingPage;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

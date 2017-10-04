@@ -15,7 +15,7 @@
     NSDictionary *dic = [[NSDictionary alloc]initWithObjectsAndKeys:@"loanAmount",@"first",@"tenure",@"second", nil];
     NSDictionary *dic2 = [[NSDictionary alloc]initWithObjectsAndKeys:@"birthDate",@"first",@"gender",@"second", nil];
 
-    NSArray *keysArr = [[NSArray alloc]initWithObjects:dic,@"reason",dic2,@"panNumber",@"adharNumber",@"adharName",@"salary",@"address",@"occupiedSince",@"ownershipType",@"loanID", nil];
+    NSArray *keysArr = [[NSArray alloc]initWithObjects:dic,@"reason",dic2,@"panNumber",@"adharNumber",@"adharName",@"salary",@"salMode",@"address",@"occupiedSince",@"residenceType",@"loanID", nil];
     
 //      NSArray *keysArr = [[NSArray alloc]initWithObjects:@"loanAmount",@"tenure",@"reason",@"birthDate",@"gender",@"panNumber",@"adharNumber",@"adharName",@"salary",@"address",@"occupiedSince",@"ownershipType",@"loanID", nil];
     

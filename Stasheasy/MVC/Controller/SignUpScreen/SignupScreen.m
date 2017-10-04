@@ -24,35 +24,28 @@
 #import "ProfessionalEducation.h"
 #import "Utilities.h"
 
-enum signupStep {
-  basicInfo = 1,
-  idDetails = 2,
-  personalInfo = 3,
-  docUpload = 4
-};
+
 
 @interface SignupScreen ()<UIActionSheetDelegate,UIImagePickerControllerDelegate>
 {
-    UIPickerView * picker;
-    NSArray *basicInfoArray;
-    NSArray *idDetailArray;
-    NSArray *professionalArray;
-    NSArray *docArray;
-    UserServices *userService;
-    NSMutableDictionary *basicInfoDic;
-    BasicInfo *basicInfoModalObj;
-    NSMutableArray *cityArr;
-    City *cityObj;
-    UITextField *selTextfield;
-    Pickers *pickerObj;
-    NSMutableArray *pickerArr;
-    UIDatePicker *datePickerView;
-    LoanApplication *loanApplicationObj;
     AppDelegate *appdelagate;
-    int currentRow;
-    UIDatePicker *date;
+    UserServices *userService;
+    LoanApplication *loanApplicationObj;
     EducationPicker *eduPicker;
     ProfessionalEducation *pfobj;
+    BasicInfo *basicInfoModalObj;
+    Pickers *pickerObj;
+    City *cityObj;
+    
+    UIPickerView * picker;
+    NSArray *basicInfoArray, *idDetailArray, *professionalArray, *docArray;
+    
+    NSMutableDictionary *basicInfoDic;
+    NSMutableArray *marrCity, *pickerArr, *marrState;
+    UITextField *selTextfield;
+    UIDatePicker *datePickerView;
+    int currentRow;
+    UIDatePicker *date;
     UIImage *checkImage, *checkoffImage, *uploadActive, *uploadDeactive, *selectedImage;
     UIImagePickerController *imagePicker;
     UIButton *btnUpload;
@@ -109,6 +102,8 @@ enum signupStep {
     }
     
     [self.signupTableview reloadData];
+    
+    [ self getStateFromServer ];
 
 }
 #pragma mark UIImagePickerController delegate
@@ -138,6 +133,7 @@ enum signupStep {
             self.basicinfoLbl.textColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
             [_btnSecond setBackgroundImage:[UIImage imageNamed:@"two"] forState:UIControlStateNormal];
             self.idDetailLbl.textColor = [UIColor blackColor];
+            [ self serverCallForLoanApplication ];
             break;
         }
         case personalInfo:
@@ -198,18 +194,29 @@ enum signupStep {
 -(void)setupView
 {
 //    signupStep = 1;
-    NSDictionary *loanDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Loan Amount",@"First",@"Tenure",@"Second",nil];
-    NSDictionary *dobDic = [NSDictionary dictionaryWithObjectsAndKeys:@"DOB",@"First",@"Gender",@"Second",nil];
+    NSDictionary *loanDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Loan Amount",@"First",@"Tenure im months",@"Second",nil];
+    NSDictionary *dobDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Date of birth",@"First",@"Gender",@"Second",nil];
     NSDictionary *eduDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Linkedin",@"First",@"Education",@"Second",nil];
     NSDictionary *desDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Designation",@"First",@"Since",@"Second",nil];
     NSDictionary *expDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Total Exp",@"First",@"Official Email ID",@"Second",nil];
     
     basicInfoArray = [NSArray arrayWithObjects:@"First Name",@"Last Name",@"Email",@"Mobile Number",@"Company Name",@"check",@"Monthly Salary in Hand",@"City", nil];
-    idDetailArray = [NSArray arrayWithObjects:loanDic,@"Reason of Loan",dobDic,@"PAN No.",@"Aadhaar No.",@"Name in Aadhar Card",@"Salary Rcpt Mode",@"Current Address(State,City,Pin)",@"Since",@"Residence Type", nil];
+   
+    idDetailArray = [NSArray arrayWithObjects:loanDic,@"Select reason of Loan",dobDic,@"PAN Number",@"Aadhaar Number",@"Name in Aadhar Card",@"Salary",@"Select Salary Modes",@"Current Address(State,City,Pin)",@"Select Occupied Since",@"Select Residence Since", nil];
+    
     professionalArray = [NSArray arrayWithObjects:eduDic,@"Company Name",desDic,expDic,@"Office Landline No.",@"Office Address(State,City,Pin)", nil];
+    
     docArray = [NSArray arrayWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip 1",@"Salary Slip 2",@"Salary Slip 3",@"Office ID",@"Another Document",@"Mention", nil];
-    cityArr = [NSMutableArray array];
+  
+    
+    marrState = [NSMutableArray array];
     pickerArr = [NSMutableArray array];
+    
+    marrCity = [[NSMutableArray alloc] initWithObjects:@"Delhi",@"Ghaziabad", @"Bombay",@"Pune",@"Banglore",@"Patna",@"Kolkata",@"Kanpur",@"Lucknow",@"Jaipur",nil ];
+
+    
+//    marrCity = [NSMutableArray arrayWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip 1",@"Salary Slip 2",@"Salary Slip 3",@"Office ID",@"Another Document",@"Mention", nil];
+
     
     // modal basic info initlization
     basicInfoModalObj = [[BasicInfo alloc]init];
@@ -249,7 +256,7 @@ enum signupStep {
         {
              if([self performStepOneValidation])
              {
-                 [self basicInfoWebserviceCall];
+                 [self serverCallForBasicInfo];
              }
         }
             break;
@@ -258,7 +265,7 @@ enum signupStep {
         {
             if ( [self performStepTwoValidation] )
             {
-                [self saveloanApplication];
+                [self serverCallForSaveloanApplication];
             }
         }
             break;
@@ -267,7 +274,7 @@ enum signupStep {
         {
             if ( [self performStepThreeValidation] )
             {
-                [self submitProfessionDetails];
+                [self serverCallToSubmitProfessionDetails];
             }
         }
             break;
@@ -539,7 +546,7 @@ enum signupStep {
             self.idDetailLbl.textColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
             [_btnThird setBackgroundImage:[UIImage imageNamed:@"three"] forState:UIControlStateNormal];
             self.personalInfoLbl.textColor = [UIColor blackColor];
-            [self professionalDetailsServiceCall];
+            [self serverCallForLoanApplication];
             break;
         }
         case personalInfo:
@@ -549,6 +556,7 @@ enum signupStep {
             self.personalInfoLbl.textColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
             [_btnFourth setBackgroundImage:[UIImage imageNamed:@"three"] forState:UIControlStateNormal];
             self.docLbl.textColor = [UIColor blackColor];
+            [self professionalDetailsServiceCall];
             break;
         }
         case docUpload:
@@ -737,6 +745,8 @@ enum signupStep {
                
                 return singleCell;
             }
+            
+            
             
             break;
         }
@@ -945,7 +955,42 @@ enum signupStep {
 
 - (BOOL) textFieldShouldBeginEditing:(UITextField *)textField
 {
-    if (signupStep == 2  && (textField.tag == 1 || textField.tag == 6 || textField.tag == 9 || textField.tag == 2 || textField.tag == 8))
+    if (signupStep == 1 )
+    {
+        if ( textField.tag == 2 )
+        {
+             [ textField setKeyboardType:UIKeyboardTypeEmailAddress ];
+             return YES;
+        }
+        else if ( textField.tag == 3 || textField.tag == 6 )
+        {
+            [ textField setKeyboardType:UIKeyboardTypeNumberPad ];
+            return YES;
+        }
+        
+        /*if ( textField.tag == 7 )
+        {
+            StateVC *statvc = [self.storyboard instantiateViewControllerWithIdentifier:@"StateVC"];
+            statvc.statesArray = [pickerObj giveStatesPickerArr];
+            selTextfield = textField;
+            [self.navigationController pushViewController:statvc animated:YES];
+            return NO;
+        }*/
+        
+        if ( textField.tag == 7 )
+        {
+            [pickerArr removeAllObjects];
+            pickerArr = [ NSMutableArray arrayWithArray:marrCity ];
+            picker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 50, 100, 150)];
+            [picker setDataSource: self];
+            [picker setDelegate: self];
+            picker.showsSelectionIndicator = YES;
+            textField.inputView = picker;
+            selTextfield = textField;
+        }
+        
+    }
+    else if (signupStep == 2  && (textField.tag == 1 || textField.tag == 6 || textField.tag == 9 || textField.tag == 2 || textField.tag == 8))
     {
         if ((textField.tag == 1 || textField.tag == 6 || textField.tag == 9))
         {
@@ -967,7 +1012,8 @@ enum signupStep {
                 return YES;
             }
         }
-        else if (textField.tag == 8) {
+        else if (textField.tag == 8)
+        {
             [pickerArr removeAllObjects];
             NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
             [formatter setDateFormat:@"yyyy"];
@@ -985,26 +1031,32 @@ enum signupStep {
         textField.inputView = picker;
         selTextfield = textField;
     }
-    else if (signupStep == 2 && textField.tag == 7) {
+    else if (signupStep == 2 && textField.tag == 7)
+    {
         StateVC *statvc = [self.storyboard instantiateViewControllerWithIdentifier:@"StateVC"];
         statvc.statesArray = [pickerObj giveStatesPickerArr];
         selTextfield = textField;
         [self.navigationController pushViewController:statvc animated:YES];
         return NO;
     }
-    else if (signupStep == 3 && (textField.tag == 0 || textField.tag == 2|| textField.tag == 5)) {
-        if ((textField.tag == 0 && [textField.placeholder isEqualToString:@"Education"] )|| (textField.tag == 2 &&  [textField.placeholder isEqualToString:@"Since"])) {
-            if (textField.tag == 2) {
+    else if (signupStep == 3 && (textField.tag == 0 || textField.tag == 2 || textField.tag == 5))
+    {
+        if ((textField.tag == 0 && [textField.placeholder isEqualToString:@"Education"] )|| (textField.tag == 2 &&  [textField.placeholder isEqualToString:@"Since"]))
+        {
+            if (textField.tag == 2)
+            {
                 [pickerArr removeAllObjects];
                 NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
                 [formatter setDateFormat:@"yyyy"];
                 int i2  = [[formatter stringFromDate:[NSDate date]] intValue];
                 //Create Years Array from 1960 to This year
-                for (int i=1960; i<=i2; i++) {
+                for (int i = 1960; i<=i2; i++)
+                {
                     [pickerArr addObject:[NSString stringWithFormat:@"%d",i]];
                 }
             }
-            else {
+            else
+            {
                 [self setPickerArray:textField];
             }
             picker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 50, 100, 150)];
@@ -1022,7 +1074,11 @@ enum signupStep {
             return NO;
         }
     }
+    else
+    {
+        pickerArr = [NSMutableArray arrayWithArray:[NSArray arrayWithObjects:@"Male",@"Female", nil]];
 
+    }
     
     return YES;
 }
@@ -1055,7 +1111,7 @@ enum signupStep {
         else if (selTextfield.tag == 9) {
             Pickers *resObj = [[Pickers alloc]init];
             resObj = [pickerArr objectAtIndex:currentRow];
-            [loanApplicationObj setValue:resObj.id_owner forKey:@"ownershipType"];
+            [loanApplicationObj setValue:resObj.id_owner forKey:@"residenceType"];
             selTextfield.text = resObj.owner_type;
             
         }
@@ -1133,8 +1189,14 @@ enum signupStep {
 // The data to return for the row and component (column) that's being passed in
 - (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    if (signupStep == 2) {
-        if (selTextfield.tag == 1) {
+    if ( signupStep == 1 )
+    {
+        return [pickerArr objectAtIndex:row];
+    }
+    else if (signupStep == 2)
+    {
+        if (selTextfield.tag == 1)
+        {
             Pickers *loanObj = [[Pickers alloc]init];
             loanObj = [pickerArr objectAtIndex:row];
             return  loanObj.loanreason;
@@ -1154,8 +1216,10 @@ enum signupStep {
         }
         
     }
-    else if (signupStep == 3) {
-        if (selTextfield.tag == 0) {
+    else if (signupStep == 3)
+    {
+        if (selTextfield.tag == 0)
+        {
             EducationPicker *epiker = [[EducationPicker alloc]init];
             epiker = [pickerArr objectAtIndex:row];
             return epiker.education_name;
@@ -1168,29 +1232,76 @@ enum signupStep {
     return @"";
 }
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component  {
-    
-//    City *cobject = [cityArr objectAtIndex:row];
-//    if ([selTextfield.placeholder isEqualToString:@"City"] && signupStep == 1) {
-//        selTextfield.text = cobject.cityName ;
-//        NSArray *keysarr = [basicInfoModalObj giveKeysArray];
-//        NSString *key = [keysarr objectAtIndex:selTextfield.tag];
-//        [basicInfoModalObj setValue:cobject.cityid forKey:key];
-//    }
-    currentRow = (int)row;
-   }
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if (  signupStep == 1 )
+    {
+        selTextfield.text = [marrCity objectAtIndex:row] ;
+        NSArray *keysarr = [basicInfoModalObj giveKeysArray];
+        NSString *key = [keysarr objectAtIndex:selTextfield.tag];
+        [basicInfoModalObj setValue:selTextfield.text forKey:key];
+    }
+    else
+    {
+        City *cobject = [marrCity objectAtIndex:row];
+        if ([selTextfield.placeholder isEqualToString:@"City"] && signupStep == 2)
+        {
+            selTextfield.text = cobject.cityName ;
+            NSArray *keysarr = [basicInfoModalObj giveKeysArray];
+            NSString *key = [keysarr objectAtIndex:selTextfield.tag];
+            [basicInfoModalObj setValue:cobject.cityid forKey:key];
+        }
+        currentRow = (int)row;
+    }
+}
 
+#pragma mark UIActionSheet Delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex)
+    {
+        case 0:
+            [self takePhoto];
+            break;
+        case 1:
+            [self choosePhotoFromLibrary];
+            break;
+        default:
+            break;
+    }
+}
+- (void)takePhoto
+{
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Error" message:@"Device has no camera" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        imagePicker.delegate = self;
+        imagePicker.allowsEditing = YES;
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    }
+}
+- (void)choosePhotoFromLibrary
+{
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    imagePicker.delegate = self;
+    imagePicker.allowsEditing = YES;
+    [self presentViewController:imagePicker animated:YES completion:nil];
+}
 
-
-#pragma mark - Webservice Methods
-
--(void)basicInfoWebserviceCall
+#pragma mark Server Call
+-(void)serverCallForBasicInfo
 {
     if ([CommonFunctions reachabiltyCheck])
     {
         NSString *fullname = [NSString stringWithFormat:@"%@ %@",[basicInfoModalObj valueForKey:@"fname"],[basicInfoModalObj valueForKey:@"lname"]];
-        [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
-       
+        
+        //        [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
+        
         NSString *post =[NSString stringWithFormat:@"mode=registration&name=%@&email=%@&phone=%@&company=%@&salary=%@&employmentType=%@&referralCode=""&device=IOS&card=""&utm_source=""&utm_medium=""&utm_content=""&utm_term=""&utm_campaign=""&city=%@",fullname,[basicInfoModalObj valueForKey:@"email"],[basicInfoModalObj valueForKey:@"phone"],[basicInfoModalObj valueForKey:@"company"],[basicInfoModalObj valueForKey:@"salary"],[basicInfoModalObj valueForKey:@"employmentType"],[basicInfoModalObj valueForKey:@"city"]];
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
@@ -1204,50 +1315,68 @@ enum signupStep {
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
-        {
-            dispatch_async (dispatch_get_main_queue(), ^
-            {
-                [CommonFunctions removeActivityIndicator];
-                NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-                NSLog(@"%@",responseDic);
-                NSString *errorStr = [responseDic objectForKey:@"error"];
-                
-                if ( errorStr.length> 0)
-                {
-                    [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
-                }
-                else
-                {
-                    [Utilities setUserDefaultWithObject:responseDic andKey:@"userinfo"];
-                    [self changeStepColour:signupStep];
-                }
-            });
-        }]
+          {
+              dispatch_async (dispatch_get_main_queue(), ^
+              {
+                  [CommonFunctions removeActivityIndicator];
+                  NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                  NSLog(@"%@",responseDic);
+                  NSString *errorStr = [responseDic objectForKey:@"error"];
+                  
+                  if ( errorStr.length> 0)
+                  {
+                      [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
+                  }
+                  else
+                  {
+                      [Utilities setUserDefaultWithObject: responseDic[@"auth_token"] andKey:@"auth_token"];
+                      [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
+                      [Utilities setUserDefaultWithObject:@"2" andKey:@"signupStep"];
+                      [Utilities setUserDefaultWithObject:responseDic andKey:@"userinfo"];
+                      [self changeStepColour:signupStep];
+                  }
+              });
+          }]
          
          resume
          ];
     } else {
         [self showAlertWithTitle:@"Stasheasy" withMessage:@"Please check internet"];
     }
-
+    
 }
 
--(void)loanApplicationWebserviceCall
+-(void)serverCallForLoanApplication
 {
-//    NSDictionary *dictParam = [[NSDictionary alloc] initWithObjectsAndKeys:@"loanApplicationDetails",@"mode", nil];
-//    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
-//    {
-//        NSLog(@"%@", response);
-//        NSLog(@"%@", response);
-//        NSLog(@"%@", response);
-//        
-//        
-//        
-//    }];
     
-    if ([CommonFunctions reachabiltyCheck])
+    NSDictionary *dictParam = [NSDictionary dictionaryWithObjectsAndKeys:@"loanApplicationDetails",@"mode", nil];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withCompletion:^(id response)
+     {
+         NSLog(@"loanApplicationDetails response == %@", response);
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [ Utilities showAlertWithMessage:errorStr ];
+             }
+             else
+             {
+                 pickerObj.responseDic = response;
+             }
+         }
+         else
+         {
+             [ Utilities showAlertWithMessage:response ];
+         }
+     }];
+    
+    
+    /*if ([CommonFunctions reachabiltyCheck])
     {
-        [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
+//        [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
         
         NSString *post =[NSString stringWithFormat:@"mode=loanApplicationDetails"];
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -1263,27 +1392,27 @@ enum signupStep {
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             dispatch_async (dispatch_get_main_queue(), ^
+        {
+            [CommonFunctions removeActivityIndicator];
+            NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSLog(@"%@",responseDic);
+            NSString *errorStr = [responseDic objectForKey:@"error"];
+            if ( errorStr.length > 0 )
             {
-                [CommonFunctions removeActivityIndicator];
-                NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-                NSLog(@"%@",responseDic);
-                NSString *errorStr = [responseDic objectForKey:@"error"];
-                if ( errorStr.length > 0 )
-                {
-                    [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
-                }
-                else
-                {
-                    pickerObj.responseDic = responseDic;
-                }
-            });
+                [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
+            }
+            else
+            {
+                pickerObj.responseDic = responseDic;
+            }
+        });
         }]
          
          resume
          ];
     } else {
-        [self showAlertWithTitle:@"Stasheasy" withMessage:@"Please check internet"];
-    }
+        [self showAlertWithTitle:@"Stashfin" withMessage:@"Please check internet"];
+    }*/
     
 }
 
@@ -1291,7 +1420,7 @@ enum signupStep {
 {
     
     if ([CommonFunctions reachabiltyCheck]) {
-        [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
+        //        [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
         
         NSString *post =[NSString stringWithFormat:@"mode=getStates&operational=0"];
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -1311,10 +1440,13 @@ enum signupStep {
                 NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                 NSLog(@"%@",responseDic);
                 NSString *errorStr = [responseDic objectForKey:@"error"];
-                if (errorStr.length>0) {
+                if (errorStr.length>0)
+                {
                     [self showAlertWithTitle:@"stasheasy" withMessage:errorStr];
                 }
-                else {
+                else
+                {
+                    pickerObj.responseDic = responseDic;
                     NSLog(@"success");
                 }
             });
@@ -1327,25 +1459,26 @@ enum signupStep {
     }
 }
 
-- (void)saveloanApplication
+- (void)serverCallForSaveloanApplication
 {
     if ([CommonFunctions reachabiltyCheck])
     {
-        [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
+//        [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
+        
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *userInfo = [defaults valueForKey:@"userinfo"];
         NSString *loanId = [userInfo objectForKey:@"loanID"];
         NSString *authTokenStr = [userInfo objectForKey:@"auth_token"];
-        NSString *post =[NSString stringWithFormat:@"mode=saveLoanApplication&dob=%@&gender=%@&pan_number=%@&aadhar_number=%@&name_in_aadhar=%@&salary_mode=%@&salary=%@&comm_ownership_type=%@&comm_occupied_since=%@&res_address=%@&res_state=%@&res_city=%@&res_pin=%@&loan_amount=%@&loan_tenure=%@&loan_reason=%@&loan_id=%@",[loanApplicationObj valueForKey:@"birthDate"],[loanApplicationObj valueForKey:@"gender"],[loanApplicationObj valueForKey:@"panNumber"],[loanApplicationObj valueForKey:@"adharNumber"],[loanApplicationObj valueForKey:@"adharName"],[loanApplicationObj valueForKey:@"salary"],[basicInfoModalObj valueForKey:@"salary"],[loanApplicationObj valueForKey:@"ownershipType"],[loanApplicationObj valueForKey:@"occupiedSince"],[loanApplicationObj valueForKey:@"address"],appdelagate.stateid,appdelagate.cityId,appdelagate.residencePin,[loanApplicationObj valueForKey:@"loanAmount"],[loanApplicationObj valueForKey:@"tenure"],[loanApplicationObj valueForKey:@"reason"],loanId];
-          NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-          NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
-          NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-          [request setURL:[NSURL URLWithString:@"https://devapi.stasheasy.com/webServicesMobile/StasheasyApp"]];
-          [request setHTTPMethod:@"POST"];
-          [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-          [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-         [request setValue:authTokenStr forHTTPHeaderField:@"auth_token"];
-          [request setHTTPBody:postData];
+        NSString *post =[NSString stringWithFormat:@"mode=saveLoanApplication&dob=%@&gender=%@&pan_number=%@&aadhar_number=%@&name_in_aadhar=%@&salary_mode=%@&salary=%@&comm_ownership_type=%@&comm_occupied_since=%@&res_address=%@&res_state=%@&res_city=%@&res_pin=%@&loan_amount=%@&loan_tenure=%@&loan_reason=%@&loan_id=%@",[loanApplicationObj valueForKey:@"birthDate"],[loanApplicationObj valueForKey:@"gender"],[loanApplicationObj valueForKey:@"panNumber"],[loanApplicationObj valueForKey:@"adharNumber"],[loanApplicationObj valueForKey:@"adharName"],[loanApplicationObj valueForKey:@"salary"],[basicInfoModalObj valueForKey:@"salary"],[loanApplicationObj valueForKey:@"residenceType"],[loanApplicationObj valueForKey:@"occupiedSince"],[loanApplicationObj valueForKey:@"address"],appdelagate.stateid,appdelagate.cityId,appdelagate.residencePin,[loanApplicationObj valueForKey:@"loanAmount"],[loanApplicationObj valueForKey:@"tenure"],[loanApplicationObj valueForKey:@"reason"],loanId];
+        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+        NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+        [request setURL:[NSURL URLWithString:@"https://devapi.stasheasy.com/webServicesMobile/StasheasyApp"]];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:authTokenStr forHTTPHeaderField:@"auth_token"];
+        [request setHTTPBody:postData];
         
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
@@ -1388,10 +1521,10 @@ enum signupStep {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *userInfo = [defaults valueForKey:@"userinfo"];
         NSString *authTokenStr = [userInfo objectForKey:@"auth_token"];
-
+        
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:authTokenStr forHTTPHeaderField:@"auth_token"];
-
+        
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         [request setHTTPBody:postData];
         
@@ -1404,7 +1537,7 @@ enum signupStep {
                 NSLog(@"%@",responseDic);
                 NSString *errorStr = [responseDic objectForKey:@"error"];
                 if (errorStr.length>0) {
-                    [self showAlertWithTitle:@"stasheasy" withMessage:errorStr];
+                    [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
                 }
                 else {
                     NSLog(@"success");
@@ -1418,14 +1551,14 @@ enum signupStep {
     } else {
         [self showAlertWithTitle:@"Stasheasy" withMessage:@"Please check internet"];
     }
-
-
+    
+    
 }
 
--(void)submitProfessionDetails
+-(void)serverCallToSubmitProfessionDetails
 {
-
-    if ([CommonFunctions reachabiltyCheck]) {
+    if ([CommonFunctions reachabiltyCheck])
+    {
         [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *userInfo = [defaults valueForKey:@"userinfo"];
@@ -1464,43 +1597,33 @@ enum signupStep {
     } else {
         [self showAlertWithTitle:@"Stasheasy" withMessage:@"Please check internet"];
     }
+    
+}
+- (void)getStateFromServer
+{
+    NSDictionary *dictParam = [NSDictionary dictionaryWithObjectsAndKeys:@"getStates",@"mode",@"1",@"operational", nil];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withCompletion:^(id response)
+     {
+         NSLog(@"state response == %@", response);
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [ Utilities showAlertWithMessage:errorStr ];
+             }
+             else
+             {
+                 pickerObj.responseDic = response;
+             }
+         }
+         else
+         {
+             
+         }
+     }];
+}
 
-}
-#pragma mark UIActionSheet Delegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch (buttonIndex)
-    {
-        case 0:
-            [self takePhoto];
-            break;
-        case 1:
-            [self choosePhotoFromLibrary];
-            break;
-        default:
-            break;
-    }
-}
-- (void)takePhoto
-{
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-    {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Error" message:@"Device has no camera" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-    }
-    else
-    {
-        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        imagePicker.delegate = self;
-        imagePicker.allowsEditing = YES;
-        [self presentViewController:imagePicker animated:YES completion:nil];
-    }
-}
-- (void)choosePhotoFromLibrary
-{
-    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    imagePicker.delegate = self;
-    imagePicker.allowsEditing = YES;
-    [self presentViewController:imagePicker animated:YES completion:nil];
-}
 @end

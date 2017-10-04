@@ -12,6 +12,7 @@
 #import "LineCreditVC.h"
 #import "ViewController.h"
 #import "AppDelegate.h"
+#import "SignupScreen.h"
 
 @interface SplashVC ()
 {
@@ -65,6 +66,7 @@
     navigationController.interactivePopGestureRecognizer.enabled = NO;
     appDelegate.window.rootViewController = navigationController;
 }
+
 - (void)serverCallToCheckTokenValidity
 {
     NSDictionary *param = [NSDictionary dictionaryWithObject:@"checkAuthTokenValidity" forKey:@"mode"];
@@ -80,7 +82,15 @@
              }
              else
              {
-                 [self serverCallForPersonalDetail];
+                 
+                 if ([[Utilities getUserDefaultValueFromKey:@"islogin"] intValue] != 0)
+                 {
+                     [self serverCallForPersonalDetail];
+                 }
+                 else
+                 {
+                     [self navigateToLandingVC];
+                 }
              }
          }
          else
