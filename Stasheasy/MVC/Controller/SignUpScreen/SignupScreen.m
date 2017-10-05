@@ -1,6 +1,6 @@
 //
 //  SignupScreen.m
-//  Stasheasy
+//  Stashfin
 //
 //  Created by Duke on 01/06/17.
 //  Copyright © 2017 duke. All rights reserved.
@@ -23,14 +23,13 @@
 #import "EducationPicker.h"
 #import "ProfessionalEducation.h"
 #import "Utilities.h"
-
-
+#import "StatusVC.h"
 
 @interface SignupScreen ()<UIActionSheetDelegate,UIImagePickerControllerDelegate>
 {
     AppDelegate *appdelagate;
     UserServices *userService;
-    LoanApplication *loanApplicationObj;
+    LoanApplication *loanApplicationObj, *serverLoanObj;
     EducationPicker *eduPicker;
     ProfessionalEducation *pfobj;
     BasicInfo *basicInfoModalObj;
@@ -49,6 +48,8 @@
     UIImage *checkImage, *checkoffImage, *uploadActive, *uploadDeactive, *selectedImage;
     UIImagePickerController *imagePicker;
     UIButton *btnUpload;
+    NSString *strDocID, *strDocName;
+    BOOL isDocUpload;
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *btnFirst;
@@ -78,7 +79,7 @@
     [super viewDidLoad];
     
     [self customInitialization];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupAddress) name:@"address" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupStateCityPin) name:@"scp" object:nil];
 }
 - (void)customInitialization
 {
@@ -94,6 +95,8 @@
     
     basicInfoDic = [NSMutableDictionary dictionary];
     
+    isDocUpload = NO;
+    
     [self setupView];
 
     if (signupStep > 1)
@@ -103,19 +106,19 @@
     
     [self.signupTableview reloadData];
     
-    [ self getStateFromServer ];
 
 }
 #pragma mark UIImagePickerController delegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
     selectedImage = [info valueForKey:UIImagePickerControllerEditedImage];
-
-    if (selectedImage != nil )
-    {
-        [btnUpload setBackgroundImage:uploadActive forState:UIControlStateNormal];
-    }
     
+//    if (selectedImage != nil )
+//    {
+//        [btnUpload setBackgroundImage:uploadActive forState:UIControlStateNormal];
+//    }
+
+    [ self serverCallForDocUpload ];
     [imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -194,7 +197,7 @@
 -(void)setupView
 {
 //    signupStep = 1;
-    NSDictionary *loanDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Loan Amount",@"First",@"Tenure im months",@"Second",nil];
+    NSDictionary *loanDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Loan Amount",@"First",@"Tenure in months",@"Second",nil];
     NSDictionary *dobDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Date of birth",@"First",@"Gender",@"Second",nil];
     NSDictionary *eduDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Linkedin",@"First",@"Education",@"Second",nil];
     NSDictionary *desDic = [NSDictionary dictionaryWithObjectsAndKeys:@"Designation",@"First",@"Since",@"Second",nil];
@@ -202,7 +205,7 @@
     
     basicInfoArray = [NSArray arrayWithObjects:@"First Name",@"Last Name",@"Email",@"Mobile Number",@"Company Name",@"check",@"Monthly Salary in Hand",@"City", nil];
    
-    idDetailArray = [NSArray arrayWithObjects:loanDic,@"Select reason of Loan",dobDic,@"PAN Number",@"Aadhaar Number",@"Name in Aadhar Card",@"Salary",@"Select Salary Modes",@"Current Address(State,City,Pin)",@"Select Occupied Since",@"Select Residence Since", nil];
+    idDetailArray = [NSArray arrayWithObjects:loanDic,@"Select reason of Loan",dobDic,@"PAN Number",@"Aadhaar Number",@"Name in Aadhar Card",@"Salary",@"Select Salary Modes",@"Current Address",@"State, City, Pin",@"Select Occupied Since",@"Select Residence Type", nil];
     
     professionalArray = [NSArray arrayWithObjects:eduDic,@"Company Name",desDic,expDic,@"Office Landline No.",@"Office Address(State,City,Pin)", nil];
     
@@ -221,6 +224,7 @@
     // modal basic info initlization
     basicInfoModalObj = [[BasicInfo alloc]init];
     loanApplicationObj = [[LoanApplication alloc]init];
+    serverLoanObj = [[LoanApplication alloc]init];
     cityObj = [[City alloc]init];
     pickerObj = [[Pickers alloc]init];
     eduPicker = [[EducationPicker alloc]init];
@@ -279,7 +283,20 @@
         }
             break;
          case 4:
-            [self changeStepColour:docUpload];
+            
+        {
+            [ self serverCallForPersonalDetail ];
+
+//            if ( isDocUpload )
+//            {
+//                [ self serverCallForPersonalDetail ];
+//            }
+//            else
+//            {
+//                [ Utilities showAlertWithMessage:@"Upload atleast one relevant document." ];
+//            }
+//            [self changeStepColour:docUpload];
+        }
              break;
              
         default:
@@ -312,10 +329,12 @@
                         if ([txtInput.placeholder isEqualToString:@"Loan Amount"])
                         {
                             [loanApplicationObj setValue:txtInput.text forKey:@"loanAmount"];
+                            [serverLoanObj setValue:txtInput.text forKey:@"loanAmount"];
                         }
                         else
                         {
                             [loanApplicationObj setValue:txtInput.text forKey:@"tenure"];
+                            [serverLoanObj setValue:txtInput.text forKey:@"tenure"];
                         }
                     }
                 }
@@ -323,6 +342,8 @@
                 {
                     NSString *keyStr = (NSString *)key;
                     [loanApplicationObj setValue:txtInput.text forKey:keyStr];
+                    [serverLoanObj setValue:txtInput.text forKey:keyStr];
+                    
                 }
             }
               break;
@@ -554,14 +575,13 @@
             _thirdView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
             [_btnThird setBackgroundImage:[UIImage imageNamed:@"greenBtn"] forState:UIControlStateNormal];
             self.personalInfoLbl.textColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
-            [_btnFourth setBackgroundImage:[UIImage imageNamed:@"three"] forState:UIControlStateNormal];
+            [_btnFourth setBackgroundImage:[UIImage imageNamed:@"four"] forState:UIControlStateNormal];
             self.docLbl.textColor = [UIColor blackColor];
             [self professionalDetailsServiceCall];
             break;
         }
         case docUpload:
         {
-            
             break;
         }
         default:
@@ -599,11 +619,11 @@
         {
             pickerArr = [pickerObj giveLoanPickerArr];
         }
-        else if (textField.tag == 6)
+        else if (textField.tag == 7)
         {
             pickerArr = [pickerObj giveSalPickerArr];
         }
-        else if (textField.tag == 9)
+        else if (textField.tag == 11)
         {
             pickerArr = [pickerObj giveResidencePickerArr];
         }
@@ -617,11 +637,12 @@
     }
 }
 
--(void)setupAddress
+-(void)setupStateCityPin
 {
     NSString *addressString = [NSString stringWithFormat:@"%@,%@,%@",appdelagate.stateName,appdelagate.cityName,appdelagate.residencePin];
     selTextfield.text = addressString;
-    [loanApplicationObj setValue:addressString forKey:@"address"];
+    [loanApplicationObj setValue:addressString forKey:@"scp"];
+    [serverLoanObj setValue:addressString forKey:@"scp"];
 }
 
 #pragma mark - TableView Delegates
@@ -776,13 +797,28 @@
                 doubleCell.firstField.delegate =self;
                 doubleCell.secondField.delegate =self;
                 
-                if ([[rowDic objectForKey:@"first"] isEqualToString:@"DOB"]) {
+                if ([[rowDic objectForKey:@"first"] isEqualToString:@"DOB"])
+                {
                     doubleCell.calendarBtn.hidden = NO;
                 }
+                
+                NSArray *keysarr = [loanApplicationObj giveKeysArray];
+                NSDictionary *dict = [keysarr objectAtIndex:indexPath.row];
+                NSString *key1 = [dict objectForKey:@"first"];
+                NSString *key2 = [dict objectForKey:@"second"];
+                NSString *valStr1 = [loanApplicationObj valueForKey:key1];
+                NSString *valStr2 = [loanApplicationObj valueForKey:key2];
+                if ( valStr1.length > 0 )
+                {
+                    doubleCell.firstField.text = valStr1;
+                }
+                if ( valStr2.length > 0 )
+                {
+                    doubleCell.secondField.text = valStr2;
+                }
+                
                 doubleCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
                 return doubleCell;
-
             }
             else
             {
@@ -796,7 +832,8 @@
                 NSArray *keysarr = [loanApplicationObj giveKeysArray];
                 NSString *key = [keysarr objectAtIndex:indexPath.row];
                 NSString *valStr = [loanApplicationObj valueForKey:key];
-                if (valStr.length>0) {
+                if ( valStr.length > 0 )
+                {
                     singleCell.singleTextField.text = valStr;
                 }
 
@@ -844,6 +881,22 @@
                 }
                 
                 
+                NSArray *keysarr = [pfobj giveprofKeysArray];
+                NSDictionary *dict = [keysarr objectAtIndex:indexPath.row];
+                NSString *key1 = [dict objectForKey:@"First"];
+                NSString *key2 = [dict objectForKey:@"Second"];
+                NSString *valStr1 = [pfobj valueForKey:key1];
+                NSString *valStr2 = [pfobj valueForKey:key2];
+                if ( valStr1.length > 0 )
+                {
+                    doubleCell.firstField.text = valStr1;
+                }
+                if ( valStr2.length > 0 )
+                {
+                    doubleCell.secondField.text = valStr2;
+                }
+
+                
              
                 return doubleCell;
                 
@@ -856,6 +909,14 @@
                     singleCell =[[[NSBundle mainBundle] loadNibNamed:@"SingleTableViewCell" owner:self options:nil] objectAtIndex:0];
                     singleCell.singleTextField.delegate = self;
                     [singleCell.singleTextField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
+                }
+                
+                NSArray *keysarr = [pfobj giveprofKeysArray];
+                NSString *key = [keysarr objectAtIndex:indexPath.row];
+                NSString *valStr = [pfobj valueForKey:key];
+                if ( valStr.length > 0 )
+                {
+                    singleCell.singleTextField.text = valStr;
                 }
                 singleCell.singleTextField.tag = indexPath.row;
                 singleCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -959,24 +1020,16 @@
     {
         if ( textField.tag == 2 )
         {
-             [ textField setKeyboardType:UIKeyboardTypeEmailAddress ];
-             return YES;
+            [ textField setKeyboardType:UIKeyboardTypeEmailAddress ];
+            selTextfield = textField;
+            return YES;
         }
         else if ( textField.tag == 3 || textField.tag == 6 )
         {
             [ textField setKeyboardType:UIKeyboardTypeNumberPad ];
+            selTextfield = textField;
             return YES;
         }
-        
-        /*if ( textField.tag == 7 )
-        {
-            StateVC *statvc = [self.storyboard instantiateViewControllerWithIdentifier:@"StateVC"];
-            statvc.statesArray = [pickerObj giveStatesPickerArr];
-            selTextfield = textField;
-            [self.navigationController pushViewController:statvc animated:YES];
-            return NO;
-        }*/
-        
         if ( textField.tag == 7 )
         {
             [pickerArr removeAllObjects];
@@ -988,76 +1041,44 @@
             textField.inputView = picker;
             selTextfield = textField;
         }
-        
     }
-    else if (signupStep == 2  && (textField.tag == 1 || textField.tag == 6 || textField.tag == 9 || textField.tag == 2 || textField.tag == 8))
+    else if( signupStep == 2 )
     {
-        if ((textField.tag == 1 || textField.tag == 6 || textField.tag == 9))
+        if ((textField.tag == 1 || textField.tag == 2 || textField.tag == 7  || textField.tag == 10 || textField.tag == 11 ))
         {
-            [self setPickerArray:textField];
-        }
-        else if (textField.tag == 2)
-        {
-            if ([textField.placeholder isEqualToString:@"Gender"]) {
-                // gender textfield
-                pickerArr = [NSMutableArray arrayWithArray:[NSArray arrayWithObjects:@"Male",@"Female", nil]];
+            if ((textField.tag == 1 || textField.tag == 7 || textField.tag == 11))
+            {
+                [self setPickerArray:textField];
             }
-            else {
-                // dob textfield
-                datePickerView = [[UIDatePicker alloc] initWithFrame:CGRectZero];
-                [datePickerView setDatePickerMode:UIDatePickerModeDate];
-                [datePickerView addTarget:self action:@selector(onDatePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
-                textField.inputView = datePickerView;
-                selTextfield = textField;
-                return YES;
+            else if (textField.tag == 2)
+            {
+                if ([textField.placeholder isEqualToString:@"Gender"]) {
+                    // gender textfield
+                    pickerArr = [NSMutableArray arrayWithArray:[NSArray arrayWithObjects:@"Male",@"Female", nil]];
+                }
+                else {
+                    // dob textfield
+                    datePickerView = [[UIDatePicker alloc] initWithFrame:CGRectZero];
+                    [datePickerView setDatePickerMode:UIDatePickerModeDate];
+                    [datePickerView addTarget:self action:@selector(onDatePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
+                    datePickerView .maximumDate = [ NSDate date];
+                    textField.inputView = datePickerView;
+                    selTextfield = textField;
+                    return YES;
+                }
             }
-        }
-        else if (textField.tag == 8)
-        {
-            [pickerArr removeAllObjects];
-            NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
-            [formatter setDateFormat:@"yyyy"];
-            int i2  = [[formatter stringFromDate:[NSDate date]] intValue];
-            //Create Years Array from 1960 to This year
-            for (int i=1960; i<=i2; i++) {
-                [pickerArr addObject:[NSString stringWithFormat:@"%d",i]];
-            }
-
-        }
-        picker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 50, 100, 150)];
-        [picker setDataSource: self];
-        [picker setDelegate: self];
-        picker.showsSelectionIndicator = YES;
-        textField.inputView = picker;
-        selTextfield = textField;
-    }
-    else if (signupStep == 2 && textField.tag == 7)
-    {
-        StateVC *statvc = [self.storyboard instantiateViewControllerWithIdentifier:@"StateVC"];
-        statvc.statesArray = [pickerObj giveStatesPickerArr];
-        selTextfield = textField;
-        [self.navigationController pushViewController:statvc animated:YES];
-        return NO;
-    }
-    else if (signupStep == 3 && (textField.tag == 0 || textField.tag == 2 || textField.tag == 5))
-    {
-        if ((textField.tag == 0 && [textField.placeholder isEqualToString:@"Education"] )|| (textField.tag == 2 &&  [textField.placeholder isEqualToString:@"Since"]))
-        {
-            if (textField.tag == 2)
+            else if (textField.tag == 10)
             {
                 [pickerArr removeAllObjects];
                 NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
                 [formatter setDateFormat:@"yyyy"];
                 int i2  = [[formatter stringFromDate:[NSDate date]] intValue];
                 //Create Years Array from 1960 to This year
-                for (int i = 1960; i<=i2; i++)
+                for (int i=1960; i<=i2; i++)
                 {
                     [pickerArr addObject:[NSString stringWithFormat:@"%d",i]];
                 }
-            }
-            else
-            {
-                [self setPickerArray:textField];
+                
             }
             picker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 50, 100, 150)];
             [picker setDataSource: self];
@@ -1066,26 +1087,95 @@
             textField.inputView = picker;
             selTextfield = textField;
         }
-        else if (textField.tag == 5) {
+        
+        else if ( textField.tag == 4 || textField.tag == 6 )
+        {
+            textField.keyboardType = UIKeyboardTypeNumberPad;
+            selTextfield = textField;
+            return YES;
+        }
+        
+        else if ( textField.tag == 9 )
+        {
             StateVC *statvc = [self.storyboard instantiateViewControllerWithIdentifier:@"StateVC"];
-            statvc.statesArray = [eduPicker giveStatesPickerArr];
+            statvc.statesArray = [pickerObj giveStatesPickerArr];
             selTextfield = textField;
             [self.navigationController pushViewController:statvc animated:YES];
             return NO;
         }
-    }
-    else
-    {
-        pickerArr = [NSMutableArray arrayWithArray:[NSArray arrayWithObjects:@"Male",@"Female", nil]];
+        else if ( [textField.placeholder isEqualToString:@"Loan Amount"] || [textField.placeholder isEqualToString:@"Tenure in months"])
+        {
+            textField.keyboardType = UIKeyboardTypeNumberPad;
+            selTextfield = textField;
+            return YES;
+        }
 
     }
-    
+    else if( signupStep == 3 )
+    {
+        if ( (textField.tag == 0 || textField.tag == 2 || textField.tag == 5) )
+        {
+            if ((textField.tag == 0 && [textField.placeholder isEqualToString:@"Education"] )|| (textField.tag == 2 &&  [textField.placeholder isEqualToString:@"Since"]))
+            {
+                if (textField.tag == 2)
+                {
+                    [pickerArr removeAllObjects];
+                    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+                    [formatter setDateFormat:@"yyyy"];
+                    int i2  = [[formatter stringFromDate:[NSDate date]] intValue];
+                    //Create Years Array from 1960 to This year
+                    for (int i = 1960; i<=i2; i++)
+                    {
+                        [pickerArr addObject:[NSString stringWithFormat:@"%d",i]];
+                    }
+                }
+                else
+                {
+                    [self setPickerArray:textField];
+                }
+                picker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 50, 100, 150)];
+                [picker setDataSource: self];
+                [picker setDelegate: self];
+                picker.showsSelectionIndicator = YES;
+                textField.inputView = picker;
+                selTextfield = textField;
+            }
+            else if (textField.tag == 5)
+            {
+                StateVC *statvc = [self.storyboard instantiateViewControllerWithIdentifier:@"StateVC"];
+                statvc.statesArray = [eduPicker giveStatesPickerArr];
+                selTextfield = textField;
+                [self.navigationController pushViewController:statvc animated:YES];
+                return NO;
+            }
+        }
+        else if ( textField.tag == 3)
+        {
+            if ([textField.placeholder isEqualToString:@"Total Exp"])
+            {
+                [ textField setKeyboardType:UIKeyboardTypeNumberPad ];
+            }
+            else
+            {
+                [ textField setKeyboardType:UIKeyboardTypeEmailAddress ];
+            }
+            selTextfield = textField;
+            return YES;
+        }
+        else if ( textField.tag == 4 )
+        {
+            [ textField setKeyboardType:UIKeyboardTypeNumberPad ];
+            selTextfield = textField;
+            return YES;
+        }
+    }
     return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    if ((signupStep == 2 && (textField.tag == 1 || textField.tag == 6 || textField.tag == 9 || textField.tag == 2 || textField.tag == 8 ) )|| (signupStep == 3 && (textField.tag == 0 || textField.tag == 2))) {
+    if ((signupStep == 2 && (textField.tag == 1 || textField.tag == 7 || textField.tag == 8 || textField.tag == 2 || textField.tag == 10 || textField.tag == 11) )|| (signupStep == 3 && (textField.tag == 0 || textField.tag == 2)))
+    {
         [textField addCancelDoneOnKeyboardWithTarget:self cancelAction:@selector(cancelAction:) doneAction:@selector(doneAction:)];
     }
 }
@@ -1093,37 +1183,48 @@
 
 -(void)doneAction:(id)baritem
 {
-    
-    if (signupStep ==2) {
-        
-        if (selTextfield.tag == 1) {
+    if (signupStep ==2)
+    {
+        if (selTextfield.tag == 1)
+        {
             Pickers *loanObj = [[Pickers alloc]init];
             loanObj = [pickerArr objectAtIndex:currentRow];
-            [loanApplicationObj setValue:loanObj.id_loaon_reason forKey:@"reason"];
+            [loanApplicationObj setValue:loanObj.loanreason forKey:@"reason"];
+            [serverLoanObj setValue:loanObj.id_loaon_reason forKey:@"reason"];
             selTextfield.text = loanObj.loanreason;
         }
-        else if (selTextfield.tag == 6) {
+        else if (selTextfield.tag == 7)
+        {
             Pickers *salObj = [[Pickers alloc]init];
             salObj = [pickerArr objectAtIndex:currentRow];
-            [loanApplicationObj setValue:salObj.id_sal forKey:@"salary"];
+            [loanApplicationObj setValue:salObj.salmode forKey:@"salary_mode"];
+            [serverLoanObj setValue:salObj.id_sal forKey:@"salary_mode"];
             selTextfield.text = salObj.salmode;
+            // changed to sal_id from salmode
         }
-        else if (selTextfield.tag == 9) {
+        else if (selTextfield.tag == 11)
+        {
             Pickers *resObj = [[Pickers alloc]init];
             resObj = [pickerArr objectAtIndex:currentRow];
-            [loanApplicationObj setValue:resObj.id_owner forKey:@"residenceType"];
+            [loanApplicationObj setValue:resObj.owner_type forKey:@"residenceType"];
+            [serverLoanObj setValue:resObj.id_owner forKey:@"residenceType"];
             selTextfield.text = resObj.owner_type;
-            
         }
-        else if (selTextfield.tag == 2) {
-            if ([selTextfield.placeholder isEqualToString:@"Gender"]) {
+        else if (selTextfield.tag == 2)
+        {
+            if ([selTextfield.placeholder isEqualToString:@"Gender"])
+            {
                 selTextfield.text = [pickerArr objectAtIndex:currentRow];
-                if ([selTextfield.text isEqualToString:@"Male"]) {
-                    [loanApplicationObj setValue:@"m" forKey:@"gender"];
+                if ([selTextfield.text isEqualToString:@"Male"])
+                {
+                    [loanApplicationObj setValue:@"Male" forKey:@"gender"];
+                    [serverLoanObj setValue:@"m" forKey:@"gender"];
                     selTextfield.text = @"Male";
                 }
-                else if ([selTextfield.text isEqualToString:@"Female"]){
-                    [loanApplicationObj setValue:@"f" forKey:@"gender"];
+                else if ([selTextfield.text isEqualToString:@"Female"])
+                {
+                    [loanApplicationObj setValue:@"Female" forKey:@"gender"];
+                    [serverLoanObj setValue:@"f" forKey:@"gender"];
                     selTextfield.text = @"Female";
                 }
             }
@@ -1134,30 +1235,38 @@
                 NSLog(@"%@",dateStr);
                 selTextfield.text = [dateFormatter stringFromDate:date.date];
                 [loanApplicationObj setValue:selTextfield.text forKey:@"birthDate"];
+                [serverLoanObj setValue:selTextfield.text forKey:@"birthDate"];
             }
            
             
         }
-        else if (selTextfield.tag == 8) {
-            [loanApplicationObj setValue:selTextfield.text forKey:@"occupiedSince"];
+        else if (selTextfield.tag == 10)
+        {
             selTextfield.text = [pickerArr objectAtIndex:currentRow];
+            [loanApplicationObj setValue:selTextfield.text forKey:@"occupiedSince"];
+            [serverLoanObj setValue:selTextfield.text forKey:@"occupiedSince"];
         }
     }
-    else if (signupStep == 3) {
-        if (selTextfield.tag == 0) {
+    else if (signupStep == 3)
+    {
+        if (selTextfield.tag == 0)
+        {
             EducationPicker *edPicker = [[EducationPicker alloc]init];
             edPicker = [pickerArr objectAtIndex:currentRow];
-            [pfobj setValue:edPicker.id_education forKey:@"highesteducation"];
+            [pfobj setValue:edPicker.education_name forKey:@"highesteducation"];
             selTextfield.text = edPicker.education_name;
+
+            // [pfobj setValue:edPicker.id_education forKey:@"highesteducation"];
         }
-        else if (selTextfield.tag == 2) {
-            [pfobj setValue:selTextfield.text forKey:@"workStartYear"];
+        else if (selTextfield.tag == 2)
+        {
             selTextfield.text = [pickerArr objectAtIndex:currentRow];
+            [pfobj setValue:selTextfield.text forKey:@"workStartYear"];
         }
     }
+    
     [self.view endEditing:YES];
     currentRow = 0;
-
 }
 
 -(void)cancelAction:(UIBarButtonItem *)sender
@@ -1201,17 +1310,18 @@
             loanObj = [pickerArr objectAtIndex:row];
             return  loanObj.loanreason;
         }
-        else if (selTextfield.tag == 6) {
+        else if (selTextfield.tag == 7) {
             Pickers *salObj = [[Pickers alloc]init];
             salObj = [pickerArr objectAtIndex:row];
             return  salObj.salmode;
         }
-        else if (selTextfield.tag == 9) {
+        else if (selTextfield.tag == 11) {
             Pickers *resObj = [[Pickers alloc]init];
             resObj = [pickerArr objectAtIndex:row];
             return  resObj.owner_type;
         }
-        else if (selTextfield.tag == 2 || selTextfield.tag == 8) {
+        else if (selTextfield.tag == 2 || selTextfield.tag == 8 || selTextfield.tag == 10)
+        {
             return [pickerArr objectAtIndex:row];
         }
         
@@ -1241,18 +1351,21 @@
         NSString *key = [keysarr objectAtIndex:selTextfield.tag];
         [basicInfoModalObj setValue:selTextfield.text forKey:key];
     }
-    else
-    {
-        City *cobject = [marrCity objectAtIndex:row];
-        if ([selTextfield.placeholder isEqualToString:@"City"] && signupStep == 2)
-        {
-            selTextfield.text = cobject.cityName ;
-            NSArray *keysarr = [basicInfoModalObj giveKeysArray];
-            NSString *key = [keysarr objectAtIndex:selTextfield.tag];
-            [basicInfoModalObj setValue:cobject.cityid forKey:key];
-        }
-        currentRow = (int)row;
-    }
+    
+    currentRow = (int)row;
+
+//     else
+//    {
+//        City *cobject = [marrCity objectAtIndex:row];
+//        if ([selTextfield.placeholder isEqualToString:@"City"] && signupStep == 2)
+//        {
+//            selTextfield.text = cobject.cityName ;
+//            NSArray *keysarr = [basicInfoModalObj giveKeysArray];
+//            NSString *key = [keysarr objectAtIndex:selTextfield.tag];
+//            [basicInfoModalObj setValue:cobject.cityid forKey:key];
+//        }
+//        currentRow = (int)row;
+//    }
 }
 
 #pragma mark UIActionSheet Delegate
@@ -1294,6 +1407,82 @@
 }
 
 #pragma mark Server Call
+- (void)serverCallForPersonalDetail
+{
+    NSDictionary *dictParam = [NSDictionary dictionaryWithObject:@"getLoginData" forKey:@"mode"];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 appdelagate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
+                 
+                 StatusVC *statusVC = [ self.storyboard instantiateViewControllerWithIdentifier:@"StatusVC" ];
+                 statusVC.dictLoandetail = response[@"latest_loan_details"];
+                 [ self.navigationController pushViewController:statusVC animated:YES ];
+             }
+             
+             /*if ( [ dictLoginResponse[@"landing_page"] isEqualToString:@"profile"] )//landing_page
+             {
+                 [self navigateAccordingToCurrentStatus:dictLoginResponse];
+             }
+             else if ( [dictLoginResponse[@"landing_page"] isEqualToString:@"id_detail"] )//landing_page
+             {
+                 [self navigateAccordingLandingPageStatus:dictLoginResponse];
+             }*/
+             
+             //             [ self navigateAccordingLandingPageStatus:dictLoginResponse ];
+         }
+         else
+         {
+             //             [Utilities showAlertWithMessage:response];
+         }
+         
+         [ SVProgressHUD dismiss ];
+     }];
+}
+- (void)serverCallForDocUpload
+{
+    NSString *base64String = [Utilities getBase64EncodedStringOfImage:selectedImage];
+    
+    NSDictionary *param = [NSMutableDictionary new];
+    [ param setValue:@"uploadDocument" forKey:@"mode" ];
+    [ param setValue:@"test" forKey:@"document_name" ];
+    [ param setValue:@"1" forKey:@"docId" ];
+    [ param setValue:base64String forKey:@"image" ];
+    
+    [ ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                [btnUpload setBackgroundImage:uploadActive forState:UIControlStateNormal];
+                isDocUpload = YES;
+                [Utilities showAlertWithMessage:@"Document uoloaded successfully!" ];
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     } ];
+    
+}
 -(void)serverCallForBasicInfo
 {
     if ([CommonFunctions reachabiltyCheck])
@@ -1306,7 +1495,7 @@
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:[NSURL URLWithString:@"https://devapi.stasheasy.com/webServicesMobile/StasheasyApp"]];
+        [request setURL:[NSURL URLWithString:@"https://devapi.Stashfin.com/webServicesMobile/StashfinApp"]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -1341,11 +1530,10 @@
          resume
          ];
     } else {
-        [self showAlertWithTitle:@"Stasheasy" withMessage:@"Please check internet"];
+        [self showAlertWithTitle:@"Stashfin" withMessage:@"Please check internet"];
     }
     
 }
-
 -(void)serverCallForLoanApplication
 {
     
@@ -1360,7 +1548,7 @@
              NSString *errorStr = [response objectForKey:@"error"];
              if ( errorStr.length > 0 )
              {
-                 [ Utilities showAlertWithMessage:errorStr ];
+//                 [ Utilities showAlertWithMessage:errorStr ];
              }
              else
              {
@@ -1382,7 +1570,7 @@
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:[NSURL URLWithString:@"https://devapi.stasheasy.com/webServicesMobile/StasheasyApp"]];
+        [request setURL:[NSURL URLWithString:@"https://devapi.Stashfin.com/webServicesMobile/StashfinApp"]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -1426,7 +1614,7 @@
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:[NSURL URLWithString:@"https://devapi.stasheasy.com/webServicesMobile/StasheasyApp"]];
+        [request setURL:[NSURL URLWithString:@"https://devapi.Stashfin.com/webServicesMobile/StashfinApp"]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -1442,7 +1630,7 @@
                 NSString *errorStr = [responseDic objectForKey:@"error"];
                 if (errorStr.length>0)
                 {
-                    [self showAlertWithTitle:@"stasheasy" withMessage:errorStr];
+                    [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
                 }
                 else
                 {
@@ -1455,25 +1643,74 @@
          resume
          ];
     } else {
-        [self showAlertWithTitle:@"Stasheasy" withMessage:@"Please check internet"];
+        [self showAlertWithTitle:@"Stashfin" withMessage:@"Please check internet"];
     }
 }
 
 - (void)serverCallForSaveloanApplication
 {
-    if ([CommonFunctions reachabiltyCheck])
+    NSString *loanId =  [Utilities getUserDefaultValueFromKey:@"loan_id"];
+
+    NSMutableDictionary *param = [NSMutableDictionary new ];
+    
+    [ param setObject:@"saveLoanApplication" forKey:@"mode" ];
+    [ param setObject:[serverLoanObj valueForKey:@"birthDate"] forKey:@"dob" ];
+    [ param setObject:[serverLoanObj valueForKey:@"gender"] forKey:@"gender" ];
+    [ param setObject:[serverLoanObj valueForKey:@"panNumber"] forKey:@"pan_number" ];
+    [ param setObject:[serverLoanObj valueForKey:@"adharNumber"] forKey:@"aadhar_number" ];
+    [ param setObject:[serverLoanObj valueForKey:@"adharName"] forKey:@"name_in_aadhar" ];
+    [ param setObject:[serverLoanObj valueForKey:@"salary_mode"] forKey:@"salary_mode" ];
+    [ param setObject:[serverLoanObj valueForKey:@"salary"] forKey:@"salary" ];
+    [ param setObject:[serverLoanObj valueForKey:@"residenceType"] forKey:@"comm_ownership_type" ];
+    [ param setObject:[serverLoanObj valueForKey:@"occupiedSince"] forKey:@"comm_occupied_since" ];
+    [ param setObject:[serverLoanObj valueForKey:@"address"] forKey:@"res_address" ];
+    [ param setObject:appdelagate.stateid forKey:@"res_state" ];
+    [ param setObject:appdelagate.cityId forKey:@"res_city" ];
+    [ param setObject:appdelagate.residencePin forKey:@"res_pin" ];
+    [ param setObject:[serverLoanObj valueForKey:@"loanAmount"] forKey:@"loan_amount" ];
+    [ param setObject:[serverLoanObj valueForKey:@"tenure"] forKey:@"loan_tenure" ];
+    [ param setObject:[serverLoanObj valueForKey:@"reason"] forKey:@"loan_reason" ];
+    [ param setObject:loanId forKey:@"loan_id" ];
+    
+    [ ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
     {
-//        [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
+        NSLog(@"saveLoanApplication response == %@", response);
         
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSDictionary *userInfo = [defaults valueForKey:@"userinfo"];
-        NSString *loanId = [userInfo objectForKey:@"loanID"];
-        NSString *authTokenStr = [userInfo objectForKey:@"auth_token"];
-        NSString *post =[NSString stringWithFormat:@"mode=saveLoanApplication&dob=%@&gender=%@&pan_number=%@&aadhar_number=%@&name_in_aadhar=%@&salary_mode=%@&salary=%@&comm_ownership_type=%@&comm_occupied_since=%@&res_address=%@&res_state=%@&res_city=%@&res_pin=%@&loan_amount=%@&loan_tenure=%@&loan_reason=%@&loan_id=%@",[loanApplicationObj valueForKey:@"birthDate"],[loanApplicationObj valueForKey:@"gender"],[loanApplicationObj valueForKey:@"panNumber"],[loanApplicationObj valueForKey:@"adharNumber"],[loanApplicationObj valueForKey:@"adharName"],[loanApplicationObj valueForKey:@"salary"],[basicInfoModalObj valueForKey:@"salary"],[loanApplicationObj valueForKey:@"residenceType"],[loanApplicationObj valueForKey:@"occupiedSince"],[loanApplicationObj valueForKey:@"address"],appdelagate.stateid,appdelagate.cityId,appdelagate.residencePin,[loanApplicationObj valueForKey:@"loanAmount"],[loanApplicationObj valueForKey:@"tenure"],[loanApplicationObj valueForKey:@"reason"],loanId];
+        if ( [response isKindOfClass:[NSDictionary class]] )
+        {
+            NSString *errorStr = [response objectForKey:@"error"];
+            if ( errorStr.length > 0 )
+            {
+                [ Utilities showAlertWithMessage:errorStr ];
+            }
+            else
+            {
+                [Utilities setUserDefaultWithObject:@"3" andKey:@"signupStep"];
+                [self changeStepColour:idDetails];
+            }
+        }
+        else
+        {
+            [ Utilities showAlertWithMessage:response ];
+        }
+    } ];
+    
+    /*if ([CommonFunctions reachabiltyCheck])
+    {
+        [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
+        
+//        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//        NSDictionary *userInfo = [defaults valueForKey:@"userinfo"];
+        NSString *loanId =  [Utilities getUserDefaultValueFromKey:@"loan_id"];
+        NSString *authTokenStr = [Utilities getUserDefaultValueFromKey:@"auth_token"];
+        NSString *post =[NSString stringWithFormat:@"mode=saveLoanApplication&dob=%@&gender=%@&pan_number=%@&aadhar_number=%@&name_in_aadhar=%@&salary_mode=%@&salary=%@&comm_ownership_type=%@&comm_occupied_since=%@&res_address=%@&res_state=%@&res_city=%@&res_pin=%@&loan_amount=%@&loan_tenure=%@&loan_reason=%@&loan_id=%@",[serverLoanObj valueForKey:@"birthDate"],[serverLoanObj valueForKey:@"gender"],[serverLoanObj valueForKey:@"panNumber"],[serverLoanObj valueForKey:@"adharNumber"],[serverLoanObj valueForKey:@"adharName"],[serverLoanObj valueForKey:@"salary_mode"],[serverLoanObj valueForKey:@"salary"],[serverLoanObj valueForKey:@"residenceType"],[serverLoanObj valueForKey:@"occupiedSince"],[serverLoanObj valueForKey:@"address"],appdelagate.stateid,appdelagate.cityId,appdelagate.residencePin,[serverLoanObj valueForKey:@"loanAmount"],[serverLoanObj valueForKey:@"tenure"],[serverLoanObj valueForKey:@"reason"],loanId];
+        
+        NSLog(@"post === %@", post);
+        
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:[NSURL URLWithString:@"https://devapi.stasheasy.com/webServicesMobile/StasheasyApp"]];
+        [request setURL:[NSURL URLWithString:@"https://devapi.Stashfin.com/webServicesMobile/StashfinApp"]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -1483,13 +1720,14 @@
         
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            dispatch_async (dispatch_get_main_queue(), ^{
+            dispatch_async (dispatch_get_main_queue(), ^
+            {
                 [CommonFunctions removeActivityIndicator];
                 NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                 NSLog(@"%@",responseDic);
                 NSString *errorStr = [responseDic objectForKey:@"error"];
                 if (errorStr.length>0) {
-                    [self showAlertWithTitle:@"stasheasy" withMessage:errorStr];
+                    [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
                 }
                 else {
                     NSLog(@"success");
@@ -1501,29 +1739,56 @@
          resume
          ];
     } else {
-        [self showAlertWithTitle:@"Stasheasy" withMessage:@"Please check internet"];
-    }
+        [self showAlertWithTitle:@"Stashfin" withMessage:@"Please check internet"];
+    }*/
     
 }
 
 
 -(void)professionalDetailsServiceCall
 {
-    if ([CommonFunctions reachabiltyCheck]) {
+    NSDictionary *dictParam = [NSDictionary dictionaryWithObjectsAndKeys:@"professionalFormDetails",@"mode", nil];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withCompletion:^(id response)
+     {
+         NSLog(@"professionalFormDetails response == %@", response);
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [ Utilities showAlertWithMessage:errorStr ];
+             }
+             else
+             {
+                 eduPicker.responseDic = response;
+             }
+         }
+         else
+         {
+             [ Utilities showAlertWithMessage:response ];
+         }
+     }];
+    
+    
+    /*if ([CommonFunctions reachabiltyCheck]) {
         [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
         
         NSString *post =[NSString stringWithFormat:@"mode=professionalFormDetails"];
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:[NSURL URLWithString:@"https://devapi.stasheasy.com/webServicesMobile/StasheasyApp"]];
+        [request setURL:[NSURL URLWithString:@"https://devapi.Stashfin.com/webServicesMobile/StashfinApp"]];
         [request setHTTPMethod:@"POST"];
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *userInfo = [defaults valueForKey:@"userinfo"];
         NSString *authTokenStr = [userInfo objectForKey:@"auth_token"];
         
+        NSLog(@"%@", [ Utilities getUserDefaultValueFromKey:@"auth_token"]);
+        
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-        [request setValue:authTokenStr forHTTPHeaderField:@"auth_token"];
+        [request setValue:[ Utilities getUserDefaultValueFromKey:@"auth_token"] forHTTPHeaderField:@"auth_token"];
         
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         [request setHTTPBody:postData];
@@ -1549,15 +1814,54 @@
          resume
          ];
     } else {
-        [self showAlertWithTitle:@"Stasheasy" withMessage:@"Please check internet"];
-    }
+        [self showAlertWithTitle:@"Stashfin" withMessage:@"Please check internet"];
+    }*/
     
     
 }
 
 -(void)serverCallToSubmitProfessionDetails
 {
-    if ([CommonFunctions reachabiltyCheck])
+    NSMutableDictionary *param = [NSMutableDictionary new ];
+    [ param setObject:@"saveProfessionalDetails" forKey:@"mode" ];
+    [ param setObject:[pfobj valueForKey:@"designation"] forKey:@"designation" ];
+    [ param setObject:[pfobj valueForKey:@"highesteducation"] forKey:@"highesteducation" ];
+    [ param setObject:[pfobj valueForKey:@"experienceYears"] forKey:@"eduCompYear" ];
+    [ param setObject:[pfobj valueForKey:@"workStartYear"] forKey:@"workStartYear" ];
+    [ param setObject:[pfobj valueForKey:@"experienceYears"] forKey:@"experienceYears" ];
+    [ param setObject:[pfobj valueForKey:@"company_name"] forKey:@"company_name" ];
+    [ param setObject:[pfobj valueForKey:@"officeemail"] forKey:@"officeemail" ];
+    [ param setObject:[pfobj valueForKey:@"officephone"] forKey:@"officephone" ];
+    [ param setObject:appdelagate.stateid forKey:@"prof_address" ];
+    [ param setObject:appdelagate.stateid forKey:@"prof_state" ];
+    [ param setObject:appdelagate.cityId forKey:@"prof_city" ];
+    [ param setObject:appdelagate.residencePin forKey:@"prof_pin" ];
+
+    [ ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"saveProfessionalDetails response == %@", response);
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [ Utilities showAlertWithMessage:errorStr ];
+             }
+             else
+             {
+                 [Utilities setUserDefaultWithObject:@"4" andKey:@"signupStep"];
+                 [self changeStepColour:personalInfo];
+             }
+         }
+         else
+         {
+             [ Utilities showAlertWithMessage:response ];
+         }
+     } ];
+    
+ 
+   /* if ([CommonFunctions reachabiltyCheck])
     {
         [CommonFunctions showActivityIndicatorWithText:@"Wait..."];
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -1567,7 +1871,7 @@
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:[NSURL URLWithString:@"https://devapi.stasheasy.com/webServicesMobile/StasheasyApp"]];
+        [request setURL:[NSURL URLWithString:@"https://devapi.Stashfin.com/webServicesMobile/StashfinApp"]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -1583,7 +1887,7 @@
                 NSLog(@"%@",responseDic);
                 NSString *errorStr = [responseDic objectForKey:@"error"];
                 if (errorStr.length>0) {
-                    [self showAlertWithTitle:@"stasheasy" withMessage:errorStr];
+                    [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
                 }
                 else {
                     NSLog(@"success");
@@ -1595,8 +1899,8 @@
          resume
          ];
     } else {
-        [self showAlertWithTitle:@"Stasheasy" withMessage:@"Please check internet"];
-    }
+        [self showAlertWithTitle:@"Stashfin" withMessage:@"Please check internet"];
+    }*/
     
 }
 - (void)getStateFromServer

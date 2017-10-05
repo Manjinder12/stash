@@ -10,10 +10,12 @@
 #import "Pickers.h"
 #import "CityVC.h"
 #import "ServerCall.h"
+#import "Pickers.h"
 
 @interface StateVC ()
 {
     NSMutableArray *marrState;
+    Pickers *pickerObj;
 }
 @property (weak, nonatomic) IBOutlet UITableView *stateTableView;
 - (IBAction)backBtntapped:(id)sender;
@@ -27,15 +29,16 @@
     [super viewDidLoad];
     
     marrState = [ NSMutableArray new ];
+    pickerObj = [ [ Pickers alloc ] init];
     
     _stateTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];;
     
     [ self getStateFromServer ];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - TableView Methods
@@ -96,9 +99,9 @@
              }
              else
              {
-                 [marrState removeAllObjects];
-                 marrState = response[@"states"];
-                 
+                 pickerObj.responseDic = response;
+                 self.statesArray = [ pickerObj giveStatesPickerArr ];
+                 [self.stateTableView reloadData];
              }
          }
          else

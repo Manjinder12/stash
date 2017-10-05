@@ -57,10 +57,12 @@
     return self.residenceArr;
 }
 
--(NSMutableArray *)giveSalPickerArr {
+-(NSMutableArray *)giveSalPickerArr
+{
     NSArray *salArr = [_responseDic objectForKey:@"salary_modes"];
     self.salModeArr = [NSMutableArray array];
-    for (NSDictionary *dic in salArr) {
+    for (NSDictionary *dic in salArr)
+    {
         Pickers *salpicker = [[Pickers alloc]init];
         salpicker.id_sal = [dic objectForKey:@"id"];
         salpicker.salmode = [dic objectForKey:@"mode"];

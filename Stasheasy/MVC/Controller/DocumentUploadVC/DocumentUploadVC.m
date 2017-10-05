@@ -78,7 +78,6 @@
 {
     selectedImage = [info valueForKey:UIImagePickerControllerEditedImage];
 
-    
     [ picker dismissViewControllerAnimated:YES completion:nil ];
     [ self serverCallForDocUpload ];
 }

@@ -37,7 +37,14 @@
 - (IBAction)newUserAction:(id)sender
 {
     SignupScreen *vc = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"SignupScreen"];
-    vc.signupStep = [[Utilities getUserDefaultValueFromKey:@"signupStep"] intValue];
+    vc.signupStep = 4 ;
+    //[[Utilities getUserDefaultValueFromKey:@"signupStep"] intValue];
+   
+    if ( vc.signupStep == 0)
+    {
+        vc.signupStep = 1;
+    }
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
 - (IBAction)PreApprovedAction:(id)sender

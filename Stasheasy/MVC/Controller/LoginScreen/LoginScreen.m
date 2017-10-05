@@ -280,6 +280,7 @@
                 }
                 else
                 {
+                    [Utilities setUserDefaultWithObject:dictLoginResponse[@"latest_loan_details"][@"loan_id"] andKey:@"loan_id"];
                     [self navigateAccordingLandingPageStatus:dictLoginResponse];
                 }
                 

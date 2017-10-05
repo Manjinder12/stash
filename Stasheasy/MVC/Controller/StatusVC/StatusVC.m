@@ -8,6 +8,7 @@
 
 #import "StatusVC.h"
 #import "Utilities.h"
+#import "REFrostedViewController.h"
 
 @interface StatusVC ()
 {
@@ -51,10 +52,14 @@
 {
     [self setAllImages];
     
-    appStatus = dictLoandetail[@"current_status"];
+//    appStatus = dictLoandetail[@"current_status"];//dockpick dockpickdone
+    appStatus = @"dockpickdone";
     
-    NSDictionary *_dictDate = [Utilities getDayDateYear:dictLoandetail[@"loan_creation_date"]];
-    _lblDate.text = [NSString stringWithFormat:@"%@ %@ %@ | %@",[_dictDate valueForKey:@"day"],[_dictDate valueForKey:@"month"],[_dictDate valueForKey:@"year"],[_dictDate valueForKey:@"time"]];
+    _lblDate.text = [NSString stringWithFormat:@"%@",dictLoandetail[@"loan_creation_date"]];
+
+//    NSDictionary *_dictDate = [Utilities getDayDateYear:dictLoandetail[@"loan_creation_date"]];
+
+//    _lblDate.text = [NSString stringWithFormat:@"%@ %@ %@ | %@",[_dictDate valueForKey:@"day"],[_dictDate valueForKey:@"month"],[_dictDate valueForKey:@"year"],[_dictDate valueForKey:@"time"]];
     
     
     if ( [appStatus  isEqual: @"start"] )
@@ -163,5 +168,10 @@
     _lblDone.textColor = [UIColor yellowColor];
     _lblStatus.text = @"Pending for Disbursal";
 
+}
+- (IBAction)meneuAction:(id)sender
+{
+    [self.frostedViewController.view endEditing:YES];
+    [self.frostedViewController presentMenuViewController];
 }
 @end

@@ -70,7 +70,7 @@
             }
         }
  
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"address" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"scp" object:nil];
     }
     
 }

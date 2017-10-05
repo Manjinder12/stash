@@ -41,6 +41,7 @@
 -(NSMutableArray *)giveStatesPickerArr;
 -(NSMutableArray *)giveResidencePickerArr;
 -(NSMutableArray *)giveSalPickerArr;
+-(NSMutableArray *)giveSalModePickerArr;
 
 
 @end

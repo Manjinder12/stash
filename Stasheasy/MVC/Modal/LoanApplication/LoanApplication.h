@@ -15,11 +15,12 @@
 @property(nonatomic,strong) NSString *panNumber;
 @property(nonatomic,strong) NSString *adharNumber;
 @property(nonatomic,strong) NSString *adharName;
-@property(nonatomic,strong) NSString *salMode;
+@property(nonatomic,strong) NSString *salary_mode;
 @property(nonatomic,strong) NSString *salary;
 @property(nonatomic,strong) NSString *residenceType;
 @property(nonatomic,strong) NSString *occupiedSince;
 @property(nonatomic,strong) NSString *address;
+@property(nonatomic,strong) NSString *scp;
 @property(nonatomic,strong) NSString *state;
 @property(nonatomic,strong) NSString *city;
 @property(nonatomic,strong) NSString *pin;

@@ -15,7 +15,7 @@
     NSDictionary *dic = [[NSDictionary alloc]initWithObjectsAndKeys:@"loanAmount",@"first",@"tenure",@"second", nil];
     NSDictionary *dic2 = [[NSDictionary alloc]initWithObjectsAndKeys:@"birthDate",@"first",@"gender",@"second", nil];
 
-    NSArray *keysArr = [[NSArray alloc]initWithObjects:dic,@"reason",dic2,@"panNumber",@"adharNumber",@"adharName",@"salary",@"salMode",@"address",@"occupiedSince",@"residenceType",@"loanID", nil];
+    NSArray *keysArr = [[NSArray alloc]initWithObjects:dic,@"reason",dic2,@"panNumber",@"adharNumber",@"adharName",@"salary",@"salary_mode",@"address",@"scp",@"occupiedSince",@"residenceType",@"loanID", nil];
     
 //      NSArray *keysArr = [[NSArray alloc]initWithObjects:@"loanAmount",@"tenure",@"reason",@"birthDate",@"gender",@"panNumber",@"adharNumber",@"adharName",@"salary",@"address",@"occupiedSince",@"ownershipType",@"loanID", nil];
     
@@ -126,6 +126,19 @@
     }
     return YES;
 }
+
+-(BOOL)validateSalaryMode:(id *)ioValue error:(NSError * __autoreleasing *)outError
+{
+    if (*ioValue == nil || ((NSString *)*ioValue).length<=0)
+    {
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Please select salary mode",NSLocalizedFailureReasonErrorKey:@"Address can not be empty"};
+        
+        *outError = [[NSError alloc] initWithDomain:@"SIGNUP_ERROR_DOMAIN" code:0 userInfo:userInfo];
+        return NO;
+    }
+    return YES;
+}
+
 -(BOOL)validateAddress:(id *)ioValue error:(NSError * __autoreleasing *)outError
 {
     if (*ioValue == nil || ((NSString *)*ioValue).length<=0)
@@ -137,6 +150,18 @@
     }
     return YES;
 }
+-(BOOL)validateStateCityPin:(id *)ioValue error:(NSError * __autoreleasing *)outError
+{
+    if (*ioValue == nil || ((NSString *)*ioValue).length<=0)
+    {
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Please select state, city and pin",NSLocalizedFailureReasonErrorKey:@"Address can not be empty"};
+        
+        *outError = [[NSError alloc] initWithDomain:@"SIGNUP_ERROR_DOMAIN" code:0 userInfo:userInfo];
+        return NO;
+    }
+    return YES;
+}
+
 -(BOOL)validateOccupiedSince:(id *)ioValue error:(NSError * __autoreleasing *)outError
 {
     if (*ioValue == nil || ((NSString *)*ioValue).length<=0)
