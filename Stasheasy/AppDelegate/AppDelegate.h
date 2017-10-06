@@ -24,6 +24,6 @@
 
 @property NSString *strLandingPage;
 @property NSDictionary *dictLOCDetail, *dictCard, *dictOverview, *dictTransaction,*dictAnalyze, *dictCustomer;
-@property BOOL isCardFound, isPreApproved;
+@property BOOL isCardFound, isPreApproved, isLoanDisbursed;
 @end
 

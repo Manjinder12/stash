@@ -342,6 +342,7 @@
              else
              {
                  appDelegate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
+                 appDelegate.isLoanDisbursed = YES;
              }
              
              if ( [ dictLoginResponse[@"landing_page"] isEqualToString:@"profile"] )//landing_page

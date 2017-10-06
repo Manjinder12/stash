@@ -44,26 +44,26 @@
     [Utilities setCornerRadius:_viewUpper];
     [Utilities setCornerRadius:_viewLower];
     
-    [self addStashfinButtonView];
+//    [self addStashfinButtonView];
     isStashExpand = NO;
     
     [self populateLOCWithrawalResponse];
 }
 - (void)populateLOCWithrawalResponse
 {
-    _lblRemainLOC.text = [NSString stringWithFormat:@"%d",[[dictResponce valueForKey:@"remaining_loc"] intValue]];
+    _lblRemainLOC.text = [NSString stringWithFormat:@"₹ %d",[[dictResponce valueForKey:@"remaining_loc"] intValue]];
     
-    _lblRate.text = [NSString stringWithFormat:@"%d",[[dictResponce valueForKey:@"rate_of_interest"] intValue]];
+    _lblRate.text = [NSString stringWithFormat:@"%d%%",[[dictResponce valueForKey:@"rate_of_interest"] intValue]];
   
-    _lblRequestAmount.text = [NSString stringWithFormat:@"%@",[dictResponce valueForKey:@"requested_amount"]] ;
+    _lblRequestAmount.text = [NSString stringWithFormat:@"₹ %@",[dictResponce valueForKey:@"requested_amount"]] ;
    
-    _lblEMIAmount.text = [NSString stringWithFormat:@"%@",[dictResponce valueForKey:@"emi_amount"]];
+    _lblEMIAmount.text = [NSString stringWithFormat:@"₹ %@",[dictResponce valueForKey:@"emi_amount"]];
     
-    _lblTenure.text = [NSString stringWithFormat:@"%@",[dictResponce valueForKey:@"tenure"]];
+    _lblTenure.text = [NSString stringWithFormat:@"%@ Months",[dictResponce valueForKey:@"tenure"]];
     
     _lblDate.text = [NSString stringWithFormat:@"%@",[dictResponce valueForKey:@"first_emi_date"]];
     
-    _lblNetPayable.text = [NSString stringWithFormat:@"%@",[dictResponce valueForKey:@"net_amount_payable"]];
+    _lblNetPayable.text = [NSString stringWithFormat:@"₹ %@",[dictResponce valueForKey:@"net_amount_payable"]];
 }
 
 #pragma mark LGPlusButtonsView
@@ -197,9 +197,10 @@
 
 - (IBAction)confirmAction:(id)sender
 {
-    [self serverCammForLOCWithdrawolConfirmation];
+    [self serverCallForLOCWithdrawolConfirmation];
 }
-- (void)serverCammForLOCWithdrawolConfirmation
+#pragma mark Server Call
+- (void)serverCallForLOCWithdrawolConfirmation
 {
     NSDictionary *param = [ NSDictionary dictionaryWithObjectsAndKeys:@"locWithdrawalConfirm",@"mode",_lblRemainLOC.text,@"amount",_lblTenure.text,@"tenure", nil];
 
@@ -212,10 +213,12 @@
             NSString *errorStr = [response objectForKey:@"error"];
             if ( errorStr.length > 0 )
             {
-                [Utilities showAlertWithMessage:errorStr];
+                [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
             }
             else
             {
+//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Stashfin" message:[response valueForKey:@"msg"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//                [alert show];
                 [self showAlertWithTitle:@"Stashfin" withMessage:[response valueForKey:@"msg"]];
 
             }

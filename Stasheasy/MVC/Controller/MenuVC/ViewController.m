@@ -7,9 +7,12 @@
 //
 
 #import "ViewController.h"
+#import "AppDelegate.h"
 
 @interface ViewController ()
-
+{
+    AppDelegate *appDelegate;
+}
 @end
 
 @implementation ViewController
@@ -23,8 +26,18 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
+    appDelegate = [ AppDelegate sharedDelegate ];
+    
     self.frostedViewController.limitMenuViewSize = YES;
-    self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentController"];
+    if ( appDelegate.isLoanDisbursed )
+    {
+        self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentController"];
+    }
+    else
+    {
+        self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"statusNavigation"];
+    }
     self.menuViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LeftScreen"];
 }
 

@@ -50,6 +50,9 @@
 }
 - (void)customInitialization
 {
+    self.navigationController.navigationBar.hidden = NO;
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+   
     [self setAllImages];
     
 //    appStatus = dictLoandetail[@"current_status"];//dockpick dockpickdone

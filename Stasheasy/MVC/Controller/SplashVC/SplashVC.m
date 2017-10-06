@@ -117,6 +117,7 @@
              else
              {
                  appDelegate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
+                 appDelegate.isLoanDisbursed = YES;
                  [ self serverCallForCardOverview ];
              }
              

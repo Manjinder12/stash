@@ -37,8 +37,7 @@
 - (IBAction)newUserAction:(id)sender
 {
     SignupScreen *vc = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"SignupScreen"];
-    vc.signupStep = 4 ;
-    //[[Utilities getUserDefaultValueFromKey:@"signupStep"] intValue];
+    vc.signupStep = [[Utilities getUserDefaultValueFromKey:@"signupStep"] intValue];
    
     if ( vc.signupStep == 0)
     {

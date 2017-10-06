@@ -27,7 +27,7 @@
 
 @interface SignupScreen ()<UIActionSheetDelegate,UIImagePickerControllerDelegate>
 {
-    AppDelegate *appdelagate;
+    AppDelegate *appDelegate;
     UserServices *userService;
     LoanApplication *loanApplicationObj, *serverLoanObj;
     EducationPicker *eduPicker;
@@ -90,7 +90,7 @@
     
     imagePicker = [[UIImagePickerController alloc] init];
     
-    appdelagate = [AppDelegate sharedDelegate];
+    appDelegate = [AppDelegate sharedDelegate];
     userService = [[UserServices alloc]init];
     
     basicInfoDic = [NSMutableDictionary dictionary];
@@ -285,11 +285,11 @@
          case 4:
             
         {
-            [ self serverCallForPersonalDetail ];
+            [ self serverCallToGetLoginData ];
 
 //            if ( isDocUpload )
 //            {
-//                [ self serverCallForPersonalDetail ];
+//                [ self serverCallToGetLoginData ];
 //            }
 //            else
 //            {
@@ -639,7 +639,7 @@
 
 -(void)setupStateCityPin
 {
-    NSString *addressString = [NSString stringWithFormat:@"%@,%@,%@",appdelagate.stateName,appdelagate.cityName,appdelagate.residencePin];
+    NSString *addressString = [NSString stringWithFormat:@"%@,%@,%@",appDelegate.stateName,appDelegate.cityName,appDelegate.residencePin];
     selTextfield.text = addressString;
     [loanApplicationObj setValue:addressString forKey:@"scp"];
     [serverLoanObj setValue:addressString forKey:@"scp"];
@@ -1405,9 +1405,21 @@
     imagePicker.allowsEditing = YES;
     [self presentViewController:imagePicker animated:YES completion:nil];
 }
+- (void)navigateToLOCDashboard
+{
+    ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
+    [self.navigationController pushViewController:vc animated:YES];
 
+    /*ViewController *vc = (ViewController *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"rootController"] ;
+    UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];
+    navigationController.viewControllers = @[vc];
+    navigationController.navigationBar.hidden = YES;
+    navigationController.interactivePopGestureRecognizer.enabled = NO;
+    appDelegate.window.rootViewController = navigationController;*/
+    
+}
 #pragma mark Server Call
-- (void)serverCallForPersonalDetail
+- (void)serverCallToGetLoginData
 {
     NSDictionary *dictParam = [NSDictionary dictionaryWithObject:@"getLoginData" forKey:@"mode"];
     
@@ -1419,15 +1431,17 @@
              NSString *errorStr = [response objectForKey:@"error"];
              if ( errorStr.length > 0 )
              {
-                 [Utilities showAlertWithMessage:errorStr];
+//                 [Utilities showAlertWithMessage:errorStr];
              }
              else
              {
-                 appdelagate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
-                 
-                 StatusVC *statusVC = [ self.storyboard instantiateViewControllerWithIdentifier:@"StatusVC" ];
-                 statusVC.dictLoandetail = response[@"latest_loan_details"];
-                 [ self.navigationController pushViewController:statusVC animated:YES ];
+                 appDelegate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
+                 appDelegate.isLoanDisbursed = NO;
+
+                 [ self navigateToLOCDashboard ];
+//                 StatusVC *statusVC = [ self.storyboard instantiateViewControllerWithIdentifier:@"StatusVC" ];
+//                 statusVC.dictLoandetail = response[@"latest_loan_details"];
+//                 [ self.navigationController pushViewController:statusVC animated:YES ];
              }
              
              /*if ( [ dictLoginResponse[@"landing_page"] isEqualToString:@"profile"] )//landing_page
@@ -1485,7 +1499,54 @@
 }
 -(void)serverCallForBasicInfo
 {
-    if ([CommonFunctions reachabiltyCheck])
+    NSString *fullname = [NSString stringWithFormat:@"%@ %@",[basicInfoModalObj valueForKey:@"fname"],[basicInfoModalObj valueForKey:@"lname"]];
+
+    NSDictionary *param = [NSMutableDictionary new];
+    [ param setValue:@"registration" forKey:@"mode" ];
+    [ param setValue:fullname forKey:@"name" ];
+    [ param setValue:[basicInfoModalObj valueForKey:@"email"] forKey:@"email" ];
+    [ param setValue:[basicInfoModalObj valueForKey:@"phone"] forKey:@"phone" ];
+    [ param setValue:[basicInfoModalObj valueForKey:@"company"] forKey:@"company" ];
+    [ param setValue:[basicInfoModalObj valueForKey:@"salary"] forKey:@"salary" ];
+    [ param setValue:[basicInfoModalObj valueForKey:@"employmentType"] forKey:@"employmentType" ];
+    [ param setValue:@"" forKey:@"referralCode" ];
+    [ param setValue:@"IOS" forKey:@"device" ];
+    [ param setValue:@"" forKey:@"card" ];
+    [ param setValue:@"" forKey:@"utm_source" ];
+    [ param setValue:@"" forKey:@"utm_medium" ];
+    [ param setValue:@"" forKey:@"utm_content" ];
+    [ param setValue:@"" forKey:@"utm_term" ];
+    [ param setValue:@"" forKey:@"utm_campaign" ];
+    [ param setValue:[basicInfoModalObj valueForKey:@"city"] forKey:@"city" ];
+    
+
+    [ ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"registration response === %@", response);
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
+             }
+             else
+             {
+                 [Utilities setUserDefaultWithObject: response[@"auth_token"] andKey:@"auth_token"];
+                 [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
+                 [Utilities setUserDefaultWithObject:@"2" andKey:@"signupStep"];
+                 [Utilities setUserDefaultWithObject:response andKey:@"userinfo"];
+                 [self changeStepColour:signupStep];
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     } ];
+    
+    
+    /*if ([CommonFunctions reachabiltyCheck])
     {
         NSString *fullname = [NSString stringWithFormat:@"%@ %@",[basicInfoModalObj valueForKey:@"fname"],[basicInfoModalObj valueForKey:@"lname"]];
         
@@ -1531,7 +1592,7 @@
          ];
     } else {
         [self showAlertWithTitle:@"Stashfin" withMessage:@"Please check internet"];
-    }
+    }*/
     
 }
 -(void)serverCallForLoanApplication
@@ -1664,9 +1725,9 @@
     [ param setObject:[serverLoanObj valueForKey:@"residenceType"] forKey:@"comm_ownership_type" ];
     [ param setObject:[serverLoanObj valueForKey:@"occupiedSince"] forKey:@"comm_occupied_since" ];
     [ param setObject:[serverLoanObj valueForKey:@"address"] forKey:@"res_address" ];
-    [ param setObject:appdelagate.stateid forKey:@"res_state" ];
-    [ param setObject:appdelagate.cityId forKey:@"res_city" ];
-    [ param setObject:appdelagate.residencePin forKey:@"res_pin" ];
+    [ param setObject:appDelegate.stateid forKey:@"res_state" ];
+    [ param setObject:appDelegate.cityId forKey:@"res_city" ];
+    [ param setObject:appDelegate.residencePin forKey:@"res_pin" ];
     [ param setObject:[serverLoanObj valueForKey:@"loanAmount"] forKey:@"loan_amount" ];
     [ param setObject:[serverLoanObj valueForKey:@"tenure"] forKey:@"loan_tenure" ];
     [ param setObject:[serverLoanObj valueForKey:@"reason"] forKey:@"loan_reason" ];
@@ -1703,7 +1764,7 @@
 //        NSDictionary *userInfo = [defaults valueForKey:@"userinfo"];
         NSString *loanId =  [Utilities getUserDefaultValueFromKey:@"loan_id"];
         NSString *authTokenStr = [Utilities getUserDefaultValueFromKey:@"auth_token"];
-        NSString *post =[NSString stringWithFormat:@"mode=saveLoanApplication&dob=%@&gender=%@&pan_number=%@&aadhar_number=%@&name_in_aadhar=%@&salary_mode=%@&salary=%@&comm_ownership_type=%@&comm_occupied_since=%@&res_address=%@&res_state=%@&res_city=%@&res_pin=%@&loan_amount=%@&loan_tenure=%@&loan_reason=%@&loan_id=%@",[serverLoanObj valueForKey:@"birthDate"],[serverLoanObj valueForKey:@"gender"],[serverLoanObj valueForKey:@"panNumber"],[serverLoanObj valueForKey:@"adharNumber"],[serverLoanObj valueForKey:@"adharName"],[serverLoanObj valueForKey:@"salary_mode"],[serverLoanObj valueForKey:@"salary"],[serverLoanObj valueForKey:@"residenceType"],[serverLoanObj valueForKey:@"occupiedSince"],[serverLoanObj valueForKey:@"address"],appdelagate.stateid,appdelagate.cityId,appdelagate.residencePin,[serverLoanObj valueForKey:@"loanAmount"],[serverLoanObj valueForKey:@"tenure"],[serverLoanObj valueForKey:@"reason"],loanId];
+        NSString *post =[NSString stringWithFormat:@"mode=saveLoanApplication&dob=%@&gender=%@&pan_number=%@&aadhar_number=%@&name_in_aadhar=%@&salary_mode=%@&salary=%@&comm_ownership_type=%@&comm_occupied_since=%@&res_address=%@&res_state=%@&res_city=%@&res_pin=%@&loan_amount=%@&loan_tenure=%@&loan_reason=%@&loan_id=%@",[serverLoanObj valueForKey:@"birthDate"],[serverLoanObj valueForKey:@"gender"],[serverLoanObj valueForKey:@"panNumber"],[serverLoanObj valueForKey:@"adharNumber"],[serverLoanObj valueForKey:@"adharName"],[serverLoanObj valueForKey:@"salary_mode"],[serverLoanObj valueForKey:@"salary"],[serverLoanObj valueForKey:@"residenceType"],[serverLoanObj valueForKey:@"occupiedSince"],[serverLoanObj valueForKey:@"address"],appDelegate.stateid,appDelegate.cityId,appDelegate.residencePin,[serverLoanObj valueForKey:@"loanAmount"],[serverLoanObj valueForKey:@"tenure"],[serverLoanObj valueForKey:@"reason"],loanId];
         
         NSLog(@"post === %@", post);
         
@@ -1832,10 +1893,10 @@
     [ param setObject:[pfobj valueForKey:@"company_name"] forKey:@"company_name" ];
     [ param setObject:[pfobj valueForKey:@"officeemail"] forKey:@"officeemail" ];
     [ param setObject:[pfobj valueForKey:@"officephone"] forKey:@"officephone" ];
-    [ param setObject:appdelagate.stateid forKey:@"prof_address" ];
-    [ param setObject:appdelagate.stateid forKey:@"prof_state" ];
-    [ param setObject:appdelagate.cityId forKey:@"prof_city" ];
-    [ param setObject:appdelagate.residencePin forKey:@"prof_pin" ];
+    [ param setObject:appDelegate.stateid forKey:@"prof_address" ];
+    [ param setObject:appDelegate.stateid forKey:@"prof_state" ];
+    [ param setObject:appDelegate.cityId forKey:@"prof_city" ];
+    [ param setObject:appDelegate.residencePin forKey:@"prof_pin" ];
 
     [ ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
      {
@@ -1867,7 +1928,7 @@
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *userInfo = [defaults valueForKey:@"userinfo"];
         NSString *authTokenStr = [userInfo objectForKey:@"auth_token"];
-        NSString *post =[NSString stringWithFormat:@"mode=saveProfessionalDetails&designation=%@&highesteducation=%@&eduCompYear=%@&workStartYear=%@&experienceYears=%@&company_name=%@&officeemail=%@&officephone=%@&prof_address=%@&prof_state=%@&prof_city=%@&prof_pin=%@",[pfobj valueForKey:@"designation"],[pfobj valueForKey:@"highesteducation"],@"",[pfobj valueForKey:@"workStartYear"],[pfobj valueForKey:@"experienceYears"],[pfobj valueForKey:@"company_name"],[pfobj valueForKey:@"officeemail"],[pfobj valueForKey:@"officephone"],[pfobj valueForKey:@"prof_address"],appdelagate.stateid,appdelagate.cityId,appdelagate.residencePin];
+        NSString *post =[NSString stringWithFormat:@"mode=saveProfessionalDetails&designation=%@&highesteducation=%@&eduCompYear=%@&workStartYear=%@&experienceYears=%@&company_name=%@&officeemail=%@&officephone=%@&prof_address=%@&prof_state=%@&prof_city=%@&prof_pin=%@",[pfobj valueForKey:@"designation"],[pfobj valueForKey:@"highesteducation"],@"",[pfobj valueForKey:@"workStartYear"],[pfobj valueForKey:@"experienceYears"],[pfobj valueForKey:@"company_name"],[pfobj valueForKey:@"officeemail"],[pfobj valueForKey:@"officephone"],[pfobj valueForKey:@"prof_address"],appDelegate.stateid,appDelegate.cityId,appDelegate.residencePin];
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];

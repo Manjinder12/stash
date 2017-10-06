@@ -20,6 +20,7 @@
 #import "ChangePinVC.h"
 #import "LostStolenVC.h"
 #import "ChatScreen.h"
+#import <AFNetworking/UIImageView+AFNetworking.h>
 
 @interface LeftScreen ()<UIAlertViewDelegate>
 {
@@ -61,6 +62,7 @@
     
     _lblUserEmail.text  = appDelegate.dictCustomer[@"email"];
     
+    [_profileImageView setImageWithURL:[Utilities getFormattedImageURLFromString:[NSString stringWithFormat:@"%@",appDelegate.dictCustomer[@"profile_pic"]]] placeholderImage:[UIImage imageNamed:@"profile"]];
 }
 
 
@@ -189,11 +191,14 @@
         }
         else if(indexPath.row == 1)
         {
-            LineCreditVC *lineCreditVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
+            [ self serverCallToRequestCard ];
+            [ self.frostedViewController hideMenuViewController];
+            
+            /*LineCreditVC *lineCreditVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
             UINavigationController *nav = [[UINavigationController alloc]init];
             nav.viewControllers = @[lineCreditVC];
             [self.frostedViewController setContentViewController:nav];
-            [self.frostedViewController hideMenuViewController];
+            [self.frostedViewController hideMenuViewController];*/
             
         }
         else if (indexPath.row == 2)
@@ -255,6 +260,33 @@
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     [ self dismissViewControllerAnimated:YES completion:nil ];
+}
+
+#pragma mark Server Call
+- (void)serverCallToRequestCard
+{
+    NSDictionary *param = [ NSDictionary dictionaryWithObjectsAndKeys:@"requestForCardExistingCustomer",@"mode",appDelegate.dictCustomer[@"phone"],@"phone_no", nil ];
+    
+    [ServerCall getServerResponseWithParameters:param withHUD:NO withCompletion:^(id response)
+     {
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 
+             }
+             else
+             {
+                 [ Utilities showAlertWithMessage:response[@"msg"]];
+             }
+         }
+         else
+         {
+             [ Utilities showAlertWithMessage:response ];
+         }
+         
+     }];
 }
 
 #pragma marl UIAlertview Delegate

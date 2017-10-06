@@ -90,7 +90,6 @@
     _viewPopup.hidden = YES;
     imagePicker = [[UIImagePickerController alloc] init];
     
-    _imageBanner.image = _profilepic.image;
     
     [ Utilities setBorderAndColor:_btnPicture ];
     [ Utilities setBorderAndColor:_btnUpload ];
@@ -355,9 +354,30 @@
     
 }
 #pragma mark - Instance Methods
+- (UIImage *)blurredImageWithImage:(UIImage *)sourceImage
+{
+    
+    //  Create our blurred image
+    CIContext *context = [CIContext contextWithOptions:nil];
+    CIImage *inputImage = [CIImage imageWithCGImage:sourceImage.CGImage];
+    
+    //  Setting up Gaussian Blur
+    CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
+    [filter setValue:inputImage forKey:kCIInputImageKey];
+    [filter setValue:[NSNumber numberWithFloat:10] forKey:@"inputRadius"];
+    CIImage *result = [filter valueForKey:kCIOutputImageKey];
+    
+    /*  CIGaussianBlur has a tendency to shrink the image a little, this ensures it matches
+     up exactly to the bounds of our original image */
+    
+     CGImageRef cgImage = [context createCGImage:result fromRect:[inputImage extent]];
+     
+     UIImage *retVal = [UIImage imageWithCGImage:cgImage];
+     return retVal;
+}
 -(void)setupProfileBlurScreen
 {
-    if (!UIAccessibilityIsReduceTransparencyEnabled())
+    /*if (!UIAccessibilityIsReduceTransparencyEnabled())
     {
         self.view.backgroundColor = [UIColor clearColor];
         
@@ -365,13 +385,13 @@
         UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
         blurEffectView.frame = self.profileView.bounds;
         blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        blurEffectView.alpha = 0.9f;
+        blurEffectView.alpha = 0.5f;
         [self.profileView addSubview:blurEffectView];
     }
     else
     {
         self.profileView.backgroundColor = [UIColor blackColor];
-    }
+    }*/
     
     self.profilepic.layer.cornerRadius = self.profilepic.frame.size.width/2.0f;
     self.profilepic.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -380,6 +400,9 @@
     self.profilepic.image = [UIImage imageNamed:@""];
     
     [self.profilepic setImageWithURL:[Utilities getFormattedImageURLFromString:[NSString stringWithFormat:@"%@",appDelegate.dictCustomer[@"profile_pic"]]] placeholderImage:[UIImage imageNamed:@"profile"]];
+    
+    _imageBanner.image = [ self blurredImageWithImage:_profilepic.image];
+
 }
 
 #pragma mark Button Action

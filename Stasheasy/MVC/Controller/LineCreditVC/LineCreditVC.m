@@ -19,13 +19,14 @@
 #import "VBPieChart.h"
 #import "PNChart.h"
 
-@interface LineCreditVC ()<LGPlusButtonsViewDelegate>
+@interface LineCreditVC ()<LGPlusButtonsViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
 {
     AppDelegate *appDelegate;
     LGPlusButtonsView *stashfinButton;
     PNPieChart *pieChart;
     BOOL isStashExpand;
     NSString *strRemainLOC;
+    NSArray *arrImages;
     int approvedLOC, usedLOC, remainingLOC, usedValue, remainValue ;
     double pieProgress;
 }
@@ -47,8 +48,12 @@
 @property (weak, nonatomic) IBOutlet UIView *viewUpper;
 @property (weak, nonatomic) IBOutlet UIView *viewLower;
 @property (weak, nonatomic) IBOutlet UIView *viewOuter;
+@property (weak, nonatomic) IBOutlet UIView *viewCollection;
+@property (weak, nonatomic) IBOutlet UIView *viewCard;
 
 @property (weak, nonatomic) IBOutlet UIView *viewPieChart;
+
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionImage;
 
 @property (weak, nonatomic) IBOutlet TPKeyboardAvoidingScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *cnsViewLOCdetailTop;
@@ -69,13 +74,22 @@
     
     appDelegate = [AppDelegate sharedDelegate];
     
+    if (appDelegate.isCardFound == YES )
+    {
+        _viewCard.hidden = NO;
+        _viewCollection.hidden = YES;
+    }
+    else
+    {
+        _viewCard.hidden = YES;
+        _viewCollection.hidden = NO;
+    }
+    
+    arrImages = [[ NSArray alloc] initWithObjects:@"Card1",@"Card2",@"Card3",@"Card4",@"Card5", nil];
+
     [ Utilities setCornerRadius:_viewUpper ];
     [ Utilities setCornerRadius:_viewLower ];
-    
-    
-//    [ Utilities setShadowToView:_viewUpper ];
-//    [ Utilities setShadowToView:_viewLower ];
-    
+
     approvedLOC = 0;
     usedLOC = 0;
     remainingLOC = 0;
@@ -90,6 +104,36 @@
     
 }
 
+#pragma mark Collectionview Delegate
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    CGFloat height = self.collectionImage.frame.size.height;
+    CGFloat width  = self.collectionImage.frame.size.width;
+    return CGSizeMake( width * 1.0, height * 1.0);
+    
+}
+
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return 5;
+}
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifier = @"ImageCell";
+    
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    
+    UIImageView *image  = [cell viewWithTag:100];
+    image.image = [UIImage imageNamed:[arrImages objectAtIndex:indexPath.row]];
+    return cell;
+}
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [ self serverCallToRequestCard ];
+}
 #pragma mark LGPlusButtonsView
 - (void)addStashfinButtonView
 {
@@ -297,6 +341,31 @@
         
         [SVProgressHUD dismiss];
     }];
+}
+- (void)serverCallToRequestCard
+{
+    NSDictionary *param = [ NSDictionary dictionaryWithObjectsAndKeys:@"requestForCardExistingCustomer",@"mode",appDelegate.dictCustomer[@"phone"],@"phone_no", nil ];
+    
+    [ServerCall getServerResponseWithParameters:param withHUD:NO withCompletion:^(id response)
+     {
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 
+             }
+             else
+             {
+                 [ Utilities showAlertWithMessage:response[@"msg"]];
+             }
+         }
+         else
+         {
+             [ Utilities showAlertWithMessage:response ];
+         }
+         
+     }];
 }
 - (void)populateLOCDetails:(NSDictionary *)dictLOC andCardDetail:(NSDictionary *)dictCard
 {
