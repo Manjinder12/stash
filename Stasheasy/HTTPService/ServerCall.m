@@ -27,6 +27,7 @@
     sessionManager.responseSerializer.acceptableContentTypes = [sessionManager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
 
     
+//    NSString *token = @"01e824c9321998ba3fef2f9c9e10db7534e08f90";
     NSString *token = [NSString stringWithFormat:@"%@",[Utilities getUserDefaultValueFromKey:@"auth_token"]];
     
     NSString *deviceID = [NSString stringWithFormat:@"%@",[Utilities getDeviceUDID]];

@@ -438,7 +438,7 @@
 
 - (IBAction)professionalTapped:(id)sender
 {
-    tab =1;
+    tab = 1;
     self.profileTableView.hidden = NO;
     self.docCollection.hidden = YES;
     self.btnUpload.hidden = YES;
@@ -636,11 +636,52 @@
 - (void)populateProfessionalDetail:(NSDictionary *)response
 {
     [marrProText addObject:@"Stashfin"];
-    [marrProText addObject:response[@"professional_details"][@"designation"]];
-    [marrProText addObject:response[@"professional_details"][@"designationId"]];
-    [marrProText addObject:response[@"professional_details"][@"workingSince"]];
-    [marrProText addObject:response[@"professional_details"][@"officeEmail"]];
-    [marrProText addObject:response[@"professional_details"][@"officeLandLineNo"]];
+    
+    if ([response[@"professional_details"][@"designation"] isKindOfClass:[NSNull class]])
+    {
+        [marrProText addObject:@""];
+    }
+    else
+    {
+        [marrProText addObject:response[@"professional_details"][@"designation"]];
+    }
+    
+    if ([response[@"professional_details"][@"designationId"] isKindOfClass:[NSNull class]])
+    {
+        [marrProText addObject:@""];
+    }
+    else
+    {
+        [marrProText addObject:response[@"professional_details"][@"designationId"]];
+    }
+    
+    if ([response[@"professional_details"][@"workingSince"] isKindOfClass:[NSNull class]])
+    {
+        [marrProText addObject:@""];
+    }
+    else
+    {
+        [marrProText addObject:response[@"professional_details"][@"workingSince"]];
+    }
+
+    if ([response[@"professional_details"][@"officeEmail"] isKindOfClass:[NSNull class]])
+    {
+        [marrProText addObject:@""];
+    }
+    else
+    {
+        [marrProText addObject:response[@"professional_details"][@"officeEmail"]];
+    }
+    
+    if ([response[@"professional_details"][@"officeLandLineNo"] isKindOfClass:[NSNull class]])
+    {
+        [marrProText addObject:@""];
+    }
+    else
+    {
+        [marrProText addObject:response[@"professional_details"][@"officeLandLineNo"]];
+    }
+
     
     NSString *officeAddress = [NSString stringWithFormat:@"%@,%@",response[@"office_address"][@"address"],response[@"office_address"][@"city"]];
 
@@ -867,7 +908,7 @@
     [imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma marl Helper Method
+#pragma mark Helper Method
 - (void)showPopupView:(UIView *)popupView onViewController:(UIViewController *)viewcontroller
 {
     UIView *overlayView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];

@@ -342,23 +342,13 @@
              else
              {
                  appDelegate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
-                 appDelegate.isLoanDisbursed = YES;
              }
              
-             if ( [ dictLoginResponse[@"landing_page"] isEqualToString:@"profile"] )//landing_page
-             {
-                 [self navigateAccordingToCurrentStatus:dictLoginResponse];
-             }
-             else if ( [dictLoginResponse[@"landing_page"] isEqualToString:@"id_detail"] )//landing_page
-             {
-                 [self navigateAccordingLandingPageStatus:dictLoginResponse];
-             }
-             
-//             [ self navigateAccordingLandingPageStatus:dictLoginResponse ];
+             [self navigateAccordingLandingPageStatus:dictLoginResponse];
          }
          else
          {
-//             [Utilities showAlertWithMessage:response];
+
          }
          
          [ SVProgressHUD dismiss ];
@@ -548,6 +538,7 @@
             
             [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
             [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
+            appDelegate.isLoanDisbursed = YES;
             
             ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
             [self.navigationController pushViewController:vc animated:YES];
@@ -556,23 +547,20 @@
         {
             RejectedVC *rejectedVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"RejectedVC"];
             rejectedVC.dictDate = [Utilities getDayDateYear:response[@"latest_loan_details"][@"loan_creation_date"]];
+            appDelegate.isLoanDisbursed = NO;
             [self.navigationController pushViewController:rejectedVC animated:YES];
         }
-        
-        else if ( [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"rejected"] )
-        {
-            RejectedVC *rejectedVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"RejectedVC"];
-            rejectedVC.dictDate = [Utilities getDayDateYear:response[@"latest_loan_details"][@"loan_creation_date"]];
-            [self.navigationController pushViewController:rejectedVC animated:YES];
-        }
-        
+
         else
         {
-            StatusVC *statusVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"StatusVC"];
+            ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
+            appDelegate.isLoanDisbursed = NO;
+            [self.navigationController pushViewController:vc animated:YES];
+
+           /* StatusVC *statusVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"StatusVC"];
             statusVC.dictLoandetail = response[@"latest_loan_details"];
-            [self.navigationController pushViewController:statusVC animated:YES];
+            [self.navigationController pushViewController:statusVC animated:YES];*/
         }
-        
     }
     
     [ SVProgressHUD dismiss ];
@@ -580,29 +568,9 @@
 }
 - (void)navigateAccordingToCurrentStatus:(NSDictionary *)response
 {
-    
-    /*if ( [response[@"landing_page"] isEqualToString:@"profile"] && [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"]) //landing_page
-    {
-        // Navigate to LOC Dashboard
-        
-        [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
-        [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
-        
-        ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
-        [self.navigationController pushViewController:vc animated:YES];
-
-    }
-    else if ( [response[@"landing_page"] isEqualToString:@"id_detail"] )//landing_page
-    {
-        
-    }*/
-
-    
-    
     if ( [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] )
     {
         // Navigate To LOC Dashboard
-
         ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
         [self.navigationController pushViewController:vc animated:YES];
     }

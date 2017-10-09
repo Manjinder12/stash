@@ -48,7 +48,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnRequestReload;
 
 
-
 @property (weak, nonatomic) IBOutlet UIView *viewContainer;
 
 
@@ -226,14 +225,17 @@
     }
     else
     {
-            _lblTenure.text = [NSString stringWithFormat:@"%.0f Months",value + minTenure];
+        installmentsNo = value + minTenure;
+        _lblTenure.text = [NSString stringWithFormat:@"%d Months",installmentsNo];
     }
+    
 }
 - (IBAction)creditSliderValueChanged:(id)sender
 {
     isCreditSlider = YES;
     
-    float number = [_creditSlider value];
+    NSString *strValue = [ NSString stringWithFormat:@"%.02f",[_creditSlider value]];
+    float number = [strValue floatValue];
     int value = (int)(number * maxCredit);
     principal = value;
 
@@ -361,6 +363,7 @@
              NSString *errorStr = [response objectForKey:@"error"];
              if ( errorStr.length > 0 )
              {
+                 _viewContainer.hidden = NO;
                  [Utilities showAlertWithMessage:errorStr];
              }
              else
@@ -451,6 +454,8 @@
     maxTenure = maxTenure - minTenure;
     
     [ self calculateEMI ];
+    
+    _viewContainer.hidden = YES;
     
 }
 - (void)navigateToLOCWithdrawalVC:(NSDictionary *)response

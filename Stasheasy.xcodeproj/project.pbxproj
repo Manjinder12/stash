@@ -585,6 +585,7 @@
 		781D1E421EE0885E00D82E86 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E287008A1F8BB0EC008A67A6 /* LoanPayableCell */,
 				E2305EF41F2A0ABC005CDBAF /* LoanCell */,
 				E2D2CCCF1F2617B100E98F2E /* LandingVC */,
 				BBC2D4E01EFA5A8600FDC823 /* RightChatCell */,
@@ -1172,6 +1173,13 @@
 				E2847C661F3C952000C5D3A3 /* StatusVC.m */,
 			);
 			path = StatusVC;
+			sourceTree = "<group>";
+		};
+		E287008A1F8BB0EC008A67A6 /* LoanPayableCell */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = LoanPayableCell;
 			sourceTree = "<group>";
 		};
 		E2A7810F1F2B1D9400C151CC /* RadioButton */ = {

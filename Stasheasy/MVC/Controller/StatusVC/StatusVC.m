@@ -12,8 +12,9 @@
 
 @interface StatusVC ()
 {
+    AppDelegate *appDelegate;
     UIImage *firstActive, *secondActive, *thirdActive, *fourthActive, *firstDective, *secondDeactive, *thirdDeactive, *fourthDeactive , *greenImage;
-    
+    NSDictionary *dictLoan;
     NSString *appStatus;
 }
 @property (weak, nonatomic) IBOutlet UIButton *btnFirst;
@@ -50,21 +51,20 @@
 }
 - (void)customInitialization
 {
-    self.navigationController.navigationBar.hidden = NO;
+    self.navigationController.navigationBar.hidden = YES;
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
    
+    appDelegate = [ AppDelegate sharedDelegate ];
     [self setAllImages];
     
-//    appStatus = dictLoandetail[@"current_status"];//dockpick dockpickdone
-    appStatus = @"dockpickdone";
+    dictLoan = appDelegate.dictCustomer[@"latest_loan_details"];
+    appStatus = @"start";
     
-    _lblDate.text = [NSString stringWithFormat:@"%@",dictLoandetail[@"loan_creation_date"]];
+    //appDelegate.dictCustomer[@"latest_loan_details"][@"current_status"];
+    
+    _lblDate.text = [NSString stringWithFormat:@"%@",appDelegate.dictCustomer[@"latest_loan_details"][@"loan_creation_date"]];
+    
 
-//    NSDictionary *_dictDate = [Utilities getDayDateYear:dictLoandetail[@"loan_creation_date"]];
-
-//    _lblDate.text = [NSString stringWithFormat:@"%@ %@ %@ | %@",[_dictDate valueForKey:@"day"],[_dictDate valueForKey:@"month"],[_dictDate valueForKey:@"year"],[_dictDate valueForKey:@"time"]];
-    
-    
     if ( [appStatus  isEqual: @"start"] )
     {
         [self viewForAppStatusStart];
@@ -73,7 +73,7 @@
     {
         [self viewForAppStatusApproved];
     }
-    else if ( [appStatus  isEqual: @"dockpick"] )
+    else if ( [appStatus  isEqual: @"docpick"] )
     {
         [self viewForAppStatusDocument];
     }
@@ -81,10 +81,9 @@
     {
         [self viewForAppStatusDone];
     }
-
     else
     {
-        _viewContainer.hidden = YES;
+//        _viewContainer.hidden = NO;
     }
 }
 

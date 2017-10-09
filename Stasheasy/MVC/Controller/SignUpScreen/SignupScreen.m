@@ -25,7 +25,7 @@
 #import "Utilities.h"
 #import "StatusVC.h"
 
-@interface SignupScreen ()<UIActionSheetDelegate,UIImagePickerControllerDelegate>
+@interface SignupScreen ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate>
 {
     AppDelegate *appDelegate;
     UserServices *userService;
@@ -52,15 +52,21 @@
     BOOL isDocUpload;
 }
 
+@property (weak, nonatomic) IBOutlet UITextField *txtOTP;
+
+
 @property (weak, nonatomic) IBOutlet UIButton *btnFirst;
 @property (weak, nonatomic) IBOutlet UIButton *btnSecond;
 @property (weak, nonatomic) IBOutlet UIButton *btnThird;
 @property (weak, nonatomic) IBOutlet UIButton *btnFourth;
 @property (weak, nonatomic) IBOutlet UIButton *btnNext;
+@property (weak, nonatomic) IBOutlet UIButton *btnVerify;
+@property (weak, nonatomic) IBOutlet UIButton *btnResend;
 
 @property (weak, nonatomic) IBOutlet UIView *firstView;
 @property (weak, nonatomic) IBOutlet UIView *secondView;
 @property (weak, nonatomic) IBOutlet UIView *thirdView;
+@property (weak, nonatomic) IBOutlet UIView *viewOtpVerify;
 
 @property (weak, nonatomic) IBOutlet UITableView *signupTableview;
 
@@ -68,6 +74,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *idDetailLbl;
 @property (weak, nonatomic) IBOutlet UILabel *personalInfoLbl;
 @property (weak, nonatomic) IBOutlet UILabel *docLbl;
+@property (weak, nonatomic) IBOutlet UILabel *lblMobileNo;
 
 @end
 
@@ -92,6 +99,8 @@
     
     appDelegate = [AppDelegate sharedDelegate];
     userService = [[UserServices alloc]init];
+    
+    _viewOtpVerify.hidden = YES;
     
     basicInfoDic = [NSMutableDictionary dictionary];
     
@@ -249,6 +258,14 @@
     
 }
 - (IBAction)fourthAction:(id)sender
+{
+    
+}
+- (IBAction)verifyAction:(id)sender
+{
+    [ self serverCallToSubmitOTP ];
+}
+- (IBAction)resendOtpAction:(id)sender
 {
     
 }
@@ -558,6 +575,8 @@
             self.basicinfoLbl.textColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
             [_btnSecond setBackgroundImage:[UIImage imageNamed:@"two"] forState:UIControlStateNormal];
             self.idDetailLbl.textColor = [UIColor blackColor];
+            [self serverCallForLoanApplication];
+
             break;
         }
         case idDetails:
@@ -567,7 +586,7 @@
             self.idDetailLbl.textColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
             [_btnThird setBackgroundImage:[UIImage imageNamed:@"three"] forState:UIControlStateNormal];
             self.personalInfoLbl.textColor = [UIColor blackColor];
-            [self serverCallForLoanApplication];
+            [self professionalDetailsServiceCall];
             break;
         }
         case personalInfo:
@@ -577,7 +596,6 @@
             self.personalInfoLbl.textColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
             [_btnFourth setBackgroundImage:[UIImage imageNamed:@"four"] forState:UIControlStateNormal];
             self.docLbl.textColor = [UIColor blackColor];
-            [self professionalDetailsServiceCall];
             break;
         }
         case docUpload:
@@ -1109,6 +1127,10 @@
             selTextfield = textField;
             return YES;
         }
+        else
+        {
+            [ textField becomeFirstResponder ];
+        }
 
     }
     else if( signupStep == 3 )
@@ -1405,7 +1427,7 @@
     imagePicker.allowsEditing = YES;
     [self presentViewController:imagePicker animated:YES completion:nil];
 }
-- (void)navigateToLOCDashboard
+- (void)navigateToDashboard
 {
     ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
     [self.navigationController pushViewController:vc animated:YES];
@@ -1417,6 +1439,49 @@
     navigationController.interactivePopGestureRecognizer.enabled = NO;
     appDelegate.window.rootViewController = navigationController;*/
     
+}
+
+#pragma mark Helper Method
+- (void)showPopupView:(UIView *)popupView onViewController:(UIViewController *)viewcontroller
+{
+    UIView *overlayView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [overlayView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5]];
+    [overlayView setTag:786];
+    [popupView setHidden:NO];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedOnOverlay:)];
+    [overlayView addGestureRecognizer:tapGesture];
+    
+    [viewcontroller.view addSubview:overlayView];
+    [viewcontroller.view bringSubviewToFront:popupView];
+    popupView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        
+        popupView.transform = CGAffineTransformIdentity;
+    } completion:^(BOOL finished) {
+        
+        //        [self.view bringSubviewToFront:_viewPicker];
+    }];
+    
+}
+- (void)tappedOnOverlay:(UIGestureRecognizer *)gesture
+{
+    [ self.view endEditing:YES ];
+    [self hidePopupView:_viewOtpVerify fromViewController:self];
+}
+- (void)hidePopupView:(UIView *)popupView fromViewController:(UIViewController *)viewcontroller
+{
+    UIView *overlayView = [viewcontroller.view viewWithTag:786];
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^
+     {
+         popupView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+     }
+                     completion:^(BOOL finished)
+     {
+         [popupView setHidden:YES];
+         
+     }];
+    [overlayView removeFromSuperview];
 }
 #pragma mark Server Call
 - (void)serverCallToGetLoginData
@@ -1435,10 +1500,13 @@
              }
              else
              {
+                 [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
+                 [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
+
                  appDelegate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
                  appDelegate.isLoanDisbursed = NO;
 
-                 [ self navigateToLOCDashboard ];
+                 [ self navigateToDashboard ];
 //                 StatusVC *statusVC = [ self.storyboard instantiateViewControllerWithIdentifier:@"StatusVC" ];
 //                 statusVC.dictLoandetail = response[@"latest_loan_details"];
 //                 [ self.navigationController pushViewController:statusVC animated:YES ];
@@ -1518,7 +1586,8 @@
     [ param setValue:@"" forKey:@"utm_term" ];
     [ param setValue:@"" forKey:@"utm_campaign" ];
     [ param setValue:[basicInfoModalObj valueForKey:@"city"] forKey:@"city" ];
-    
+    [ param setValue:[Utilities getDeviceUDID] forKey:@"device_id" ];
+
 
     [ ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
      {
@@ -1536,7 +1605,8 @@
                  [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
                  [Utilities setUserDefaultWithObject:@"2" andKey:@"signupStep"];
                  [Utilities setUserDefaultWithObject:response andKey:@"userinfo"];
-                 [self changeStepColour:signupStep];
+                 
+                 [ self serverCallToGenerateOTP ];
              }
          }
          else
@@ -1710,7 +1780,8 @@
 
 - (void)serverCallForSaveloanApplication
 {
-    NSString *loanId =  [Utilities getUserDefaultValueFromKey:@"loan_id"];
+    NSDictionary *dict =  [Utilities getUserDefaultValueFromKey:@"userinfo"];
+    NSString *loanId = dict[@"loanID"];
 
     NSMutableDictionary *param = [NSMutableDictionary new ];
     
@@ -1747,6 +1818,7 @@
             else
             {
                 [Utilities setUserDefaultWithObject:@"3" andKey:@"signupStep"];
+//                signupStep = 3;
                 [self changeStepColour:idDetails];
             }
         }
@@ -1912,6 +1984,7 @@
              else
              {
                  [Utilities setUserDefaultWithObject:@"4" andKey:@"signupStep"];
+//                 signupStep = 4;
                  [self changeStepColour:personalInfo];
              }
          }
@@ -1990,5 +2063,62 @@
          }
      }];
 }
-
+- (void)serverCallToGenerateOTP
+{
+    NSMutableDictionary *dictParam = [ NSMutableDictionary dictionary ];
+    [ dictParam setObject:@"generateOtp" forKey:@"mode" ];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@" generateOtp response === %@", response);
+         
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 [ self showPopupView:_viewOtpVerify onViewController:self ];
+                 _lblMobileNo.text = [basicInfoModalObj valueForKey:@"phone"];
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     }];
+}
+- (void)serverCallToSubmitOTP
+{
+    NSMutableDictionary *dictParam = [ NSMutableDictionary dictionary ];
+    [ dictParam setObject:@"submitOtp" forKey:@"mode" ];
+    [ dictParam setObject:_txtOTP.text forKey:@"otp" ];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 [ self hidePopupView:_viewOtpVerify fromViewController:self ];
+                 [self changeStepColour:signupStep];
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     }];
+    
+}
 @end

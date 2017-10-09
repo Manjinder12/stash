@@ -13,6 +13,7 @@
 #import "ViewController.h"
 #import "AppDelegate.h"
 #import "SignupScreen.h"
+#import "RejectedVC.h"
 
 @interface SplashVC ()
 {
@@ -85,7 +86,7 @@
                  
                  if ([[Utilities getUserDefaultValueFromKey:@"islogin"] intValue] != 0)
                  {
-                     [self serverCallForPersonalDetail];
+                     [self serverCallForCardOverview];
                  }
                  else
                  {
@@ -118,9 +119,10 @@
              {
                  appDelegate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
                  appDelegate.isLoanDisbursed = YES;
-                 [ self serverCallForCardOverview ];
              }
              
+             [self navigateAccordingLandingPageStatus:response];
+
          }
          else
          {
@@ -146,13 +148,81 @@
              {
                  appDelegate.isCardFound = YES;
              }
+             
+             [ self serverCallForPersonalDetail ];
+
          }
          else
          {
+             
          }
          
-         [self navigateToLOCDashboard];
          
      }];
+}
+
+- (void)navigateAccordingLandingPageStatus:(NSDictionary *)response
+{
+    if ( [response[@"landing_page"] isEqualToString:@"rejected"] )
+    {
+        RejectedVC *rejectedVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"RejectedVC"];
+        rejectedVC.dictDate = [Utilities getDayDateYear:response[@"latest_loan_details"][@"loan_creation_date"]];
+        [self.navigationController pushViewController:rejectedVC animated:YES];
+    }
+    
+    else if ( [response[@"landing_page"] isEqualToString:@"id_detail"] )
+    {
+        SignupScreen *signupScreen = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"SignupScreen"];
+        [Utilities setUserDefaultWithObject:@"2" andKey:@"signupStep"];
+        signupScreen.signupStep = 2;
+        [self.navigationController pushViewController:signupScreen animated:YES];
+    }
+    
+    else if ( [response[@"landing_page"] isEqualToString:@"professional_info"] )
+    {
+        SignupScreen *signupScreen = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"SignupScreen"];
+        [Utilities setUserDefaultWithObject:@"3" andKey:@"signupStep"];
+        signupScreen.signupStep = 3;
+        [self.navigationController pushViewController:signupScreen animated:YES];
+    }
+    else if ( [response[@"landing_page"] isEqualToString:@"doc_upload"] )
+    {
+        SignupScreen *signupScreen = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"SignupScreen"];
+        [Utilities setUserDefaultWithObject:@"4" andKey:@"signupStep"];
+        signupScreen.signupStep = 4;
+        [self.navigationController pushViewController:signupScreen animated:YES];
+    }
+    else
+    {
+        if ( [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] )
+        {
+            // Navigate To LOC Dashboard
+            
+            [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
+            [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
+            appDelegate.isLoanDisbursed = YES;
+            
+            ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        else if ( [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"rejected"] )
+        {
+            RejectedVC *rejectedVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"RejectedVC"];
+            rejectedVC.dictDate = [Utilities getDayDateYear:response[@"latest_loan_details"][@"loan_creation_date"]];
+            appDelegate.isLoanDisbursed = NO;
+            [self.navigationController pushViewController:rejectedVC animated:YES];
+        }
+        
+        else
+        {
+            appDelegate.isLoanDisbursed = NO;
+            ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        
+    }
+    
+    [ SVProgressHUD dismiss ];
+    
 }
 @end

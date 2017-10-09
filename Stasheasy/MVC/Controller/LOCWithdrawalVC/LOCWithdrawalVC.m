@@ -25,6 +25,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView *viewUpper;
 @property (weak, nonatomic) IBOutlet UIView *viewLower;
+@property (weak, nonatomic) IBOutlet UIView *viewContainer;
 
 
 @end

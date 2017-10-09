@@ -21,6 +21,7 @@
 #import "LostStolenVC.h"
 #import "ChatScreen.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
+#import "StatusVC.h"
 
 @interface LeftScreen ()<UIAlertViewDelegate>
 {
@@ -49,18 +50,27 @@
     
     self.navigationController.navigationBarHidden = NO;
     
-    if ( appDelegate.isCardFound == YES )
+    if ( [appDelegate.dictCustomer [@"landing_page"] isEqualToString:@"profile"] )
     {
-        leftImages = [NSArray arrayWithObjects:@"profile",@"profile",@"calculator",@"transaction",@"applicationStatus",@"applicationStatus",@"calculator",@"logout", nil];
-        leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Card Overview",@"My Transactions",@"Change Pin",@"Block Card",@"EMI Calculation",@"Profile",@"Logout", nil];
+        if ( appDelegate.isCardFound == YES )
+        {
+            leftImages = [NSArray arrayWithObjects:@"profile",@"profile",@"calculator",@"transaction",@"applicationStatus",@"applicationStatus",@"calculator",@"logout", nil];
+            leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Card Overview",@"My Transactions",@"Change Pin",@"Block Card",@"EMI Calculation",@"Profile",@"Logout", nil];
+        }
+        else
+        {
+            leftImages = [NSArray arrayWithObjects:@"profile",@"calculator",@"transaction",@"applicationStatus",@"calculator",@"logout", nil];
+            leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Get Stashfin Card",@"EMI Calculation",@"Profile",@"Logout", nil];
+        }
     }
     else
     {
-        leftImages = [NSArray arrayWithObjects:@"profile",@"calculator",@"transaction",@"applicationStatus",@"calculator",@"logout", nil];
-        leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Get Stashfin Card",@"EMI Calculation",@"Profile",@"Logout", nil];
+        leftImages = [NSArray arrayWithObjects:@"profile",@"calculator",@"transaction",@"applicationStatus",@"logout", nil];
+        leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Get Stashfin Card",@"Profile",@"Logout", nil];
+
     }
     
-    _lblUserEmail.text  = appDelegate.dictCustomer[@"email"];
+        _lblUserEmail.text  = appDelegate.dictCustomer[@"email"];
     
     [_profileImageView setImageWithURL:[Utilities getFormattedImageURLFromString:[NSString stringWithFormat:@"%@",appDelegate.dictCustomer[@"profile_pic"]]] placeholderImage:[UIImage imageNamed:@"profile"]];
 }
@@ -107,84 +117,136 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( appDelegate.isCardFound == YES )
+    
+    if ( [appDelegate.dictCustomer [@"landing_page"] isEqualToString:@"profile"] )
     {
-        if(indexPath.row == 0)
+        if ( appDelegate.isCardFound == YES )
         {
-            LineCreditVC *lineCreditVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
-            UINavigationController *nav = [[UINavigationController alloc]init];
-            nav.viewControllers = @[lineCreditVC];
-            [self.frostedViewController setContentViewController:nav];
-            [self.frostedViewController hideMenuViewController];
+            if(indexPath.row == 0)
+            {
+                LineCreditVC *lineCreditVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
+                UINavigationController *nav = [[UINavigationController alloc]init];
+                nav.viewControllers = @[lineCreditVC];
+                [self.frostedViewController setContentViewController:nav];
+                [self.frostedViewController hideMenuViewController];
+                
+            }
+            else if(indexPath.row == 1)
+            {
+                TransactionDetailsViewController *tdvc = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionDetailsViewController"];
+                tdvc.isOverview = 0;
+                UINavigationController *nav = [[UINavigationController alloc]init];
+                nav.viewControllers = @[tdvc];
+                [self.frostedViewController setContentViewController:nav];
+                [self.frostedViewController hideMenuViewController];
+                
+            }
+            else if (indexPath.row == 2)
+            {
+                TransactionDetailsViewController *tdvc = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionDetailsViewController"];
+                tdvc.isOverview = 1;
+                UINavigationController *nav = [[UINavigationController alloc]init];
+                nav.viewControllers = @[tdvc];
+                [self.frostedViewController setContentViewController:nav];
+                [self.frostedViewController hideMenuViewController];
+            }
+            else if(indexPath.row == 3)
+            {
+                ChangePinVC *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ChangePinVC"];
+                UINavigationController *nav = [[UINavigationController alloc]init];
+                nav.viewControllers = @[pvc];
+                [self.frostedViewController setContentViewController:nav];
+                [self.frostedViewController hideMenuViewController];
+            }
             
-        }
-        else if(indexPath.row == 1)
-        {
-            TransactionDetailsViewController *tdvc = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionDetailsViewController"];
-            tdvc.isOverview = 0;
-            UINavigationController *nav = [[UINavigationController alloc]init];
-            nav.viewControllers = @[tdvc];
-            [self.frostedViewController setContentViewController:nav];
-            [self.frostedViewController hideMenuViewController];
-            
-        }
-        else if (indexPath.row == 2)
-        {
-            TransactionDetailsViewController *tdvc = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionDetailsViewController"];
-            tdvc.isOverview = 1;
-            UINavigationController *nav = [[UINavigationController alloc]init];
-            nav.viewControllers = @[tdvc];
-            [self.frostedViewController setContentViewController:nav];
-            [self.frostedViewController hideMenuViewController];
-        }
-        else if(indexPath.row == 3)
-        {
-            ChangePinVC *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ChangePinVC"];
-            UINavigationController *nav = [[UINavigationController alloc]init];
-            nav.viewControllers = @[pvc];
-            [self.frostedViewController setContentViewController:nav];
-            [self.frostedViewController hideMenuViewController];
+            else if(indexPath.row == 4)
+            {
+                LostStolenVC *lsvc = [self.storyboard instantiateViewControllerWithIdentifier:@"LostStolenVC"];
+                UINavigationController *nav = [[UINavigationController alloc]init];
+                nav.viewControllers = @[lsvc];
+                [self.frostedViewController setContentViewController:nav];
+                [self.frostedViewController hideMenuViewController];
+                
+            }
+            else if(indexPath.row == 5)
+            {
+                EmiCalculatorScreen *evc = [self.storyboard instantiateViewControllerWithIdentifier:@"EmiCalculatorScreen"];
+                UINavigationController *nav = [[UINavigationController alloc]init];
+                nav.viewControllers = @[evc];
+                [self.frostedViewController setContentViewController:nav];
+                [self.frostedViewController hideMenuViewController];
+            }
+            else if(indexPath.row == 6)
+            {
+                ProfileScreen *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileScreen"];
+                UINavigationController *nav = [[UINavigationController alloc]init];
+                nav.viewControllers = @[pvc];
+                [self.frostedViewController setContentViewController:nav];
+                [self.frostedViewController hideMenuViewController];
+            }
+            else if(indexPath.row == 7)
+            {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Stathfin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+                [ alert show];
+                [self.frostedViewController hideMenuViewController];
+            }
         }
         
-        else if(indexPath.row == 4)
+        else
         {
-            LostStolenVC *lsvc = [self.storyboard instantiateViewControllerWithIdentifier:@"LostStolenVC"];
-            UINavigationController *nav = [[UINavigationController alloc]init];
-            nav.viewControllers = @[lsvc];
-            [self.frostedViewController setContentViewController:nav];
-            [self.frostedViewController hideMenuViewController];
+            if(indexPath.row == 0)
+            {
+                LineCreditVC *lineCreditVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
+                UINavigationController *nav = [[UINavigationController alloc]init];
+                nav.viewControllers = @[lineCreditVC];
+                [self.frostedViewController setContentViewController:nav];
+                [self.frostedViewController hideMenuViewController];
+                
+            }
+            else if(indexPath.row == 1)
+            {
+                [ self serverCallToRequestCard ];
+                [ self.frostedViewController hideMenuViewController];
+                
+                /*LineCreditVC *lineCreditVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
+                 UINavigationController *nav = [[UINavigationController alloc]init];
+                 nav.viewControllers = @[lineCreditVC];
+                 [self.frostedViewController setContentViewController:nav];
+                 [self.frostedViewController hideMenuViewController];*/
+                
+            }
+            else if (indexPath.row == 2)
+            {
+                EmiCalculatorScreen *evc = [self.storyboard instantiateViewControllerWithIdentifier:@"EmiCalculatorScreen"];
+                UINavigationController *nav = [[UINavigationController alloc]init];
+                nav.viewControllers = @[evc];
+                [self.frostedViewController setContentViewController:nav];
+                [self.frostedViewController hideMenuViewController];
+            }
             
-        }
-        else if(indexPath.row == 5)
-        {
-            EmiCalculatorScreen *evc = [self.storyboard instantiateViewControllerWithIdentifier:@"EmiCalculatorScreen"];
-            UINavigationController *nav = [[UINavigationController alloc]init];
-            nav.viewControllers = @[evc];
-            [self.frostedViewController setContentViewController:nav];
-            [self.frostedViewController hideMenuViewController];
-        }
-        else if(indexPath.row == 6)
-        {
-            ProfileScreen *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileScreen"];
-            UINavigationController *nav = [[UINavigationController alloc]init];
-            nav.viewControllers = @[pvc];
-            [self.frostedViewController setContentViewController:nav];
-            [self.frostedViewController hideMenuViewController];
-        }
-        else if(indexPath.row == 7)
-        {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Stathfin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
-            [ alert show];
-            [self.frostedViewController hideMenuViewController];
+            else if(indexPath.row == 3)
+            {
+                ProfileScreen *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileScreen"];
+                UINavigationController *nav = [[UINavigationController alloc]init];
+                nav.viewControllers = @[pvc];
+                [self.frostedViewController setContentViewController:nav];
+                [self.frostedViewController hideMenuViewController];
+            }
+            else if(indexPath.row == 4)
+            {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Stathfin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+                [ alert show];
+                [self.frostedViewController hideMenuViewController];
+            }
         }
     }
     else
     {
         if(indexPath.row == 0)
         {
-            LineCreditVC *lineCreditVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
+            StatusVC *statusVC = [self.storyboard instantiateViewControllerWithIdentifier:@"StatusVC"];
             UINavigationController *nav = [[UINavigationController alloc]init];
-            nav.viewControllers = @[lineCreditVC];
+            nav.viewControllers = @[statusVC];
             [self.frostedViewController setContentViewController:nav];
             [self.frostedViewController hideMenuViewController];
             
@@ -195,22 +257,14 @@
             [ self.frostedViewController hideMenuViewController];
             
             /*LineCreditVC *lineCreditVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
-            UINavigationController *nav = [[UINavigationController alloc]init];
-            nav.viewControllers = @[lineCreditVC];
-            [self.frostedViewController setContentViewController:nav];
-            [self.frostedViewController hideMenuViewController];*/
+             UINavigationController *nav = [[UINavigationController alloc]init];
+             nav.viewControllers = @[lineCreditVC];
+             [self.frostedViewController setContentViewController:nav];
+             [self.frostedViewController hideMenuViewController];*/
             
         }
-        else if (indexPath.row == 2)
-        {
-            EmiCalculatorScreen *evc = [self.storyboard instantiateViewControllerWithIdentifier:@"EmiCalculatorScreen"];
-            UINavigationController *nav = [[UINavigationController alloc]init];
-            nav.viewControllers = @[evc];
-            [self.frostedViewController setContentViewController:nav];
-            [self.frostedViewController hideMenuViewController];
-        }
         
-        else if(indexPath.row == 3)
+        else if(indexPath.row == 2)
         {
             ProfileScreen *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileScreen"];
             UINavigationController *nav = [[UINavigationController alloc]init];
@@ -218,18 +272,16 @@
             [self.frostedViewController setContentViewController:nav];
             [self.frostedViewController hideMenuViewController];
         }
-        else if(indexPath.row == 4)
+        else if(indexPath.row == 3)
         {
-            [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
-            [Utilities setUserDefaultWithObject:nil andKey:@"auth_token"];
-            AppDelegate *appdelegate =  (AppDelegate *)[UIApplication sharedApplication].delegate;
-            LandingVC *vc = (LandingVC *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"LandingVC"] ;
-            UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];
-            navigationController.viewControllers = @[vc];
-            navigationController.navigationBar.hidden = YES;
-            appdelegate.window.rootViewController = navigationController;
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Stathfin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+            [ alert show];
+            [self.frostedViewController hideMenuViewController];
         }
     }
+    
+
+    
 }
 
 #pragma mark Button Action

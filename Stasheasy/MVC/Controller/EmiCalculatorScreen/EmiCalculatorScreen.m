@@ -282,12 +282,12 @@
     if (value == 0)
     {
         rate = 1;
-        _lblRate.text = [NSString stringWithFormat:@"%.0f",rate];
+        _lblRate.text = [NSString stringWithFormat:@"%.0f%%",rate];
     }
     else
     {
         rate = value;
-        _lblRate.text = [NSString stringWithFormat:@"%.0f",rate];
+        _lblRate.text = [NSString stringWithFormat:@"%.0f%%",rate];
     }
 //    [self calculateEMI];
 }
