@@ -10,12 +10,14 @@
 #import "ServerCall.h"
 #import "LoanCell.h"
 #import "Utilities.h"
+#import "LoanPayableCell.h"
 #import <LGPlusButtonsView/LGPlusButtonsView.h>
+
 @interface ConsolidatedEMIVC ()<UITableViewDelegate,UITableViewDataSource,LGPlusButtonsViewDelegate,UIAlertViewDelegate>
 {
     LGPlusButtonsView *stashfinButton;
     NSMutableArray *marrLoans;
-    NSDictionary *dictTotal;
+    NSDictionary *dictResponse;
     BOOL isStashExpand;
 
 }
@@ -84,57 +86,84 @@
 #pragma mark Tableview Delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [marrLoans count];
+    return [marrLoans count] ;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _tblLoans.separatorColor = [UIColor clearColor];
     
-    LoanCell *loanCell = [tableView dequeueReusableCellWithIdentifier:@"LoanCell"];
+    if ( indexPath.row < [marrLoans count] )
+    {
+        LoanCell *loanCell = [tableView dequeueReusableCellWithIdentifier:@"LoanCell"];
+        
+        NSDictionary *dict = [marrLoans objectAtIndex:indexPath.row];
+        
+        [[dict valueForKey:@"approved_rate"] intValue];
+        [dict valueForKey:@""];
+        
+        NSString *strLoanAmount = [NSString stringWithFormat:@"Loan%ld:₹%d",indexPath.row+1 ,[[dict valueForKey:@"approved_amount"] intValue]];
+        
+        NSString *strRate = [NSString stringWithFormat:@" @%d%@",[[dict valueForKey:@"approved_rate"] intValue],@"%PM"];
+        
+        NSString *strTenure = [NSString stringWithFormat:@" For %d Months",[[dict valueForKey:@"approved_tenure"] intValue]];
+        
+        
+        NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@",strLoanAmount,strRate,strTenure]];
+        [attString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0, [strLoanAmount length])];
+        [attString addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange([strLoanAmount length], [strRate length])];
+        [attString addAttribute:NSForegroundColorAttributeName value:[UIColor purpleColor] range:NSMakeRange([strRate length], [strTenure length])];
+        
+        loanCell.lblLoanDetail.attributedText = attString;
+        
+        loanCell.lblStartDate.text = [NSString stringWithFormat:@"Start Date : %@",[Utilities formateDateToDMY:[dict valueForKey:@"emi_start_date"]]];
+        
+        loanCell.lblEndDate.text = [NSString stringWithFormat:@"End date : %@",[Utilities formateDateToDMY:[dict valueForKey:@"emi_end_date"]]];
+        
+        NSString *strEMI = [[[dict valueForKey:@"emis"] firstObject] valueForKey:@"amount"];
+        
+        loanCell.lblEMI.text = [NSString stringWithFormat:@"EMI ₹%@",strEMI];
+        
+        [Utilities setBorderAndColor:loanCell.viewConatiner];
+        [Utilities setCornerRadius:loanCell.viewConatiner];
+        
+        //    loanCell.viewConatiner.layer.borderColor = [ UIColor lightGrayColor ].CGColor;
+        //    loanCell.viewConatiner.layer.borderWidth = 0.5;
+        //    loanCell.viewConatiner.layer.cornerRadius = 8.0;
+        //    loanCell.viewConatiner.layer.masksToBounds = NO;
+        //    loanCell.viewConatiner.layer.shadowColor = [ UIColor lightGrayColor ].CGColor;
+        //    loanCell.viewConatiner.layer.shadowRadius = 5.0;
+        //    loanCell.viewConatiner.layer.shadowOffset = CGSizeMake(2, 2);
+        //    loanCell.viewConatiner.layer.shadowOpacity = 1;
+        //    loanCell.viewConatiner.layer.shadowRadius = 0.5;
+        
+        return loanCell;
+    }
+    else
+    {
+        LoanPayableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoanPayableCell"];
+        
+        cell.lblFirst.text = [NSString stringWithFormat:@"EMI ₹%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"first"] valueForKey:@"amount"]];
+        cell.lblFirstDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"first"] valueForKey:@"date"]]];
+        
+        cell.lblSecond.text = [NSString stringWithFormat:@"EMI ₹%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"second"] valueForKey:@"amount"]];
+        cell.lblSecondDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"second"] valueForKey:@"date"]]];
+        
+        cell.lblThird.text = [NSString stringWithFormat:@"EMI ₹%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"third"] valueForKey:@"amount"]];
+        cell.lblThirdDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"third"] valueForKey:@"date"]]];
+        
+        cell.lblFourth.text = [NSString stringWithFormat:@"EMI ₹%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"fourth"] valueForKey:@"amount"]];
+        cell.lblFourthDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"fourth"] valueForKey:@"date"]]];
+        
+        cell.lblFifth.text = [NSString stringWithFormat:@"EMI ₹%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"fifth"] valueForKey:@"amount"]];
+        cell.lblFifthDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"fifth"] valueForKey:@"date"]]];
+        
+        cell.lblSixth.text = [NSString stringWithFormat:@"EMI ₹%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"sixth"] valueForKey:@"amount"]];
+        cell.lblSixthDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"sixth"] valueForKey:@"date"]]];
 
-    NSDictionary *dict = [marrLoans objectAtIndex:indexPath.row];
+        return cell;
+    }
     
-    [[dict valueForKey:@"approved_rate"] intValue];
-    [dict valueForKey:@""];
-    
-    NSString *strLoanAmount = [NSString stringWithFormat:@"Loan%ld:₹%d",indexPath.row+1 ,[[dict valueForKey:@"approved_amount"] intValue]];
-  
-    NSString *strRate = [NSString stringWithFormat:@" @%d%@",[[dict valueForKey:@"approved_rate"] intValue],@"%PM"];
-    
-    NSString *strTenure = [NSString stringWithFormat:@" For %d Months",[[dict valueForKey:@"approved_tenure"] intValue]];
-    
-    
-    NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@",strLoanAmount,strRate,strTenure]];
-    [attString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0, [strLoanAmount length])];
-    [attString addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange([strLoanAmount length], [strRate length])];
-    [attString addAttribute:NSForegroundColorAttributeName value:[UIColor purpleColor] range:NSMakeRange([strRate length], [strTenure length])];
-    
-    loanCell.lblLoanDetail.attributedText = attString;
-    
-    loanCell.lblStartDate.text = [NSString stringWithFormat:@"Start Date : %@",[Utilities formateDateToDMY:[dict valueForKey:@"emi_start_date"]]];
-
-    loanCell.lblEndDate.text = [NSString stringWithFormat:@"End date : %@",[Utilities formateDateToDMY:[dict valueForKey:@"emi_end_date"]]];
-    
-    NSString *strEMI = [[[dict valueForKey:@"emis"] firstObject] valueForKey:@"amount"];
-    
-    loanCell.lblEMI.text = [NSString stringWithFormat:@"EMI ₹%@",strEMI];
-    
-    [Utilities setBorderAndColor:loanCell.viewConatiner];
-    [Utilities setCornerRadius:loanCell.viewConatiner];
-    
-//    loanCell.viewConatiner.layer.borderColor = [ UIColor lightGrayColor ].CGColor;
-//    loanCell.viewConatiner.layer.borderWidth = 0.5;
-//    loanCell.viewConatiner.layer.cornerRadius = 8.0;
-//    loanCell.viewConatiner.layer.masksToBounds = NO;
-//    loanCell.viewConatiner.layer.shadowColor = [ UIColor lightGrayColor ].CGColor;
-//    loanCell.viewConatiner.layer.shadowRadius = 5.0;
-//    loanCell.viewConatiner.layer.shadowOffset = CGSizeMake(2, 2);
-//    loanCell.viewConatiner.layer.shadowOpacity = 1;
-//    loanCell.viewConatiner.layer.shadowRadius = 0.5;
-
-    
-    return loanCell;
 }
 #pragma mark Server Call
 - (void)serverCallForConsolidatedEMIDetails
@@ -162,6 +191,7 @@
         }
         else
         {
+            dictResponse = response;
             [Utilities showAlertWithMessage:response];
         }
         
@@ -171,7 +201,6 @@
 - (void)populateEMIDetails:(id)response
 {
     marrLoans = [response valueForKey:@"loans"];
-    dictTotal = [response valueForKey:@"total"];
     
     _lblFirst.text = [NSString stringWithFormat:@"EMI ₹%@",[[[response valueForKey:@"total"] valueForKey:@"first"] valueForKey:@"amount"]];
     _lblFirstDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[response valueForKey:@"total"] valueForKey:@"first"] valueForKey:@"date"]]];

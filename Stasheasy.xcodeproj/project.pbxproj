@@ -108,6 +108,7 @@
 		E2625E711F752F3800AA74C0 /* JMMarkSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E2625E701F752F3800AA74C0 /* JMMarkSlider.m */; };
 		E276F1B51F7A33A10005A199 /* DocumentUploadVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E276F1B41F7A33A10005A199 /* DocumentUploadVC.m */; };
 		E2847C671F3C952000C5D3A3 /* StatusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2847C661F3C952000C5D3A3 /* StatusVC.m */; };
+		E29D8FD51F8CF0C000472C25 /* RequestCardVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E29D8FD41F8CF0C000472C25 /* RequestCardVC.m */; };
 		E2A781121F2B1D9400C151CC /* RadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A781111F2B1D9400C151CC /* RadioButton.m */; };
 		E2A781161F2B496500C151CC /* LOCWithdrawalVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A781151F2B496500C151CC /* LOCWithdrawalVC.m */; };
 		E2C60FB21F27398F00DCA206 /* LeftScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C60FAE1F27398F00DCA206 /* LeftScreen.m */; };
@@ -121,6 +122,7 @@
 		E2D2CCCE1F26172200E98F2E /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2D2CCCC1F26172200E98F2E /* iPhone.storyboard */; };
 		E2D2CCD21F2617BF00E98F2E /* LandingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2D2CCD11F2617BF00E98F2E /* LandingVC.m */; };
 		E2D2CCD61F2639BE00E98F2E /* LineCreditVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2D2CCD51F2639BE00E98F2E /* LineCreditVC.m */; };
+		E2E903301F8D0DF600898E25 /* LoanPayableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E2E9032F1F8D0DF600898E25 /* LoanPayableCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -344,6 +346,8 @@
 		E276F1B41F7A33A10005A199 /* DocumentUploadVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentUploadVC.m; sourceTree = "<group>"; };
 		E2847C651F3C952000C5D3A3 /* StatusVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusVC.h; sourceTree = "<group>"; };
 		E2847C661F3C952000C5D3A3 /* StatusVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusVC.m; sourceTree = "<group>"; };
+		E29D8FD31F8CF0C000472C25 /* RequestCardVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestCardVC.h; sourceTree = "<group>"; };
+		E29D8FD41F8CF0C000472C25 /* RequestCardVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestCardVC.m; sourceTree = "<group>"; };
 		E2A781101F2B1D9400C151CC /* RadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadioButton.h; sourceTree = "<group>"; };
 		E2A781111F2B1D9400C151CC /* RadioButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioButton.m; sourceTree = "<group>"; };
 		E2A781141F2B496500C151CC /* LOCWithdrawalVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOCWithdrawalVC.h; sourceTree = "<group>"; };
@@ -370,6 +374,8 @@
 		E2D2CCD11F2617BF00E98F2E /* LandingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandingVC.m; sourceTree = "<group>"; };
 		E2D2CCD41F2639BE00E98F2E /* LineCreditVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineCreditVC.h; sourceTree = "<group>"; };
 		E2D2CCD51F2639BE00E98F2E /* LineCreditVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineCreditVC.m; sourceTree = "<group>"; };
+		E2E9032E1F8D0DF600898E25 /* LoanPayableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoanPayableCell.h; sourceTree = "<group>"; };
+		E2E9032F1F8D0DF600898E25 /* LoanPayableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoanPayableCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -549,6 +555,7 @@
 		781D1E411EE0885E00D82E86 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E29D8FD21F8CF0B200472C25 /* RequestCardVC */,
 				E276F1B21F7A33890005A199 /* DocumentUploadVC */,
 				E2847C641F3C950D00C5D3A3 /* StatusVC */,
 				E20FDE941F3B302E001A438E /* RejectedVC */,
@@ -1178,8 +1185,19 @@
 		E287008A1F8BB0EC008A67A6 /* LoanPayableCell */ = {
 			isa = PBXGroup;
 			children = (
+				E2E9032E1F8D0DF600898E25 /* LoanPayableCell.h */,
+				E2E9032F1F8D0DF600898E25 /* LoanPayableCell.m */,
 			);
 			path = LoanPayableCell;
+			sourceTree = "<group>";
+		};
+		E29D8FD21F8CF0B200472C25 /* RequestCardVC */ = {
+			isa = PBXGroup;
+			children = (
+				E29D8FD31F8CF0C000472C25 /* RequestCardVC.h */,
+				E29D8FD41F8CF0C000472C25 /* RequestCardVC.m */,
+			);
+			path = RequestCardVC;
 			sourceTree = "<group>";
 		};
 		E2A7810F1F2B1D9400C151CC /* RadioButton */ = {
@@ -1501,6 +1519,7 @@
 				7805509B1F0ACC8800A1B34F /* IQBarButtonItem.m in Sources */,
 				BB24631B1F0F5DA600E888CD /* ProfessionalEducation.m in Sources */,
 				E2D01F971F3495B900296A84 /* VBPiePiece.m in Sources */,
+				E29D8FD51F8CF0C000472C25 /* RequestCardVC.m in Sources */,
 				78D1D4211EE7B7F700E22864 /* TransactionScreen.m in Sources */,
 				781D1E621EE09FD900D82E86 /* DoubleTableViewCell.m in Sources */,
 				BBA1A7EE1EF8FD5400B1406A /* TransactionList.m in Sources */,
@@ -1512,6 +1531,7 @@
 				BB583A8B1EEA6EE5000B73AA /* MBProgressHUD.m in Sources */,
 				BB9821A71F0B93DF00D70EF8 /* Pickers.m in Sources */,
 				E2D2CCD21F2617BF00E98F2E /* LandingVC.m in Sources */,
+				E2E903301F8D0DF600898E25 /* LoanPayableCell.m in Sources */,
 				E2D2CCC21F26132300E98F2E /* ServerCall.m in Sources */,
 				7805506C1F0ACA0B00A1B34F /* City.m in Sources */,
 				789B720F1EF6807C00AD3887 /* EmiCalculatorScreen.m in Sources */,

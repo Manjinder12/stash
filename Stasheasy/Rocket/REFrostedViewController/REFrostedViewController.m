@@ -122,7 +122,8 @@
     [_contentViewController removeFromParentViewController];
     [_contentViewController.view removeFromSuperview];
     
-    if (contentViewController) {
+    if (contentViewController)
+    {
         [self addChildViewController:contentViewController];
         contentViewController.view.frame = self.containerViewController.view.frame;
         [self.view insertSubview:contentViewController.view atIndex:0];

@@ -27,7 +27,7 @@
     NSMutableDictionary *param;
     REFrostedViewController *refrostedVC;
     NSDictionary *dictLoginResponse;
-    BOOL isGenerateOTPView, isLoginWithOTP;
+    BOOL isLoginWithOTP, isVerifyOtpGenerated;
     NSString *strMobileOTP;
 }
 
@@ -45,15 +45,23 @@
 
 
 @property (weak, nonatomic) IBOutlet UITextField *txtMobile;
+@property (weak, nonatomic) IBOutlet UITextField *txtVerifyOTP;
+
+@property (weak, nonatomic) IBOutlet UILabel *lblMobileNo;
+
 
 @property (weak, nonatomic) IBOutlet UIView *viewForgotPopUp;
 @property (weak, nonatomic) IBOutlet UIView *viewOTPLogin;
 @property (weak, nonatomic) IBOutlet UIView *viewEmailLogin;
+@property (weak, nonatomic) IBOutlet UIView *viewMobileOTP;
+@property (weak, nonatomic) IBOutlet UIView *viewOtpVerify;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnSendOTP;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cnsMobileOtpHeight;
-@property (weak, nonatomic) IBOutlet UIView *viewMobileOTP;
+@property (weak, nonatomic) IBOutlet UIButton *btnVerify;
+@property (weak, nonatomic) IBOutlet UIButton *btnResend;
 @property (weak, nonatomic) IBOutlet UIButton *btnGenerateOTP;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cnsMobileOtpHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *cnsForgotInnerViewHeight;
 
 @end
@@ -80,12 +88,13 @@
     _viewForgotInner.hidden = YES;
     _viewMobileOTP.hidden = YES;
     _viewOTPLogin.hidden = YES;
-    
+    _viewOtpVerify.hidden = YES;
     _lblAlert.hidden = YES;
 
+    isVerifyOtpGenerated = NO;
+    
     _cnsMobileOtpHeight.constant = 0;
     
-    isGenerateOTPView = NO;
     
     [ Utilities setBorderAndColor:_btnSendOTP ];
     [ Utilities setBorderAndColor:_btnChangePassword ];
@@ -179,7 +188,7 @@
     else
     {
         [ _txtMobile resignFirstResponder ];
-        [ self serverCallToGenerateOTP ];
+        [ self serverCallToGenerateOTPForLogin ];
       
         /*if ( ! isGenerateOTPView )
         {
@@ -190,8 +199,6 @@
             _cnsMobileOtpHeight.constant = 26;
         }*/
     }
-    
-
 }
 - (IBAction)emailLoginAction:(id)sender
 {
@@ -205,7 +212,14 @@
     _viewForgotPopUp.hidden = NO;
     [ self showPopupView:_viewForgotPopUp onViewController:self ];
 }
-
+- (IBAction)verifyAction:(id)sender
+{
+    [ self serverCallToSubmitOTPForVerification ];
+}
+- (IBAction)resendVerifyOtpAction:(id)sender
+{
+    [ self serverCallToGenerateOTPForLogin ];
+}
 -(BOOL)performValidation
 {
     if ( !isLoginWithOTP )
@@ -269,7 +283,6 @@
             }
             else
             {
-//                [ self populateLoginResponse:response ];
                 dictLoginResponse = response;
                 [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
 
@@ -278,18 +291,22 @@
                     [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
                     [ self serverCallForCardOverview ];
                 }
+                else if ( [response[@"landing_page"] isEqualToString:@"otp_verification"] )
+                {
+                    isVerifyOtpGenerated = YES;
+                    _lblMobileNo.text = [ NSString stringWithFormat:@"%@",dictLoginResponse[@"phone"]];
+                    [ self serverCallToGenerateOTPToVerifyMobileNumber ];
+                }
                 else
                 {
                     [Utilities setUserDefaultWithObject:dictLoginResponse[@"latest_loan_details"][@"loan_id"] andKey:@"loan_id"];
                     [self navigateAccordingLandingPageStatus:dictLoginResponse];
                 }
-                
             }
         }
         else
         {
             [Utilities showAlertWithMessage:response];
-            
         }
     }];
 }
@@ -354,7 +371,7 @@
          [ SVProgressHUD dismiss ];
      }];
 }
-- (void)serverCallToGenerateOTP
+- (void)serverCallToGenerateOTPForLogin
 {
     NSMutableDictionary *dictParam = [ NSMutableDictionary dictionary ];
     [ dictParam setObject:@"generateOTPForLogin" forKey:@"mode" ];
@@ -379,8 +396,7 @@
                  [Utilities showAlertWithMessage:response[@"msg"]];
                  strMobileOTP = [ NSString stringWithFormat:@"%d", [response[@"otp"] intValue]];
                  [ _btnGenerateOTP setTitle:@"RESEND OTP" forState:UIControlStateNormal];
-                
-                 isGenerateOTPView = YES;
+                 isVerifyOtpGenerated = NO;
                  _viewMobileOTP.hidden = NO;
                  _cnsMobileOtpHeight.constant = 26;
             }
@@ -392,9 +408,38 @@
      }];
 
 }
-- (void)serverCallToSubmitOTP
+- (void)serverCallToGenerateOTPToVerifyMobileNumber
 {
-    NSDictionary *dictParam = [ NSDictionary dictionaryWithObjectsAndKeys:@"mode",@"submitOtp",_txtMobile.text,@"number", nil];
+    NSMutableDictionary *dictParam = [ NSMutableDictionary dictionary ];
+    [ dictParam setObject:@"generateOtp" forKey:@"mode" ];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@" generateOtp response === %@", response);
+         
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                [ self showPopupView:_viewOtpVerify onViewController:self ];
+                 
+                 _lblMobileNo.text = @"";
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     }];
+}
+- (void)serverCallToSubmitOTPForVerification
+{
+    NSDictionary *dictParam = [ NSDictionary dictionaryWithObjectsAndKeys:@"mode",@"submitOtp",_txtVerifyOTP.text,@"otp", nil];
     
     [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
      {
@@ -409,7 +454,7 @@
              }
              else
              {
-                 
+                 [Utilities setUserDefaultWithObject:@"1" andKey:@"isOtpVerify"];
              }
          }
          else
@@ -627,11 +672,20 @@
 }
 - (void)tappedOnOverlay:(UIGestureRecognizer *)gesture
 {
-    [self hidePopupView:_viewForgotPopUp fromViewController:self];
-    _viewForgotInner.hidden = YES;
-    _cnsForgotViewHeight.constant = 143;
-    _cnsForgotInnerViewHeight.constant = 0;
-    [_btnSendOTP setTitle:@"SEND OTP" forState:UIControlStateNormal];
+    if ( !isVerifyOtpGenerated )
+    {
+        [self hidePopupView:_viewForgotPopUp fromViewController:self];
+        _viewForgotInner.hidden = YES;
+        _cnsForgotViewHeight.constant = 143;
+        _cnsForgotInnerViewHeight.constant = 0;
+        _txtMobile.text = @"";
+        [_btnSendOTP setTitle:@"SEND OTP" forState:UIControlStateNormal];
+    }
+    else
+    {
+        isVerifyOtpGenerated = NO;
+        [ self hidePopupView:_viewOtpVerify fromViewController:self ];
+    }
 
 }
 - (void)hidePopupView:(UIView *)popupView fromViewController:(UIViewController *)viewcontroller

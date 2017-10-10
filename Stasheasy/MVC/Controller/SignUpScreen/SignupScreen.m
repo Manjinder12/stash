@@ -49,11 +49,10 @@
     UIImagePickerController *imagePicker;
     UIButton *btnUpload;
     NSString *strDocID, *strDocName;
-    BOOL isDocUpload;
+    BOOL isDocUpload, isOtpGenerate;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *txtOTP;
-
 
 @property (weak, nonatomic) IBOutlet UIButton *btnFirst;
 @property (weak, nonatomic) IBOutlet UIButton *btnSecond;
@@ -105,9 +104,15 @@
     basicInfoDic = [NSMutableDictionary dictionary];
     
     isDocUpload = NO;
+    isOtpGenerate = NO;
+    
+    _signupTableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    _signupTableview.separatorStyle = UITableViewCellSelectionStyleNone;
     
     [self setupView];
 
+//    [ self checkIsOtpVerified:[[Utilities getUserDefaultValueFromKey:@"isOtpVerify"] intValue]];
+    
     if (signupStep > 1)
     {
         [self setSignUpStepView];
@@ -117,6 +122,7 @@
     
 
 }
+
 #pragma mark UIImagePickerController delegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
@@ -267,7 +273,7 @@
 }
 - (IBAction)resendOtpAction:(id)sender
 {
-    
+    [ self serverCallToGenerateOTP ];
 }
 - (IBAction)nextAction:(id)sender
 {
@@ -1129,7 +1135,7 @@
         }
         else
         {
-            [ textField becomeFirstResponder ];
+//            [ textField becomeFirstResponder ];
         }
 
     }
@@ -1442,6 +1448,13 @@
 }
 
 #pragma mark Helper Method
+- (void)checkIsOtpVerified:(int)value
+{
+    if ( value == 0 )
+    {
+        [ self serverCallToGenerateOTP ];
+    }
+}
 - (void)showPopupView:(UIView *)popupView onViewController:(UIViewController *)viewcontroller
 {
     UIView *overlayView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -1468,6 +1481,12 @@
 {
     [ self.view endEditing:YES ];
     [self hidePopupView:_viewOtpVerify fromViewController:self];
+    isOtpGenerate = NO;
+    
+    if ( [[Utilities getUserDefaultValueFromKey:@"isOtpVerify"] intValue] == 0 )
+    {
+        [ self.navigationController popViewControllerAnimated:YES ];
+    }
 }
 - (void)hidePopupView:(UIView *)popupView fromViewController:(UIViewController *)viewcontroller
 {
@@ -1605,6 +1624,7 @@
                  [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
                  [Utilities setUserDefaultWithObject:@"2" andKey:@"signupStep"];
                  [Utilities setUserDefaultWithObject:response andKey:@"userinfo"];
+                 [Utilities setUserDefaultWithObject:@"0" andKey:@"isOtpVerify"];
                  
                  [ self serverCallToGenerateOTP ];
              }
@@ -2081,7 +2101,12 @@
              }
              else
              {
-                 [ self showPopupView:_viewOtpVerify onViewController:self ];
+                 if ( !isOtpGenerate )
+                 {
+                     isOtpGenerate = YES;
+                     [ self showPopupView:_viewOtpVerify onViewController:self ];
+                 }
+                 
                  _lblMobileNo.text = [basicInfoModalObj valueForKey:@"phone"];
              }
          }
@@ -2111,6 +2136,7 @@
              else
              {
                  [ self hidePopupView:_viewOtpVerify fromViewController:self ];
+                 [Utilities setUserDefaultWithObject:@"1" andKey:@"isOtpVerify"];
                  [self changeStepColour:signupStep];
              }
          }

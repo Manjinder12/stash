@@ -22,6 +22,7 @@
 #import "ChatScreen.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "StatusVC.h"
+#import "RequestCardVC.h"
 
 @interface LeftScreen ()<UIAlertViewDelegate>
 {
@@ -208,9 +209,9 @@
                 [ self serverCallToRequestCard ];
                 [ self.frostedViewController hideMenuViewController];
                 
-                /*LineCreditVC *lineCreditVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
-                 UINavigationController *nav = [[UINavigationController alloc]init];
-                 nav.viewControllers = @[lineCreditVC];
+               /* RequestCardVC *requestCardVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RequestCardVC"];
+                 UINavigationController *nav = self.navigationController;
+                 nav.viewControllers = @[requestCardVC];
                  [self.frostedViewController setContentViewController:nav];
                  [self.frostedViewController hideMenuViewController];*/
                 

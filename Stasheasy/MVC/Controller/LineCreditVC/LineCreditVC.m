@@ -18,6 +18,7 @@
 #import "ChatScreen.h"
 #import "VBPieChart.h"
 #import "PNChart.h"
+#import "RequestCardVC.h"
 
 @interface LineCreditVC ()<LGPlusButtonsViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
 {
@@ -74,6 +75,7 @@
     
     appDelegate = [AppDelegate sharedDelegate];
     
+
     if (appDelegate.isCardFound == YES )
     {
         _viewCard.hidden = NO;
@@ -101,7 +103,6 @@
 }
 - (void)viewWillAppear:(BOOL)animated
 {
-    
 }
 
 #pragma mark Collectionview Delegate
@@ -110,8 +111,8 @@
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    CGFloat height = self.collectionImage.frame.size.height;
-    CGFloat width  = self.collectionImage.frame.size.width;
+    CGFloat height = collectionView.frame.size.height;
+    CGFloat width  = collectionView.frame.size.width;
     return CGSizeMake( width * 1.0, height * 1.0);
     
 }
@@ -132,7 +133,16 @@
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [ self serverCallToRequestCard ];
+    if ( [[Utilities getUserDefaultValueFromKey:@"cardRequested"] intValue] == 0 )
+    {
+        RequestCardVC *requestCardVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RequestCardVC"];
+        [ self.navigationController pushViewController:requestCardVC animated:YES ];
+    }
+    else
+    {
+        [ Utilities showAlertWithMessage:@"You Have Already requested for a Card" ];
+
+    }
 }
 #pragma mark LGPlusButtonsView
 - (void)addStashfinButtonView
@@ -181,6 +191,7 @@
     
     [self.view addSubview:stashfinButton];
 }
+
 #pragma mark LGPlusButtonsView Delegate
 - (void)plusButtonsViewDidHideButtons:(LGPlusButtonsView *)plusButtonsView
 {
@@ -257,6 +268,8 @@
 - (IBAction)menuAction:(id)sender
 {
     [self.view endEditing:YES];
+    
+    
     [self.frostedViewController.view endEditing:YES];
     [self.frostedViewController presentMenuViewController];
 }
