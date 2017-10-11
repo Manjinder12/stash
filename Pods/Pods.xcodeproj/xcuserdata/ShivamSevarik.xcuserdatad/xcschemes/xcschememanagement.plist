@@ -34,6 +34,11 @@
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
+		<key>PNChart.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>10</integer>
+		</dict>
 		<key>Pods-Stasheasy.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -49,9 +54,19 @@
 			<key>orderHint</key>
 			<integer>9</integer>
 		</dict>
+		<key>UICountingLabel.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>11</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>016D982990393D4CF14C8AE7998AEC65</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>14E6E2E2484806AB62B60CA2EAD41F9B</key>
 		<dict>
 			<key>primary</key>
@@ -62,7 +77,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>5EE8D776CE9DB1A3CB84BE0F19405682</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6212CB59450DF6F520BC2F9C043A4CAE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>6461FF73E606AC17ECB9C28944E4F30F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6C18C789438292FED01EB702705FC9AA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
