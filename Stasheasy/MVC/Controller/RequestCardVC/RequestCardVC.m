@@ -29,6 +29,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.navigationController.navigationBar.hidden = YES;
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    
     appDelegate = [ AppDelegate sharedDelegate ];
     arrImages = [[ NSArray alloc] initWithObjects:@"Card1",@"Card2",@"Card3",@"Card4",@"Card5", nil];
 
@@ -40,7 +44,7 @@
 }
 - (IBAction)cancelAction:(id)sender
 {
-    [ self.navigationController popViewControllerAnimated:YES ];
+    [ self.navigationController popToViewController:appDelegate.currentVC animated:YES ];
 }
 - (IBAction)proceedAction:(id)sender
 {

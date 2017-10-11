@@ -25,5 +25,6 @@
 @property NSString *strLandingPage;
 @property NSDictionary *dictLOCDetail, *dictCard, *dictOverview, *dictTransaction,*dictAnalyze, *dictCustomer;
 @property BOOL isCardFound, isPreApproved, isLoanDisbursed;
+@property UIViewController *currentVC;
 @end
 

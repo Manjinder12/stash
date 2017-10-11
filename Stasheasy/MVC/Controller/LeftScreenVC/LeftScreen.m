@@ -198,6 +198,7 @@
             if(indexPath.row == 0)
             {
                 LineCreditVC *lineCreditVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
+                appDelegate.currentVC = lineCreditVC;
                 UINavigationController *nav = [[UINavigationController alloc]init];
                 nav.viewControllers = @[lineCreditVC];
                 [self.frostedViewController setContentViewController:nav];
@@ -206,19 +207,23 @@
             }
             else if(indexPath.row == 1)
             {
-                [ self serverCallToRequestCard ];
-                [ self.frostedViewController hideMenuViewController];
-                
-               /* RequestCardVC *requestCardVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RequestCardVC"];
-                 UINavigationController *nav = self.navigationController;
-                 nav.viewControllers = @[requestCardVC];
-                 [self.frostedViewController setContentViewController:nav];
-                 [self.frostedViewController hideMenuViewController];*/
-                
+                if ( [[Utilities getUserDefaultValueFromKey:@"cardRequested"] intValue] == 0)
+                {
+                    RequestCardVC *requestCardVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RequestCardVC"];
+                    UINavigationController *nav =[[UINavigationController alloc]init];
+                    nav.viewControllers = @[appDelegate.currentVC, requestCardVC];
+                    [self.frostedViewController setContentViewController:nav];
+                }
+                else
+                {
+                    [self.frostedViewController hideMenuViewController];
+                    [ Utilities showAlertWithMessage:@"You Have Already requested for a Card" ];
+                }
             }
             else if (indexPath.row == 2)
             {
                 EmiCalculatorScreen *evc = [self.storyboard instantiateViewControllerWithIdentifier:@"EmiCalculatorScreen"];
+                appDelegate.currentVC = evc;
                 UINavigationController *nav = [[UINavigationController alloc]init];
                 nav.viewControllers = @[evc];
                 [self.frostedViewController setContentViewController:nav];
@@ -228,6 +233,7 @@
             else if(indexPath.row == 3)
             {
                 ProfileScreen *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileScreen"];
+                appDelegate.currentVC = pvc;
                 UINavigationController *nav = [[UINavigationController alloc]init];
                 nav.viewControllers = @[pvc];
                 [self.frostedViewController setContentViewController:nav];

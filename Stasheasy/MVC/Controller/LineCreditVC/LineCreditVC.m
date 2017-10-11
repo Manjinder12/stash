@@ -74,6 +74,7 @@
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     
     appDelegate = [AppDelegate sharedDelegate];
+    appDelegate.currentVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
     
 
     if (appDelegate.isCardFound == YES )
