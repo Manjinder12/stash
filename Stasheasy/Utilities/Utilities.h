@@ -130,4 +130,7 @@
 // Set shadow to view
 + (void)setShadowToView:(UIView *)view;
 
+// Check null string in STring
++ (NSString *)getStringFromResponse:(NSString *)str;
+
 @end

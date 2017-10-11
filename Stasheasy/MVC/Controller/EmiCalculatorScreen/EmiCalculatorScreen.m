@@ -34,6 +34,8 @@
 
 @property (weak, nonatomic) IBOutlet UIView *viewPieChart;
 
+
+@property (weak, nonatomic) IBOutlet VBPieChart *viewPie;
 @property (weak, nonatomic) IBOutlet JMMarkSlider *amountSlider;
 @property (weak, nonatomic) IBOutlet JMMarkSlider *tenureSlider;
 @property (weak, nonatomic) IBOutlet JMMarkSlider *rateSlider;
@@ -63,7 +65,7 @@
     
     _lblAmount.text = [NSString stringWithFormat:@"₹%.0f",principal];
     _lblTenure.text = [NSString stringWithFormat:@"%.0f Months",installmentsNo];
-    _lblRate.text = [NSString stringWithFormat:@"%.0f",rate];
+    _lblRate.text = [NSString stringWithFormat:@"%.0f%%",rate];
 
     [ self setAllSlider ];
     
@@ -97,7 +99,7 @@
 }
 - (void)setUpPieChart
 {
-    int loan = ( emiAmount * 100 ) / totalPayable;
+    /*int loan = ( emiAmount * 100 ) / totalPayable;
     int intPayable = ( interest * 100 ) / totalPayable;
     
     NSArray *items = @[
@@ -107,23 +109,23 @@
     
     
     pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(0, 0, 58, 58) items:items];
-    [self.viewPieChart addSubview:pieChart];
+    [self.viewPieChart addSubview:pieChart];*/
 
     
     
     
-//    usedValue = (usedLOC * 100) / approvedLOC;
-//    remainValue = (remainingLOC * 100 ) / approvedLOC;
+    int loan = ( emiAmount * 100 ) / totalPayable;
+    int intPayable = ( interest * 100 ) / totalPayable;
     
-//    _viewPieChart.startAngle = M_PI+M_PI_2;
-//    [_viewPieChart setHoleRadiusPrecent:0.5];
-//    
-//    NSArray *chartValues = @[
-//                             @{@"name":@"Apple", @"value":[NSNumber numberWithInt:loan], @"color":[UIColor redColor], @"strokeColor":[UIColor whiteColor]},
-//                             @{@"name":@"Orange", @"value":[NSNumber numberWithInt:intPayable], @"color":[UIColor greenColor], @"strokeColor":[UIColor whiteColor]}
-//                             ];
-//    
-//    [_viewPieChart setChartValues:chartValues animation:YES duration:2 options:VBPieChartAnimationDefault];
+    _viewPie.startAngle = M_PI+M_PI_2;
+    [ _viewPie setHoleRadiusPrecent:0.5];
+    
+    NSArray *chartValues = @[
+                             @{@"name":@"Apple", @"value":[NSNumber numberWithInt:loan], @"color":[UIColor redColor], @"strokeColor":[UIColor whiteColor]},
+                             @{@"name":@"Orange", @"value":[NSNumber numberWithInt:intPayable], @"color":[UIColor greenColor], @"strokeColor":[UIColor whiteColor]}
+                             ];
+    
+    [_viewPie setChartValues:chartValues animation:YES duration:0.4 options:VBPieChartAnimationDefault];
 }
 - (void)didReceiveMemoryWarning
 {

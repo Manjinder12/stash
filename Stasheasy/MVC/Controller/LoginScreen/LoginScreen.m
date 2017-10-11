@@ -20,7 +20,7 @@
 #import "LandingVC.h"
 #import "SignupScreen.h"
 
-@interface LoginScreen ()
+@interface LoginScreen ()<UITextFieldDelegate>
 {
     AppDelegate *appDelegate;
     UserServices *service;
@@ -114,7 +114,23 @@
 {
     [self.view endEditing:YES];
 }
+#pragma mark Textfield Delegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if ( (_txtMobile.text.length >= 10 || _txtForgotMobile.text.length >= 10) && range.length == 0 )
+    {
+        return NO;
+    }
+    else if ( (_txtMobileOTP.text.length >= 4 || _txtForgotOTP.text.length >= 4 || _txtVerifyOTP.text.length >= 4 ) && range.length == 0 )
+    {
+        return NO;
+    }
 
+    else
+    {
+        return YES;
+    }
+}
 #pragma mark Button Action
 - (IBAction)loginAction:(id)sender
 {

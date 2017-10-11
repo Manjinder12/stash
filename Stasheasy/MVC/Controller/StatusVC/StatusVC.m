@@ -55,6 +55,9 @@
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
    
     appDelegate = [ AppDelegate sharedDelegate ];
+    appDelegate.currentVC = [self.storyboard instantiateViewControllerWithIdentifier:@"StatusVC"];;
+
+    
     [self setAllImages];
     
     dictLoan = appDelegate.dictCustomer[@"latest_loan_details"];

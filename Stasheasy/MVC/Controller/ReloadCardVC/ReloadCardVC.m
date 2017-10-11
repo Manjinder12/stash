@@ -363,18 +363,13 @@
              NSString *errorStr = [response objectForKey:@"error"];
              if ( errorStr.length > 0 )
              {
-                 _viewContainer.hidden = NO;
+                 _viewContainer.hidden = YES;
                  [Utilities showAlertWithMessage:errorStr];
              }
              else
              {
                  [self populateWithrawalRequestForm:response];
                 
-                 if ([response valueForKey:@"false"])
-                 {
-                     [Utilities showAlertWithMessage:@""];
-                     _btnRequestReload.userInteractionEnabled = NO;
-                 }
              }
          }
          else
@@ -455,7 +450,7 @@
     
     [ self calculateEMI ];
     
-    _viewContainer.hidden = YES;
+    _viewContainer.hidden = NO;
     
 }
 - (void)navigateToLOCWithdrawalVC:(NSDictionary *)response

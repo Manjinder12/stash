@@ -64,7 +64,8 @@
         appdelegate.residencePin = self.pintextField.text;
         
         NSArray *vcArr = [self.navigationController viewControllers];
-        for (UIViewController *controller in vcArr) {
+        for (UIViewController *controller in vcArr)
+        {
             if ([controller isKindOfClass:[SignupScreen  class]]) {
                 [self.navigationController popToViewController:controller animated:YES];
             }

@@ -51,7 +51,7 @@
     
     self.navigationController.navigationBarHidden = NO;
     
-    if ( [appDelegate.dictCustomer [@"landing_page"] isEqualToString:@"profile"] )
+    if ( [appDelegate.dictCustomer [@"landing_page"] isEqualToString:@"profile"] && [appDelegate.dictCustomer [@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] )
     {
         if ( appDelegate.isCardFound == YES )
         {
@@ -119,7 +119,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    if ( [appDelegate.dictCustomer [@"landing_page"] isEqualToString:@"profile"] )
+    if ( [appDelegate.dictCustomer [@"landing_page"] isEqualToString:@"profile"] && [appDelegate.dictCustomer [@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] )
     {
         if ( appDelegate.isCardFound == YES )
         {
@@ -213,6 +213,7 @@
                     UINavigationController *nav =[[UINavigationController alloc]init];
                     nav.viewControllers = @[appDelegate.currentVC, requestCardVC];
                     [self.frostedViewController setContentViewController:nav];
+                    [self.frostedViewController hideMenuViewController];
                 }
                 else
                 {
@@ -260,20 +261,25 @@
         }
         else if(indexPath.row == 1)
         {
-            [ self serverCallToRequestCard ];
-            [ self.frostedViewController hideMenuViewController];
-            
-            /*LineCreditVC *lineCreditVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
-             UINavigationController *nav = [[UINavigationController alloc]init];
-             nav.viewControllers = @[lineCreditVC];
-             [self.frostedViewController setContentViewController:nav];
-             [self.frostedViewController hideMenuViewController];*/
-            
+            if ( [[Utilities getUserDefaultValueFromKey:@"cardRequested"] intValue] == 0)
+            {
+                RequestCardVC *requestCardVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RequestCardVC"];
+                UINavigationController *nav =[[UINavigationController alloc]init];
+                nav.viewControllers = @[appDelegate.currentVC, requestCardVC];
+                [self.frostedViewController setContentViewController:nav];
+                [self.frostedViewController hideMenuViewController];
+            }
+            else
+            {
+                [self.frostedViewController hideMenuViewController];
+                [ Utilities showAlertWithMessage:@"You Have Already requested for a Card" ];
+            }
         }
         
         else if(indexPath.row == 2)
         {
             ProfileScreen *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"ProfileScreen"];
+            appDelegate.currentVC = pvc;
             UINavigationController *nav = [[UINavigationController alloc]init];
             nav.viewControllers = @[pvc];
             [self.frostedViewController setContentViewController:nav];

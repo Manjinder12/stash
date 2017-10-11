@@ -475,4 +475,16 @@
     view.layer.masksToBounds = NO;
     view.layer.shadowColor = [UIColor lightGrayColor].CGColor;
 }
++ (NSString *)getStringFromResponse:(NSString *)str
+{
+    if ( [str isEqualToString:@""] || [ str isKindOfClass:[NSNull class]] || [str isEqual:NULL] || [str isEqualToString:@"null"] )
+    {
+        return @"Not Available";
+    }
+    else
+    {
+        return str;
+    }
+        
+}
 @end

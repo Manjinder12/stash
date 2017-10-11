@@ -59,7 +59,7 @@
     marrIDProof = [ NSMutableArray new ];
     marrDocs = [ NSMutableArray new ];
     marrOther = [ NSMutableArray new ];
-    marrDocTitle = [[ NSMutableArray alloc ] initWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip1",@"Salary Slip2",@"Salary Slip3",@"Office ID", nil];
+    marrDocTitle = [[ NSMutableArray alloc ] initWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip1",@"Salary Slip2",@"Salary Slip3",@"Office ID",nil];
     
     imagePicker = [[UIImagePickerController alloc] init];
     
@@ -98,9 +98,34 @@
 }
 - (IBAction)okAction:(id)sender
 {
+    selectedIndex = 0;
+    NSDictionary *dict;
+    
+    if ( isIdProof )
+    {
+        dict = [marrIDProof objectAtIndex:selectedIndex];
+        strDocID = [NSString stringWithFormat:@"%d",[dict[@"id"] intValue]];
+        strDocName = @"id_proof";
+    }
+    else if( isAddreesProof )
+    {
+        dict = [marrAddress objectAtIndex:selectedIndex];
+        strDocID = [NSString stringWithFormat:@"%d",[dict[@"id"] intValue]];
+        strDocName = @"address_proof";
+
+    }
+    else
+    {
+        strDocID = @"";
+        strDocName = @"";
+    }
+    
+    
     if ( !isOtherDoc )
     {
         [ Utilities hidePopupView:_viewPopUp fromViewController:self ];
+        UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
+        [imagePop showInView:self.view];
     }
     else
     {
@@ -111,18 +136,21 @@
         else
         {
             [ Utilities hidePopupView:_viewOtherPopUp fromViewController:self ];
+            [ self.view endEditing:YES ];
+            
+            strDocName = _txtOther.text;
+            
+            UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
+            [imagePop showInView:self.view];
+
         }
     }
-    
-    [ self.view endEditing:YES ];
-    
-    UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
-    [imagePop showInView:self.view];
 }
 - (IBAction)cancelAction:(id)sender
 {
     [ self.view endEditing:YES ];
-    
+    selectedIndex = 0;
+
     if ( !isOtherDoc )
     {
         [ Utilities hidePopupView:_viewPopUp fromViewController:self ];
@@ -169,8 +197,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         NSString *path = [ marrDocs objectAtIndex:indexPath.row ];
-        
-        if ( path.length > 0 )
+        if ( path.length > 0 || ![ path isEqualToString:@""])
         {
             [cell.checkBtn setBackgroundImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
             cell.uploadLbl.textColor = [UIColor redColor];
@@ -178,7 +205,10 @@
         }
         else
         {
-            NSLog(@"path ===== %@ and length %lu", path,(unsigned long)path.length);
+            [cell.checkBtn setBackgroundImage:[UIImage imageNamed:@"checkoff"] forState:UIControlStateNormal];
+            cell.uploadLbl.textColor = [UIColor lightGrayColor];
+            [cell.uploadBtn setBackgroundImage:[UIImage imageNamed:@"upload"] forState:UIControlStateNormal];
+
         }
         
         cell.uploadBtn.tag = indexPath.row;
@@ -231,33 +261,12 @@
 {
     if ( tableView == _tblDocument )
     {
-        UploadCell *cell = [ tableView cellForRowAtIndexPath:indexPath ];
-        if ( cell.uploadLbl.textColor != [UIColor redColor])
-        {
-            
-        }
+        selectedIndex = indexPath.row;
     }
     else
     {
-        NSDictionary *dict;
         selectedIndex = indexPath.row;
-        
-        if ( isIdProof )
-        {
-            dict = [marrIDProof objectAtIndex:indexPath.row];
-            strDocID = [NSString stringWithFormat:@"%d",[dict[@"id"] intValue]];
-        }
-        else if( isAddreesProof )
-        {
-            dict = [marrAddress objectAtIndex:indexPath.row];
-            strDocID = [NSString stringWithFormat:@"%d",[dict[@"id"] intValue]];
-        }
-        else
-        {
-            strDocID = @"";
-        }
         [ _tblOptions reloadData ];
-
     }
 }
 #pragma mark Helper Method
@@ -291,7 +300,6 @@
 {
     btnTag = btn.tag;
     NSString *path = [ marrDocs objectAtIndex:btn.tag ];
-    strDocName = [ marrDocTitle objectAtIndex:btn.tag ];
     
     if ( [path isEqualToString:@""] )
     {
@@ -335,6 +343,8 @@
             isAddreesProof = NO;
             isOtherDoc = NO;
 
+            strDocName = @"";
+            strDocID = @"";
             UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
             [imagePop showInView:self.view];
         }
@@ -390,62 +400,32 @@
     marrIDProof = response[@"id_proof_document_types"];
     marrOther = response[@"other_selected_docs"];
     
-    for (NSDictionary *temp in marrOther)
-    {
-        [marrDocTitle addObject:temp[@"document_name"]];
-    }
+    [ marrDocs addObject:dictDocs[@"pan_proof"] ];
+    [ marrDocs addObject:dictDocs[@"id_proof"] ];
+    [ marrDocs addObject:dictDocs[@"address_proof"] ];
+    [ marrDocs addObject:dictDocs[@"employee_id"] ];
+    [ marrDocs addObject:dictDocs[@"salary_slip1"] ];
+    [ marrDocs addObject:dictDocs[@"salary_slip2"] ];
+    [ marrDocs addObject:dictDocs[@"salary_slip3"] ];
+    [ marrDocs addObject:dictDocs[@"office_id"] ];
     
-    [ marrDocTitle addObject:@"Any other document"];
-    
-    for ( id key in dictDocs)
+    if ( marrOther.count > 0 )
     {
-        if ( [key isEqualToString:@"pan_proof"] )
+        for ( NSDictionary *temp in marrOther)
         {
-            [ marrDocs addObject:dictDocs[@"pan_proof"] ];
-        }
-        else if ( [key isEqualToString:@"id_proof"] )
-        {
-            [ marrDocs addObject:dictDocs[@"id_proof"] ];
-        }
-        else if ( [key isEqualToString:@"address_proof"] )
-        {
-            [ marrDocs addObject:dictDocs[@"address_proof"] ];
-        }
-        else if ( [key isEqualToString:@"employee_id"] )
-        {
-            [ marrDocs addObject:dictDocs[@"employee_id"] ];
-        }
-        else if ( [key isEqualToString:@"salary_slip1"] )
-        {
-            [ marrDocs addObject:dictDocs[@"salary_slip1"] ];
-        }
-        else if ( [key isEqualToString:@"salary_slip2"] )
-        {
-            [ marrDocs addObject:dictDocs[@"salary_slip2"] ];
-        }
-        else if ( [key isEqualToString:@"salary_slip3"] )
-        {
-            [ marrDocs addObject:dictDocs[@"salary_slip3"] ];
-        }
-        else if ( [key isEqualToString:@"office_id"] )
-        {
-            [ marrDocs addObject:dictDocs[@"office_id"] ];
+            [ marrDocTitle addObject:temp[@"document_name"] ];
+            [marrDocs addObject:temp[@"document_path"]];
         }
     }
     
-    for ( NSDictionary *temp in marrOther)
-    {
-        [marrDocs addObject:temp[@"document_path"]];
-    }
-    
+    [ marrDocTitle addObject:@"Any other document" ];// For last cell
     [marrDocs addObject:@""];
-
     
     [ _tblDocument reloadData ];
 }
 - (void)serverCallForDocUpload
 {
-    NSString *base64String = [Utilities getBase64EncodedStringOfImage:selectedImage];
+    NSString *base64String = [ NSString stringWithFormat:@"data:image/jpg;base64,%@",[Utilities getBase64EncodedStringOfImage:selectedImage]];
     
     NSDictionary *param = [NSMutableDictionary new];
     [ param setValue:@"uploadDocument" forKey:@"mode" ];

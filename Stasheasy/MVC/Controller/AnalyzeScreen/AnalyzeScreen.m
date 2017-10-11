@@ -99,7 +99,7 @@
     _viewPieChart.startAngle = M_PI+M_PI_2;
     [_viewPieChart setHoleRadiusPrecent:0.5];
     
-    [_viewPieChart setChartValues:marrChartValue animation:YES duration:2 options:VBPieChartAnimationDefault];
+    [_viewPieChart setChartValues:marrChartValue animation:YES duration:0.4 options:VBPieChartAnimationDefault];
 }
 - (void)populateAnalyzeSpendingData:(NSDictionary *)dict
 {

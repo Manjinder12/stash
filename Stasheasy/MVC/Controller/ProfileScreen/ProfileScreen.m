@@ -97,14 +97,11 @@
     
     marrPerText = [[NSMutableArray alloc] init];
     marrProText = [[NSMutableArray alloc] init];
-    marrDoc = [[NSMutableArray alloc] init];
     marrImages = [[NSMutableArray alloc] init];
 
     [_personalBtn setTitle:@"PERSONAL\nDETAIL" forState:UIControlStateNormal];
     [_professionalBtn setTitle:@"PROFESSIONAL\nDETAIL" forState:UIControlStateNormal];
-    tab = 0;
     
-    marrDocTitle = [ NSMutableArray new ];
     
     marrPerHeader = [[NSMutableArray alloc]initWithObjects:@"Contact No.",@"Date of Birth",@"PAN No.",@"Aadhar Card No.",@"Current Address",@"Permanent Address", nil];
     personalTextArr = [[NSArray alloc]initWithObjects:@"9876543210",@"17 April 1973",@"BXIPX2014H",@"3181 6734 1296",@"77, jagjivan ram nagar indore-452001",@"Kastubra ward, Pipariya-461775", nil];
@@ -118,8 +115,19 @@
     self.profileTableView.estimatedRowHeight = 30.0f;
     self.profileTableView.rowHeight = UITableViewAutomaticDimension;
     
-    [self serverCallForPersonalDetail];
     _viewOuter.hidden = NO;
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    tab = 0;
+    marrDocTitle = [[ NSMutableArray alloc ] initWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip1",@"Salary Slip2",@"Salary Slip3",@"Office ID",nil];
+    marrDoc = [[NSMutableArray alloc] init];
+
+    self.profileTableView.hidden = NO;
+    self.docCollection.hidden = YES;
+    self.btnUpload.hidden = YES;
+    [ self actionForTap ];
+    [self serverCallForPersonalDetail];
 }
 #pragma mark UIImagePickerController delegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
@@ -271,12 +279,12 @@
     if (tab == 0)
     {
         cell.profileHeadinglbl.text = [marrPerHeader objectAtIndex:indexPath.row];
-        cell.profileRightlbl.text = [marrPerText objectAtIndex:indexPath.row];
+        cell.profileRightlbl.text = [ Utilities getStringFromResponse:[marrPerText objectAtIndex:indexPath.row]];
     }
     else if (tab == 1)
     {
         cell.profileHeadinglbl.text = [marrProHeader objectAtIndex:indexPath.row];
-        cell.profileRightlbl.text = [marrProText objectAtIndex:indexPath.row];
+        cell.profileRightlbl.text = [ Utilities getStringFromResponse:[marrProText objectAtIndex:indexPath.row] ];
     }
    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -298,11 +306,16 @@
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"DocCell" forIndexPath:indexPath];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:100];
-
-    [imageView setImageWithURL:[Utilities getFormattedImageURLFromString:[marrDoc objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"pdficon"]];
-
     UILabel *lblTitle = (UILabel *)[cell viewWithTag:101];
-    lblTitle.text = [ marrDocTitle objectAtIndex: indexPath.row];
+    
+    NSString *docPath = [marrDoc objectAtIndex:indexPath.row];
+    
+    if ( docPath.length > 0 )
+    {
+        [imageView setImageWithURL:[Utilities getFormattedImageURLFromString:[marrDoc objectAtIndex:indexPath.row]] placeholderImage:[UIImage imageNamed:@"pdficon"]];
+        
+        lblTitle.text = [ marrDocTitle objectAtIndex: indexPath.row];
+    }
     
     return cell;
 }
@@ -419,12 +432,16 @@
 }
 - (IBAction)personalTapped:(id)sender
 {
+    [ self actionForTap ];
+}
+- (void)actionForTap
+{
     tab =0;
     self.profileTableView.hidden = NO;
     self.docCollection.hidden = YES;
     self.btnUpload.hidden = YES;
-
-
+    
+    
     self.perLbl.backgroundColor = [UIColor colorWithRed:220.0f/255.0f green:16.0f/255.0f blue:16.0f/255.0f alpha:1.0f];
     self.personalBtn.titleLabel.textColor = [UIColor colorWithRed:220.0f/255.0f green:16.0f/255.0f blue:16.0f/255.0f alpha:1.0f];
     
@@ -434,8 +451,8 @@
     self.docLbl.backgroundColor = [UIColor clearColor];
     self.docBtn .titleLabel.textColor = [UIColor darkGrayColor];
     [self.profileTableView reloadData];
-}
 
+}
 - (IBAction)professionalTapped:(id)sender
 {
     tab = 1;
@@ -619,6 +636,7 @@
 - (void)populatePersonalDetail:(NSDictionary *)response
 {
     _lblCustomerName.text = response[@"customer_details"][@"customer_name"];
+    [ marrPerText removeAllObjects ];
     _lblEmail.text =  response[@"customer_details"][@"email"];
     [marrPerText addObject:response[@"customer_details"][@"phone"]];
     [marrPerText addObject:response[@"customer_details"][@"dob"]];
@@ -635,6 +653,7 @@
 }
 - (void)populateProfessionalDetail:(NSDictionary *)response
 {
+    [ marrProText removeAllObjects ];
     [marrProText addObject:@"Stashfin"];
     
     if ([response[@"professional_details"][@"designation"] isKindOfClass:[NSNull class]])
@@ -691,6 +710,8 @@
 }
 - (void)populateDocumentsDetail:(NSDictionary *)response
 {
+    [ marrDoc removeAllObjects ];
+    [ marrDocTitle removeAllObjects ];
     NSDictionary *dict = response[@"docs"];
     for ( id key in dict)
     {
@@ -729,7 +750,7 @@
             {
                 [ marrDocTitle addObject:@"Salary Slip2" ];
             }
-
+            
             else if ( [key isEqualToString:@"salary_slip3"])
             {
                 [ marrDocTitle addObject:@"Salary Slip3" ];
@@ -737,55 +758,18 @@
             [marrDoc addObject:[dict valueForKey:key]];
         }
     }
+
     
     
-   /* for (int i = 0; i < [response[@"docs"] count]; i++ )
-    {
-        if ( ![response[@"docs"][@"address_proof"] isEqualToString:@""] )
-        {
-            [marrDoc addObject:response[@"docs"][@"address_proof"]];
-            [ marrDocTitle addObject:@"Address Proof" ];
-        }
-        else if ( ![response[@"docs"][@"employee_id"] isEqualToString:@""] )
-        {
-            [marrDoc addObject:response[@"docs"][@"employee_id"]];
-            [ marrDocTitle addObject:@"Employee ID" ];
-        }
-        
-        else if ( ![response[@"docs"][@"id_proof"] isEqualToString:@""] )
-        {
-            [marrDoc addObject:response[@"docs"][@"id_proof"]];
-            [ marrDocTitle addObject:@"ID Proof" ];
-        }
-        
-        else if ( ![response[@"docs"][@"office_id"] isEqualToString:@""] )
-        {
-            [marrDoc addObject:response[@"docs"][@"office_id"]];
-            [ marrDocTitle addObject:@"Office ID" ];
-        }
-        
-        else if ( ![response[@"docs"][@"pan_proof"] isEqualToString:@""] )
-        {
-            [marrDoc addObject:response[@"docs"][@"pan_proof"]];
-            [ marrDocTitle addObject:@"PAN Card" ];
-        }
-        else if ( ![response[@"docs"][@"salary_slip1"] isEqualToString:@""] )
-        {
-            [marrDoc addObject:response[@"docs"][@"salary_slip1"]];
-            [ marrDocTitle addObject:@"Salary Slip1" ];
-        }
-        
-        else if ( ![response[@"docs"][@"salary_slip2"] isEqualToString:@""] )
-        {
-            [marrDoc addObject:response[@"docs"][@"salary_slip2"]];
-            [ marrDocTitle addObject:@"Salary Slip2" ];
-        }
-        else if ( ![response[@"docs"][@"salary_slip3"] isEqualToString:@""] )
-        {
-            [marrDoc addObject:response[@"docs"][@"salary_slip3"]];
-            [ marrDocTitle addObject:@"Salary Slip3" ];
-        }
-    }*/
+    
+    /*[ marrDoc addObject:dictDocs[@"pan_proof"] ];
+    [ marrDoc addObject:dictDocs[@"id_proof"] ];
+    [ marrDoc addObject:dictDocs[@"address_proof"] ];
+    [ marrDoc addObject:dictDocs[@"employee_id"] ];
+    [ marrDoc addObject:dictDocs[@"salary_slip1"] ];
+    [ marrDoc addObject:dictDocs[@"salary_slip2"] ];
+    [ marrDoc addObject:dictDocs[@"salary_slip3"] ];
+    [ marrDoc addObject:dictDocs[@"office_id"] ];*/
     
     NSArray *otherDoc = response[@"other_selected_docs"];
     if ( [otherDoc count] != 0 )

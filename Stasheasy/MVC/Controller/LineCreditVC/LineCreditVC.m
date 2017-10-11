@@ -35,7 +35,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblUserCredit;
 @property (weak, nonatomic) IBOutlet UILabel *lblRemainCredit;
 @property (weak, nonatomic) IBOutlet UILabel *lblBalance;
-@property (weak, nonatomic) IBOutlet UILabel *lblCash;
+@property (weak, nonatomic) IBOutlet UILabel *lblTotalBalance;
 @property (weak, nonatomic) IBOutlet UILabel *lblEMIDate;
 @property (weak, nonatomic) IBOutlet UILabel *lblEMIAmount;
 @property (weak, nonatomic) IBOutlet UILabel *lblRequestAmount;
@@ -51,8 +51,9 @@
 @property (weak, nonatomic) IBOutlet UIView *viewOuter;
 @property (weak, nonatomic) IBOutlet UIView *viewCollection;
 @property (weak, nonatomic) IBOutlet UIView *viewCard;
-
 @property (weak, nonatomic) IBOutlet UIView *viewPieChart;
+
+@property (weak, nonatomic) IBOutlet UIButton *btnRequestLoan;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionImage;
 
@@ -74,7 +75,7 @@
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     
     appDelegate = [AppDelegate sharedDelegate];
-    appDelegate.currentVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];
+    appDelegate.currentVC = [self.storyboard instantiateViewControllerWithIdentifier:@"LineCreditVC"];;
     
 
     if (appDelegate.isCardFound == YES )
@@ -301,11 +302,13 @@
                 if ([[response valueForKey:@"card_found"] boolValue] == true)
                 {
                     appDelegate.isCardFound = YES;
+                    _btnRequestLoan.hidden = NO;
                     [self serverCallForCardOverview];
                 }
                 else
                 {
                     appDelegate.isCardFound = NO;
+                    _btnRequestLoan.hidden = YES;
                     [self populateLOCDetails:appDelegate.dictLOCDetail andCardDetail:nil];
 
                     [SVProgressHUD dismiss];
@@ -383,22 +386,47 @@
 }
 - (void)populateLOCDetails:(NSDictionary *)dictLOC andCardDetail:(NSDictionary *)dictCard
 {
-    _lblApprovedCredit.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"loc_limit"] intValue]];
+    _lblApprovedCredit.text = [NSString stringWithFormat:@"₹ %d",[[dictLOC valueForKey:@"loc_limit"] intValue]];
     
     approvedLOC = [[dictLOC valueForKey:@"loc_limit"] intValue];
     
-    _lblUserCredit.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"used_loc"] intValue]];
+    _lblUserCredit.text = [NSString stringWithFormat:@"₹ %d",[[dictLOC valueForKey:@"used_loc"] intValue]];
     usedLOC = [[dictLOC valueForKey:@"used_loc"] intValue];
 
-    strRemainLOC = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"remaining_loc"] intValue]];
+    strRemainLOC = [NSString stringWithFormat:@"₹ %d",[[dictLOC valueForKey:@"remaining_loc"] intValue]];
     remainingLOC = [[dictLOC valueForKey:@"remaining_loc"] intValue];
     _lblRemainCredit.text = strRemainLOC;
     
-    _lblBalance.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"total_balance"] intValue]];
-    _lblCash.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"last_loc_request_amount"] intValue]];
-    _lblEMIDate.text = [NSString stringWithFormat:@"%@",[dictLOC valueForKey:@"next_emi_date"]];
-    _lblEMIAmount.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"next_emi_amount"] intValue]];
-    _lblRequestAmount.text = [NSString stringWithFormat:@"%d",[[dictLOC valueForKey:@"last_loc_request_amount"] intValue]];
+    if ( [[dictLOC valueForKey:@"balance_on_card"] intValue] == 0 )
+    {
+        _lblBalance.text = @"-";
+    }
+    else
+    {
+        _lblBalance.text = [NSString stringWithFormat:@"₹ %d",[[dictLOC valueForKey:@"balance_on_card"] intValue]];
+    }
+    
+    if ( [[dictLOC valueForKey:@"total_balance"] intValue] == 0 )
+    {
+        _lblTotalBalance.text = @"-";
+    }
+    else
+    {
+        _lblTotalBalance.text = [NSString stringWithFormat:@"₹ %d",[[dictLOC valueForKey:@"total_balance"] intValue]];
+    }
+    
+    if ( [[dictLOC valueForKey:@"next_emi_found"] intValue] == 0)
+    {
+        _lblEMIDate.text = @"-";
+        _lblEMIAmount.text = @"-";
+    }
+    else
+    {
+        _lblEMIDate.text = [NSString stringWithFormat:@"%@",[dictLOC valueForKey:@"next_emi_date"]];
+        _lblEMIAmount.text = [NSString stringWithFormat:@"₹ %d",[[dictLOC valueForKey:@"next_emi_amount"] intValue]];
+    }
+    
+    _lblRequestAmount.text = [NSString stringWithFormat:@"₹ %d",[[dictLOC valueForKey:@"last_loc_request_amount"] intValue]];
     appDelegate.loanRequestStatus = [NSString stringWithFormat:@"%@",[dictLOC valueForKey:@"last_loc_request_status"]].uppercaseString;
     _lblRequestStatus.text = appDelegate.loanRequestStatus;
     

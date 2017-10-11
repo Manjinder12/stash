@@ -20,6 +20,7 @@
     ActionView *actionView;
     NSArray *parties;
     NSArray *valueArr;
+    int used, available;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *lblCardNo;
@@ -61,13 +62,12 @@
     
     [Utilities setCornerRadius:_viewBalance];
     
-    [self setUpPieChart];
     [self populateCardAndBalanceDetail];
 }
 - (void)setUpPieChart
 {
-    int usedValue = (50 * 100) / 100;
-    int remainValue = (40 * 100 ) / 100;
+    int usedValue = (100 * 100) / 100;
+    int remainValue = (available * 100 ) / 100;
     
     _viewPieChart.startAngle = M_PI+M_PI_2;
     [_viewPieChart setHoleRadiusPrecent:0.5];
@@ -79,7 +79,7 @@
                              @{@"name":@"Orange", @"value":[NSNumber numberWithInt:remainValue], @"color":[UIColor greenColor], @"strokeColor":[UIColor whiteColor]}
                              ];
     
-    [_viewPieChart setChartValues:chartValues animation:YES duration:2 options:VBPieChartAnimationDefault];
+    [_viewPieChart setChartValues:chartValues animation:YES duration:0.4 options:VBPieChartAnimationDefault];
 }
 - (void)populateCardAndBalanceDetail
 {
@@ -91,14 +91,18 @@
     _lblLimit.text = [NSString stringWithFormat:@"₹%@",appDelegate.dictOverview[@"balance_details"][@"limit"]];
     
     _lblUsed.text = [NSString stringWithFormat:@"₹%@",appDelegate.dictOverview[@"balance_details"][@"used"]];
+    used = [appDelegate.dictOverview[@"balance_details"][@"used"] intValue];
     
     _lblAvailable.text = [NSString stringWithFormat:@"₹%@",appDelegate.dictOverview[@"balance_details"][@"available"]];
+    available = [ appDelegate.dictOverview[@"balance_details"][@"available"] intValue];
     
     _lblDisbursedAmount.text = [NSString stringWithFormat:@"₹%@",appDelegate.dictOverview[@"balance_details"][@"disbured_amount"]];
     
     _lblEMIDate.text = [NSString stringWithFormat:@"%@",appDelegate.dictOverview[@"balance_details"][@"next_emi_date"]];
 
     marrRecentTransaction = appDelegate.dictOverview[@"recent_transactions"];
+    
+    [self setUpPieChart];
     [_tblRecentTransaction reloadData];
 }
 - (void)didReceiveMemoryWarning

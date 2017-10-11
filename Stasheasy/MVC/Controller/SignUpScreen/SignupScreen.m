@@ -24,6 +24,7 @@
 #import "ProfessionalEducation.h"
 #import "Utilities.h"
 #import "StatusVC.h"
+#import "LandingVC.h"
 
 @interface SignupScreen ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate>
 {
@@ -40,7 +41,7 @@
     NSArray *basicInfoArray, *idDetailArray, *professionalArray, *docArray;
     
     NSMutableDictionary *basicInfoDic;
-    NSMutableArray *marrCity, *pickerArr, *marrState;
+    NSMutableArray *marrCity, *pickerArr, *marrState, *marrIDProof, *marrAddress;
     UITextField *selTextfield;
     UIDatePicker *datePickerView;
     int currentRow;
@@ -49,10 +50,12 @@
     UIImagePickerController *imagePicker;
     UIButton *btnUpload;
     NSString *strDocID, *strDocName;
-    BOOL isDocUpload, isOtpGenerate;
+    BOOL isDocUpload, isOtpGenerate, isAddreesProof, isIdProof, isOtherDoc;
+    NSInteger selectedIndex;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *txtOTP;
+@property (weak, nonatomic) IBOutlet UITextField *txtOther;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnFirst;
 @property (weak, nonatomic) IBOutlet UIButton *btnSecond;
@@ -66,14 +69,23 @@
 @property (weak, nonatomic) IBOutlet UIView *secondView;
 @property (weak, nonatomic) IBOutlet UIView *thirdView;
 @property (weak, nonatomic) IBOutlet UIView *viewOtpVerify;
+@property (weak, nonatomic) IBOutlet UIView *viewProofPopUp;
+@property (weak, nonatomic) IBOutlet UIView *viewOtherPopUp;
 
 @property (weak, nonatomic) IBOutlet UITableView *signupTableview;
+@property (weak, nonatomic) IBOutlet UITableView *tblOptions;
+
 
 @property (weak, nonatomic) IBOutlet UILabel *basicinfoLbl;
 @property (weak, nonatomic) IBOutlet UILabel *idDetailLbl;
 @property (weak, nonatomic) IBOutlet UILabel *personalInfoLbl;
 @property (weak, nonatomic) IBOutlet UILabel *docLbl;
 @property (weak, nonatomic) IBOutlet UILabel *lblMobileNo;
+
+
+
+
+
 
 @end
 
@@ -100,18 +112,22 @@
     userService = [[UserServices alloc]init];
     
     _viewOtpVerify.hidden = YES;
+    _viewProofPopUp.hidden = YES;
+    _viewOtherPopUp.hidden = YES;
     
     basicInfoDic = [NSMutableDictionary dictionary];
     
     isDocUpload = NO;
     isOtpGenerate = NO;
     
+    selectedIndex = 0;
+    
     _signupTableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     _signupTableview.separatorStyle = UITableViewCellSelectionStyleNone;
     
     [self setupView];
 
-//    [ self checkIsOtpVerified:[[Utilities getUserDefaultValueFromKey:@"isOtpVerify"] intValue]];
+    [ self checkIsOtpVerified:[[Utilities getUserDefaultValueFromKey:@"isOtpVerify"] intValue]];
     
     if (signupStep > 1)
     {
@@ -120,6 +136,8 @@
     
     [self.signupTableview reloadData];
     
+    [ Utilities setBorderAndColor:_btnVerify ];
+    [ Utilities setBorderAndColor:_btnResend ];
 
 }
 
@@ -229,9 +247,13 @@
     
     marrState = [NSMutableArray array];
     pickerArr = [NSMutableArray array];
-    
-    marrCity = [[NSMutableArray alloc] initWithObjects:@"Delhi",@"Ghaziabad", @"Bombay",@"Pune",@"Banglore",@"Patna",@"Kolkata",@"Kanpur",@"Lucknow",@"Jaipur",nil ];
+    marrIDProof = [ NSMutableArray array ];
+    marrAddress = [ NSMutableArray array ];
+    marrCity = [[NSMutableArray alloc] initWithObjects:@"Delhi",@"Ghaziabad", @"Faridabad",@"Gurgaon",@"Noida",@"Banglore",@"Pune",nil ];
 
+    isOtherDoc = NO;
+    isAddreesProof = NO;
+    isIdProof = NO;
     
 //    marrCity = [NSMutableArray arrayWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip 1",@"Salary Slip 2",@"Salary Slip 3",@"Office ID",@"Another Document",@"Mention", nil];
 
@@ -247,9 +269,84 @@
 }
 
 #pragma mark Button Action
+- (IBAction)okAction:(id)sender
+{
+    selectedIndex = 0;
+    NSDictionary *dict;
+    
+    if ( isIdProof )
+    {
+        dict = [marrIDProof objectAtIndex:selectedIndex];
+        strDocID = [NSString stringWithFormat:@"%d",[dict[@"id"] intValue]];
+        strDocName = @"id_proof";
+    }
+    else if( isAddreesProof )
+    {
+        dict = [marrAddress objectAtIndex:selectedIndex];
+        strDocID = [NSString stringWithFormat:@"%d",[dict[@"id"] intValue]];
+        strDocName = @"address_proof";
+        
+    }
+    else
+    {
+        strDocID = @"";
+        strDocName = @"";
+    }
+    
+    
+    if ( !isOtherDoc )
+    {
+        [ Utilities hidePopupView:_viewProofPopUp fromViewController:self ];
+        UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
+        [imagePop showInView:self.view];
+    }
+    else
+    {
+        if ( [_txtOther.text isEqualToString:@""] )
+        {
+            [ Utilities showAlertWithMessage:@"Enter document name" ];
+        }
+        else
+        {
+            [ Utilities hidePopupView:_viewOtherPopUp fromViewController:self ];
+            [ self.view endEditing:YES ];
+            
+            strDocName = _txtOther.text;
+            
+            UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
+            [imagePop showInView:self.view];
+            
+        }
+    }
+}
+- (IBAction)popUpCancelAction:(id)sender
+{
+    selectedIndex = 0;
+    [ self.view endEditing:YES ];
+    
+    if ( !isOtherDoc )
+    {
+        [ Utilities hidePopupView:_viewProofPopUp fromViewController:self ];
+    }
+    else
+    {
+        [ Utilities hidePopupView:_viewOtherPopUp fromViewController:self ];
+    }
+
+}
 - (IBAction)backAAction:(id)sender
 {
-    [Utilities popToNumberOfControllers:2 withNavigation:self.navigationController];
+    NSArray *vcARray = self.navigationController.viewControllers;
+    
+    for ( UIViewController *vc in vcARray )
+    {
+        
+        if ( [vc isKindOfClass:[ LandingVC class ]] )
+        {
+            [ self.navigationController popToViewController:vc animated:YES ];
+            break;
+        }
+    }
 }
 - (IBAction)firstAction:(id)sender
 {
@@ -308,17 +405,14 @@
          case 4:
             
         {
-            [ self serverCallToGetLoginData ];
-
-//            if ( isDocUpload )
-//            {
-//                [ self serverCallToGetLoginData ];
-//            }
-//            else
-//            {
-//                [ Utilities showAlertWithMessage:@"Upload atleast one relevant document." ];
-//            }
-//            [self changeStepColour:docUpload];
+            if ( isDocUpload )
+            {
+                [ self serverCallToGetLoginData ];
+            }
+            else
+            {
+                [ Utilities showAlertWithMessage:@"Upload atleast one relevant document." ];
+            }
         }
              break;
              
@@ -743,256 +837,294 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (signupStep)
+    if ( tableView == self.signupTableview )
     {
-        case basicInfo:
+        switch (signupStep)
         {
-            if ([[basicInfoArray objectAtIndex:indexPath.row] isEqualToString:@"check"])
+            case basicInfo:
             {
-              static NSString *salaryTableIdentifier = @"salaryTableView";
-              salaryTableView *salaryCell  =  [tableView dequeueReusableCellWithIdentifier:salaryTableIdentifier];
-                if (salaryCell == nil)
+                if ([[basicInfoArray objectAtIndex:indexPath.row] isEqualToString:@"check"])
                 {
-                    salaryCell =[[[NSBundle mainBundle] loadNibNamed:@"salaryTableView" owner:self options:nil] objectAtIndex:0];
-                }
-                
-                [salaryCell.salBtn addTarget:self action:@selector(getEmployementType:) forControlEvents:UIControlEventTouchUpInside];
-                
-                [salaryCell.businessBtn addTarget:self action:@selector(getEmployementType:) forControlEvents:UIControlEventTouchUpInside];
-
-                salaryCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                return salaryCell;
-                
-            }
-            else
-            {
-                static NSString *singleTableIdentifier = @"SingleTableViewCell";
-                SingleTableViewCell *singleCell  =  [tableView dequeueReusableCellWithIdentifier:singleTableIdentifier];
-                if (singleCell == nil)
-                {
-                    singleCell =[[[NSBundle mainBundle] loadNibNamed:@"SingleTableViewCell" owner:self options:nil] objectAtIndex:0];
+                    static NSString *salaryTableIdentifier = @"salaryTableView";
+                    salaryTableView *salaryCell  =  [tableView dequeueReusableCellWithIdentifier:salaryTableIdentifier];
+                    if (salaryCell == nil)
+                    {
+                        salaryCell =[[[NSBundle mainBundle] loadNibNamed:@"salaryTableView" owner:self options:nil] objectAtIndex:0];
+                    }
                     
-                    singleCell.singleTextField.delegate = self;
-                    [singleCell.singleTextField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
-
+                    [salaryCell.salBtn addTarget:self action:@selector(getEmployementType:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    [salaryCell.businessBtn addTarget:self action:@selector(getEmployementType:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    salaryCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    return salaryCell;
+                    
                 }
-                NSArray *keysarr = [basicInfoModalObj giveKeysArray];
-                NSString *key = [keysarr objectAtIndex:indexPath.row];
-                NSString *valStr = [basicInfoModalObj valueForKey:key];
-                if ( valStr.length > 0)
+                else
                 {
-                    singleCell.singleTextField.text = valStr;
+                    static NSString *singleTableIdentifier = @"SingleTableViewCell";
+                    SingleTableViewCell *singleCell  =  [tableView dequeueReusableCellWithIdentifier:singleTableIdentifier];
+                    if (singleCell == nil)
+                    {
+                        singleCell =[[[NSBundle mainBundle] loadNibNamed:@"SingleTableViewCell" owner:self options:nil] objectAtIndex:0];
+                        
+                        singleCell.singleTextField.delegate = self;
+                        [singleCell.singleTextField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
+                        
+                    }
+                    NSArray *keysarr = [basicInfoModalObj giveKeysArray];
+                    NSString *key = [keysarr objectAtIndex:indexPath.row];
+                    NSString *valStr = [basicInfoModalObj valueForKey:key];
+                    if ( valStr.length > 0)
+                    {
+                        singleCell.singleTextField.text = valStr;
+                    }
+                    singleCell.singleTextField.tag = indexPath.row;
+                    singleCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    UIColor *color = [UIColor lightGrayColor];
+                    singleCell.singleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[basicInfoArray objectAtIndex:indexPath.row] attributes:@{NSForegroundColorAttributeName: color}];
+                    
+                    return singleCell;
                 }
-                singleCell.singleTextField.tag = indexPath.row;
-                singleCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                UIColor *color = [UIColor lightGrayColor];
-                singleCell.singleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[basicInfoArray objectAtIndex:indexPath.row] attributes:@{NSForegroundColorAttributeName: color}];
-               
-                return singleCell;
+                
+                
+                
+                break;
             }
-            
-            
-            
-            break;
-        }
-        case idDetails:
-        {
-            if ([[idDetailArray objectAtIndex:indexPath.row] isKindOfClass:[NSDictionary class]])
+            case idDetails:
             {
-                static NSString *doubleTableIdentifier = @"DoubleTableViewCell";
-                DoubleTableViewCell *doubleCell =  [tableView dequeueReusableCellWithIdentifier:doubleTableIdentifier];
-                if (doubleCell == nil)
+                if ([[idDetailArray objectAtIndex:indexPath.row] isKindOfClass:[NSDictionary class]])
                 {
-                    doubleCell =[[[NSBundle mainBundle] loadNibNamed:@"DoubleTableViewCell" owner:self options:nil] objectAtIndex:0];
-                    [doubleCell.firstField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
-                    [doubleCell.secondField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
-                }
-                NSDictionary *rowDic = [idDetailArray objectAtIndex:indexPath.row];
-                
-                UIColor *color = [UIColor lightGrayColor];
-                // set first field
-                doubleCell.firstField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[rowDic objectForKey:@"First"] attributes:@{NSForegroundColorAttributeName: color}];
-                // set second field
-                doubleCell.secondField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[rowDic objectForKey:@"Second"] attributes:@{NSForegroundColorAttributeName: color}];
-                
-                //set tag for double textfield
-                doubleCell.firstField.tag = indexPath.row;
-                doubleCell.secondField.tag = indexPath.row;
-                doubleCell.firstField.delegate =self;
-                doubleCell.secondField.delegate =self;
-                
-                if ([[rowDic objectForKey:@"first"] isEqualToString:@"DOB"])
-                {
-                    doubleCell.calendarBtn.hidden = NO;
-                }
-                
-                NSArray *keysarr = [loanApplicationObj giveKeysArray];
-                NSDictionary *dict = [keysarr objectAtIndex:indexPath.row];
-                NSString *key1 = [dict objectForKey:@"first"];
-                NSString *key2 = [dict objectForKey:@"second"];
-                NSString *valStr1 = [loanApplicationObj valueForKey:key1];
-                NSString *valStr2 = [loanApplicationObj valueForKey:key2];
-                if ( valStr1.length > 0 )
-                {
-                    doubleCell.firstField.text = valStr1;
-                }
-                if ( valStr2.length > 0 )
-                {
-                    doubleCell.secondField.text = valStr2;
-                }
-                
-                doubleCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                return doubleCell;
-            }
-            else
-            {
-                static NSString *singleTableIdentifier = @"SingleTableViewCell";
-                SingleTableViewCell *singleCell  =  [tableView dequeueReusableCellWithIdentifier:singleTableIdentifier];
-                if (singleCell == nil) {
-                    singleCell =[[[NSBundle mainBundle] loadNibNamed:@"SingleTableViewCell" owner:self options:nil] objectAtIndex:0];
-                    singleCell.singleTextField.delegate = self;
-                    [singleCell.singleTextField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
-                }
-                NSArray *keysarr = [loanApplicationObj giveKeysArray];
-                NSString *key = [keysarr objectAtIndex:indexPath.row];
-                NSString *valStr = [loanApplicationObj valueForKey:key];
-                if ( valStr.length > 0 )
-                {
-                    singleCell.singleTextField.text = valStr;
-                }
-
-                singleCell.singleTextField.tag = indexPath.row;
-                UIColor *color = [UIColor lightGrayColor];
-                singleCell.singleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[idDetailArray objectAtIndex:indexPath.row] attributes:@{NSForegroundColorAttributeName: color}];
-                singleCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-                return singleCell;
-            }
-            
-            break;
-        }
-        case personalInfo:
-        {
-            if ([[professionalArray objectAtIndex:indexPath.row] isKindOfClass:[NSDictionary class]]) {
-                static NSString *doubleTableIdentifier = @"professionalTableViewCell";
-                DoubleTableViewCell *doubleCell =  [tableView dequeueReusableCellWithIdentifier:doubleTableIdentifier];
-                if (doubleCell == nil) {
-                    doubleCell =[[[NSBundle mainBundle] loadNibNamed:@"DoubleTableViewCell" owner:self options:nil] objectAtIndex:0];
+                    static NSString *doubleTableIdentifier = @"DoubleTableViewCell";
+                    DoubleTableViewCell *doubleCell =  [tableView dequeueReusableCellWithIdentifier:doubleTableIdentifier];
+                    if (doubleCell == nil)
+                    {
+                        doubleCell =[[[NSBundle mainBundle] loadNibNamed:@"DoubleTableViewCell" owner:self options:nil] objectAtIndex:0];
+                        [doubleCell.firstField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
+                        [doubleCell.secondField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
+                    }
+                    NSDictionary *rowDic = [idDetailArray objectAtIndex:indexPath.row];
+                    
+                    UIColor *color = [UIColor lightGrayColor];
+                    // set first field
+                    doubleCell.firstField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[rowDic objectForKey:@"First"] attributes:@{NSForegroundColorAttributeName: color}];
+                    // set second field
+                    doubleCell.secondField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[rowDic objectForKey:@"Second"] attributes:@{NSForegroundColorAttributeName: color}];
+                    
+                    //set tag for double textfield
+                    doubleCell.firstField.tag = indexPath.row;
+                    doubleCell.secondField.tag = indexPath.row;
                     doubleCell.firstField.delegate =self;
                     doubleCell.secondField.delegate =self;
-
-                    [doubleCell.firstField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
-                    [doubleCell.secondField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
-
+                    
+                    if ([[rowDic objectForKey:@"first"] isEqualToString:@"DOB"])
+                    {
+                        doubleCell.calendarBtn.hidden = NO;
+                    }
+                    
+                    NSArray *keysarr = [loanApplicationObj giveKeysArray];
+                    NSDictionary *dict = [keysarr objectAtIndex:indexPath.row];
+                    NSString *key1 = [dict objectForKey:@"first"];
+                    NSString *key2 = [dict objectForKey:@"second"];
+                    NSString *valStr1 = [loanApplicationObj valueForKey:key1];
+                    NSString *valStr2 = [loanApplicationObj valueForKey:key2];
+                    if ( valStr1.length > 0 )
+                    {
+                        doubleCell.firstField.text = valStr1;
+                    }
+                    if ( valStr2.length > 0 )
+                    {
+                        doubleCell.secondField.text = valStr2;
+                    }
+                    
+                    doubleCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    return doubleCell;
                 }
-                //set tag for double textfield
+                else
+                {
+                    static NSString *singleTableIdentifier = @"SingleTableViewCell";
+                    SingleTableViewCell *singleCell  =  [tableView dequeueReusableCellWithIdentifier:singleTableIdentifier];
+                    if (singleCell == nil) {
+                        singleCell =[[[NSBundle mainBundle] loadNibNamed:@"SingleTableViewCell" owner:self options:nil] objectAtIndex:0];
+                        singleCell.singleTextField.delegate = self;
+                        [singleCell.singleTextField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
+                    }
+                    NSArray *keysarr = [loanApplicationObj giveKeysArray];
+                    NSString *key = [keysarr objectAtIndex:indexPath.row];
+                    NSString *valStr = [loanApplicationObj valueForKey:key];
+                    if ( valStr.length > 0 )
+                    {
+                        singleCell.singleTextField.text = valStr;
+                    }
+                    
+                    singleCell.singleTextField.tag = indexPath.row;
+                    UIColor *color = [UIColor lightGrayColor];
+                    singleCell.singleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[idDetailArray objectAtIndex:indexPath.row] attributes:@{NSForegroundColorAttributeName: color}];
+                    singleCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    
+                    return singleCell;
+                }
+                
+                break;
+            }
+            case personalInfo:
+            {
+                if ([[professionalArray objectAtIndex:indexPath.row] isKindOfClass:[NSDictionary class]]) {
+                    static NSString *doubleTableIdentifier = @"professionalTableViewCell";
+                    DoubleTableViewCell *doubleCell =  [tableView dequeueReusableCellWithIdentifier:doubleTableIdentifier];
+                    if (doubleCell == nil) {
+                        doubleCell =[[[NSBundle mainBundle] loadNibNamed:@"DoubleTableViewCell" owner:self options:nil] objectAtIndex:0];
+                        doubleCell.firstField.delegate =self;
+                        doubleCell.secondField.delegate =self;
+                        
+                        [doubleCell.firstField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
+                        [doubleCell.secondField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
+                        
+                    }
+                    //set tag for double textfield
                     [doubleCell.firstField setTag:indexPath.row];
                     doubleCell.secondField.tag = indexPath.row;
-                
-                
-                
-                NSDictionary *rowDic = [professionalArray objectAtIndex:indexPath.row];
-                UIColor *color = [UIColor lightGrayColor];
-                doubleCell.firstField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[rowDic objectForKey:@"First"] attributes:@{NSForegroundColorAttributeName: color}];
-                doubleCell.secondField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[rowDic objectForKey:@"Second"] attributes:@{NSForegroundColorAttributeName: color}];
-                doubleCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                
-                if ([[rowDic objectForKey:@"First"] isEqualToString:@"DOB"]) {
-                    doubleCell.calendarBtn.hidden = NO;
+                    
+                    
+                    
+                    NSDictionary *rowDic = [professionalArray objectAtIndex:indexPath.row];
+                    UIColor *color = [UIColor lightGrayColor];
+                    doubleCell.firstField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[rowDic objectForKey:@"First"] attributes:@{NSForegroundColorAttributeName: color}];
+                    doubleCell.secondField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[rowDic objectForKey:@"Second"] attributes:@{NSForegroundColorAttributeName: color}];
+                    doubleCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    
+                    if ([[rowDic objectForKey:@"First"] isEqualToString:@"DOB"]) {
+                        doubleCell.calendarBtn.hidden = NO;
+                    }
+                    else if ([[rowDic objectForKey:@"Second"] isEqualToString:@"Since"]) {
+                        doubleCell.secondCalBtn.hidden = NO;
+                    }
+                    
+                    
+                    NSArray *keysarr = [pfobj giveprofKeysArray];
+                    NSDictionary *dict = [keysarr objectAtIndex:indexPath.row];
+                    NSString *key1 = [dict objectForKey:@"First"];
+                    NSString *key2 = [dict objectForKey:@"Second"];
+                    NSString *valStr1 = [pfobj valueForKey:key1];
+                    NSString *valStr2 = [pfobj valueForKey:key2];
+                    if ( valStr1.length > 0 )
+                    {
+                        doubleCell.firstField.text = valStr1;
+                    }
+                    if ( valStr2.length > 0 )
+                    {
+                        doubleCell.secondField.text = valStr2;
+                    }
+                    
+                    
+                    
+                    return doubleCell;
+                    
                 }
-                else if ([[rowDic objectForKey:@"Second"] isEqualToString:@"Since"]) {
-                    doubleCell.secondCalBtn.hidden = NO;
-                }
-                
-                
-                NSArray *keysarr = [pfobj giveprofKeysArray];
-                NSDictionary *dict = [keysarr objectAtIndex:indexPath.row];
-                NSString *key1 = [dict objectForKey:@"First"];
-                NSString *key2 = [dict objectForKey:@"Second"];
-                NSString *valStr1 = [pfobj valueForKey:key1];
-                NSString *valStr2 = [pfobj valueForKey:key2];
-                if ( valStr1.length > 0 )
+                else
                 {
-                    doubleCell.firstField.text = valStr1;
+                    static NSString *singleTableIdentifier = @"SingleTableViewCell";
+                    SingleTableViewCell *singleCell  =  [tableView dequeueReusableCellWithIdentifier:singleTableIdentifier];
+                    if (singleCell == nil) {
+                        singleCell =[[[NSBundle mainBundle] loadNibNamed:@"SingleTableViewCell" owner:self options:nil] objectAtIndex:0];
+                        singleCell.singleTextField.delegate = self;
+                        [singleCell.singleTextField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
+                    }
+                    
+                    NSArray *keysarr = [pfobj giveprofKeysArray];
+                    NSString *key = [keysarr objectAtIndex:indexPath.row];
+                    NSString *valStr = [pfobj valueForKey:key];
+                    if ( valStr.length > 0 )
+                    {
+                        singleCell.singleTextField.text = valStr;
+                    }
+                    singleCell.singleTextField.tag = indexPath.row;
+                    singleCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    UIColor *color = [UIColor lightGrayColor];
+                    singleCell.singleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[professionalArray objectAtIndex:indexPath.row] attributes:@{NSForegroundColorAttributeName: color}];
+                    return singleCell;
                 }
-                if ( valStr2.length > 0 )
-                {
-                    doubleCell.secondField.text = valStr2;
-                }
-
                 
-             
-                return doubleCell;
-                
+                break;
             }
-            else
+            case docUpload:
             {
-                static NSString *singleTableIdentifier = @"SingleTableViewCell";
-                SingleTableViewCell *singleCell  =  [tableView dequeueReusableCellWithIdentifier:singleTableIdentifier];
-                if (singleCell == nil) {
-                    singleCell =[[[NSBundle mainBundle] loadNibNamed:@"SingleTableViewCell" owner:self options:nil] objectAtIndex:0];
-                    singleCell.singleTextField.delegate = self;
-                    [singleCell.singleTextField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
+                if ([[docArray objectAtIndex:indexPath.row]isEqualToString:@"Mention"])
+                {
+                    static NSString *singleTableIdentifier = @"SingleTableViewCell";
+                    SingleTableViewCell *singleCell  =  [tableView dequeueReusableCellWithIdentifier:singleTableIdentifier];
+                    if (singleCell == nil) {
+                        singleCell =[[[NSBundle mainBundle] loadNibNamed:@"SingleTableViewCell" owner:self options:nil] objectAtIndex:0];
+                    }
+                    singleCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    UIColor *color = [UIColor lightGrayColor];
+                    singleCell.singleTextField.font = [UIFont systemFontOfSize:14];
+                    singleCell.singleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Mention That they can also do this from web" attributes:@{NSForegroundColorAttributeName: color}];
+                    return singleCell;
+                    
+                }
+                else
+                {
+                    static NSString *uploadTableIdentifier = @"UploadCell";
+                    UploadCell *uploadCell  =  [tableView dequeueReusableCellWithIdentifier:uploadTableIdentifier];
+                    if (uploadCell == nil) {
+                        uploadCell =[[[NSBundle mainBundle] loadNibNamed:@"UploadCell" owner:self options:nil] objectAtIndex:0];
+                    }
+                    uploadCell.uploadLbl.text = [docArray objectAtIndex:indexPath.row];
+                    uploadCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    
+                    uploadCell.checkBtn.tag = indexPath.row;
+                    [uploadCell.checkBtn addTarget:self action:@selector(checkButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    uploadCell.uploadBtn.tag = indexPath.row;
+                    [uploadCell.uploadBtn addTarget:self action:@selector(uploadButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    return uploadCell;
+                    
                 }
                 
-                NSArray *keysarr = [pfobj giveprofKeysArray];
-                NSString *key = [keysarr objectAtIndex:indexPath.row];
-                NSString *valStr = [pfobj valueForKey:key];
-                if ( valStr.length > 0 )
-                {
-                    singleCell.singleTextField.text = valStr;
-                }
-                singleCell.singleTextField.tag = indexPath.row;
-                singleCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                UIColor *color = [UIColor lightGrayColor];
-                singleCell.singleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[professionalArray objectAtIndex:indexPath.row] attributes:@{NSForegroundColorAttributeName: color}];
-                return singleCell;
+                break;
             }
-
-            break;
+            default:
+                break;
         }
-        case docUpload:
-        {
-            if ([[docArray objectAtIndex:indexPath.row]isEqualToString:@"Mention"])
-            {
-                static NSString *singleTableIdentifier = @"SingleTableViewCell";
-                SingleTableViewCell *singleCell  =  [tableView dequeueReusableCellWithIdentifier:singleTableIdentifier];
-                if (singleCell == nil) {
-                    singleCell =[[[NSBundle mainBundle] loadNibNamed:@"SingleTableViewCell" owner:self options:nil] objectAtIndex:0];
-                }
-                singleCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                UIColor *color = [UIColor lightGrayColor];
-                singleCell.singleTextField.font = [UIFont systemFontOfSize:14];
-                singleCell.singleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Mention That they can also do this from web" attributes:@{NSForegroundColorAttributeName: color}];
-                return singleCell;
-
-            }
-            else
-            {
-                static NSString *uploadTableIdentifier = @"UploadCell";
-                UploadCell *uploadCell  =  [tableView dequeueReusableCellWithIdentifier:uploadTableIdentifier];
-                if (uploadCell == nil) {
-                    uploadCell =[[[NSBundle mainBundle] loadNibNamed:@"UploadCell" owner:self options:nil] objectAtIndex:0];
-                }
-                uploadCell.uploadLbl.text = [docArray objectAtIndex:indexPath.row];
-                uploadCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                
-                uploadCell.checkBtn.tag = indexPath.row;
-                [uploadCell.checkBtn addTarget:self action:@selector(checkButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-                
-                uploadCell.uploadBtn.tag = indexPath.row;
-                [uploadCell.uploadBtn addTarget:self action:@selector(uploadButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-
-                return uploadCell;
-
-            }
-            
-            break;
-        }
-        default:
-            break;
+        return 0;
     }
-    return 0;
+    else
+    {
+        UITableViewCell *cell = [ tableView dequeueReusableCellWithIdentifier:@"OptionCell"];
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        tableView.separatorStyle = UITableViewCellSelectionStyleNone;
+        
+        UIImageView *leftImage = (UIImageView *)[cell viewWithTag:111];
+        
+        if ( selectedIndex == indexPath.row )
+        {
+            leftImage.image = [UIImage imageNamed:@"checked"];
+        }
+        else
+        {
+            leftImage.image = [UIImage imageNamed:@"unchecked"];
+        }
+        
+        UILabel *lblTitle = (UILabel *)[cell viewWithTag:222];
+        
+        NSDictionary *dict;
+        if ( isIdProof )
+        {
+            dict = [marrIDProof  objectAtIndex:indexPath.row];
+            lblTitle.text = [NSString stringWithFormat:@"%@",dict[@"document_name"]];
+        }
+        if ( isAddreesProof  )
+        {
+            dict = [marrAddress objectAtIndex:indexPath.row];
+            lblTitle.text = [NSString stringWithFormat:@"%@",dict[@"document_name"]];
+        }
+        
+        
+        return cell;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1207,7 +1339,28 @@
         [textField addCancelDoneOnKeyboardWithTarget:self cancelAction:@selector(cancelAction:) doneAction:@selector(doneAction:)];
     }
 }
-
+-  (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if ( signupStep == 1 )
+    {
+        if ( textField.tag == 3 && textField.text.length >=10 && range.length == 0 )
+        {
+            return NO;
+        }
+        else
+        {
+            return YES;
+        }
+    }
+    else if ( _txtOTP.text.length >= 4  && range.length == 0)
+    {
+            return NO;
+    }
+    else
+    {
+        return YES;
+    }
+}
 
 -(void)doneAction:(id)baritem
 {
@@ -1624,7 +1777,6 @@
                  [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
                  [Utilities setUserDefaultWithObject:@"2" andKey:@"signupStep"];
                  [Utilities setUserDefaultWithObject:response andKey:@"userinfo"];
-                 [Utilities setUserDefaultWithObject:@"0" andKey:@"isOtpVerify"];
                  
                  [ self serverCallToGenerateOTP ];
              }
@@ -2137,7 +2289,6 @@
              {
                  [ self hidePopupView:_viewOtpVerify fromViewController:self ];
                  [Utilities setUserDefaultWithObject:@"1" andKey:@"isOtpVerify"];
-                 [self changeStepColour:signupStep];
              }
          }
          else
