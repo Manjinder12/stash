@@ -41,7 +41,7 @@
     NSArray *basicInfoArray, *idDetailArray, *professionalArray, *docArray;
     
     NSMutableDictionary *basicInfoDic;
-    NSMutableArray *marrCity, *pickerArr, *marrState, *marrIDProof, *marrAddress;
+    NSMutableArray *marrCity, *pickerArr, *marrState, *marrIDProof, *marrAddress, *marrDocName, *marrDocTitle, *marrDocs, *marrOther;
     UITextField *selTextfield;
     UIDatePicker *datePickerView;
     int currentRow;
@@ -50,8 +50,10 @@
     UIImagePickerController *imagePicker;
     UIButton *btnUpload;
     NSString *strDocID, *strDocName;
-    BOOL isDocUpload, isOtpGenerate, isAddreesProof, isIdProof, isOtherDoc;
-    NSInteger selectedIndex;
+    BOOL isDocUpload, isOtpGenerate, isAddreesProof, isIdProof, isOtherDoc, isOtherPopUP, isDocPickDone;
+    NSInteger selectedIndex, time, btnTag;
+    NSTimer *timer;
+    NSString *loanID;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *txtOTP;
@@ -119,7 +121,6 @@
     
     isDocUpload = NO;
     isOtpGenerate = NO;
-    
     selectedIndex = 0;
     
     _signupTableview.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -127,12 +128,17 @@
     
     [self setupView];
 
-    [ self checkIsOtpVerified:[[Utilities getUserDefaultValueFromKey:@"isOtpVerify"] intValue]];
-    
     if (signupStep > 1)
     {
+        if (signupStep == 2 )
+        {
+            [ self serverCallToGetLoginData ];
+        }
+        
         [self setSignUpStepView];
     }
+   
+    
     
     [self.signupTableview reloadData];
     
@@ -146,12 +152,14 @@
 {
     selectedImage = [info valueForKey:UIImagePickerControllerEditedImage];
     
-//    if (selectedImage != nil )
-//    {
-//        [btnUpload setBackgroundImage:uploadActive forState:UIControlStateNormal];
-//    }
-
-    [ self serverCallForDocUpload ];
+    if ( !isOtherDoc )
+    {
+        [ self serverCallForDocUpload ];
+    }
+    else
+    {
+        [ self serverCallForOtherDocUpload ];
+    }
     [imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -204,6 +212,8 @@
             
             [_btnFourth setBackgroundImage:[UIImage imageNamed:@"four"] forState:UIControlStateNormal];
             self.docLbl.textColor = [UIColor blackColor];
+            isDocUpload = YES;
+            [ self serverCallForDocDetail ];
             break;
         }
         default:
@@ -242,9 +252,15 @@
     
     professionalArray = [NSArray arrayWithObjects:eduDic,@"Company Name",desDic,expDic,@"Office Landline No.",@"Office Address(State,City,Pin)", nil];
     
-    docArray = [NSArray arrayWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip 1",@"Salary Slip 2",@"Salary Slip 3",@"Office ID",@"Another Document",@"Mention", nil];
+    docArray = [NSArray arrayWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip 1",@"Salary Slip 2",@"Salary Slip 3",@"Office ID",@"Any other Document",@"Mention", nil];
   
+    marrDocTitle = [[ NSMutableArray alloc ] initWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip1",@"Salary Slip2",@"Salary Slip3",@"Office ID",nil];
+
     
+    marrDocName = [[ NSMutableArray alloc ] initWithObjects:@"pan_proof",@"id_proof",@"address_proof",@"employee_id",@"salary_slip1",@"salary_slip2",@"salary_slip3",@"office_id",nil];
+
+    marrDocs = [ NSMutableArray new ];
+    marrOther = [ NSMutableArray new ];
     marrState = [NSMutableArray array];
     pickerArr = [NSMutableArray array];
     marrIDProof = [ NSMutableArray array ];
@@ -274,31 +290,22 @@
     selectedIndex = 0;
     NSDictionary *dict;
     
-    if ( isIdProof )
-    {
-        dict = [marrIDProof objectAtIndex:selectedIndex];
-        strDocID = [NSString stringWithFormat:@"%d",[dict[@"id"] intValue]];
-        strDocName = @"id_proof";
-    }
-    else if( isAddreesProof )
-    {
-        dict = [marrAddress objectAtIndex:selectedIndex];
-        strDocID = [NSString stringWithFormat:@"%d",[dict[@"id"] intValue]];
-        strDocName = @"address_proof";
-        
-    }
-    else
-    {
-        strDocID = @"";
-        strDocName = @"";
-    }
-    
-    
     if ( !isOtherDoc )
     {
+        if ( isIdProof )
+        {
+            dict = [marrIDProof objectAtIndex:selectedIndex];
+            strDocID = [NSString stringWithFormat:@"%d",[dict[@"id"] intValue]];
+            strDocName = @"id_proof";
+        }
+        else if( isAddreesProof )
+        {
+            dict = [marrAddress objectAtIndex:selectedIndex];
+            strDocID = [NSString stringWithFormat:@"%d",[dict[@"id"] intValue]];
+            strDocName = @"address_proof";
+        }
+        
         [ Utilities hidePopupView:_viewProofPopUp fromViewController:self ];
-        UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
-        [imagePop showInView:self.view];
     }
     else
     {
@@ -308,16 +315,17 @@
         }
         else
         {
-            [ Utilities hidePopupView:_viewOtherPopUp fromViewController:self ];
-            [ self.view endEditing:YES ];
-            
+            strDocID = @"";
             strDocName = _txtOther.text;
             
-            UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
-            [imagePop showInView:self.view];
-            
+            [ Utilities hidePopupView:_viewOtherPopUp fromViewController:self ];
+            [ self.view endEditing:YES ];
         }
     }
+    
+    UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
+    [imagePop showInView:self.view];
+    
 }
 - (IBAction)popUpCancelAction:(id)sender
 {
@@ -405,7 +413,7 @@
          case 4:
             
         {
-            if ( isDocUpload )
+            if ( isDocPickDone )
             {
                 [ self serverCallToGetLoginData ];
             }
@@ -675,6 +683,8 @@
             self.basicinfoLbl.textColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
             [_btnSecond setBackgroundImage:[UIImage imageNamed:@"two"] forState:UIControlStateNormal];
             self.idDetailLbl.textColor = [UIColor blackColor];
+            
+            [ self serverCallToGenerateOTP ];
             [self serverCallForLoanApplication];
 
             break;
@@ -709,7 +719,7 @@
     if (signupStep < 4)
     {
         signupStep += 1;
-        if (signupStep == 3)
+        if (signupStep == 4)
         {
             [ _btnNext setBackgroundImage:[UIImage imageNamed:@"register"] forState:UIControlStateNormal];
         }
@@ -767,32 +777,48 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch (signupStep)
+    if ( tableView == self.signupTableview )
     {
-        case basicInfo:
+        switch (signupStep)
         {
-            return basicInfoArray.count;
-            break;
+            case basicInfo:
+            {
+                return basicInfoArray.count;
+                break;
+            }
+            case idDetails:
+            {
+                return idDetailArray.count;
+                break;
+            }
+            case personalInfo:
+            {
+                return professionalArray.count;
+                break;
+            }
+            case docUpload:
+            {
+                return marrDocs .count;
+                break;
+            }
+            default:
+                break;
         }
-        case idDetails:
-        {
-            return idDetailArray.count;
-            break;
-        }
-        case personalInfo:
-        {
-            return professionalArray.count;
-            break;
-        }
-        case docUpload:
-        {
-            return docArray.count;
-            break;
-        }
-        default:
-            break;
+        return 0;
     }
-    return 0;
+    else
+    {
+        if ( isIdProof )
+        {
+            return marrIDProof.count;
+        }
+        else if ( isAddreesProof )
+        {
+            return marrAddress.count;
+        }
+        return 0;
+    }
+    
 }
 
 
@@ -1049,39 +1075,38 @@
             }
             case docUpload:
             {
-                if ([[docArray objectAtIndex:indexPath.row]isEqualToString:@"Mention"])
+                static NSString *uploadTableIdentifier = @"UploadCell";
+                UploadCell *uploadCell  =  [tableView dequeueReusableCellWithIdentifier:uploadTableIdentifier];
+                if (uploadCell == nil) {
+                    uploadCell =[[[NSBundle mainBundle] loadNibNamed:@"UploadCell" owner:self options:nil] objectAtIndex:0];
+                }
+                uploadCell.uploadLbl.text = [marrDocTitle objectAtIndex:indexPath.row];
+                uploadCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                uploadCell.checkBtn.tag = indexPath.row;
+                [uploadCell.checkBtn addTarget:self action:@selector(checkButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+                
+                uploadCell.uploadBtn.tag = indexPath.row;
+                [uploadCell.uploadBtn addTarget:self action:@selector(uploadAction:) forControlEvents:UIControlEventTouchUpInside];
+                
+                uploadCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                NSString *path = [ marrDocs objectAtIndex:indexPath.row ];
+                if ( path.length > 0 || ![ path isEqualToString:@""])
                 {
-                    static NSString *singleTableIdentifier = @"SingleTableViewCell";
-                    SingleTableViewCell *singleCell  =  [tableView dequeueReusableCellWithIdentifier:singleTableIdentifier];
-                    if (singleCell == nil) {
-                        singleCell =[[[NSBundle mainBundle] loadNibNamed:@"SingleTableViewCell" owner:self options:nil] objectAtIndex:0];
-                    }
-                    singleCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    UIColor *color = [UIColor lightGrayColor];
-                    singleCell.singleTextField.font = [UIFont systemFontOfSize:14];
-                    singleCell.singleTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Mention That they can also do this from web" attributes:@{NSForegroundColorAttributeName: color}];
-                    return singleCell;
-                    
+                    isDocPickDone = YES;
+                    [uploadCell.checkBtn setBackgroundImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
+                    uploadCell.uploadLbl.textColor = [UIColor redColor];
+                    [uploadCell.uploadBtn setBackgroundImage:[UIImage imageNamed:@"uploadBtn"] forState:UIControlStateNormal];
                 }
                 else
                 {
-                    static NSString *uploadTableIdentifier = @"UploadCell";
-                    UploadCell *uploadCell  =  [tableView dequeueReusableCellWithIdentifier:uploadTableIdentifier];
-                    if (uploadCell == nil) {
-                        uploadCell =[[[NSBundle mainBundle] loadNibNamed:@"UploadCell" owner:self options:nil] objectAtIndex:0];
-                    }
-                    uploadCell.uploadLbl.text = [docArray objectAtIndex:indexPath.row];
-                    uploadCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    
-                    uploadCell.checkBtn.tag = indexPath.row;
-                    [uploadCell.checkBtn addTarget:self action:@selector(checkButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-                    
-                    uploadCell.uploadBtn.tag = indexPath.row;
-                    [uploadCell.uploadBtn addTarget:self action:@selector(uploadButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-                    
-                    return uploadCell;
+                    [uploadCell.checkBtn setBackgroundImage:[UIImage imageNamed:@"checkoff"] forState:UIControlStateNormal];
+                    uploadCell.uploadLbl.textColor = [UIColor lightGrayColor];
+                    [uploadCell.uploadBtn setBackgroundImage:[UIImage imageNamed:@"upload"] forState:UIControlStateNormal];
                     
                 }
+                return uploadCell;
                 
                 break;
             }
@@ -1113,28 +1138,30 @@
         NSDictionary *dict;
         if ( isIdProof )
         {
-            dict = [marrIDProof  objectAtIndex:indexPath.row];
+            dict = [marrIDProof objectAtIndex:indexPath.row];
             lblTitle.text = [NSString stringWithFormat:@"%@",dict[@"document_name"]];
         }
-        if ( isAddreesProof  )
+        if ( isAddreesProof )
         {
             dict = [marrAddress objectAtIndex:indexPath.row];
             lblTitle.text = [NSString stringWithFormat:@"%@",dict[@"document_name"]];
         }
-        
-        
         return cell;
     }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (signupStep == 4)
+    if ( tableView == _signupTableview )
     {
-//        UploadCell *uploadCell = [tableView cellForRowAtIndexPath:indexPath];
-//        [uploadCell.uploadBtn setBackgroundImage:[UIImage imageNamed:@"uploadBtn"] forState:UIControlStateNormal];
-//        uploadCell.uploadLbl.textColor = [UIColor blackColor];
+        selectedIndex = indexPath.row;
     }
+    else
+    {
+        selectedIndex = indexPath.row;
+        [ _tblOptions reloadData ];
+    }
+
 }
 - (void)checkButtonAction:(id)sender
 {
@@ -1160,13 +1187,63 @@
         [ btn setBackgroundImage:uploadDeactive forState:UIControlStateNormal ];
     }
 }
-- (void)uploadButtonAction:(id)sender
+- (void)uploadAction:(UIButton *)btn
 {
-    btnUpload = (UIButton *)sender;
+    btnTag = btn.tag;
+    NSString *path = [ marrDocs objectAtIndex:btnTag ];
     
-    UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
-    [imagePop showInView:self.view];
-    
+    if ( [path isEqualToString:@""] )
+    {
+        NSString *title = [ marrDocTitle objectAtIndex:btn.tag ];
+        if ( [title isEqualToString:@"ID Proof"] )
+        {
+            isIdProof = YES;
+            isAddreesProof = NO;
+            isOtherDoc = NO;
+            isOtherPopUP  = NO;
+            
+            [ Utilities showPopupView:_viewProofPopUp onViewController:self];
+            [ _tblOptions reloadData ];
+            
+        }
+        else if ( [title isEqualToString:@"Address Proof"] )
+        {
+            isAddreesProof = YES;
+            isIdProof = NO;
+            isOtherDoc = NO;
+            isOtherPopUP  = NO;
+            
+            if ( self.view.frame.size.width == 320 )
+            {
+                _tblOptions.scrollEnabled = YES;
+            }
+            
+            [ Utilities showPopupView:_viewProofPopUp onViewController:self];
+            [ _tblOptions reloadData ];
+        }
+        else if ( [title isEqualToString:@"Any other document"] )
+        {
+            isOtherDoc = YES;
+            isAddreesProof = NO;
+            isIdProof = NO;
+            
+            _txtOther.text = @"";
+            
+            [ Utilities showPopupView:_viewOtherPopUp onViewController:self];
+            [ _tblOptions reloadData ];
+        }
+        else
+        {
+            isIdProof = NO;
+            isAddreesProof = NO;
+            isOtherDoc = NO;
+            
+            strDocID = @"";
+            strDocName = [ marrDocName objectAtIndex:btnTag ];
+            UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
+            [imagePop showInView:self.view];
+        }
+    }
 }
 #pragma mark TextField Delegate
 
@@ -1352,9 +1429,32 @@
             return YES;
         }
     }
-    else if ( _txtOTP.text.length >= 4  && range.length == 0)
+    else if ( signupStep == 2 )
     {
+        if ( _txtOTP.text.length >= 4  && range.length == 0)
+        {
             return NO;
+        }
+        else  if ( textField.tag == 3 && textField.text.length >= 10 && range.length == 0)
+        {
+            return NO;
+        }
+        else  if ( textField.tag == 4 && textField.text.length >= 12 && range.length == 0)
+        {
+            return NO;
+        }
+        else if ([textField.placeholder isEqualToString:@"Loan Amount"] && textField.text.length >= 6 && range.length == 0)
+        {
+            return NO;
+        }
+        else if ([textField.placeholder isEqualToString:@"Tenure in months"] && textField.text.length >= 2 && range.length == 0 )
+        {
+            return NO;
+        }
+        else
+        {
+            return YES;
+        }
     }
     else
     {
@@ -1601,11 +1701,61 @@
 }
 
 #pragma mark Helper Method
+- (void)populateDocumentDetail:(NSDictionary *)response
+{
+    NSDictionary *dictDocs = response[@"docs"];
+    marrAddress = response[@"address_proof_document_types"];
+    marrIDProof = response[@"id_proof_document_types"];
+    marrOther = response[@"other_selected_docs"];
+    
+    [ marrDocs addObject:dictDocs[@"pan_proof"] ];
+    [ marrDocs addObject:dictDocs[@"id_proof"] ];
+    [ marrDocs addObject:dictDocs[@"address_proof"] ];
+    [ marrDocs addObject:dictDocs[@"employee_id"] ];
+    [ marrDocs addObject:dictDocs[@"salary_slip1"] ];
+    [ marrDocs addObject:dictDocs[@"salary_slip2"] ];
+    [ marrDocs addObject:dictDocs[@"salary_slip3"] ];
+    [ marrDocs addObject:dictDocs[@"office_id"] ];
+    
+    if ( marrOther.count > 0 )
+    {
+        for ( NSDictionary *temp in marrOther)
+        {
+            [ marrDocTitle addObject:temp[@"document_name"] ];
+            [marrDocs addObject:temp[@"document_path"]];
+        }
+    }
+    
+    [ marrDocTitle addObject:@"Any other document" ];// For last cell
+    [marrDocs addObject:@""];
+    [ _signupTableview reloadData ];
+}
 - (void)checkIsOtpVerified:(int)value
 {
     if ( value == 0 )
     {
         [ self serverCallToGenerateOTP ];
+    }
+}
+- (void)startTimer
+{
+    time = 60;
+    _btnResend.userInteractionEnabled = NO;
+    timer = [ NSTimer scheduledTimerWithTimeInterval:time target:self selector:@selector(updateTime) userInfo:nil repeats:YES];
+}
+- (void)updateTime
+{
+    if (time == 0 )
+    {
+        time = 60;
+        _btnResend.userInteractionEnabled = YES;
+        [ _btnResend setTitle:@"RESEND OTP" forState:UIControlStateNormal];
+        [ timer invalidate ];
+    }
+    else
+    {
+        [ _btnResend setTitle:[NSString stringWithFormat:@"RESEND OTP(%ld)",(long)time] forState:UIControlStateNormal];
+        time--;
     }
 }
 - (void)showPopupView:(UIView *)popupView onViewController:(UIViewController *)viewcontroller
@@ -1635,11 +1785,7 @@
     [ self.view endEditing:YES ];
     [self hidePopupView:_viewOtpVerify fromViewController:self];
     isOtpGenerate = NO;
-    
-    if ( [[Utilities getUserDefaultValueFromKey:@"isOtpVerify"] intValue] == 0 )
-    {
-        [ self.navigationController popViewControllerAnimated:YES ];
-    }
+    [ self.navigationController popViewControllerAnimated:YES ];
 }
 - (void)hidePopupView:(UIView *)popupView fromViewController:(UIViewController *)viewcontroller
 {
@@ -1656,6 +1802,115 @@
     [overlayView removeFromSuperview];
 }
 #pragma mark Server Call
+- (void)serverCallForDocUpload
+{
+    NSString *base64String = [ NSString stringWithFormat:@"data:image/jpg;base64,%@",[Utilities getBase64EncodedStringOfImage:selectedImage]];
+    
+    NSDictionary *param = [NSMutableDictionary new];
+    [ param setValue:@"uploadDocument" forKey:@"mode" ];
+    [ param setValue:strDocName forKey:@"document_name" ];
+    [ param setValue:base64String forKey:@"image" ];
+    [ param setValue:strDocID forKey:@"docId" ];
+    
+    [ ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 [ marrDocs replaceObjectAtIndex:btnTag withObject:response[@"file_url"] ];
+                 
+                 if ( isOtherDoc )
+                 {
+                     [ marrDocTitle insertObject:strDocName atIndex:btnTag ];
+                 }
+                 
+                 isDocPickDone = YES;
+                 [Utilities showAlertWithMessage:@"Document uoloaded successfully!" ];
+                 [ _signupTableview reloadData];
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     } ];
+    
+}
+- (void)serverCallForOtherDocUpload
+{
+    NSString *base64String = [ NSString stringWithFormat:@"data:image/jpg;base64,%@",[Utilities getBase64EncodedStringOfImage:selectedImage]];
+    
+    NSDictionary *param = [NSMutableDictionary new];
+    [ param setValue:@"uploadOtherDocument" forKey:@"mode" ];
+    [ param setValue:strDocName forKey:@"document_name" ];
+    [ param setValue:base64String forKey:@"image" ];
+    [ param setValue:strDocID forKey:@"docId" ];
+    
+    [ ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 [ marrDocs replaceObjectAtIndex:btnTag withObject:response[@"file_url"] ];
+                 
+                 if ( isOtherDoc )
+                 {
+                     [ marrDocTitle insertObject:strDocName atIndex:btnTag ];
+                     [ marrDocTitle addObject:@"Any other document"];
+                     [ marrDocs addObject:@""];
+                 }
+                 
+                 isDocPickDone = YES;
+                 [Utilities showAlertWithMessage:@"Document uoloaded successfully!" ];
+                 [ _signupTableview reloadData];
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     } ];
+    
+}
+- (void)serverCallForDocDetail
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:@"documentsFormDetails",@"mode", nil ];
+    [ ServerCall getServerResponseWithParameters:param withHUD:NO withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 [ self populateDocumentDetail:response ];
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+         
+     } ];
+}
 - (void)serverCallToGetLoginData
 {
     NSDictionary *dictParam = [NSDictionary dictionaryWithObject:@"getLoginData" forKey:@"mode"];
@@ -1672,71 +1927,37 @@
              }
              else
              {
-                 [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
-                 [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
-
-                 appDelegate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
-                 appDelegate.isLoanDisbursed = NO;
-
-                 [ self navigateToDashboard ];
-//                 StatusVC *statusVC = [ self.storyboard instantiateViewControllerWithIdentifier:@"StatusVC" ];
-//                 statusVC.dictLoandetail = response[@"latest_loan_details"];
-//                 [ self.navigationController pushViewController:statusVC animated:YES ];
+                 if ( isDocUpload )
+                 {
+                     [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
+                     [Utilities setUserDefaultWithObject:@"0" andKey:@"isLoanDisbursed"];
+                     [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
+                     appDelegate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
+                     appDelegate.isLoanDisbursed = NO;
+                     
+                     [ self navigateToDashboard ];
+                 }
+                 
+                 else
+                 {
+                     if ( [response[@"landing_page"] isEqualToString:@"otp_verification"])
+                     {
+                         [ self serverCallToGenerateOTP ];
+                     }
+                     
+                     loanID = [NSString stringWithFormat:@"%@",response[@"loan_id"]];
+                 }
              }
-             
-             /*if ( [ dictLoginResponse[@"landing_page"] isEqualToString:@"profile"] )//landing_page
-             {
-                 [self navigateAccordingToCurrentStatus:dictLoginResponse];
-             }
-             else if ( [dictLoginResponse[@"landing_page"] isEqualToString:@"id_detail"] )//landing_page
-             {
-                 [self navigateAccordingLandingPageStatus:dictLoginResponse];
-             }*/
-             
-             //             [ self navigateAccordingLandingPageStatus:dictLoginResponse ];
          }
          else
          {
-             //             [Utilities showAlertWithMessage:response];
+
          }
          
          [ SVProgressHUD dismiss ];
      }];
 }
-- (void)serverCallForDocUpload
-{
-    NSString *base64String = [Utilities getBase64EncodedStringOfImage:selectedImage];
-    
-    NSDictionary *param = [NSMutableDictionary new];
-    [ param setValue:@"uploadDocument" forKey:@"mode" ];
-    [ param setValue:@"test" forKey:@"document_name" ];
-    [ param setValue:@"1" forKey:@"docId" ];
-    [ param setValue:base64String forKey:@"image" ];
-    
-    [ ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
-     {
-         NSLog(@"response === %@", response);
-         if ([response isKindOfClass:[NSDictionary class]])
-         {
-             NSString *errorStr = [response objectForKey:@"error"];
-             if ( errorStr.length > 0 )
-             {
-                 [Utilities showAlertWithMessage:errorStr];
-             }
-             else
-             {
-                [btnUpload setBackgroundImage:uploadActive forState:UIControlStateNormal];
-                isDocUpload = YES;
-                [Utilities showAlertWithMessage:@"Document uoloaded successfully!" ];
-             }
-         }
-         else
-         {
-             [Utilities showAlertWithMessage:response];
-         }
-     } ];
-    
-}
+
 -(void)serverCallForBasicInfo
 {
     NSString *fullname = [NSString stringWithFormat:@"%@ %@",[basicInfoModalObj valueForKey:@"fname"],[basicInfoModalObj valueForKey:@"lname"]];
@@ -1775,10 +1996,10 @@
              {
                  [Utilities setUserDefaultWithObject: response[@"auth_token"] andKey:@"auth_token"];
                  [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
+                 [Utilities setUserDefaultWithObject:@"0" andKey:@"isLoanDisbursed"];
                  [Utilities setUserDefaultWithObject:@"2" andKey:@"signupStep"];
                  [Utilities setUserDefaultWithObject:response andKey:@"userinfo"];
-                 
-                 [ self serverCallToGenerateOTP ];
+                 [self changeStepColour:basicInfo];
              }
          }
          else
@@ -1952,9 +2173,6 @@
 
 - (void)serverCallForSaveloanApplication
 {
-    NSDictionary *dict =  [Utilities getUserDefaultValueFromKey:@"userinfo"];
-    NSString *loanId = dict[@"loanID"];
-
     NSMutableDictionary *param = [NSMutableDictionary new ];
     
     [ param setObject:@"saveLoanApplication" forKey:@"mode" ];
@@ -1974,7 +2192,8 @@
     [ param setObject:[serverLoanObj valueForKey:@"loanAmount"] forKey:@"loan_amount" ];
     [ param setObject:[serverLoanObj valueForKey:@"tenure"] forKey:@"loan_tenure" ];
     [ param setObject:[serverLoanObj valueForKey:@"reason"] forKey:@"loan_reason" ];
-    [ param setObject:loanId forKey:@"loan_id" ];
+    [ param setObject:loanID forKey:@"loan_id" ];
+    
     
     [ ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
     {
@@ -1990,7 +2209,6 @@
             else
             {
                 [Utilities setUserDefaultWithObject:@"3" andKey:@"signupStep"];
-//                signupStep = 3;
                 [self changeStepColour:idDetails];
             }
         }
@@ -2240,7 +2458,7 @@
     NSMutableDictionary *dictParam = [ NSMutableDictionary dictionary ];
     [ dictParam setObject:@"generateOtp" forKey:@"mode" ];
     
-    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withCompletion:^(id response)
      {
          NSLog(@" generateOtp response === %@", response);
          
@@ -2257,6 +2475,7 @@
                  {
                      isOtpGenerate = YES;
                      [ self showPopupView:_viewOtpVerify onViewController:self ];
+                     [ self startTimer ];
                  }
                  
                  _lblMobileNo.text = [basicInfoModalObj valueForKey:@"phone"];
@@ -2289,6 +2508,7 @@
              {
                  [ self hidePopupView:_viewOtpVerify fromViewController:self ];
                  [Utilities setUserDefaultWithObject:@"1" andKey:@"isOtpVerify"];
+                 [ Utilities showAlertWithMessage:response[@"msg"]];
              }
          }
          else

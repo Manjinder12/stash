@@ -8,7 +8,7 @@
 
 #import "ServerCall.h"
 
-#define service_url @"https://devapi.stasheasy.com/webServicesMobile/StasheasyApp" // Development
+#define service_url @"http://devapi.stasheasy.com/webServicesMobile/StasheasyApp" // Development
 
 //#define service_url @"https://api.stasheasy.com/webServicesMobile/StasheasyApp" // Live
 

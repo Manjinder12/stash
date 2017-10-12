@@ -360,6 +360,7 @@
     if ( buttonIndex == 1)
     {
         [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
+        [Utilities setUserDefaultWithObject:@"0" andKey:@"isLoanDisbursed"];
         [Utilities setUserDefaultWithObject:nil andKey:@"auth_token"];
         [Utilities setUserDefaultWithObject:@"1" andKey:@"signupStep"];
 

@@ -27,10 +27,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
     cityArray = [NSMutableArray array];
     cityObj = [[City alloc]init];
-    [self cityWebserviceCallwithStateId:self.stateId];
+    _cityTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];;
+
+    [ self getCityFromServer:self.stateId ];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,8 +103,34 @@
 }
 
 
-#pragma mark - Webservice
-
+#pragma mark Serverc Call
+- (void)getCityFromServer:(NSString *)stateId
+{
+    NSDictionary *dictParam = [NSDictionary dictionaryWithObjectsAndKeys:@"getCities",@"mode",@"1",@"operational",stateId,@"state_id", nil];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withCompletion:^(id response)
+     {
+         NSLog(@"state response == %@", response);
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [ Utilities showAlertWithMessage:errorStr ];
+             }
+             else
+             {
+                 cityArray =  [cityObj getCityModalArray:[response objectForKey:@"cities"]];
+                 [self.cityTableView reloadData];
+             }
+         }
+         else
+         {
+         }
+         
+     }];
+}
 -(void)cityWebserviceCallwithStateId:(NSString *)stateId {
     
     if ([CommonFunctions reachabiltyCheck]) {
@@ -112,7 +140,7 @@
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:[NSURL URLWithString:@"https://devapi.stasheasy.com/webServicesMobile/StasheasyApp"]];
+        [request setURL:[NSURL URLWithString:@"http://devapi.stasheasy.com/webServicesMobile/StasheasyApp"]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];

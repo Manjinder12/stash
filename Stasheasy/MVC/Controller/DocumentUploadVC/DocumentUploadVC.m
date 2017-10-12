@@ -14,7 +14,7 @@
 
 @interface DocumentUploadVC ()<UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UIActionSheetDelegate>
 {
-    NSMutableArray *marrDocTitle, *marrIDProof, *marrAddress, *marrDocs, *marrOther;
+    NSMutableArray *marrDocTitle, *marrIDProof, *marrAddress, *marrDocs, *marrOther , *marrDocName;
     NSDictionary *dictDocs;
     UIImagePickerController *imagePicker;
     BOOL isIdProof, isAddreesProof, isOtherDoc, isOtherPopUP;
@@ -59,7 +59,10 @@
     marrIDProof = [ NSMutableArray new ];
     marrDocs = [ NSMutableArray new ];
     marrOther = [ NSMutableArray new ];
+    
     marrDocTitle = [[ NSMutableArray alloc ] initWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip1",@"Salary Slip2",@"Salary Slip3",@"Office ID",nil];
+    
+    marrDocName = [[ NSMutableArray alloc ] initWithObjects:@"pan_proof",@"id_proof",@"address_proof",@"employee_id",@"salary_slip1",@"salary_slip2",@"salary_slip3",@"office_id",nil];
     
     imagePicker = [[UIImagePickerController alloc] init];
     
@@ -76,10 +79,18 @@
 #pragma mark UIImagePickerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
-    selectedImage = [info valueForKey:UIImagePickerControllerEditedImage];
+    selectedImage = [info valueForKey:UIImagePickerControllerOriginalImage];
 
     [ picker dismissViewControllerAnimated:YES completion:nil ];
-    [ self serverCallForDocUpload ];
+    
+    if ( !isOtherDoc )
+    {
+        [ self serverCallForDocUpload ];
+    }
+    else
+    {
+        [ self serverCallForOtherDocUpload ];
+    }
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
@@ -101,31 +112,22 @@
     selectedIndex = 0;
     NSDictionary *dict;
     
-    if ( isIdProof )
-    {
-        dict = [marrIDProof objectAtIndex:selectedIndex];
-        strDocID = [NSString stringWithFormat:@"%d",[dict[@"id"] intValue]];
-        strDocName = @"id_proof";
-    }
-    else if( isAddreesProof )
-    {
-        dict = [marrAddress objectAtIndex:selectedIndex];
-        strDocID = [NSString stringWithFormat:@"%d",[dict[@"id"] intValue]];
-        strDocName = @"address_proof";
-
-    }
-    else
-    {
-        strDocID = @"";
-        strDocName = @"";
-    }
-    
-    
     if ( !isOtherDoc )
     {
+        if ( isIdProof )
+        {
+            dict = [marrIDProof objectAtIndex:selectedIndex];
+            strDocID = [NSString stringWithFormat:@"%d",[dict[@"id"] intValue]];
+            strDocName = @"id_proof";
+        }
+        else if( isAddreesProof )
+        {
+            dict = [marrAddress objectAtIndex:selectedIndex];
+            strDocID = [NSString stringWithFormat:@"%d",[dict[@"id"] intValue]];
+            strDocName = @"address_proof";
+        }
+        
         [ Utilities hidePopupView:_viewPopUp fromViewController:self ];
-        UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
-        [imagePop showInView:self.view];
     }
     else
     {
@@ -135,16 +137,17 @@
         }
         else
         {
+            strDocID = @"";
+            strDocName = _txtOther.text;
+
             [ Utilities hidePopupView:_viewOtherPopUp fromViewController:self ];
             [ self.view endEditing:YES ];
-            
-            strDocName = _txtOther.text;
-            
-            UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
-            [imagePop showInView:self.view];
-
         }
     }
+    
+    UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
+    [imagePop showInView:self.view];
+
 }
 - (IBAction)cancelAction:(id)sender
 {
@@ -252,8 +255,6 @@
             dict = [marrAddress objectAtIndex:indexPath.row];
             lblTitle.text = [NSString stringWithFormat:@"%@",dict[@"document_name"]];
         }
-        
-        
         return cell;
     }
 }
@@ -343,8 +344,8 @@
             isAddreesProof = NO;
             isOtherDoc = NO;
 
-            strDocName = @"";
             strDocID = @"";
+            strDocName = [ marrDocName objectAtIndex:btnTag ];
             UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
             [imagePop showInView:self.view];
         }
@@ -367,7 +368,7 @@
     }
 }
 
-#pragma marl Server Call
+#pragma mark Server Call
 - (void)serverCallForDocDetail
 {
     NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:@"documentsFormDetails",@"mode", nil ];
@@ -445,9 +446,13 @@
              }
              else
              {
-                 [ marrDocs replaceObjectAtIndex:btnTag withObject:_txtOther.text ];
-                 [ marrDocTitle replaceObjectAtIndex:btnTag withObject:_txtOther.text ];
-
+                 [ marrDocs replaceObjectAtIndex:btnTag withObject:response[@"file_url"] ];
+                 
+                 if ( isOtherDoc )
+                 {
+                     [ marrDocTitle insertObject:strDocName atIndex:btnTag ];
+                 }
+                 
                  [Utilities showAlertWithMessage:@"Document uoloaded successfully!" ];
                  [ _tblDocument reloadData];
              }
@@ -458,5 +463,47 @@
          }
      } ];
 
+}
+- (void)serverCallForOtherDocUpload
+{
+    NSString *base64String = [ NSString stringWithFormat:@"data:image/jpg;base64,%@",[Utilities getBase64EncodedStringOfImage:selectedImage]];
+    
+    NSDictionary *param = [NSMutableDictionary new];
+    [ param setValue:@"uploadOtherDocument" forKey:@"mode" ];
+    [ param setValue:strDocName forKey:@"document_name" ];
+    [ param setValue:base64String forKey:@"image" ];
+    [ param setValue:strDocID forKey:@"docId" ];
+    
+    [ ServerCall getServerResponseWithParameters:param withHUD:YES withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 [ marrDocs replaceObjectAtIndex:btnTag withObject:response[@"file_url"] ];
+                 
+                 if ( isOtherDoc )
+                 {
+                     [ marrDocTitle insertObject:strDocName atIndex:btnTag ];
+                     [ marrDocTitle addObject:@"Any other document"];
+                     [ marrDocs addObject:@""];
+                 }
+                 
+                 [Utilities showAlertWithMessage:@"Document uoloaded successfully!" ];
+                 [ _tblDocument reloadData];
+             }
+         }
+         else
+         {
+             [Utilities showAlertWithMessage:response];
+         }
+     } ];
+    
 }
 @end

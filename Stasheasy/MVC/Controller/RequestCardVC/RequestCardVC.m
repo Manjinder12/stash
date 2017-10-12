@@ -25,6 +25,7 @@
 @end
 
 @implementation RequestCardVC
+@synthesize isFromMenu;
 
 - (void)viewDidLoad
 {
@@ -44,7 +45,14 @@
 }
 - (IBAction)cancelAction:(id)sender
 {
-    [ self.navigationController popToViewController:appDelegate.currentVC animated:YES ];
+    if ( !isFromMenu )
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+    {
+        [ self.navigationController popToViewController:appDelegate.currentVC animated:YES ];
+    }
 }
 - (IBAction)proceedAction:(id)sender
 {

@@ -83,10 +83,14 @@
              }
              else
              {
-                 
-                 if ([[Utilities getUserDefaultValueFromKey:@"islogin"] intValue] != 0)
+
+                 if ([[Utilities getUserDefaultValueFromKey:@"islogin"] intValue] != 0 && [[Utilities getUserDefaultValueFromKey:@"isLoanDisbursed"] intValue] != 0 )
                  {
                      [self serverCallForCardOverview];
+                 }
+                 else if ([[Utilities getUserDefaultValueFromKey:@"islogin"] intValue] != 0 && [[Utilities getUserDefaultValueFromKey:@"isLoanDisbursed"] intValue] == 0 )
+                 {
+                     [ self serverCallForPersonalDetail ];
                  }
                  else
                  {
@@ -118,7 +122,6 @@
              else
              {
                  appDelegate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
-                 appDelegate.isLoanDisbursed = YES;
              }
              
              [self navigateAccordingLandingPageStatus:response];
@@ -199,7 +202,9 @@
             // Navigate To LOC Dashboard
             
             [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
+            [Utilities setUserDefaultWithObject:@"1" andKey:@"isLoanDisbursed"];
             [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
+            
             appDelegate.isLoanDisbursed = YES;
             
             ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];

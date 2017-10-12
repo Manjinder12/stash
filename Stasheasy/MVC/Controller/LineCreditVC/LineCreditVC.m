@@ -138,12 +138,12 @@
     if ( [[Utilities getUserDefaultValueFromKey:@"cardRequested"] intValue] == 0 )
     {
         RequestCardVC *requestCardVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RequestCardVC"];
+        requestCardVC.isFromMenu = NO;
         [ self.navigationController pushViewController:requestCardVC animated:YES ];
     }
     else
     {
         [ Utilities showAlertWithMessage:@"You Have Already requested for a Card" ];
-
     }
 }
 #pragma mark LGPlusButtonsView

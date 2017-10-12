@@ -10,4 +10,6 @@
 
 @interface RequestCardVC : UIViewController
 
+@property BOOL isFromMenu;
+
 @end

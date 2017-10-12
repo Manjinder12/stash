@@ -10,7 +10,7 @@
 #import "SignupScreen.h"
 #import "AppDelegate.h"
 
-@interface ResidencePinVC ()
+@interface ResidencePinVC ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *pintextField;
 - (IBAction)backBtnTapped:(id)sender;
 - (IBAction)nextBtnTapped:(id)sender;
@@ -30,15 +30,14 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+        if ( _pintextField.text.length >=6 && range.length == 0 )
+        {
+            return NO;
+        }
+    return YES;
 }
-*/
 
 - (IBAction)backBtnTapped:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];

@@ -117,15 +117,25 @@
 #pragma mark Textfield Delegate
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if ( (_txtMobile.text.length >= 10 || _txtForgotMobile.text.length >= 10) && range.length == 0 )
+    if ( textField == _txtMobile )
     {
-        return NO;
-    }
-    else if ( (_txtMobileOTP.text.length >= 4 || _txtForgotOTP.text.length >= 4 || _txtVerifyOTP.text.length >= 4 ) && range.length == 0 )
-    {
-        return NO;
-    }
+        if ( (_txtMobile.text.length >= 10 || _txtForgotMobile.text.length >= 10) && range.length == 0 )
+        {
+            return NO;
+        }
+        else
+            return YES;
 
+    }
+    else if ( textField == _txtMobileOTP || textField == _txtForgotOTP || textField == _txtVerifyOTP )
+    {
+        if (textField.text.length >= 4 && range.length == 0 )
+        {
+            return NO;
+        }
+        else
+            return YES;
+    }
     else
     {
         return YES;
@@ -138,17 +148,6 @@
     {
         [self.view endEditing:YES];
         [self serverCallForLogin];
-
-        /*if ( !isLoginWithOTP )
-        {
-            [self.view endEditing:YES];
-            [self serverCallForLogin];
-        }
-        else
-        {
-            [self.view endEditing:YES];
-            [self serverCallForOTPLogin];
-        }*/
     }
 }
 - (IBAction)backAction:(id)sender
@@ -302,20 +301,27 @@
                 dictLoginResponse = response;
                 [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
 
-                if ( [response[@"landing_page"] isEqualToString:@"profile"] )
+                if ( [response[@"landing_page"] isEqualToString:@"profile"] && [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] )
                 {
                     [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
+                    [Utilities setUserDefaultWithObject:@"1" andKey:@"isLoanDisbursed"];
+
                     [ self serverCallForCardOverview ];
                 }
                 else if ( [response[@"landing_page"] isEqualToString:@"otp_verification"] )
                 {
+                    [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
+                    [Utilities setUserDefaultWithObject:@"0" andKey:@"isLoanDisbursed"];
+
                     isVerifyOtpGenerated = YES;
                     _lblMobileNo.text = [ NSString stringWithFormat:@"%@",dictLoginResponse[@"phone"]];
                     [ self serverCallToGenerateOTPToVerifyMobileNumber ];
                 }
                 else
                 {
-                    [Utilities setUserDefaultWithObject:dictLoginResponse[@"latest_loan_details"][@"loan_id"] andKey:@"loan_id"];
+                    [Utilities setUserDefaultWithObject:@"0" andKey:@"isLoanDisbursed"];
+
+                    appDelegate.dictCustomer = response;
                     [self navigateAccordingLandingPageStatus:dictLoginResponse];
                 }
             }
@@ -323,6 +329,7 @@
         else
         {
             [Utilities showAlertWithMessage:response];
+            [ SVProgressHUD dismiss ];
         }
     }];
 }
@@ -573,6 +580,7 @@
     {
         SignupScreen *signupScreen = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"SignupScreen"];
         [Utilities setUserDefaultWithObject:@"2" andKey:@"signupStep"];
+        [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
         signupScreen.signupStep = 2;
         [self.navigationController pushViewController:signupScreen animated:YES];
     }
@@ -581,6 +589,8 @@
     {
         SignupScreen *signupScreen = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"SignupScreen"];
         [Utilities setUserDefaultWithObject:@"3" andKey:@"signupStep"];
+        [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
+
         signupScreen.signupStep = 3;
         [self.navigationController pushViewController:signupScreen animated:YES];
     }
@@ -588,6 +598,8 @@
     {
         SignupScreen *signupScreen = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"SignupScreen"];
         [Utilities setUserDefaultWithObject:@"4" andKey:@"signupStep"];
+        [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
+
         signupScreen.signupStep = 4;
         [self.navigationController pushViewController:signupScreen animated:YES];
     }
@@ -614,13 +626,9 @@
 
         else
         {
-            ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
             appDelegate.isLoanDisbursed = NO;
+            ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
             [self.navigationController pushViewController:vc animated:YES];
-
-           /* StatusVC *statusVC = [[Utilities getStoryBoard] instantiateViewControllerWithIdentifier:@"StatusVC"];
-            statusVC.dictLoandetail = response[@"latest_loan_details"];
-            [self.navigationController pushViewController:statusVC animated:YES];*/
         }
     }
     
@@ -658,12 +666,7 @@
 }
 
 #pragma mark Helper Method
-- (void)populateLoginResponse:(NSDictionary *)response
-{
-    dictLoginResponse = response;
-//    [ self navigateAccordingLandingPageStatus:response ];
-    
-}
+
 - (void)showPopupView:(UIView *)popupView onViewController:(UIViewController *)viewcontroller
 {
     UIView *overlayView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
