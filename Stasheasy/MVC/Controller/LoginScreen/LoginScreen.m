@@ -27,8 +27,10 @@
     NSMutableDictionary *param;
     REFrostedViewController *refrostedVC;
     NSDictionary *dictLoginResponse;
-    BOOL isLoginWithOTP, isVerifyOtpGenerated;
+    BOOL isLoginWithOTP, isVerifyOtpGenerated, isForgot;
     NSString *strMobileOTP;
+    NSInteger time;
+    NSTimer *timer;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
@@ -38,8 +40,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtNewPassord;
 @property (weak, nonatomic) IBOutlet UITextField *txtMobileOTP;
 @property (weak, nonatomic) IBOutlet UILabel *lblAlert;
-@property (weak, nonatomic) IBOutlet UIButton *btnChangePassword;
-@property (weak, nonatomic) IBOutlet UIView *viewForgotInner;
+
+
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *cnsForgotViewHeight;
 
@@ -55,11 +57,12 @@
 @property (weak, nonatomic) IBOutlet UIView *viewEmailLogin;
 @property (weak, nonatomic) IBOutlet UIView *viewMobileOTP;
 @property (weak, nonatomic) IBOutlet UIView *viewOtpVerify;
+@property (weak, nonatomic) IBOutlet UIView *viewForgotInner;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnSendOTP;
 @property (weak, nonatomic) IBOutlet UIButton *btnVerify;
-@property (weak, nonatomic) IBOutlet UIButton *btnResend;
 @property (weak, nonatomic) IBOutlet UIButton *btnGenerateOTP;
+@property (weak, nonatomic) IBOutlet UIButton *btnChangePassword;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *cnsMobileOtpHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *cnsForgotInnerViewHeight;
@@ -71,8 +74,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self customInitialization];
-  }
+    [ self customInitialization ];
+}
 - (void)customInitialization
 {
     appDelegate = [ AppDelegate sharedDelegate ];
@@ -117,7 +120,7 @@
 #pragma mark Textfield Delegate
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if ( textField == _txtMobile )
+    if ( textField == _txtMobile || textField == _txtForgotMobile)
     {
         if ( (_txtMobile.text.length >= 10 || _txtForgotMobile.text.length >= 10) && range.length == 0 )
         {
@@ -178,16 +181,13 @@
     {
         [ Utilities showAlertWithMessage:@"Enter mobile number." ];
     }
-    else if ( _txtForgotMobile.text.length < 10 || _txtMobile.text.length > 10)
+    else if ( _txtForgotMobile.text.length < 10 || _txtMobile.text.length > 11)
     {
         [ Utilities showAlertWithMessage:@"Enter valid mobile number." ];
     }
     else
     {
-        _viewForgotInner.hidden = NO;
-        _cnsForgotViewHeight.constant = 270;
-        _cnsForgotInnerViewHeight.constant = 127;
-        [_btnSendOTP setTitle:@"RESEND OTP" forState:UIControlStateNormal];
+        [ self serverCallToGenerateForgotPasswordOTP];
     }
 }
 - (IBAction)generateOtpAction:(id)sender
@@ -202,6 +202,7 @@
     }
     else
     {
+        isForgot = NO;
         [ _txtMobile resignFirstResponder ];
         [ self serverCallToGenerateOTPForLogin ];
       
@@ -224,8 +225,12 @@
 }
 - (IBAction)forgotPasswordAction:(id)sender
 {
-    _viewForgotPopUp.hidden = NO;
-    [ self showPopupView:_viewForgotPopUp onViewController:self ];
+    if ( ![timer isValid] )
+    {
+        isForgot = YES;
+        _viewForgotPopUp.hidden = NO;
+        [ self showPopupView:_viewForgotPopUp onViewController:self ];
+    }
 }
 - (IBAction)verifyAction:(id)sender
 {
@@ -319,6 +324,7 @@
                 }
                 else
                 {
+                    [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
                     [Utilities setUserDefaultWithObject:@"0" andKey:@"isLoanDisbursed"];
 
                     appDelegate.dictCustomer = response;
@@ -418,10 +424,12 @@
              {
                  [Utilities showAlertWithMessage:response[@"msg"]];
                  strMobileOTP = [ NSString stringWithFormat:@"%d", [response[@"otp"] intValue]];
-                 [ _btnGenerateOTP setTitle:@"RESEND OTP" forState:UIControlStateNormal];
+                 [ _btnGenerateOTP setTitle:@"GENERATE OTP" forState:UIControlStateNormal];
                  isVerifyOtpGenerated = NO;
                  _viewMobileOTP.hidden = NO;
                  _cnsMobileOtpHeight.constant = 26;
+                 [ self startTimer ];
+
             }
          }
          else
@@ -489,7 +497,9 @@
 }
 - (void)serverCallToGenerateForgotPasswordOTP
 {
-    NSDictionary *dictParam = [NSDictionary dictionaryWithObject:@"generateForgotPasswordOTP" forKey:@"mode"];
+    NSMutableDictionary *dictParam = [ NSMutableDictionary dictionary ];
+    [ dictParam setObject:@"generateForgotPasswordOTP" forKey:@"mode" ];
+    [ dictParam setObject:_txtForgotMobile.text forKey:@"phone_no" ];
     
     [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
      {
@@ -504,7 +514,12 @@
              }
              else
              {
-                 
+                 isForgot = YES;
+                 _viewForgotInner.hidden = NO;
+                 _cnsForgotViewHeight.constant = 270;
+                 _cnsForgotInnerViewHeight.constant = 127;
+                 [_btnSendOTP setTitle:@"RESEND OTP" forState:UIControlStateNormal];
+                 [ self startTimer ];
              }
          }
          else
@@ -666,7 +681,66 @@
 }
 
 #pragma mark Helper Method
+- (void)startTimer
+{
+    time = 60;
 
+    if ( !isForgot )
+    {
+        _btnGenerateOTP.userInteractionEnabled = NO;
+        _btnGenerateOTP.enabled = NO;
+
+        timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTimer) userInfo:nil repeats:YES];
+        [ _btnGenerateOTP setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+
+    }
+    else
+    {
+        _btnSendOTP.userInteractionEnabled = NO;
+        _btnSendOTP.enabled = NO;
+
+        timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTimer) userInfo:nil repeats:YES];
+        [ _btnSendOTP setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+    }
+}
+- (void)updateTimer
+{
+    if ( time == 0 )
+    {
+        time = 60;
+        
+        if ( !isForgot )
+        {
+            [ _btnGenerateOTP setTitle:@"GENERATE OTP" forState:UIControlStateNormal];
+            [ timer invalidate ];
+            _btnGenerateOTP.userInteractionEnabled = YES;
+            _btnGenerateOTP.enabled = YES;
+            [ _btnGenerateOTP setTitleColor:[UIColor redColor] forState:UIControlStateNormal ];
+
+        }
+        else
+        {
+            [ _btnSendOTP setTitle:@"SEND OTP" forState:UIControlStateNormal];
+            [ timer invalidate ];
+            _btnSendOTP.userInteractionEnabled = YES;
+            _btnSendOTP.enabled = YES;
+            [ _btnSendOTP setTitleColor:[UIColor redColor] forState:UIControlStateNormal ];
+        }
+    }
+    else
+    {
+        if ( !isForgot )
+        {
+            [ _btnGenerateOTP setTitle:[NSString stringWithFormat:@"GENERATE OTP(%ld)", (long)time] forState:UIControlStateNormal];
+        }
+        else
+        {
+            [ _btnSendOTP setTitle:[NSString stringWithFormat:@"RESEND OTP (%ld)", (long)time] forState:UIControlStateNormal];
+        }
+        
+        time--;
+    }
+}
 - (void)showPopupView:(UIView *)popupView onViewController:(UIViewController *)viewcontroller
 {
     UIView *overlayView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -697,15 +771,19 @@
         _viewForgotInner.hidden = YES;
         _cnsForgotViewHeight.constant = 143;
         _cnsForgotInnerViewHeight.constant = 0;
-        _txtMobile.text = @"";
+        _txtForgotMobile.text = @"";
         [_btnSendOTP setTitle:@"SEND OTP" forState:UIControlStateNormal];
+        _btnSendOTP.enabled = YES;
+        [ _btnSendOTP setTitleColor:[UIColor redColor] forState:UIControlStateNormal ];
+
     }
     else
     {
         isVerifyOtpGenerated = NO;
         [ self hidePopupView:_viewOtpVerify fromViewController:self ];
     }
-
+    
+    [timer invalidate];
 }
 - (void)hidePopupView:(UIView *)popupView fromViewController:(UIViewController *)viewcontroller
 {

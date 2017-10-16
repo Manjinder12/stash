@@ -27,6 +27,7 @@
 {
     [super viewDidLoad];
     
+
     self.navigationController.navigationBar.hidden = YES;
     appDelegate = [AppDelegate sharedDelegate];
     [self serverCallToCheckTokenValidity];

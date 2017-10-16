@@ -477,7 +477,7 @@
 }
 + (NSString *)getStringFromResponse:(NSString *)str
 {
-    if ( [str isEqualToString:@""] || [ str isKindOfClass:[NSNull class]] || [str isEqual:NULL] || [str isEqualToString:@"null"] )
+    if ( [str isEqualToString:@""] || [ str isKindOfClass:[NSNull class]] || [str isEqual:NULL] || [str isEqualToString:@"null"] || [ str containsString:@"null"] )
     {
         return @"Not Available";
     }
@@ -487,4 +487,5 @@
     }
         
 }
+
 @end

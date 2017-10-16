@@ -53,7 +53,7 @@
     BOOL isDocUpload, isOtpGenerate, isAddreesProof, isIdProof, isOtherDoc, isOtherPopUP, isDocPickDone;
     NSInteger selectedIndex, time, btnTag;
     NSTimer *timer;
-    NSString *loanID;
+    NSString *loanID, *strPhoneNo;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *txtOTP;
@@ -706,6 +706,7 @@
             self.personalInfoLbl.textColor = [UIColor colorWithRed:0.0f/255.0f green:184.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
             [_btnFourth setBackgroundImage:[UIImage imageNamed:@"four"] forState:UIControlStateNormal];
             self.docLbl.textColor = [UIColor blackColor];
+            [ self serverCallForDocDetail ];
             break;
         }
         case docUpload:
@@ -1740,21 +1741,30 @@
 - (void)startTimer
 {
     time = 60;
+
     _btnResend.userInteractionEnabled = NO;
-    timer = [ NSTimer scheduledTimerWithTimeInterval:time target:self selector:@selector(updateTime) userInfo:nil repeats:YES];
+    _btnResend.enabled = NO;
+    
+    timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTime) userInfo:nil repeats:YES];
+    [ _btnResend setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+    
 }
 - (void)updateTime
 {
     if (time == 0 )
     {
         time = 60;
-        _btnResend.userInteractionEnabled = YES;
         [ _btnResend setTitle:@"RESEND OTP" forState:UIControlStateNormal];
+        [ timer invalidate ];
+        _btnResend.userInteractionEnabled = YES;
+        _btnResend.enabled = YES;
+        [ _btnResend setTitleColor:[UIColor redColor] forState:UIControlStateNormal ];
         [ timer invalidate ];
     }
     else
     {
         [ _btnResend setTitle:[NSString stringWithFormat:@"RESEND OTP(%ld)",(long)time] forState:UIControlStateNormal];
+
         time--;
     }
 }
@@ -1945,7 +1955,9 @@
                          [ self serverCallToGenerateOTP ];
                      }
                      
+                     strPhoneNo = [ NSString stringWithFormat:@"%@", response[@"phone"] ];
                      loanID = [NSString stringWithFormat:@"%@",response[@"loan_id"]];
+                     
                  }
              }
          }
@@ -2374,7 +2386,6 @@
              else
              {
                  [Utilities setUserDefaultWithObject:@"4" andKey:@"signupStep"];
-//                 signupStep = 4;
                  [self changeStepColour:personalInfo];
              }
          }
@@ -2478,7 +2489,7 @@
                      [ self startTimer ];
                  }
                  
-                 _lblMobileNo.text = [basicInfoModalObj valueForKey:@"phone"];
+                 _lblMobileNo.text = strPhoneNo;
              }
          }
          else

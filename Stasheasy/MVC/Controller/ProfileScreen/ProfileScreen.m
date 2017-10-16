@@ -90,7 +90,6 @@
     _viewPopup.hidden = YES;
     imagePicker = [[UIImagePickerController alloc] init];
     
-    
     [ Utilities setBorderAndColor:_btnPicture ];
     [ Utilities setBorderAndColor:_btnUpload ];
     [ Utilities setBorderAndColor:_btnPassword ];
@@ -132,7 +131,7 @@
 #pragma mark UIImagePickerController delegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
-    selectedImage = [info valueForKey:UIImagePickerControllerEditedImage];
+    selectedImage = [info valueForKey:UIImagePickerControllerOriginalImage];
     
     [self serverCallForUpdateProfile];
 }
@@ -390,22 +389,6 @@
 }
 -(void)setupProfileBlurScreen
 {
-    /*if (!UIAccessibilityIsReduceTransparencyEnabled())
-    {
-        self.view.backgroundColor = [UIColor clearColor];
-        
-        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-        blurEffectView.frame = self.profileView.bounds;
-        blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        blurEffectView.alpha = 0.5f;
-        [self.profileView addSubview:blurEffectView];
-    }
-    else
-    {
-        self.profileView.backgroundColor = [UIColor blackColor];
-    }*/
-    
     self.profilepic.layer.cornerRadius = self.profilepic.frame.size.width/2.0f;
     self.profilepic.layer.borderColor = [UIColor whiteColor].CGColor;
     self.profilepic.layer.borderWidth = 0.5;
@@ -637,18 +620,21 @@
 {
     _lblCustomerName.text = response[@"customer_details"][@"customer_name"];
     [ marrPerText removeAllObjects ];
-    _lblEmail.text =  response[@"customer_details"][@"email"];
-    [marrPerText addObject:response[@"customer_details"][@"phone"]];
-    [marrPerText addObject:response[@"customer_details"][@"dob"]];
-    [marrPerText addObject:response[@"customer_details"][@"pan_number"]];
-    [marrPerText addObject:response[@"customer_details"][@"aadhar_number"]];
+    _lblEmail.text = [ Utilities getStringFromResponse:response[@"customer_details"][@"email"] ];
+    [ Utilities getStringFromResponse:response[@"customer_details"][@"phone"] ];
+
+    [marrPerText addObject:[ Utilities getStringFromResponse:response[@"customer_details"][@"phone"]]];
+    
+    [marrPerText addObject:[ Utilities getStringFromResponse:response[@"customer_details"][@"dob"]]];
+    [marrPerText addObject:[ Utilities getStringFromResponse:response[@"customer_details"][@"pan_number"]]];
+    [marrPerText addObject:[ Utilities getStringFromResponse:response[@"customer_details"][@"aadhar_number"]]];
     
     NSString *currentAddress = [NSString stringWithFormat:@"%@,%@",response[@"current_address"][@"address"],response[@"current_address"][@"state"]];
    
     NSString *permanentAddress = [NSString stringWithFormat:@"%@,%@",response[@"permanent_address"][@"address"],response[@"permanent_address"][@"state"]];
     
-    [marrPerText addObject:currentAddress];
-    [marrPerText addObject:permanentAddress];
+    [marrPerText addObject:[ Utilities getStringFromResponse:currentAddress]];
+    [marrPerText addObject:[ Utilities getStringFromResponse:permanentAddress]];
     
 }
 - (void)populateProfessionalDetail:(NSDictionary *)response
@@ -860,13 +846,13 @@
 {
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient];
     
-    NSString *base64String = [Utilities getBase64EncodedStringOfImage:selectedImage];
+    NSString *base64String = [ NSString stringWithFormat:@"data:image/jpg;base64,%@",[Utilities getBase64EncodedStringOfImage:selectedImage]];
 
     NSDictionary *dictParam = [[NSDictionary alloc] initWithObjectsAndKeys:@"updateProfilePic",@"mode",base64String,@"image", nil];
     
     [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withCompletion:^(id response)
     {
-        NSLog(@"%@", response);
+        NSLog(@"updateProfilePic respone === %@", response);
         
         if ( [response isKindOfClass:[NSDictionary class]] )
         {
@@ -877,9 +863,13 @@
             }
             else
             {
-                _profilepic.image = selectedImage;
-                _imageBanner.image = selectedImage;
+               
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    _profilepic.image = selectedImage;
+                    [ self setupProfileBlurScreen ];
 
+                });            
             }
         }
         else
@@ -891,7 +881,10 @@
     
     [imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
+- (void)setProfileImage
+{
 
+}
 #pragma mark Helper Method
 - (void)showPopupView:(UIView *)popupView onViewController:(UIViewController *)viewcontroller
 {
