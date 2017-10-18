@@ -55,18 +55,18 @@
     {
         if ( appDelegate.isCardFound == YES )
         {
-            leftImages = [NSArray arrayWithObjects:@"profile",@"profile",@"calculator",@"transaction",@"applicationStatus",@"applicationStatus",@"calculator",@"logout", nil];
+            leftImages = [NSArray arrayWithObjects:@"left_dashboard",@"left_card_overview",@"left_transaction",@"left_change_pin",@"left_block_card",@"calculator",@"left_profile",@"logout", nil];
             leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Card Overview",@"My Transactions",@"Change Pin",@"Block Card",@"EMI Calculation",@"Profile",@"Logout", nil];
         }
         else
         {
-            leftImages = [NSArray arrayWithObjects:@"profile",@"calculator",@"transaction",@"applicationStatus",@"calculator",@"logout", nil];
+            leftImages = [NSArray arrayWithObjects:@"left_dashboard",@"left_getCard",@"calculator",@"left_profile",@"logout", nil];
             leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Get Stashfin Card",@"EMI Calculation",@"Profile",@"Logout", nil];
         }
     }
     else
     {
-        leftImages = [NSArray arrayWithObjects:@"profile",@"calculator",@"transaction",@"applicationStatus",@"logout", nil];
+        leftImages = [NSArray arrayWithObjects:@"left_dashboard",@"left_getCard",@"left_profile",@"logout", nil];
         leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Get Stashfin Card",@"Profile",@"Logout", nil];
 
     }

@@ -15,9 +15,10 @@
 #import "SignupScreen.h"
 #import "RejectedVC.h"
 
-@interface SplashVC ()
+@interface SplashVC ()<UIAlertViewDelegate>
 {
     AppDelegate *appDelegate;
+    NSString *appVersion;
 }
 @end
 
@@ -29,8 +30,12 @@
     
 
     self.navigationController.navigationBar.hidden = YES;
+    
     appDelegate = [AppDelegate sharedDelegate];
-    [self serverCallToCheckTokenValidity];
+    appVersion = [[[ NSBundle mainBundle ] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [ self serverCallToCheckAppVersion ];
+    
+//    [self serverCallToCheckTokenValidity];
 }
 - (void)checkTokenAndNavigate
 {
@@ -69,6 +74,44 @@
     appDelegate.window.rootViewController = navigationController;
 }
 
+#pragma mark Server Call
+- (void)serverCallToCheckAppVersion
+{
+    NSMutableDictionary *dictParam = [ NSMutableDictionary dictionary ];
+    [ dictParam setValue:@"AppVersion" forKey:@"mode" ];
+    [ dictParam setValue:@"ios" forKey:@"device_type" ];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [ Utilities showAlertWithMessage:errorStr ];
+             }
+             else
+             {
+                 if ( [response[@"app_version"] isEqualToString:appVersion] )
+                 {
+                     [ self serverCallToCheckTokenValidity ];
+                 }
+                 else
+                 {
+                     NSString *message = [NSString stringWithFormat:@"A new update %@ is now available for Stashfin. Launch App Store and update.",response[@"app_version"]];
+                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Stashfin" message:message delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Update", nil];
+                     [alert show];
+                 }
+                
+             }
+         }
+         else
+         {
+             [ Utilities showAlertWithMessage:response ];
+         }
+     }];
+}
 - (void)serverCallToCheckTokenValidity
 {
     NSDictionary *param = [NSDictionary dictionaryWithObject:@"checkAuthTokenValidity" forKey:@"mode"];
@@ -230,5 +273,18 @@
     
     [ SVProgressHUD dismiss ];
     
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ( buttonIndex == 1 )
+    {
+        NSString *appStoreLink = @"itms-apps://itunes.apple.com/app/stashfin/id1276990457?mt=8";
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:appStoreLink]];
+    }
+    else
+    {
+        exit(0);
+    }
 }
 @end
