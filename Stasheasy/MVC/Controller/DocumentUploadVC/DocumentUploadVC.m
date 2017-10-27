@@ -11,16 +11,18 @@
 #import "REFrostedViewController.h"
 #import "UploadCell.h"
 #import "Utilities.h"
+#import "AttachmentListVC.h"
 
 @interface DocumentUploadVC ()<UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UIActionSheetDelegate>
 {
+    AppDelegate *appDelegate;
     NSMutableArray *marrDocTitle, *marrIDProof, *marrAddress, *marrDocs, *marrOther , *marrDocName;
     NSDictionary *dictDocs;
     UIImagePickerController *imagePicker;
     BOOL isIdProof, isAddreesProof, isOtherDoc, isOtherPopUP;
     NSInteger selectedIndex, btnTag;
     UIImage *selectedImage;
-    NSString *strDocID, *strDocName;
+    NSString *strDocID, *strDocName, *base64String;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tblDocument;
@@ -41,10 +43,30 @@
     [super viewDidLoad];
     [ self customInitialization ];
 }
+- (void)viewWillAppear:(BOOL)animated
+{
+    if ( appDelegate.strFilePath != nil )
+    {
+        if ( !appDelegate.isDocFile )
+        {
+            base64String = [ NSString stringWithFormat:@"data:image/jpg;base64,%@",[ Utilities getBase64OfContentOfFileAtPath:appDelegate.strFilePath ]];
+        }
+        else
+        {
+            base64String = [ NSString stringWithFormat:@"data:application/pdf;base64,%@",[ Utilities getBase64OfContentOfFileAtPath:appDelegate.strFilePath ]];
+
+        }
+        
+        [ self serverCallForOtherDocUpload ];
+        appDelegate.strFilePath = nil;
+    }
+}
 - (void)customInitialization
 {
     self.navigationController.navigationBar.hidden = YES;
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    
+    appDelegate = [ AppDelegate sharedDelegate ];
     
     isIdProof = NO;
     isAddreesProof = NO;
@@ -81,8 +103,8 @@
 {
     selectedImage = [info valueForKey:UIImagePickerControllerOriginalImage];
 
-    [ picker dismissViewControllerAnimated:YES completion:nil ];
-    
+    base64String = [ NSString stringWithFormat:@"data:image/jpg;base64,%@",[Utilities getBase64EncodedStringOfImage:selectedImage]];
+
     if ( !isOtherDoc )
     {
         [ self serverCallForDocUpload ];
@@ -91,6 +113,8 @@
     {
         [ self serverCallForOtherDocUpload ];
     }
+    
+    [ picker dismissViewControllerAnimated:YES completion:nil ];
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
@@ -145,7 +169,7 @@
         }
     }
     
-    UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
+    UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library",@"Choose Document", nil];
     [imagePop showInView:self.view];
 
 }
@@ -346,7 +370,7 @@
 
             strDocID = @"";
             strDocName = [ marrDocName objectAtIndex:btnTag ];
-            UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
+            UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library",@"Choose Document", nil];
             [imagePop showInView:self.view];
         }
     }
@@ -363,6 +387,13 @@
         case 1:
             [self choosePhotoFromLibrary];
             break;
+        case 2:
+        {
+            AttachmentListVC *attachVC = [ self.storyboard instantiateViewControllerWithIdentifier:@"AttachmentListVC"];
+            [self.navigationController pushViewController:attachVC animated:YES];
+            break;
+        }
+
         default:
             break;
     }
@@ -426,8 +457,6 @@
 }
 - (void)serverCallForDocUpload
 {
-    NSString *base64String = [ NSString stringWithFormat:@"data:image/jpg;base64,%@",[Utilities getBase64EncodedStringOfImage:selectedImage]];
-    
     NSDictionary *param = [NSMutableDictionary new];
     [ param setValue:@"uploadDocument" forKey:@"mode" ];
     [ param setValue:strDocName forKey:@"document_name" ];
@@ -466,8 +495,6 @@
 }
 - (void)serverCallForOtherDocUpload
 {
-    NSString *base64String = [ NSString stringWithFormat:@"data:image/jpg;base64,%@",[Utilities getBase64EncodedStringOfImage:selectedImage]];
-    
     NSDictionary *param = [NSMutableDictionary new];
     [ param setValue:@"uploadOtherDocument" forKey:@"mode" ];
     [ param setValue:strDocName forKey:@"document_name" ];

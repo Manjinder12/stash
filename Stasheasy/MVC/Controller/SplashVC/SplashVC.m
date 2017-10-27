@@ -83,7 +83,7 @@
     
     [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withCompletion:^(id response)
      {
-         NSLog(@"response === %@", response);
+         NSLog(@"AppVersion response === %@", response);
          if ( [response isKindOfClass:[NSDictionary class]] )
          {
              NSString *errorStr = [response objectForKey:@"error"];
@@ -117,7 +117,7 @@
     NSDictionary *param = [NSDictionary dictionaryWithObject:@"checkAuthTokenValidity" forKey:@"mode"];
     [ServerCall getServerResponseWithParameters:param withHUD:NO withCompletion:^(id response)
      {
-         NSLog(@"response === %@", response);
+         NSLog(@"checkAuthTokenValidity response === %@", response);
          if ( [response isKindOfClass:[NSDictionary class]] )
          {
              NSString *errorStr = [response objectForKey:@"error"];
@@ -154,7 +154,7 @@
     
     [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withCompletion:^(id response)
      {
-         NSLog(@"response === %@", response);
+         NSLog(@"getLoginData response === %@", response);
          
          if ([response isKindOfClass:[NSDictionary class]])
          {
@@ -184,6 +184,8 @@
     
     [ServerCall getServerResponseWithParameters:param withHUD:NO withCompletion:^(id response)
      {
+         NSLog(@"cardOverview response === %@", response);
+         
          if ( [response isKindOfClass:[NSDictionary class]] )
          {
              NSString *errorStr = [response objectForKey:@"error"];

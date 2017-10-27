@@ -387,14 +387,17 @@
 }
 - (void)populateLOCDetails:(NSDictionary *)dictLOC andCardDetail:(NSDictionary *)dictCard
 {
-    _lblApprovedCredit.text = [NSString stringWithFormat:@"₹ %d",[[dictLOC valueForKey:@"loc_limit"] intValue]];
+    _lblApprovedCredit.text = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"loc_limit"] floatValue]];
     
     approvedLOC = [[dictLOC valueForKey:@"loc_limit"] intValue];
     
-    _lblUserCredit.text = [NSString stringWithFormat:@"₹ %d",[[dictLOC valueForKey:@"used_loc"] intValue]];
+    _lblUserCredit.text = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"used_loc"] floatValue]];
     usedLOC = [[dictLOC valueForKey:@"used_loc"] intValue];
 
-    strRemainLOC = [NSString stringWithFormat:@"₹ %d",[[dictLOC valueForKey:@"remaining_loc"] intValue]];
+    
+    strRemainLOC = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"remaining_loc"] floatValue]];
+
+    
     remainingLOC = [[dictLOC valueForKey:@"remaining_loc"] intValue];
     _lblRemainCredit.text = strRemainLOC;
     
@@ -404,7 +407,7 @@
     }
     else
     {
-        _lblBalance.text = [NSString stringWithFormat:@"₹ %d",[[dictLOC valueForKey:@"balance_on_card"] intValue]];
+        _lblBalance.text = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"balance_on_card"] floatValue]];
     }
     
     if ( [[dictLOC valueForKey:@"total_balance"] intValue] == 0 )
@@ -413,7 +416,7 @@
     }
     else
     {
-        _lblTotalBalance.text = [NSString stringWithFormat:@"₹ %d",[[dictLOC valueForKey:@"total_balance"] intValue]];
+        _lblTotalBalance.text = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"total_balance"] floatValue]];
     }
     
     if ( [[dictLOC valueForKey:@"next_emi_found"] intValue] == 0)
@@ -424,10 +427,10 @@
     else
     {
         _lblEMIDate.text = [NSString stringWithFormat:@"%@",[dictLOC valueForKey:@"next_emi_date"]];
-        _lblEMIAmount.text = [NSString stringWithFormat:@"₹ %d",[[dictLOC valueForKey:@"next_emi_amount"] intValue]];
+        _lblEMIAmount.text = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"next_emi_amount"] floatValue]];
     }
     
-    _lblRequestAmount.text = [NSString stringWithFormat:@"₹ %d",[[dictLOC valueForKey:@"last_loc_request_amount"] intValue]];
+    _lblRequestAmount.text = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"last_loc_request_amount"] floatValue]];
     appDelegate.loanRequestStatus = [NSString stringWithFormat:@"%@",[dictLOC valueForKey:@"last_loc_request_status"]].uppercaseString;
     _lblRequestStatus.text = appDelegate.loanRequestStatus;
     

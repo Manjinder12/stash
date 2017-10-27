@@ -111,6 +111,8 @@
 		E29D8FD51F8CF0C000472C25 /* RequestCardVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E29D8FD41F8CF0C000472C25 /* RequestCardVC.m */; };
 		E2A781121F2B1D9400C151CC /* RadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A781111F2B1D9400C151CC /* RadioButton.m */; };
 		E2A781161F2B496500C151CC /* LOCWithdrawalVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A781151F2B496500C151CC /* LOCWithdrawalVC.m */; };
+		E2AD2FD61FA350EE00AA9AC5 /* AttachmentListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E2AD2FD51FA350EE00AA9AC5 /* AttachmentListVC.m */; };
+		E2AD2FDA1FA3524100AA9AC5 /* AttachmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E2AD2FD91FA3524100AA9AC5 /* AttachmentCell.m */; };
 		E2C60FB21F27398F00DCA206 /* LeftScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C60FAE1F27398F00DCA206 /* LeftScreen.m */; };
 		E2C60FB31F27398F00DCA206 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C60FB11F27398F00DCA206 /* ViewController.m */; };
 		E2D01F951F3495B900296A84 /* UIColor+HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = E2D01F8F1F3495B900296A84 /* UIColor+HexColor.m */; };
@@ -352,6 +354,11 @@
 		E2A781111F2B1D9400C151CC /* RadioButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadioButton.m; sourceTree = "<group>"; };
 		E2A781141F2B496500C151CC /* LOCWithdrawalVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOCWithdrawalVC.h; sourceTree = "<group>"; };
 		E2A781151F2B496500C151CC /* LOCWithdrawalVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOCWithdrawalVC.m; sourceTree = "<group>"; };
+		E2AD2FD41FA350EE00AA9AC5 /* AttachmentListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttachmentListVC.h; sourceTree = "<group>"; };
+		E2AD2FD51FA350EE00AA9AC5 /* AttachmentListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttachmentListVC.m; sourceTree = "<group>"; };
+		E2AD2FD81FA3524100AA9AC5 /* AttachmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttachmentCell.h; sourceTree = "<group>"; };
+		E2AD2FD91FA3524100AA9AC5 /* AttachmentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttachmentCell.m; sourceTree = "<group>"; };
+		E2AD2FDB1FA3556800AA9AC5 /* Stasheasy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Stasheasy.entitlements; sourceTree = "<group>"; };
 		E2C60FAD1F27398F00DCA206 /* LeftScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftScreen.h; sourceTree = "<group>"; };
 		E2C60FAE1F27398F00DCA206 /* LeftScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftScreen.m; sourceTree = "<group>"; };
 		E2C60FB01F27398F00DCA206 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -555,6 +562,7 @@
 		781D1E411EE0885E00D82E86 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E2AD2FD31FA350EE00AA9AC5 /* AttachmentListVC */,
 				E29D8FD21F8CF0B200472C25 /* RequestCardVC */,
 				E276F1B21F7A33890005A199 /* DocumentUploadVC */,
 				E2847C641F3C950D00C5D3A3 /* StatusVC */,
@@ -592,6 +600,7 @@
 		781D1E421EE0885E00D82E86 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E2AD2FD71FA3524100AA9AC5 /* AttachmentCell */,
 				E287008A1F8BB0EC008A67A6 /* LoanPayableCell */,
 				E2305EF41F2A0ABC005CDBAF /* LoanCell */,
 				E2D2CCCF1F2617B100E98F2E /* LandingVC */,
@@ -737,6 +746,7 @@
 		78A703F71EDE66A9001054CC /* Stasheasy */ = {
 			isa = PBXGroup;
 			children = (
+				E2AD2FDB1FA3556800AA9AC5 /* Stasheasy.entitlements */,
 				E2D2CCC31F26155200E98F2E /* AppDelegate */,
 				E2D2CCC61F26155200E98F2E /* Utilities */,
 				BB583A771EEA6A14000B73AA /* HTTPService */,
@@ -1218,6 +1228,24 @@
 			path = LOCWithdrawalVC;
 			sourceTree = "<group>";
 		};
+		E2AD2FD31FA350EE00AA9AC5 /* AttachmentListVC */ = {
+			isa = PBXGroup;
+			children = (
+				E2AD2FD41FA350EE00AA9AC5 /* AttachmentListVC.h */,
+				E2AD2FD51FA350EE00AA9AC5 /* AttachmentListVC.m */,
+			);
+			path = AttachmentListVC;
+			sourceTree = "<group>";
+		};
+		E2AD2FD71FA3524100AA9AC5 /* AttachmentCell */ = {
+			isa = PBXGroup;
+			children = (
+				E2AD2FD81FA3524100AA9AC5 /* AttachmentCell.h */,
+				E2AD2FD91FA3524100AA9AC5 /* AttachmentCell.m */,
+			);
+			path = AttachmentCell;
+			sourceTree = "<group>";
+		};
 		E2C60FAC1F27398F00DCA206 /* LeftScreenVC */ = {
 			isa = PBXGroup;
 			children = (
@@ -1376,6 +1404,11 @@
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = NKF7DZ3X72;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					78A7040D1EDE66AA001054CC = {
 						CreatedOnToolsVersion = 8.3.2;
@@ -1523,6 +1556,7 @@
 				78D1D4211EE7B7F700E22864 /* TransactionScreen.m in Sources */,
 				781D1E621EE09FD900D82E86 /* DoubleTableViewCell.m in Sources */,
 				BBA1A7EE1EF8FD5400B1406A /* TransactionList.m in Sources */,
+				E2AD2FD61FA350EE00AA9AC5 /* AttachmentListVC.m in Sources */,
 				7805509A1F0ACC8800A1B34F /* IQTextView.m in Sources */,
 				E208E5A31F3308E3006EBF9F /* SplashVC.m in Sources */,
 				BBC2D4DE1EFA585A00FDC823 /* ChatLeftCell.m in Sources */,
@@ -1558,6 +1592,7 @@
 				786D7AB21EE5E2CA00EDEB21 /* StatusCell.m in Sources */,
 				BB583A991EEACDA1000B73AA /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				E2305EF31F2A01C3005CDBAF /* ReloadCardVC.m in Sources */,
+				E2AD2FDA1FA3524100AA9AC5 /* AttachmentCell.m in Sources */,
 				BB583A9B1EEACDA1000B73AA /* TPKeyboardAvoidingTableView.m in Sources */,
 				780550961F0ACC8800A1B34F /* IQUIViewController+Additions.m in Sources */,
 				BB85AF8A1EE29D4700B32986 /* LoginScreen.m in Sources */,
@@ -1751,6 +1786,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Stasheasy/Stasheasy.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = NKF7DZ3X72;
 				INFOPLIST_FILE = Stasheasy/Info.plist;
@@ -1769,6 +1805,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Stasheasy/Stasheasy.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = NKF7DZ3X72;
 				INFOPLIST_FILE = Stasheasy/Info.plist;

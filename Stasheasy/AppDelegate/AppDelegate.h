@@ -20,11 +20,11 @@
 @property (strong,nonatomic) NSString *stateName;
 @property (strong,nonatomic) NSString *cityName;
 @property (strong,nonatomic) NSString *residencePin;
-@property (weak,nonatomic) NSString *loanRequestStatus;
+@property (weak,nonatomic) NSString *loanRequestStatus, *strFilePath;
 
 @property NSString *strLandingPage;
 @property NSDictionary *dictLOCDetail, *dictCard, *dictOverview, *dictTransaction,*dictAnalyze, *dictCustomer;
-@property BOOL isCardFound, isPreApproved, isLoanDisbursed;
+@property BOOL isCardFound, isPreApproved, isLoanDisbursed, isDocFile;
 @property UIViewController *currentVC;
 @end
 

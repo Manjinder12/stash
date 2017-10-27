@@ -715,7 +715,7 @@
             [ timer invalidate ];
             _btnGenerateOTP.userInteractionEnabled = YES;
             _btnGenerateOTP.enabled = YES;
-            [ _btnGenerateOTP setTitleColor:[UIColor redColor] forState:UIControlStateNormal ];
+            [ _btnGenerateOTP setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal ];
 
         }
         else

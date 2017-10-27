@@ -16,7 +16,7 @@
 @interface ConsolidatedEMIVC ()<UITableViewDelegate,UITableViewDataSource,LGPlusButtonsViewDelegate,UIAlertViewDelegate>
 {
     LGPlusButtonsView *stashfinButton;
-    NSMutableArray *marrLoans;
+    NSMutableArray *marrLoans, *marrTotalEMI;
     NSDictionary *dictResponse;
     BOOL isStashExpand;
 
@@ -56,6 +56,8 @@
 - (void)customInitialization
 {
     marrLoans = [[NSMutableArray alloc] init];
+    marrTotalEMI = [[NSMutableArray alloc] init];
+    dictResponse = [ NSDictionary dictionary ];
     
     _viewEMIPayable.layer.shadowOffset = CGSizeMake(1, 1);
     _viewEMIPayable.layer.shadowRadius = 4;
@@ -84,16 +86,27 @@
 }
 
 #pragma mark Tableview Delegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [marrLoans count] ;
+    if ( section == 0 )
+    {
+        return 1;
+    }
+    else
+    {
+        return [ marrTotalEMI count ];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _tblLoans.separatorColor = [UIColor clearColor];
     
-    if ( indexPath.row < [marrLoans count] )
+    if ( indexPath.section == 0 )
     {
         LoanCell *loanCell = [tableView dequeueReusableCellWithIdentifier:@"LoanCell"];
         
@@ -102,17 +115,19 @@
         [[dict valueForKey:@"approved_rate"] intValue];
         [dict valueForKey:@""];
         
-        NSString *strLoanAmount = [NSString stringWithFormat:@"Loan%ld:₹%d",indexPath.row+1 ,[[dict valueForKey:@"approved_amount"] intValue]];
+        NSString *strLoanAmount = [NSString stringWithFormat:@"Loan%d:₹ %.01f ",indexPath.row+1 ,[[dict valueForKey:@"approved_amount"] floatValue]];
         
-        NSString *strRate = [NSString stringWithFormat:@" @%d%@",[[dict valueForKey:@"approved_rate"] intValue],@"%PM"];
+        NSString *strRate = [NSString stringWithFormat:@"@%d%@ ",[[dict valueForKey:@"approved_rate"] intValue],@"%PM"];
         
-        NSString *strTenure = [NSString stringWithFormat:@" For %d Months",[[dict valueForKey:@"approved_tenure"] intValue]];
+        NSString *strTenure = [NSString stringWithFormat:@"For %d Months",[[dict valueForKey:@"approved_tenure"] intValue]];
         
         
         NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@",strLoanAmount,strRate,strTenure]];
-        [attString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0, [strLoanAmount length])];
-        [attString addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange([strLoanAmount length], [strRate length])];
-        [attString addAttribute:NSForegroundColorAttributeName value:[UIColor purpleColor] range:NSMakeRange([strRate length], [strTenure length])];
+        [attString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, [strLoanAmount length])];
+
+        [attString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange([strLoanAmount length], [strRate length])];
+
+        [attString addAttribute:NSForegroundColorAttributeName value:[UIColor lightGrayColor] range:NSMakeRange(( [strLoanAmount length] + [strRate length]), [strTenure length])];
         
         loanCell.lblLoanDetail.attributedText = attString;
         
@@ -191,7 +206,6 @@
         }
         else
         {
-            dictResponse = response;
             [Utilities showAlertWithMessage:response];
         }
         
@@ -200,8 +214,9 @@
 }
 - (void)populateEMIDetails:(id)response
 {
-    marrLoans = [response valueForKey:@"loans"];
-    
+    marrLoans = response [@"loans"];
+    dictResponse = response[@"total"];
+
     _lblFirst.text = [NSString stringWithFormat:@"EMI ₹%@",[[[response valueForKey:@"total"] valueForKey:@"first"] valueForKey:@"amount"]];
     _lblFirstDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[response valueForKey:@"total"] valueForKey:@"first"] valueForKey:@"date"]]];
     

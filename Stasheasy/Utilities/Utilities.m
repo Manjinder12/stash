@@ -494,4 +494,21 @@
     return [ string isEqualToString:filter ];
 
 }
+
++ (NSString *) getContentTypeForFileExtension: (NSString *) extension
+{
+    NSString *fileExtension = extension;
+    NSString *UTI = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)fileExtension, NULL);
+    NSString *contentType = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)UTI, kUTTagClassMIMEType);
+    return contentType;
+}
+
++ (NSString *)getBase64OfContentOfFileAtPath:(NSString *)objectPath
+{
+    NSData *dataaaa = [ NSData dataWithContentsOfFile:objectPath ];
+    
+    NSString *strencoded = [dataaaa base64EncodedStringWithOptions:kNilOptions];
+    
+    return strencoded;
+}
 @end

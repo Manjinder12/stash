@@ -318,7 +318,7 @@
         MFMailComposeViewController *mfMailVC = [[ MFMailComposeViewController alloc ] initWithNibName:nil bundle:nil];
         [ mfMailVC setMailComposeDelegate:self ];
         [ mfMailVC setToRecipients:@[ _lblSupportEmail.text]];
-        [ mfMailVC setSubject:@"Support Streloatshfin" ];
+        [ mfMailVC setSubject:@"Support Stashfin" ];
         [ self presentViewController:mfMailVC animated:YES completion:nil ];
     }
 }

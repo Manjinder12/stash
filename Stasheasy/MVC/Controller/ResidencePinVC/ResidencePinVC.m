@@ -23,6 +23,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.pintextField.keyboardType = UIKeyboardTypeNumberPad;
+    self.pintextField.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {

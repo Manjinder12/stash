@@ -136,4 +136,10 @@
 // Set chartacter set
 + (BOOL)setCharacterSetToString:(NSString *)string withCharacterSet:(NSString *)set;
 
+// Get content type for file extension
++ (NSString *) getContentTypeForFileExtension: (NSString *) extension;
+
+// get base 64 string
++ (NSString *)getBase64OfContentOfFileAtPath:(NSString *)objectPath;
+
 @end
