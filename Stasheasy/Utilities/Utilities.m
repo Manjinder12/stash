@@ -195,7 +195,7 @@
 }
 + (void)showAlertWithMessage:(NSString *)message
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Statshfin" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"StashFin" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
     [alert show];
 }
 + (UIImage*)compressImageWithImage:(UIImage*)image

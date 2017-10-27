@@ -262,7 +262,7 @@
             return YES;
         }
         
-        UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"Staheasy" message:message preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"StashFin" message:message preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             

@@ -214,14 +214,11 @@
             NSString *errorStr = [response objectForKey:@"error"];
             if ( errorStr.length > 0 )
             {
-                [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
+                [self showAlertWithTitle:@"StashFin" withMessage:errorStr];
             }
             else
             {
-//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Stashfin" message:[response valueForKey:@"msg"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//                [alert show];
-                [self showAlertWithTitle:@"Stashfin" withMessage:[response valueForKey:@"msg"]];
-
+                [self showAlertWithTitle:@"StashFin" withMessage:[response valueForKey:@"msg"]];
             }
         }
         else

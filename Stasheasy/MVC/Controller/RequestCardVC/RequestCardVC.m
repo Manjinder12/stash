@@ -103,7 +103,7 @@
              {
                  [ Utilities setUserDefaultWithObject:@"1" andKey:@"cardRequested" ];
                  
-                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Stashfin" message:response[@"msg"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"StashFin" message:response[@"msg"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                  [alert show];
                 
              }

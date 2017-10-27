@@ -245,7 +245,7 @@
              }
              else
              {
-                 [self showAlertWithTitle:@"Stashfin" withMessage:response[@"msg"]];
+                 [self showAlertWithTitle:@"StashFin" withMessage:response[@"msg"]];
              }
          }
          else

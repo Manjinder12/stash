@@ -550,7 +550,7 @@
     
         if (error)
         {
-            UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"Stashfin" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"StashFin" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
             
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                 
@@ -582,7 +582,7 @@
                 
                 if (error)
                 {
-                    UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"Stashfin" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"StashFin" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
                     
                     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                         
@@ -602,7 +602,7 @@
             
             if (error)
             {
-                UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"Stashfin" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"StashFin" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
                 
                 UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                     
@@ -635,7 +635,7 @@
                 
                 if (error)
                 {
-                    UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"Stashfin" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"StashFin" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
                     
                     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                         

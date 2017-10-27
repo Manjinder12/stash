@@ -179,7 +179,7 @@
             NSString *errorStr = [response objectForKey:@"error"];
             if ( errorStr.length > 0 )
             {
-                UIAlertView *alert = [ [ UIAlertView alloc ] initWithTitle:@"Stashfin" message:errorStr delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil ];
+                UIAlertView *alert = [ [ UIAlertView alloc ] initWithTitle:@"StashFin" message:errorStr delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil ];
                 [ alert show ];
                 
             }
