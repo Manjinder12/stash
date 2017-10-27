@@ -86,6 +86,7 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/AFNetworking/AFNetworking.framework"
   install_framework "$BUILT_PRODUCTS_DIR/DACircularProgress/DACircularProgress.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/DBAttachmentPickerController/DBAttachmentPickerController.framework"
   install_framework "$BUILT_PRODUCTS_DIR/LGPlusButtonsView/LGPlusButtonsView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/MBProgressHUD/MBProgressHUD.framework"
   install_framework "$BUILT_PRODUCTS_DIR/MWPhotoBrowser/MWPhotoBrowser.framework"
@@ -97,6 +98,7 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/AFNetworking/AFNetworking.framework"
   install_framework "$BUILT_PRODUCTS_DIR/DACircularProgress/DACircularProgress.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/DBAttachmentPickerController/DBAttachmentPickerController.framework"
   install_framework "$BUILT_PRODUCTS_DIR/LGPlusButtonsView/LGPlusButtonsView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/MBProgressHUD/MBProgressHUD.framework"
   install_framework "$BUILT_PRODUCTS_DIR/MWPhotoBrowser/MWPhotoBrowser.framework"

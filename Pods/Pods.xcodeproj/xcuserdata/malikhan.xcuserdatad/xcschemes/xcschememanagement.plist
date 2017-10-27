@@ -14,6 +14,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>DBAttachmentPickerController-DBAttachmentPickerController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>DBAttachmentPickerController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>LGPlusButtonsView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -77,12 +87,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5EE8D776CE9DB1A3CB84BE0F19405682</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>6212CB59450DF6F520BC2F9C043A4CAE</key>
+		<key>22E656049578F30CB3974BB663ED87C5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -102,6 +107,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>B66C02B89F29769DE8E6DA3484906938</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>BE7A5E8E0FDE9CA58316BC4D6568818D</key>
 		<dict>
 			<key>primary</key>
@@ -112,7 +122,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>CA19E5516253B6AF5A1154BBAA2426A2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>E61CE3B6DFA1FE6B3E296965C76C0E10</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E8858C7C6AFFEC2B4592E11DE03B96EC</key>
 		<dict>
 			<key>primary</key>
 			<true/>

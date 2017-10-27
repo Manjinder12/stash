@@ -9,5 +9,5 @@ target 'Stasheasy' do
   pod 'LGPlusButtonsView', '~> 1.1.0'
   pod 'MWPhotoBrowser'
   pod 'PNChart’
-
+  pod 'DBAttachmentPickerController', '~> 1.1.0'
 end
