@@ -45,7 +45,7 @@
     [Utilities setCornerRadius:_viewUpper];
     [Utilities setCornerRadius:_viewLower];
     
-//    [self addStashfinButtonView];
+//    [self addStashFinButtonView];
     isStashExpand = NO;
     
     [self populateLOCWithrawalResponse];
@@ -68,7 +68,7 @@
 }
 
 #pragma mark LGPlusButtonsView
-- (void)addStashfinButtonView
+- (void)addStashFinButtonView
 {
     stashfinButton = [[LGPlusButtonsView alloc] initWithNumberOfButtons:6 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
     

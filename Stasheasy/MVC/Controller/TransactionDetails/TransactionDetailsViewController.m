@@ -67,10 +67,10 @@
         else
             [self transactionAction:_btnTransaction];
     }
-//    [self addStashfinButtonView];
+//    [self addStashFinButtonView];
 }
 #pragma mark LGPlusButtonsView
-- (void)addStashfinButtonView
+- (void)addStashFinButtonView
 {
     stashfinButton = [[LGPlusButtonsView alloc] initWithNumberOfButtons:5 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
     

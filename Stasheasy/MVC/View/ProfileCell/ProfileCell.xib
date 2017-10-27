@@ -23,9 +23,6 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ug-ad-sAt">
                                 <rect key="frame" x="150" y="4" width="170" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="NEB-4x-nsj"/>
-                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -42,12 +39,13 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="3Ug-ad-sAt" secondAttribute="bottom" constant="4" id="1oe-ba-eik"/>
+                            <constraint firstItem="3Ug-ad-sAt" firstAttribute="leading" secondItem="Ww0-AI-2dU" secondAttribute="leading" constant="150" id="57r-Kw-1Gl"/>
                             <constraint firstAttribute="bottom" secondItem="rfT-HT-fbx" secondAttribute="bottom" constant="6" id="BcP-wS-top"/>
-                            <constraint firstItem="3Ug-ad-sAt" firstAttribute="top" secondItem="Ww0-AI-2dU" secondAttribute="top" constant="4" id="CbM-Xb-N7g"/>
-                            <constraint firstAttribute="trailing" secondItem="3Ug-ad-sAt" secondAttribute="trailing" id="Iej-l5-IMI"/>
-                            <constraint firstItem="3Ug-ad-sAt" firstAttribute="leading" secondItem="rfT-HT-fbx" secondAttribute="trailing" id="NUi-9D-vYq"/>
-                            <constraint firstAttribute="bottom" secondItem="3Ug-ad-sAt" secondAttribute="bottom" constant="4" id="U87-jT-1L7"/>
+                            <constraint firstItem="3Ug-ad-sAt" firstAttribute="top" secondItem="Ww0-AI-2dU" secondAttribute="top" constant="4" id="GWZ-qr-4Im"/>
+                            <constraint firstAttribute="trailing" secondItem="3Ug-ad-sAt" secondAttribute="trailing" id="I2D-Dq-0gg"/>
                             <constraint firstItem="rfT-HT-fbx" firstAttribute="top" secondItem="Ww0-AI-2dU" secondAttribute="top" constant="6" id="VOr-4w-epY"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="28" id="YtJ-aB-0kH"/>
                             <constraint firstItem="rfT-HT-fbx" firstAttribute="leading" secondItem="Ww0-AI-2dU" secondAttribute="leading" constant="10" id="gIA-q9-EaP"/>
                         </constraints>
                     </view>

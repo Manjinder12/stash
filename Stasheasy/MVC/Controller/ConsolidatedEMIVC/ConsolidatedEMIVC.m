@@ -67,7 +67,7 @@
     _tblLoans.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     _viewOuter.hidden = NO;
-//    [self addStashfinButtonView];
+//    [self addStashFinButtonView];
 //    isStashExpand = NO;
     
     [self serverCallForConsolidatedEMIDetails];
@@ -227,7 +227,7 @@
    
 }
 #pragma mark LGPlusButtonsView
-- (void)addStashfinButtonView
+- (void)addStashFinButtonView
 {
     stashfinButton = [[LGPlusButtonsView alloc] initWithNumberOfButtons:1 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
     

@@ -487,5 +487,11 @@
     }
         
 }
++ (BOOL)setCharacterSetToString:(NSString *)string withCharacterSet:(NSString *)set
+{
+    NSCharacterSet *characterSet = [ [ NSCharacterSet characterSetWithCharactersInString:set ] invertedSet ];
+    NSString *filter = [ [ string componentsSeparatedByCharactersInSet:characterSet ] componentsJoinedByString:@"" ];
+    return [ string isEqualToString:filter ];
 
+}
 @end

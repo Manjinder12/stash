@@ -32,10 +32,10 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-        if ( _pintextField.text.length >=6 && range.length == 0 )
-        {
-            return NO;
-        }
+    if ( _pintextField.text.length >=6 && range.length == 0 )
+    {
+        return NO;
+    }
     return YES;
 }
 

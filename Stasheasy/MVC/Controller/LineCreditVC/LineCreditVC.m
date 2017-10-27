@@ -105,6 +105,7 @@
 }
 - (void)viewWillAppear:(BOOL)animated
 {
+    
 }
 
 #pragma mark Collectionview Delegate
@@ -147,7 +148,7 @@
     }
 }
 #pragma mark LGPlusButtonsView
-- (void)addStashfinButtonView
+- (void)addStashFinButtonView
 {
     stashfinButton = [[LGPlusButtonsView alloc] initWithNumberOfButtons:5 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
     
@@ -346,7 +347,7 @@
                 
                 [self populateLOCDetails:appDelegate.dictLOCDetail andCardDetail:appDelegate.dictCard];
                 
-//                [self addStashfinButtonView];
+//                [self addStashFinButtonView];
                 isStashExpand = NO;
                 _viewOuter.hidden = YES;
             }
@@ -488,11 +489,7 @@
 }
 - (IBAction)refreshAction:(id)sender
 {
-    NSLog(@"refreshAction");
-    NSLog(@"refreshAction");
-    NSLog(@"refreshAction");
-    NSLog(@"consolidatedEMIAction");
-
+    [ self serverCallForLOCDetails ];
 }
 
 @end

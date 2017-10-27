@@ -145,7 +145,7 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark LGPlusButtonsView
-- (void)addStashfinButtonView
+- (void)addStashFinButtonView
 {
     stashfinButton = [[LGPlusButtonsView alloc] initWithNumberOfButtons:5 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
     
@@ -604,7 +604,7 @@
                  [self populateProfessionalDetail:dictProfessional];
                  [self populateDocumentsDetail:response];
                  
-//                 [self addStashfinButtonView];
+//                 [self addStashFinButtonView];
                  isStashExpand = NO;
              }
          }
@@ -640,7 +640,7 @@
 - (void)populateProfessionalDetail:(NSDictionary *)response
 {
     [ marrProText removeAllObjects ];
-    [marrProText addObject:@"Stashfin"];
+    [marrProText addObject:@"StashFin"];
     
     if ([response[@"professional_details"][@"designation"] isKindOfClass:[NSNull class]])
     {
@@ -794,7 +794,7 @@
              }
              else
              {
-                 UIAlertView *alert = [[ UIAlertView alloc ] initWithTitle:@"Stashfin" message:response[@"msg"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                 UIAlertView *alert = [[ UIAlertView alloc ] initWithTitle:@"StashFin" message:response[@"msg"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                  [ alert show ];
              }
          }

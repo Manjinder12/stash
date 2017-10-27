@@ -1,6 +1,6 @@
 //
 //  SignupScreen.m
-//  Stashfin
+//  StashFin
 //
 //  Created by Duke on 01/06/17.
 //  Copyright © 2017 duke. All rights reserved.
@@ -25,6 +25,9 @@
 #import "Utilities.h"
 #import "StatusVC.h"
 #import "LandingVC.h"
+
+#define ALPHA_SET @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
+#define ALPHA_NUMERIC_SET @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456"
 
 @interface SignupScreen ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate>
 {
@@ -265,7 +268,7 @@
     pickerArr = [NSMutableArray array];
     marrIDProof = [ NSMutableArray array ];
     marrAddress = [ NSMutableArray array ];
-    marrCity = [[NSMutableArray alloc] initWithObjects:@"Delhi",@"Ghaziabad", @"Faridabad",@"Gurgaon",@"Noida",@"Banglore",@"Pune",nil ];
+    marrCity = [[NSMutableArray alloc] initWithObjects:@"Delhi",@"Ghaziabad", @"Faridabad",@"Gurgaon",@"Noida",@"Bangalore",@"Pune",@"Mumbai",nil ];
 
     isOtherDoc = NO;
     isAddreesProof = NO;
@@ -655,7 +658,7 @@
             
             if (error)
             {
-                UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"Stashfin" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertController *alert  = [UIAlertController alertControllerWithTitle:@"StashFin" message:[error.userInfo objectForKey:NSLocalizedDescriptionKey] preferredStyle:UIAlertControllerStyleAlert];
                 
                 UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                     
@@ -1421,7 +1424,11 @@
 {
     if ( signupStep == 1 )
     {
-        if ( textField.tag == 3 && textField.text.length >=10 && range.length == 0 )
+        if ( textField.tag == 0 || textField.tag == 1 )
+        {
+           return [ Utilities setCharacterSetToString:string withCharacterSet:ALPHA_SET ];
+        }
+        else if ( textField.tag == 3 && textField.text.length >=10 && range.length == 0 )
         {
             return NO;
         }
@@ -1438,11 +1445,15 @@
         }
         else  if ( textField.tag == 3 && textField.text.length >= 10 && range.length == 0)
         {
-            return NO;
+           return [ Utilities setCharacterSetToString:string withCharacterSet:ALPHA_NUMERIC_SET ];
         }
         else  if ( textField.tag == 4 && textField.text.length >= 12 && range.length == 0)
         {
             return NO;
+        }
+        else  if ( textField.tag == 5 )
+        {
+            return [ Utilities setCharacterSetToString:string withCharacterSet:ALPHA_SET ];
         }
         else if ([textField.placeholder isEqualToString:@"Loan Amount"] && textField.text.length >= 6 && range.length == 0)
         {
@@ -1620,7 +1631,6 @@
             return [pickerArr objectAtIndex:row];
         }
     }
-   
     return @"";
 }
 
@@ -1635,19 +1645,6 @@
     }
     
     currentRow = (int)row;
-
-//     else
-//    {
-//        City *cobject = [marrCity objectAtIndex:row];
-//        if ([selTextfield.placeholder isEqualToString:@"City"] && signupStep == 2)
-//        {
-//            selTextfield.text = cobject.cityName ;
-//            NSArray *keysarr = [basicInfoModalObj giveKeysArray];
-//            NSString *key = [keysarr objectAtIndex:selTextfield.tag];
-//            [basicInfoModalObj setValue:cobject.cityid forKey:key];
-//        }
-//        currentRow = (int)row;
-//    }
 }
 
 #pragma mark UIActionSheet Delegate
@@ -1691,14 +1688,6 @@
 {
     ViewController *vc = (ViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"rootController"];
     [self.navigationController pushViewController:vc animated:YES];
-
-    /*ViewController *vc = (ViewController *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"rootController"] ;
-    UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];
-    navigationController.viewControllers = @[vc];
-    navigationController.navigationBar.hidden = YES;
-    navigationController.interactivePopGestureRecognizer.enabled = NO;
-    appDelegate.window.rootViewController = navigationController;*/
-    
 }
 
 #pragma mark Helper Method
@@ -1786,7 +1775,7 @@
         popupView.transform = CGAffineTransformIdentity;
     } completion:^(BOOL finished) {
         
-        //        [self.view bringSubviewToFront:_viewPicker];
+
     }];
     
 }
@@ -1842,7 +1831,7 @@
                  }
                  
                  isDocPickDone = YES;
-                 [Utilities showAlertWithMessage:@"Document uoloaded successfully!" ];
+                 [Utilities showAlertWithMessage:@"Document uploaded successfully!" ];
                  [ _signupTableview reloadData];
              }
          }
@@ -2002,7 +1991,7 @@
              NSString *errorStr = [response objectForKey:@"error"];
              if ( errorStr.length > 0 )
              {
-                 [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
+                 [self showAlertWithTitle:@"StashFin" withMessage:errorStr];
              }
              else
              {
@@ -2031,7 +2020,7 @@
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:[NSURL URLWithString:@"https://devapi.Stashfin.com/webServicesMobile/StashfinApp"]];
+        [request setURL:[NSURL URLWithString:@"https://devapi.StashFin.com/webServicesMobile/StashFinApp"]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -2050,7 +2039,7 @@
                   
                   if ( errorStr.length> 0)
                   {
-                      [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
+                      [self showAlertWithTitle:@"StashFin" withMessage:errorStr];
                   }
                   else
                   {
@@ -2066,7 +2055,7 @@
          resume
          ];
     } else {
-        [self showAlertWithTitle:@"Stashfin" withMessage:@"Please check internet"];
+        [self showAlertWithTitle:@"StashFin" withMessage:@"Please check internet"];
     }*/
     
 }
@@ -2106,7 +2095,7 @@
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:[NSURL URLWithString:@"https://devapi.Stashfin.com/webServicesMobile/StashfinApp"]];
+        [request setURL:[NSURL URLWithString:@"https://devapi.StashFin.com/webServicesMobile/StashFinApp"]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -2123,7 +2112,7 @@
             NSString *errorStr = [responseDic objectForKey:@"error"];
             if ( errorStr.length > 0 )
             {
-                [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
+                [self showAlertWithTitle:@"StashFin" withMessage:errorStr];
             }
             else
             {
@@ -2135,7 +2124,7 @@
          resume
          ];
     } else {
-        [self showAlertWithTitle:@"Stashfin" withMessage:@"Please check internet"];
+        [self showAlertWithTitle:@"StashFin" withMessage:@"Please check internet"];
     }*/
     
 }
@@ -2150,7 +2139,7 @@
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:[NSURL URLWithString:@"https://devapi.Stashfin.com/webServicesMobile/StashfinApp"]];
+        [request setURL:[NSURL URLWithString:@"https://devapi.StashFin.com/webServicesMobile/StashFinApp"]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -2166,7 +2155,7 @@
                 NSString *errorStr = [responseDic objectForKey:@"error"];
                 if (errorStr.length>0)
                 {
-                    [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
+                    [self showAlertWithTitle:@"StashFin" withMessage:errorStr];
                 }
                 else
                 {
@@ -2179,7 +2168,7 @@
          resume
          ];
     } else {
-        [self showAlertWithTitle:@"Stashfin" withMessage:@"Please check internet"];
+        [self showAlertWithTitle:@"StashFin" withMessage:@"Please check internet"];
     }
 }
 
@@ -2245,7 +2234,7 @@
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:[NSURL URLWithString:@"https://devapi.Stashfin.com/webServicesMobile/StashfinApp"]];
+        [request setURL:[NSURL URLWithString:@"https://devapi.StashFin.com/webServicesMobile/StashFinApp"]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -2262,7 +2251,7 @@
                 NSLog(@"%@",responseDic);
                 NSString *errorStr = [responseDic objectForKey:@"error"];
                 if (errorStr.length>0) {
-                    [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
+                    [self showAlertWithTitle:@"StashFin" withMessage:errorStr];
                 }
                 else {
                     NSLog(@"success");
@@ -2274,7 +2263,7 @@
          resume
          ];
     } else {
-        [self showAlertWithTitle:@"Stashfin" withMessage:@"Please check internet"];
+        [self showAlertWithTitle:@"StashFin" withMessage:@"Please check internet"];
     }*/
     
 }
@@ -2314,7 +2303,7 @@
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:[NSURL URLWithString:@"https://devapi.Stashfin.com/webServicesMobile/StashfinApp"]];
+        [request setURL:[NSURL URLWithString:@"https://devapi.StashFin.com/webServicesMobile/StashFinApp"]];
         [request setHTTPMethod:@"POST"];
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSDictionary *userInfo = [defaults valueForKey:@"userinfo"];
@@ -2337,7 +2326,7 @@
                 NSLog(@"%@",responseDic);
                 NSString *errorStr = [responseDic objectForKey:@"error"];
                 if (errorStr.length>0) {
-                    [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
+                    [self showAlertWithTitle:@"StashFin" withMessage:errorStr];
                 }
                 else {
                     NSLog(@"success");
@@ -2349,7 +2338,7 @@
          resume
          ];
     } else {
-        [self showAlertWithTitle:@"Stashfin" withMessage:@"Please check internet"];
+        [self showAlertWithTitle:@"StashFin" withMessage:@"Please check internet"];
     }*/
     
     
@@ -2406,7 +2395,7 @@
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-        [request setURL:[NSURL URLWithString:@"https://devapi.Stashfin.com/webServicesMobile/StashfinApp"]];
+        [request setURL:[NSURL URLWithString:@"https://devapi.StashFin.com/webServicesMobile/StashFinApp"]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -2422,7 +2411,7 @@
                 NSLog(@"%@",responseDic);
                 NSString *errorStr = [responseDic objectForKey:@"error"];
                 if (errorStr.length>0) {
-                    [self showAlertWithTitle:@"Stashfin" withMessage:errorStr];
+                    [self showAlertWithTitle:@"StashFin" withMessage:errorStr];
                 }
                 else {
                     NSLog(@"success");
@@ -2434,7 +2423,7 @@
          resume
          ];
     } else {
-        [self showAlertWithTitle:@"Stashfin" withMessage:@"Please check internet"];
+        [self showAlertWithTitle:@"StashFin" withMessage:@"Please check internet"];
     }*/
     
 }

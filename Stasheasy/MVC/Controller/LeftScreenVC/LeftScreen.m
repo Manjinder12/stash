@@ -61,13 +61,13 @@
         else
         {
             leftImages = [NSArray arrayWithObjects:@"left_dashboard",@"left_getCard",@"calculator",@"left_profile",@"logout", nil];
-            leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Get Stashfin Card",@"EMI Calculation",@"Profile",@"Logout", nil];
+            leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Get StashFin Card",@"EMI Calculation",@"Profile",@"Logout", nil];
         }
     }
     else
     {
         leftImages = [NSArray arrayWithObjects:@"left_dashboard",@"left_getCard",@"left_profile",@"logout", nil];
-        leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Get Stashfin Card",@"Profile",@"Logout", nil];
+        leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Get StashFin Card",@"Profile",@"Logout", nil];
 
     }
     
@@ -187,7 +187,7 @@
             }
             else if(indexPath.row == 7)
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Stathfin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"StathFin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
                 [ alert show];
                 [self.frostedViewController hideMenuViewController];
             }
@@ -242,7 +242,7 @@
             }
             else if(indexPath.row == 4)
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Stathfin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"StathFin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
                 [ alert show];
                 [self.frostedViewController hideMenuViewController];
             }
@@ -287,7 +287,7 @@
         }
         else if(indexPath.row == 3)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Stathfin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"StathFin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
             [ alert show];
             [self.frostedViewController hideMenuViewController];
         }

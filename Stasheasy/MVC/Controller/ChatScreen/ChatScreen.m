@@ -63,7 +63,7 @@
     _tblChat.hidden = YES;
     _lblMessage.hidden = NO;
     
-//    [self addStashfinButtonView];
+//    [self addStashFinButtonView];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -71,7 +71,7 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark LGPlusButtonsView
-- (void)addStashfinButtonView
+- (void)addStashFinButtonView
 {
     stashfinButton = [[LGPlusButtonsView alloc] initWithNumberOfButtons:5 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
     

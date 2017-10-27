@@ -36,11 +36,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Stasheasy/MVC/Controller/SignUpScreen/SignupScreen.m"
-            timestampString = "529853724.370441"
+            timestampString = "530794292.314725"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "720"
-            endingLineNumber = "720"
+            startingLineNumber = "723"
+            endingLineNumber = "723"
             landmarkName = "-changeStepColour:"
             landmarkType = "7">
          </BreakpointContent>
@@ -67,28 +67,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Stasheasy/MVC/Controller/LoginScreen/LoginScreen.m"
-            timestampString = "529852052.389196"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "730"
-            endingLineNumber = "730"
-            landmarkName = "-updateTimer"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Stasheasy/MVC/Controller/SignUpScreen/SignupScreen.m"
-            timestampString = "529853724.370441"
+            timestampString = "530794636.568201"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1953"
-            endingLineNumber = "1953"
+            startingLineNumber = "1942"
+            endingLineNumber = "1942"
             landmarkName = "-serverCallToGetLoginData"
             landmarkType = "7">
          </BreakpointContent>

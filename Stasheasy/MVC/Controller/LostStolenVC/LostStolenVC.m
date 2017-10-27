@@ -39,7 +39,7 @@
     
     strLostStolen = @"";
     self.navigationController.navigationBar.hidden = YES;
-//    [self addStashfinButtonView];
+//    [self addStashFinButtonView];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -90,7 +90,7 @@
     return YES;
 }
 #pragma mark LGPlusButtonsView
-- (void)addStashfinButtonView
+- (void)addStashFinButtonView
 {
     stashfinButton = [[LGPlusButtonsView alloc] initWithNumberOfButtons:5 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
     

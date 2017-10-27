@@ -99,8 +99,8 @@
                  }
                  else
                  {
-                     NSString *message = [NSString stringWithFormat:@"A new update %@ is now available for Stashfin. Launch App Store and update.",response[@"app_version"]];
-                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Stashfin" message:message delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Update", nil];
+                     NSString *message = [NSString stringWithFormat:@"A new update %@ is now available for StashFin. Launch App Store and update.",response[@"app_version"]];
+                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"StashFin" message:message delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Update", nil];
                      [alert show];
                  }
                 

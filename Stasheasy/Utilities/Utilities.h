@@ -133,4 +133,7 @@
 // Check null string in STring
 + (NSString *)getStringFromResponse:(NSString *)str;
 
+// Set chartacter set
++ (BOOL)setCharacterSetToString:(NSString *)string withCharacterSet:(NSString *)set;
+
 @end

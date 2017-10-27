@@ -45,11 +45,11 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(chatBtnTapped) name:@"chat" object:nil];
     
     [self addLineOfCreditScreen];
-    [self addStashfinButtonView];
+    [self addStashFinButtonView];
     isStashExpand = NO;
 }
 #pragma mark LGPlusButtonsView
-- (void)addStashfinButtonView
+- (void)addStashFinButtonView
 {
     stashfinButton = [[LGPlusButtonsView alloc] initWithNumberOfButtons:6 firstButtonIsPlusButton:YES showAfterInit:YES delegate:self];
     
