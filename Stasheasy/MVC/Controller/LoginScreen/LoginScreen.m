@@ -95,9 +95,9 @@
     _lblAlert.hidden = YES;
 
     isVerifyOtpGenerated = NO;
-    
     _cnsMobileOtpHeight.constant = 0;
     
+    _txtNewPassord.secureTextEntry = YES;
     
     [ Utilities setBorderAndColor:_btnSendOTP ];
     [ Utilities setBorderAndColor:_btnChangePassword ];
@@ -130,6 +130,7 @@
             return YES;
 
     }
+
     else if ( textField == _txtMobileOTP || textField == _txtForgotOTP || textField == _txtVerifyOTP )
     {
         if (textField.text.length >= 4 && range.length == 0 )
@@ -151,6 +152,18 @@
     {
         [self.view endEditing:YES];
         [self serverCallForLogin];
+    }
+}
+
+- (IBAction)changePasswordAction:(id)sender
+{
+    if ( _txtNewPassord.text.length < 8 )
+    {
+        [ Utilities showAlertWithMessage:@"Password should be of miminum 8 characters" ];
+    }
+    else
+    {
+        [ self serverCallForChangePassword ];
     }
 }
 - (IBAction)backAction:(id)sender
@@ -528,6 +541,38 @@
          }
      }];
     
+}
+- (void)serverCallForChangePassword
+{
+    NSMutableDictionary *dictParam = [ NSMutableDictionary dictionary ];
+    [ dictParam setObject:@"resetPassword" forKey:@"mode" ];
+    [ dictParam setObject:_txtForgotOTP.text forKey:@"otp" ];
+    [ dictParam setObject:_txtNewPassord.text forKey:@"password" ];
+    [ dictParam setObject:_txtForgotMobile.text forKey:@"phone_no" ];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withCompletion:^(id response)
+     {
+         NSLog(@"resetPassword response === %@", response);
+         
+         if ( [response isKindOfClass:[NSDictionary class]] )
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [ Utilities showAlertWithMessage:errorStr ];
+             }
+             else
+             {
+                 [ Utilities showAlertWithMessage:response[@"msg"] ];
+                 [ self hidePopupView:_viewForgotPopUp fromViewController:self ];
+             }
+         }
+         else
+         {
+             [ SVProgressHUD dismiss ];
+         }
+         
+     }];
 }
 -(void)loginApiCall
 {

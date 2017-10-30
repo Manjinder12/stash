@@ -14,7 +14,6 @@
 
 
 
-
 @implementation ServerCall
 
 + (void)getServerResponseWithParameters:(id)parameters withHUD:(BOOL)HUD withCompletion:(void (^) (id response))response
