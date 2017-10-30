@@ -27,7 +27,8 @@
 #import "LandingVC.h"
 
 #define ALPHA_SET @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
-#define ALPHA_NUMERIC_SET @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456"
+#define ALPHA_NUMERIC_SET @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+#define NUMERIC_SET @"0123456789"
 
 @interface SignupScreen ()<UIActionSheetDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate>
 {
@@ -137,7 +138,6 @@
         {
             [ self serverCallToGetLoginData ];
         }
-        
         [self setSignUpStepView];
     }
    
@@ -774,6 +774,7 @@
     NSString *addressString = [NSString stringWithFormat:@"%@,%@,%@",appDelegate.stateName,appDelegate.cityName,appDelegate.residencePin];
     selTextfield.text = addressString;
     [loanApplicationObj setValue:addressString forKey:@"scp"];
+    [ pfobj setValue:appDelegate.stateid forKey:@"prof_address" ];
     [serverLoanObj setValue:addressString forKey:@"scp"];
 }
 
@@ -999,10 +1000,12 @@
             }
             case personalInfo:
             {
-                if ([[professionalArray objectAtIndex:indexPath.row] isKindOfClass:[NSDictionary class]]) {
+                if ([[professionalArray objectAtIndex:indexPath.row] isKindOfClass:[NSDictionary class]])
+                {
                     static NSString *doubleTableIdentifier = @"professionalTableViewCell";
                     DoubleTableViewCell *doubleCell =  [tableView dequeueReusableCellWithIdentifier:doubleTableIdentifier];
-                    if (doubleCell == nil) {
+                    if (doubleCell == nil)
+                    {
                         doubleCell =[[[NSBundle mainBundle] loadNibNamed:@"DoubleTableViewCell" owner:self options:nil] objectAtIndex:0];
                         doubleCell.firstField.delegate =self;
                         doubleCell.secondField.delegate =self;
@@ -1011,6 +1014,7 @@
                         [doubleCell.secondField addTarget:self action:@selector(updateUserInput:) forControlEvents:UIControlEventEditingChanged];
                         
                     }
+                    
                     //set tag for double textfield
                     [doubleCell.firstField setTag:indexPath.row];
                     doubleCell.secondField.tag = indexPath.row;
@@ -1045,8 +1049,6 @@
                     {
                         doubleCell.secondField.text = valStr2;
                     }
-                    
-                    
                     
                     return doubleCell;
                     
@@ -1439,13 +1441,25 @@
     }
     else if ( signupStep == 2 )
     {
-        if ( _txtOTP.text.length >= 4  && range.length == 0)
+        if ( textField == _txtOTP)
         {
-            return NO;
+            if ( _txtOTP.text.length >= 4  && range.length == 0)
+            {
+                return NO;
+            }
+            
+            return YES;
         }
-        else  if ( textField.tag == 3 && textField.text.length >= 10 && range.length == 0)
+        else  if ( textField.tag == 3 )
         {
-           return [ Utilities setCharacterSetToString:string withCharacterSet:ALPHA_NUMERIC_SET ];
+            if (  textField.text.length >= 10 && range.length == 0)
+            {
+                return NO;
+            }
+            else
+            {
+                return [ Utilities setCharacterSetToString:string withCharacterSet:ALPHA_NUMERIC_SET ];
+            }
         }
         else  if ( textField.tag == 4 && textField.text.length >= 12 && range.length == 0)
         {
@@ -1455,11 +1469,11 @@
         {
             return [ Utilities setCharacterSetToString:string withCharacterSet:ALPHA_SET ];
         }
-        else if ([textField.placeholder isEqualToString:@"Loan Amount"] && textField.text.length >= 6 && range.length == 0)
+        else if ([textField.placeholder isEqualToString:@"Loan Amount"] && textField.text.length >=6 && range.length == 0 )
         {
             return NO;
         }
-        else if ([textField.placeholder isEqualToString:@"Tenure in months"] && textField.text.length >= 2 && range.length == 0 )
+        else if ([textField.placeholder isEqualToString:@"Tenure in months"] && textField.text.length >= 2 && range.length == 0  )
         {
             return NO;
         }
@@ -1691,6 +1705,12 @@
 }
 
 #pragma mark Helper Method
+- (BOOL)validatePanCard:(NSString *)string
+{
+    NSString *panRegex = @"[A-Za-z]{5}[0-9]{4}[A-Za-z]{1}";
+    NSPredicate *predicate = [ NSPredicate predicateWithFormat:@"SELF MATCHES %@", panRegex ];
+    return [ predicate evaluateWithObject:string ];
+}
 - (void)populateDocumentDetail:(NSDictionary *)response
 {
     NSDictionary *dictDocs = response[@"docs"];
@@ -1926,7 +1946,7 @@
              }
              else
              {
-                 if ( isDocUpload )
+                 if ( isDocPickDone )
                  {
                      [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
                      [Utilities setUserDefaultWithObject:@"0" andKey:@"isLoanDisbursed"];
@@ -2282,11 +2302,12 @@
              NSString *errorStr = [response objectForKey:@"error"];
              if ( errorStr.length > 0 )
              {
-                 [ Utilities showAlertWithMessage:errorStr ];
+//                 [ Utilities showAlertWithMessage:errorStr ];
              }
              else
              {
                  eduPicker.responseDic = response;
+                 [ self.signupTableview reloadData ];
              }
          }
          else
@@ -2509,6 +2530,7 @@
                  [ self hidePopupView:_viewOtpVerify fromViewController:self ];
                  [Utilities setUserDefaultWithObject:@"1" andKey:@"isOtpVerify"];
                  [ Utilities showAlertWithMessage:response[@"msg"]];
+                 _txtOTP.text = @"";
              }
          }
          else

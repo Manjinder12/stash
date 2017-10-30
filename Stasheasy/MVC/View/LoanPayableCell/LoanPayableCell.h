@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface LoanPayableCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIView *viewContainer;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblFirst;
 @property (weak, nonatomic) IBOutlet UILabel *lblFirstDate;

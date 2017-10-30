@@ -387,55 +387,102 @@
 }
 - (void)populateLOCDetails:(NSDictionary *)dictLOC andCardDetail:(NSDictionary *)dictCard
 {
-    _lblApprovedCredit.text = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"loc_limit"] floatValue]];
-    
-    approvedLOC = [[dictLOC valueForKey:@"loc_limit"] intValue];
-    
-    _lblUserCredit.text = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"used_loc"] floatValue]];
-    usedLOC = [[dictLOC valueForKey:@"used_loc"] intValue];
-
-    
-    strRemainLOC = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"remaining_loc"] floatValue]];
-
-    
-    remainingLOC = [[dictLOC valueForKey:@"remaining_loc"] intValue];
-    _lblRemainCredit.text = strRemainLOC;
-    
-    if ( [[dictLOC valueForKey:@"balance_on_card"] intValue] == 0 )
+    if ( [ Utilities getValueFromResponse:[dictLOC valueForKey:@"loc_limit"] ] )
     {
-        _lblBalance.text = @"-";
+        _lblApprovedCredit.text = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"loc_limit"] floatValue]];
+        approvedLOC = [[dictLOC valueForKey:@"loc_limit"] intValue];
     }
     else
+    {
+        _lblApprovedCredit.text = @"-";
+    }
+    
+    
+    if ( [ Utilities getValueFromResponse:[dictLOC valueForKey:@"used_loc"] ] )
+    {
+        _lblUserCredit.text = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"used_loc"] floatValue]];
+        usedLOC = [[dictLOC valueForKey:@"used_loc"] intValue];
+    }
+    else
+    {
+        _lblUserCredit.text = @"-";
+    }
+    
+    
+    if ( [ Utilities getValueFromResponse:[dictLOC valueForKey:@"remaining_loc"] ] )
+    {
+        strRemainLOC = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"remaining_loc"] floatValue]];
+        remainingLOC = [[dictLOC valueForKey:@"remaining_loc"] intValue];
+        _lblRemainCredit.text = strRemainLOC;
+    }
+    else
+    {
+        _lblRemainCredit.text = @"-";
+    }
+    
+
+    if ( [ Utilities getValueFromResponse:[dictLOC valueForKey:@"balance_on_card"] ] )
     {
         _lblBalance.text = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"balance_on_card"] floatValue]];
     }
-    
-    if ( [[dictLOC valueForKey:@"total_balance"] intValue] == 0 )
-    {
-        _lblTotalBalance.text = @"-";
-    }
     else
+    {
+        _lblBalance.text = @"-";
+    }
+
+    if ( [ Utilities getValueFromResponse:[dictLOC valueForKey:@"total_balance"] ] )
     {
         _lblTotalBalance.text = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"total_balance"] floatValue]];
     }
-    
-    if ( [[dictLOC valueForKey:@"next_emi_found"] intValue] == 0)
-    {
-        _lblEMIDate.text = @"-";
-        _lblEMIAmount.text = @"-";
-    }
     else
+    {
+        _lblTotalBalance.text = @"-";
+    }
+    
+  
+    if ( [ Utilities getValueFromResponse:[dictLOC valueForKey:@"next_emi_found"] ] )
     {
         _lblEMIDate.text = [NSString stringWithFormat:@"%@",[dictLOC valueForKey:@"next_emi_date"]];
         _lblEMIAmount.text = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"next_emi_amount"] floatValue]];
     }
+    else
+    {
+        _lblEMIDate.text = @"-";
+        _lblEMIAmount.text = @"-";
+    }
+
+  
+    if ( [ Utilities getValueFromResponse:[dictLOC valueForKey:@"last_loc_request_amount"] ] )
+    {
+        _lblRequestAmount.text = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"last_loc_request_amount"] floatValue]];
+    }
+    else
+    {
+        _lblRequestAmount.text = @"-";
+    }
+
     
-    _lblRequestAmount.text = [NSString stringWithFormat:@"₹ %.02f",[[dictLOC valueForKey:@"last_loc_request_amount"] floatValue]];
-    appDelegate.loanRequestStatus = [NSString stringWithFormat:@"%@",[dictLOC valueForKey:@"last_loc_request_status"]].uppercaseString;
-    _lblRequestStatus.text = appDelegate.loanRequestStatus;
+    if ( [ Utilities getValueFromResponse:[dictLOC valueForKey:@"last_loc_request_date"] ] )
+    {
+        _lblRequestDate.text = [dictLOC valueForKey:@"last_loc_request_date"];
+    }
+    else
+    {
+        _lblRequestDate.text = @"-";
+    }
     
     
-    _lblRequestDate.text = [dictLOC valueForKey:@"last_loc_request_date"];
+    if ( [ Utilities getValueFromResponse:[dictLOC valueForKey:@"last_loc_request_status"] ] )
+    {
+        appDelegate.loanRequestStatus = [NSString stringWithFormat:@"%@",[dictLOC valueForKey:@"last_loc_request_status"]].uppercaseString;
+        _lblRequestStatus.text = appDelegate.loanRequestStatus;
+    }
+    else
+    {
+        _lblRequestStatus.text = @"-";
+    }
+    
+    
     
     _lblCardNo.text = [NSString stringWithFormat:@"%@",dictCard[@"card_no"]];
     _lblCardDate.text = [NSString stringWithFormat:@"%@/%@",dictCard[@"expiry_month"],dictCard[@"expiry_year"]];

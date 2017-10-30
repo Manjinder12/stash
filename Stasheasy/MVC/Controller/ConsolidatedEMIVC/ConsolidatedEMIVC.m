@@ -19,6 +19,7 @@
     NSMutableArray *marrLoans, *marrTotalEMI;
     NSDictionary *dictResponse;
     BOOL isStashExpand;
+    int totalCellCount;
 
 }
 
@@ -43,6 +44,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *tblLoans;
 @property (weak, nonatomic) IBOutlet UIView *viewEMIPayable;
 @property (weak, nonatomic) IBOutlet UIView *viewOuter;
+@property (weak, nonatomic) IBOutlet UIView *viewInner;
+@property (weak, nonatomic) IBOutlet UILabel *lblDesc;
 
 @end
 
@@ -66,11 +69,25 @@
     _viewEMIPayable.layer.masksToBounds = YES;
     _viewEMIPayable.layer.shadowColor = [UIColor lightGrayColor].CGColor;
 
+    totalCellCount = 0;
+    
     _tblLoans.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    _tblLoans.estimatedRowHeight = 100;
+    _tblLoans.rowHeight = UITableViewAutomaticDimension;
     
     _viewOuter.hidden = NO;
-//    [self addStashFinButtonView];
-//    isStashExpand = NO;
+    _viewEMIPayable.hidden = YES;
+    
+    
+    
+    float shadowSize = 10.0f;
+    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(_viewInner.frame.origin.x - shadowSize /2,_viewInner.frame.origin.y - shadowSize / 2,_viewInner.frame.size.width + shadowSize, _viewInner.frame.size.height + shadowSize)];
+    _viewInner.layer.masksToBounds = NO;
+    _viewInner.layer.shadowColor = [UIColor blackColor].CGColor;
+    _viewInner.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+    _viewInner.layer.shadowOpacity = 0.8f;
+    _viewInner.layer.shadowPath = shadowPath.CGPath;
+    
     
     [self serverCallForConsolidatedEMIDetails];
 }
@@ -94,14 +111,17 @@
 {
     if ( section == 0 )
     {
-        return 1;
+        return [ marrLoans count ];
     }
     else
     {
-        return [ marrTotalEMI count ];
+        return totalCellCount;
     }
 }
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewAutomaticDimension;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _tblLoans.separatorColor = [UIColor clearColor];
@@ -113,9 +133,8 @@
         NSDictionary *dict = [marrLoans objectAtIndex:indexPath.row];
         
         [[dict valueForKey:@"approved_rate"] intValue];
-        [dict valueForKey:@""];
         
-        NSString *strLoanAmount = [NSString stringWithFormat:@"Loan%d:₹ %.01f ",indexPath.row+1 ,[[dict valueForKey:@"approved_amount"] floatValue]];
+        NSString *strLoanAmount = [NSString stringWithFormat:@"Loan%ld:₹ %.01f ",indexPath.row+1 ,[[dict valueForKey:@"approved_amount"] floatValue]];
         
         NSString *strRate = [NSString stringWithFormat:@"@%d%@ ",[[dict valueForKey:@"approved_rate"] intValue],@"%PM"];
         
@@ -158,28 +177,35 @@
     {
         LoanPayableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LoanPayableCell"];
         
-        cell.lblFirst.text = [NSString stringWithFormat:@"EMI ₹%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"first"] valueForKey:@"amount"]];
-        cell.lblFirstDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"first"] valueForKey:@"date"]]];
+        cell.lblFirst.text = [NSString stringWithFormat:@"EMI ₹%d", [dictResponse[@"first"][@"amount"] intValue]];
+        cell.lblFirstDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",dictResponse[@"first"][@"date"] ]];
         
-        cell.lblSecond.text = [NSString stringWithFormat:@"EMI ₹%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"second"] valueForKey:@"amount"]];
-        cell.lblSecondDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"second"] valueForKey:@"date"]]];
+        cell.lblSecond.text = [NSString stringWithFormat:@"EMI ₹%d", [dictResponse[@"second"][@"amount"] intValue]];
+        cell.lblSecondDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",dictResponse[@"second"][@"date"] ]];
         
-        cell.lblThird.text = [NSString stringWithFormat:@"EMI ₹%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"third"] valueForKey:@"amount"]];
-        cell.lblThirdDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"third"] valueForKey:@"date"]]];
+        cell.lblThird.text = [NSString stringWithFormat:@"EMI ₹%d", [dictResponse[@"third"][@"amount"] intValue]];
+        cell.lblThirdDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",dictResponse[@"third"][@"date"] ]];
         
-        cell.lblFourth.text = [NSString stringWithFormat:@"EMI ₹%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"fourth"] valueForKey:@"amount"]];
-        cell.lblFourthDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"fourth"] valueForKey:@"date"]]];
+        cell.lblFourth.text = [NSString stringWithFormat:@"EMI ₹%d", [dictResponse[@"fourth"][@"amount"] intValue]];
+        cell.lblFourthDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",dictResponse[@"fourth"][@"date"] ]];
         
-        cell.lblFifth.text = [NSString stringWithFormat:@"EMI ₹%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"fifth"] valueForKey:@"amount"]];
-        cell.lblFifthDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"fifth"] valueForKey:@"date"]]];
+        cell.lblFifth.text = [NSString stringWithFormat:@"EMI ₹%d", [dictResponse[@"fifth"][@"amount"] intValue]];
+        cell.lblFifthDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",dictResponse[@"fifth"][@"date"] ]];
         
-        cell.lblSixth.text = [NSString stringWithFormat:@"EMI ₹%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"sixth"] valueForKey:@"amount"]];
-        cell.lblSixthDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[dictResponse valueForKey:@"total"] valueForKey:@"sixth"] valueForKey:@"date"]]];
+        cell.lblSixth.text = [NSString stringWithFormat:@"EMI ₹%d", [dictResponse[@"sixth"][@"amount"] intValue]];
+        cell.lblSixthDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",dictResponse[@"sixth"][@"date"] ]];
+
+        [Utilities setCornerRadius:cell.viewContainer];
+        [Utilities setBorderAndColor:cell.viewContainer];
 
         return cell;
     }
-    
 }
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [ self populateEMIs:[marrLoans objectAtIndex:indexPath.row][@"emis"] atIndex:indexPath.row];
+}
+
 #pragma mark Server Call
 - (void)serverCallForConsolidatedEMIDetails
 {
@@ -216,24 +242,8 @@
 {
     marrLoans = response [@"loans"];
     dictResponse = response[@"total"];
-
-    _lblFirst.text = [NSString stringWithFormat:@"EMI ₹%@",[[[response valueForKey:@"total"] valueForKey:@"first"] valueForKey:@"amount"]];
-    _lblFirstDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[response valueForKey:@"total"] valueForKey:@"first"] valueForKey:@"date"]]];
     
-    _lblSecond.text = [NSString stringWithFormat:@"EMI ₹%@",[[[response valueForKey:@"total"] valueForKey:@"second"] valueForKey:@"amount"]];
-    _lblSecondDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[response valueForKey:@"total"] valueForKey:@"second"] valueForKey:@"date"]]];
-    
-    _lblThird.text = [NSString stringWithFormat:@"EMI ₹%@",[[[response valueForKey:@"total"] valueForKey:@"third"] valueForKey:@"amount"]];
-    _lblThirdDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[response valueForKey:@"total"] valueForKey:@"third"] valueForKey:@"date"]]];
-    
-    _lblFourth.text = [NSString stringWithFormat:@"EMI ₹%@",[[[response valueForKey:@"total"] valueForKey:@"fourth"] valueForKey:@"amount"]];
-    _lblFourthDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[response valueForKey:@"total"] valueForKey:@"fourth"] valueForKey:@"date"]]];
-    
-    _lblFifth.text = [NSString stringWithFormat:@"EMI ₹%@",[[[response valueForKey:@"total"] valueForKey:@"fifth"] valueForKey:@"amount"]];
-    _lblFifthDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[response valueForKey:@"total"] valueForKey:@"fifth"] valueForKey:@"date"]]];
-    
-    _lblSixth.text = [NSString stringWithFormat:@"EMI ₹%@",[[[response valueForKey:@"total"] valueForKey:@"sixth"] valueForKey:@"amount"]];
-    _lblSixthDate.text = [Utilities formateDateToDMY:[NSString stringWithFormat:@"%@",[[[response valueForKey:@"total"] valueForKey:@"sixth"] valueForKey:@"date"]]];
+    totalCellCount = 1 ;
     
     [_tblLoans reloadData];
 
@@ -305,5 +315,89 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     [ self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark Helper Method
+- (void)showPopupView:(UIView *)popupView onViewController:(UIViewController *)viewcontroller
+{
+    UIView *overlayView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [overlayView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5]];
+    [overlayView setTag:786];
+    [popupView setHidden:NO];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedOnOverlay:)];
+    [overlayView addGestureRecognizer:tapGesture];
+    
+    [viewcontroller.view addSubview:overlayView];
+    [viewcontroller.view bringSubviewToFront:popupView];
+    popupView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        
+        popupView.transform = CGAffineTransformIdentity;
+    } completion:^(BOOL finished)
+     {
+         
+     }];
+    
+}
+- (void)tappedOnOverlay:(UIGestureRecognizer *)gesture
+{
+    [ self hidePopupView:_viewEMIPayable fromViewController:self ];
+
+}
+- (void)hidePopupView:(UIView *)popupView fromViewController:(UIViewController *)viewcontroller
+{
+    UIView *overlayView = [viewcontroller.view viewWithTag:786];
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^
+     {
+         popupView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+     }
+                     completion:^(BOOL finished)
+     {
+         [popupView setHidden:YES];
+         
+     }];
+    
+    
+    [overlayView removeFromSuperview];
+}
+- (void)populateEMIs:(NSArray *)arr atIndex:(NSInteger)index
+{
+    NSDictionary *dict = [marrLoans objectAtIndex:index];
+    
+    NSString *strLoanAmount = [NSString stringWithFormat:@"Amount ₹ %.01f ",[[dict valueForKey:@"approved_amount"] floatValue]];
+    
+    NSString *strRate = [NSString stringWithFormat:@"@%d%@ ",[[dict valueForKey:@"approved_rate"] intValue],@"%PM"];
+    
+    NSString *strTenure = [NSString stringWithFormat:@"For %d Months",[[dict valueForKey:@"approved_tenure"] intValue]];
+    
+    NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@%@",strLoanAmount,strRate,strTenure]];
+    [attString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, [strLoanAmount length])];
+    
+    [attString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange([strLoanAmount length], [strRate length])];
+    
+    [attString addAttribute:NSForegroundColorAttributeName value:[UIColor purpleColor] range:NSMakeRange(( [strLoanAmount length] + [strRate length]), [strTenure length])];
+    
+    _lblDesc.attributedText = attString;
+    
+    _lblFirst.text = [NSString stringWithFormat:@"EMI ₹%@",[arr objectAtIndex:0][@"amount"] ];
+    _lblFirstDate.text = [Utilities formateDateToDMYWithSubstring:[arr objectAtIndex:0][@"emi_date"]];
+    
+    _lblSecond.text = [NSString stringWithFormat:@"EMI ₹%@",[arr objectAtIndex:1][@"amount"] ];
+    _lblSecondDate.text = [Utilities formateDateToDMYWithSubstring:[arr objectAtIndex:1][@"emi_date"]];
+    
+    _lblThird.text = [NSString stringWithFormat:@"EMI ₹%@",[arr objectAtIndex:2][@"amount"] ];
+    _lblThirdDate.text = [Utilities formateDateToDMYWithSubstring:[arr objectAtIndex:2][@"emi_date"]];
+    
+    _lblFourth.text = [NSString stringWithFormat:@"EMI ₹%@",[arr objectAtIndex:3][@"amount"] ];
+    _lblFourthDate.text = [Utilities formateDateToDMYWithSubstring:[arr objectAtIndex:3][@"emi_date"]];
+    
+    _lblFifth.text = [NSString stringWithFormat:@"EMI ₹%@",[arr objectAtIndex:4][@"amount"] ];
+    _lblFifthDate.text = [Utilities formateDateToDMYWithSubstring:[arr objectAtIndex:4][@"emi_date"]];
+    
+    _lblSixth.text = [NSString stringWithFormat:@"EMI ₹%@",[arr objectAtIndex:5][@"amount"] ];
+    _lblSixthDate.text = [Utilities formateDateToDMYWithSubstring:[arr objectAtIndex:5][@"emi_date"]];
+    
+    [ self showPopupView:_viewEMIPayable onViewController:self ];
 }
 @end

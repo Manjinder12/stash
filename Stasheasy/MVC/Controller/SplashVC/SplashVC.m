@@ -28,14 +28,14 @@
 {
     [super viewDidLoad];
     
-
     self.navigationController.navigationBar.hidden = YES;
     
     appDelegate = [AppDelegate sharedDelegate];
     appVersion = [[[ NSBundle mainBundle ] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+}
+- (void)viewWillAppear:(BOOL)animated
+{
     [ self serverCallToCheckAppVersion ];
-    
-//    [self serverCallToCheckTokenValidity];
 }
 - (void)checkTokenAndNavigate
 {
@@ -203,9 +203,8 @@
          }
          else
          {
-             
+             [ self navigateToLandingVC ];
          }
-         
          
      }];
 }

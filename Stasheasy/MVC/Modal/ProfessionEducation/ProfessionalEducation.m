@@ -54,6 +54,7 @@
     return YES;
 }
 
+
 -(BOOL)validateWorkStartYear:(id *)ioValue error:(NSError * __autoreleasing *)outError
 {
     if (*ioValue == nil || ((NSString *)*ioValue).length<=0)
@@ -89,8 +90,19 @@
     }
     return YES;
 }
+-(BOOL)validateOfficephone:(id *)ioValue error:(NSError * __autoreleasing *)outError
+{
+    if (*ioValue == nil || ((NSString *)*ioValue).length<=0)
+    {
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Please enter office landline number",NSLocalizedFailureReasonErrorKey:@"Office number can not be empty"};
+        
+        *outError = [[NSError alloc] initWithDomain:@"SIGNUP_ERROR_DOMAIN" code:0 userInfo:userInfo];
+        return NO;
+    }
+    return YES;
+}
 
--(BOOL)validateCompanyName:(id *)ioValue error:(NSError * __autoreleasing *)outError
+-(BOOL)validateCompany_name:(id *)ioValue error:(NSError * __autoreleasing *)outError
 {
     if (*ioValue == nil || ((NSString *)*ioValue).length<=0)
     {
@@ -146,7 +158,7 @@
     }
     return YES;
 }
--(BOOL)validateProfaddress:(id *)ioValue error:(NSError * __autoreleasing *)outError
+-(BOOL)validateProf_address:(id *)ioValue error:(NSError * __autoreleasing *)outError
 {
     if (*ioValue == nil || ((NSString *)*ioValue).length<=0)
     {

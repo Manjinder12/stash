@@ -65,6 +65,8 @@
     pieProgress = 0;
 
     self.analyzeTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.analyzeTableView.estimatedRowHeight = 100;
+    self.analyzeTableView.rowHeight = UITableViewAutomaticDimension;
    
 }
 - (void)viewWillAppear:(BOOL)animated
@@ -136,9 +138,10 @@
     return [marrAnalyze count];
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return (50.0f/320.0f)*[UIApplication sharedApplication].keyWindow.frame.size.width;
-//}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewAutomaticDimension;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

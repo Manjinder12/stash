@@ -52,19 +52,70 @@
 }
 - (void)populateLOCWithrawalResponse
 {
-    _lblRemainLOC.text = [NSString stringWithFormat:@"₹ %d",[[dictResponce valueForKey:@"remaining_loc"] intValue]];
+    if ( [ Utilities getValueFromResponse:[dictResponce valueForKey:@"remaining_loc"] ])
+    {
+        _lblRemainLOC.text = [NSString stringWithFormat:@"₹ %.02f",[[dictResponce valueForKey:@"remaining_loc"] floatValue]];
+    }
+    else
+    {
+        _lblRemainLOC.text = @"-";
+    }
     
-    _lblRate.text = [NSString stringWithFormat:@"%d%%",[[dictResponce valueForKey:@"rate_of_interest"] intValue]];
+    if ( [ Utilities getValueFromResponse:[dictResponce valueForKey:@"rate_of_interest"] ])
+    {
+        _lblRate.text = [NSString stringWithFormat:@"%d%%",[[dictResponce valueForKey:@"rate_of_interest"] intValue]];
+    }
+    else
+    {
+        _lblRate.text = @"-";
+    }
+    
+    
+    if ( [ Utilities getValueFromResponse:[dictResponce valueForKey:@"requested_amount"] ])
+    {
+        _lblRequestAmount.text = [NSString stringWithFormat:@"₹ %@",[dictResponce valueForKey:@"requested_amount"]] ;
+    }
+    else
+    {
+        _lblRequestAmount.text = @"-";
+    }
   
-    _lblRequestAmount.text = [NSString stringWithFormat:@"₹ %@",[dictResponce valueForKey:@"requested_amount"]] ;
+    if ( [ Utilities getValueFromResponse:[dictResponce valueForKey:@"emi_amount"] ])
+    {
+        _lblEMIAmount.text = [NSString stringWithFormat:@"₹ %.02f",[[dictResponce valueForKey:@"emi_amount"] floatValue]];
+    }
+    else
+    {
+        _lblEMIAmount.text = @"-";
+    }
    
-    _lblEMIAmount.text = [NSString stringWithFormat:@"₹ %@",[dictResponce valueForKey:@"emi_amount"]];
+    if ( [ Utilities getValueFromResponse:[dictResponce valueForKey:@"tenure"] ])
+    {
+        _lblTenure.text = [NSString stringWithFormat:@"%@ Months",[dictResponce valueForKey:@"tenure"]];
+    }
+    else
+    {
+        _lblTenure.text = @"-";
+    }
     
-    _lblTenure.text = [NSString stringWithFormat:@"%@ Months",[dictResponce valueForKey:@"tenure"]];
+    if ( [ Utilities getValueFromResponse:[dictResponce valueForKey:@"first_emi_date"] ])
+    {
+        _lblDate.text = [NSString stringWithFormat:@"%@",[dictResponce valueForKey:@"first_emi_date"]];
+    }
+    else
+    {
+        _lblDate.text = @"-";
+    }
+
+    if ( [ Utilities getValueFromResponse:[dictResponce valueForKey:@"net_amount_payable"] ])
+    {
+        _lblNetPayable.text = [NSString stringWithFormat:@"₹ %@",[dictResponce valueForKey:@"net_amount_payable"]];
+    }
+    else
+    {
+        _lblNetPayable.text = @"-";
+    }
     
-    _lblDate.text = [NSString stringWithFormat:@"%@",[dictResponce valueForKey:@"first_emi_date"]];
-    
-    _lblNetPayable.text = [NSString stringWithFormat:@"₹ %@",[dictResponce valueForKey:@"net_amount_payable"]];
 }
 
 #pragma mark LGPlusButtonsView

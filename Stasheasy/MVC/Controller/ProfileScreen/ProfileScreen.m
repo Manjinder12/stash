@@ -25,7 +25,7 @@
     NSMutableArray *marrPerHeader, *marrPerText, *marrProHeader, *marrProText, *marrDoc, *marrImages, *marrDocTitle;
     NSDictionary *dictPersonal, *dictProfessional, *dictDocument;
     
-    BOOL isStashExpand;
+    BOOL isImageChange,isStashExpand;
     
     LGPlusButtonsView *stashfinButton;
     
@@ -89,6 +89,8 @@
     appDelegate = [ AppDelegate sharedDelegate ];
     _viewPopup.hidden = YES;
     imagePicker = [[UIImagePickerController alloc] init];
+   
+    isImageChange = NO;
     
     [ Utilities setBorderAndColor:_btnPicture ];
     [ Utilities setBorderAndColor:_btnUpload ];
@@ -110,7 +112,7 @@
     
 //    marrDocTitle = [[ NSMutableArray alloc ] initWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip1",@"Salary Slip2",@"Salary Slip3",@"Office ID", nil];
     
-    [self setupProfileBlurScreen];
+    [self setupProfileBlurScreen:appDelegate.dictCustomer[@"profile_pic"]];
     self.profileTableView.estimatedRowHeight = 30.0f;
     self.profileTableView.rowHeight = UITableViewAutomaticDimension;
     
@@ -387,7 +389,7 @@
      UIImage *retVal = [UIImage imageWithCGImage:cgImage];
      return retVal;
 }
--(void)setupProfileBlurScreen
+-(void)setupProfileBlurScreen:(NSString *)url
 {
     self.profilepic.layer.cornerRadius = self.profilepic.frame.size.width/2.0f;
     self.profilepic.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -395,9 +397,16 @@
     self.profilepic.clipsToBounds = YES;
     self.profilepic.image = [UIImage imageNamed:@""];
     
-    [self.profilepic setImageWithURL:[Utilities getFormattedImageURLFromString:[NSString stringWithFormat:@"%@",appDelegate.dictCustomer[@"profile_pic"]]] placeholderImage:[UIImage imageNamed:@"profile"]];
+    [self.profilepic setImageWithURL:[Utilities getFormattedImageURLFromString:[NSString stringWithFormat:@"%@",url]] placeholderImage:[UIImage imageNamed:@"profile"]];
     
-    _imageBanner.image = [ self blurredImageWithImage:_profilepic.image];
+    if ( !isImageChange )
+    {
+        _imageBanner.image = [ self blurredImageWithImage:self.profilepic.image];
+    }
+    else
+    {
+        _imageBanner.image = [ self blurredImageWithImage:selectedImage];
+    }
 
 }
 
@@ -863,13 +872,11 @@
             }
             else
             {
-               
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    _profilepic.image = selectedImage;
-                    [ self setupProfileBlurScreen ];
-
-                });            
+                dispatch_async(dispatch_get_main_queue(), ^
+                {
+                    isImageChange = YES;
+                    [ self setupProfileBlurScreen:response[@"file_url"] ];
+                });
             }
         }
         else

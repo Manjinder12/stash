@@ -439,10 +439,31 @@
     
     [ newformatter setDateFormat:@"yyyy" ];
     [ mdict setObject:[ newformatter stringFromDate:date ] forKey:@"year" ];
-
-    [NSString stringWithFormat:@"%@ %@ %@",[mdict valueForKey:@"day"],[mdict valueForKey:@"month"],[mdict valueForKey:@"year"]];
     
     return ( NSString * )[NSString stringWithFormat:@"%@ %@ %@",[mdict valueForKey:@"day"],[mdict valueForKey:@"month"],[mdict valueForKey:@"year"]];
+}
+
++(NSString *)formateDateToDMYWithSubstring:(NSString *)strDate
+{
+    NSMutableDictionary *mdict = [ NSMutableDictionary new ];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyy-MM-dd"];
+    NSDate *date = [ formatter dateFromString:strDate ];
+    
+    NSTimeZone *currentUserTimezone = [ NSTimeZone localTimeZone];
+    [ formatter setTimeZone:currentUserTimezone ];
+    
+    NSDateFormatter *newformatter = [ [ NSDateFormatter alloc ] init ];
+    [ newformatter setDateFormat:@"dd" ];
+    [ mdict setObject:[ newformatter stringFromDate:date ] forKey:@"day" ];
+    
+    [ newformatter setDateFormat:@"MMM" ];
+    [ mdict setObject:[ newformatter stringFromDate:date ] forKey:@"month" ];
+    
+    [ newformatter setDateFormat:@"yyyy" ];
+    [ mdict setObject:[ newformatter stringFromDate:date ] forKey:@"year" ];
+    
+    return ( NSString * )[NSString stringWithFormat:@"%@ %@ %@",[mdict valueForKey:@"day"],[mdict valueForKey:@"month"],[[mdict valueForKey:@"year"] substringFromIndex:2]];
 }
 
 + (void)setLeftPaddingToTextfield:(UITextField *)textField
@@ -486,6 +507,17 @@
         return str;
     }
         
+}
++ (BOOL)getValueFromResponse:( id )value
+{
+    if ( [ value isKindOfClass:[ NSNumber class] ] || [ value isKindOfClass:[ NSString class] ] )
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
 }
 + (BOOL)setCharacterSetToString:(NSString *)string withCharacterSet:(NSString *)set
 {

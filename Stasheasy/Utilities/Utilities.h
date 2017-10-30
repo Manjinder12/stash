@@ -142,4 +142,10 @@
 // get base 64 string
 + (NSString *)getBase64OfContentOfFileAtPath:(NSString *)objectPath;
 
+// Get value from response
++ (BOOL)getValueFromResponse:( id )value;
+
+// Sub string date
++(NSString *)formateDateToDMYWithSubstring:(NSString *)strDate;
+
 @end

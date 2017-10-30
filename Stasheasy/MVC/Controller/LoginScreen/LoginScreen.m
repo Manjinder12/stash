@@ -363,7 +363,7 @@
          }
          else
          {
-//             [ Utilities showAlertWithMessage:response ];
+             [ Utilities showAlertWithMessage:@"Card not found"];
             
              [ SVProgressHUD dismiss ];
          }
