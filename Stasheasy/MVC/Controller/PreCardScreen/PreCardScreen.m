@@ -11,7 +11,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "LoginScreen.h"
 
-@interface PreCardScreen ()<UIImagePickerControllerDelegate>
+@interface PreCardScreen ()<UIImagePickerControllerDelegate,UITextFieldDelegate>
 {
     AppDelegate *appDelegate;
     UIImagePickerController *imagePicker;
@@ -33,6 +33,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblCard;
 @property (weak, nonatomic) IBOutlet UILabel *lblLine;
 
+@property (weak, nonatomic) IBOutlet UITextField *txtCardNo;
+@property (weak, nonatomic) IBOutlet UIStackView *stackView;
 @property (weak, nonatomic) IBOutlet UIButton *flashButton;
 @property (weak, nonatomic) IBOutlet UIButton *btnScan;
 @property (weak, nonatomic) IBOutlet UIView *viewBarcodeScanner;
@@ -57,6 +59,7 @@
     imagePicker = [[ UIImagePickerController alloc ] init];
     isScanDone = NO;
     
+    _txtCardNo.delegate = self;
     _lblLine.backgroundColor = [ UIColor whiteColor ];
     
     [ self addBarcodeScanner ];
@@ -68,6 +71,27 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark Textfield Delegate
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [ textField becomeFirstResponder ];
+}
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if ( textField == _txtCardNo )
+    {
+        if ( textField.text.length == 3 || textField.text.length == 8 || textField.text.length == 13)
+        {
+            [_txtCardNo.text stringByAppendingString:@" "];
+        }
+        else if ( textField.text.length >=19 && range.length == 0 )
+        {
+            [ self serverCallToGetProspectCard ];
+        }
+    }
+    
+    return YES;
+}
 #pragma mark UIImagePickerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
@@ -256,13 +280,17 @@
                  {
                      [Utilities showAlertWithMessage:errorStr];
                      _viewBarcodeScanner.hidden = YES;
+                     _stackView.hidden = YES;
+                     _txtCardNo.userInteractionEnabled = NO;
                      _lblCard.text = [ self setCardNumber:strScan ];
+                     _txtCardNo.text = [ self setCardNumber:strScan ];
                      _lblLine.backgroundColor = [ UIColor redColor ];
                  }
              }
              else
              {
                  appDelegate.isPreApproved = YES;
+                 _txtCardNo.text = [ self setCardNumber:strScan ];
                  _lblCard.text = [ self setCardNumber:strScan ];
                  _lblLine.backgroundColor = [ UIColor redColor ];
                  

@@ -23,7 +23,8 @@
 @property (weak,nonatomic) NSString *loanRequestStatus, *strFilePath;
 
 @property NSString *strLandingPage;
-@property NSDictionary *dictLOCDetail, *dictCard, *dictOverview, *dictTransaction,*dictAnalyze, *dictCustomer;
+@property NSDictionary *dictLOCDetail, *dictCard, *dictOverview, *dictTransaction,*dictAnalyze;
+@property NSMutableDictionary *dictCustomer;
 @property BOOL isCardFound, isPreApproved, isLoanDisbursed, isDocFile;
 @property UIViewController *currentVC;
 @end

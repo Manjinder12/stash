@@ -19,8 +19,9 @@
 #import "VBPieChart.h"
 #import "PNChart.h"
 #import "RequestCardVC.h"
+#import "LandingVC.h"
 
-@interface LineCreditVC ()<LGPlusButtonsViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
+@interface LineCreditVC ()<LGPlusButtonsViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UIAlertViewDelegate>
 {
     AppDelegate *appDelegate;
     LGPlusButtonsView *stashfinButton;
@@ -294,7 +295,19 @@
             NSString *errorStr = [response objectForKey:@"error"];
             if ( errorStr.length > 0 )
             {
-                [Utilities showAlertWithMessage:errorStr];
+                
+                UIAlertController *alertController  = [UIAlertController alertControllerWithTitle:@"StashFin" message:errorStr preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *okAction =[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action)
+                                          
+                  {
+                      [ self navigateToLandingVC ];
+                  }];
+                
+                [alertController addAction:okAction];
+                [self presentViewController:alertController animated:YES completion:nil];
+
+                
+                
             }
             else
             {
@@ -541,5 +554,22 @@
 {
     [ self serverCallForLOCDetails ];
 }
+
+#pragma mark Helper Method
+- (void)navigateToLandingVC
+{
+    [Utilities setUserDefaultWithObject:@"0" andKey:@"islogin"];
+    [Utilities setUserDefaultWithObject:@"0" andKey:@"isLoanDisbursed"];
+    [Utilities setUserDefaultWithObject:nil andKey:@"auth_token"];
+    [Utilities setUserDefaultWithObject:@"1" andKey:@"signupStep"];
+    
+    AppDelegate *appdelegate =  (AppDelegate *)[UIApplication sharedApplication].delegate;
+    LandingVC *vc = (LandingVC *) [[UIStoryboard storyboardWithName:@"iPhone" bundle:nil] instantiateViewControllerWithIdentifier:@"LandingVC"] ;
+    UINavigationController *navigationController = [Utilities getNavigationControllerForViewController:vc];
+    navigationController.viewControllers = @[vc];
+    navigationController.navigationBar.hidden = YES;
+    appdelegate.window.rootViewController = navigationController;
+}
+
 
 @end

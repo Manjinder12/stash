@@ -25,7 +25,7 @@
 {
     if (*ioValue == nil || ((NSString *)*ioValue).length<=0) {
         
-        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Please enter loan Amount",NSLocalizedFailureReasonErrorKey:@"Loan amount can not be empty"};
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Please enter Loan amount",NSLocalizedFailureReasonErrorKey:@"Loan amount can not be empty"};
         
         *outError = [[NSError alloc] initWithDomain:@"SIGNUP_ERROR_DOMAIN" code:0 userInfo:userInfo];
         return NO;
@@ -36,7 +36,7 @@
 {
     if (*ioValue == nil || ((NSString *)*ioValue).length<=0)
     {
-        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Please enter tenure",NSLocalizedFailureReasonErrorKey:@"Tenure can not be empty"};
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Please enter Tenure in months",NSLocalizedFailureReasonErrorKey:@"Tenure can not be empty"};
         
         *outError = [[NSError alloc] initWithDomain:@"SIGNUP_ERROR_DOMAIN" code:0 userInfo:userInfo];
         return NO;
@@ -96,7 +96,7 @@
 {
     if (*ioValue == nil || ((NSString *)*ioValue).length<=0)
     {
-        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Please enter adhar number",NSLocalizedFailureReasonErrorKey:@"Adhar Number can not be empty"};
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Please enter aadhar number",NSLocalizedFailureReasonErrorKey:@"Aadhar Number can not be empty"};
         
         *outError = [[NSError alloc] initWithDomain:@"SIGNUP_ERROR_DOMAIN" code:0 userInfo:userInfo];
         return NO;
@@ -108,7 +108,7 @@
 {
     if (*ioValue == nil || ((NSString *)*ioValue).length<=0)
     {
-        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Please enter adhar name ",NSLocalizedFailureReasonErrorKey:@"Adhar Name can not be empty"};
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Please enter aadhar name ",NSLocalizedFailureReasonErrorKey:@"Aadhar Name can not be empty"};
         
         *outError = [[NSError alloc] initWithDomain:@"SIGNUP_ERROR_DOMAIN" code:0 userInfo:userInfo];
         return NO;
@@ -143,7 +143,7 @@
 {
     if (*ioValue == nil || ((NSString *)*ioValue).length<=0)
     {
-        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Please enter address",NSLocalizedFailureReasonErrorKey:@"Address can not be empty"};
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Please enter current address",NSLocalizedFailureReasonErrorKey:@"Address can not be empty"};
         
         *outError = [[NSError alloc] initWithDomain:@"SIGNUP_ERROR_DOMAIN" code:0 userInfo:userInfo];
         return NO;
@@ -173,7 +173,8 @@
     }
     return YES;
 }
--(BOOL)validateOwnershipType:(id *)ioValue error:(NSError * __autoreleasing *)outError
+
+-(BOOL)validateResidenceType:(id *)ioValue error:(NSError * __autoreleasing *)outError
 {
     if (*ioValue == nil || ((NSString *)*ioValue).length<=0)
     {
@@ -184,5 +185,4 @@
     }
     return YES;
 }
-
 @end

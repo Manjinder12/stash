@@ -25,6 +25,7 @@
 #import "Utilities.h"
 #import "StatusVC.h"
 #import "LandingVC.h"
+#import "AttachmentListVC.h"
 
 #define ALPHA_SET @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
 #define ALPHA_NUMERIC_SET @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
@@ -57,7 +58,7 @@
     BOOL isDocUpload, isOtpGenerate, isAddreesProof, isIdProof, isOtherDoc, isOtherPopUP, isDocPickDone;
     NSInteger selectedIndex, time, btnTag;
     NSTimer *timer;
-    NSString *loanID, *strPhoneNo;
+    NSString *loanID, *strPhoneNo, *base64String;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *txtOTP;
@@ -149,11 +150,31 @@
     [ Utilities setBorderAndColor:_btnResend ];
 
 }
+- (void)viewWillAppear:(BOOL)animated
+{
+    if ( appDelegate.strFilePath != nil )
+    {
+        if ( !appDelegate.isDocFile )
+        {
+            base64String = [ NSString stringWithFormat:@"data:image/jpg;base64,%@",[ Utilities getBase64OfContentOfFileAtPath:appDelegate.strFilePath ]];
+        }
+        else
+        {
+            base64String = [ NSString stringWithFormat:@"data:application/pdf;base64,%@",[ Utilities getBase64OfContentOfFileAtPath:appDelegate.strFilePath ]];
+            
+        }
+        
+        [ self serverCallForOtherDocUpload ];
+        appDelegate.strFilePath = nil;
+    }
 
+}
 #pragma mark UIImagePickerController delegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
-    selectedImage = [info valueForKey:UIImagePickerControllerEditedImage];
+    selectedImage = [info valueForKey:UIImagePickerControllerOriginalImage];
+    
+    base64String = [ NSString stringWithFormat:@"data:image/jpg;base64,%@",[Utilities getBase64EncodedStringOfImage:selectedImage]];
     
     if ( !isOtherDoc )
     {
@@ -326,7 +347,7 @@
         }
     }
     
-    UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
+    UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library",@"Choose Document", nil];
     [imagePop showInView:self.view];
     
 }
@@ -1246,7 +1267,8 @@
             
             strDocID = @"";
             strDocName = [ marrDocName objectAtIndex:btnTag ];
-            UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library", nil];
+            UIActionSheet *imagePop = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take Photo",@"Choose From Library",@"Choose Document", nil];
+            [imagePop showInView:self.view];
             [imagePop showInView:self.view];
         }
     }
@@ -1672,6 +1694,12 @@
         case 1:
             [self choosePhotoFromLibrary];
             break;
+        case 2:
+        {
+            AttachmentListVC *attachVC = [ self.storyboard instantiateViewControllerWithIdentifier:@"AttachmentListVC"];
+            [self.navigationController pushViewController:attachVC animated:YES];
+            break;
+        }
         default:
             break;
     }
@@ -1823,8 +1851,6 @@
 #pragma mark Server Call
 - (void)serverCallForDocUpload
 {
-    NSString *base64String = [ NSString stringWithFormat:@"data:image/jpg;base64,%@",[Utilities getBase64EncodedStringOfImage:selectedImage]];
-    
     NSDictionary *param = [NSMutableDictionary new];
     [ param setValue:@"uploadDocument" forKey:@"mode" ];
     [ param setValue:strDocName forKey:@"document_name" ];
@@ -1864,8 +1890,6 @@
 }
 - (void)serverCallForOtherDocUpload
 {
-    NSString *base64String = [ NSString stringWithFormat:@"data:image/jpg;base64,%@",[Utilities getBase64EncodedStringOfImage:selectedImage]];
-    
     NSDictionary *param = [NSMutableDictionary new];
     [ param setValue:@"uploadOtherDocument" forKey:@"mode" ];
     [ param setValue:strDocName forKey:@"document_name" ];
@@ -1894,7 +1918,7 @@
                  }
                  
                  isDocPickDone = YES;
-                 [Utilities showAlertWithMessage:@"Document uoloaded successfully!" ];
+                 [Utilities showAlertWithMessage:@"Document uploaded successfully!" ];
                  [ _signupTableview reloadData];
              }
          }
@@ -1951,7 +1975,7 @@
                      [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
                      [Utilities setUserDefaultWithObject:@"0" andKey:@"isLoanDisbursed"];
                      [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
-                     appDelegate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
+                     appDelegate.dictCustomer = [NSMutableDictionary dictionaryWithDictionary:response];
                      appDelegate.isLoanDisbursed = NO;
                      
                      [ self navigateToDashboard ];

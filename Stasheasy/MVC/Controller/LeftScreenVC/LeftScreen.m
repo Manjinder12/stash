@@ -47,11 +47,19 @@
 {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeProfilePic) name:@"changeProfile" object:nil];
+    [ self customInitialization ];
+}
+- (void)changeProfilePic
+{
+    [_profileImageView setImageWithURL:[Utilities getFormattedImageURLFromString:[NSString stringWithFormat:@"%@",appDelegate.dictCustomer[@"profile_pic"]]] placeholderImage:[UIImage imageNamed:@"profile"]];
+}
+- (void)customInitialization
+{
     appDelegate = [AppDelegate sharedDelegate];
-    
     self.navigationController.navigationBarHidden = NO;
     
-    if ( [appDelegate.dictCustomer [@"landing_page"] isEqualToString:@"profile"] && [appDelegate.dictCustomer [@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] )
+    if ( [appDelegate.dictCustomer [@"landing_page"] isEqualToString:@"profile"] && ([appDelegate.dictCustomer [@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] || [appDelegate.dictCustomer [@"latest_loan_details"][@"current_status"] isEqualToString:@"closed"] ))
     {
         if ( appDelegate.isCardFound == YES )
         {
@@ -68,14 +76,13 @@
     {
         leftImages = [NSArray arrayWithObjects:@"left_dashboard",@"left_getCard",@"left_profile",@"logout", nil];
         leftLabels = [NSArray arrayWithObjects:@"Dashboard",@"Get StashFin Card",@"Profile",@"Logout", nil];
-
+        
     }
     
-        _lblUserEmail.text  = appDelegate.dictCustomer[@"email"];
+    _lblUserEmail.text  = appDelegate.dictCustomer[@"email"];
     
     [_profileImageView setImageWithURL:[Utilities getFormattedImageURLFromString:[NSString stringWithFormat:@"%@",appDelegate.dictCustomer[@"profile_pic"]]] placeholderImage:[UIImage imageNamed:@"profile"]];
 }
-
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -119,7 +126,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    if ( [appDelegate.dictCustomer [@"landing_page"] isEqualToString:@"profile"] && [appDelegate.dictCustomer [@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] )
+    if ( [appDelegate.dictCustomer [@"landing_page"] isEqualToString:@"profile"] && ([appDelegate.dictCustomer [@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] || [appDelegate.dictCustomer [@"latest_loan_details"][@"current_status"] isEqualToString:@"closed"] ))
     {
         if ( appDelegate.isCardFound == YES )
         {
@@ -187,7 +194,7 @@
             }
             else if(indexPath.row == 7)
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"StathFin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"StashFin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
                 [ alert show];
                 [self.frostedViewController hideMenuViewController];
             }
@@ -242,7 +249,7 @@
             }
             else if(indexPath.row == 4)
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"StathFin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"StashFin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
                 [ alert show];
                 [self.frostedViewController hideMenuViewController];
             }
@@ -287,7 +294,7 @@
         }
         else if(indexPath.row == 3)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"StathFin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"StashFin" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
             [ alert show];
             [self.frostedViewController hideMenuViewController];
         }
@@ -318,7 +325,7 @@
         MFMailComposeViewController *mfMailVC = [[ MFMailComposeViewController alloc ] initWithNibName:nil bundle:nil];
         [ mfMailVC setMailComposeDelegate:self ];
         [ mfMailVC setToRecipients:@[ _lblSupportEmail.text]];
-        [ mfMailVC setSubject:@"Support Stashfin" ];
+        [ mfMailVC setSubject:@"Support StashFin" ];
         [ self presentViewController:mfMailVC animated:YES completion:nil ];
     }
 }

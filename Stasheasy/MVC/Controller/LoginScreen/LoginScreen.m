@@ -319,11 +319,10 @@
                 dictLoginResponse = response;
                 [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];
 
-                if ( [response[@"landing_page"] isEqualToString:@"profile"] && [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] )
+                if ( [appDelegate.dictCustomer [@"landing_page"] isEqualToString:@"profile"] && ([appDelegate.dictCustomer [@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] || [appDelegate.dictCustomer [@"latest_loan_details"][@"current_status"] isEqualToString:@"closed"] ))
                 {
                     [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
                     [Utilities setUserDefaultWithObject:@"1" andKey:@"isLoanDisbursed"];
-
                     [ self serverCallForCardOverview ];
                 }
                 else if ( [response[@"landing_page"] isEqualToString:@"otp_verification"] )
@@ -340,7 +339,7 @@
                     [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
                     [Utilities setUserDefaultWithObject:@"0" andKey:@"isLoanDisbursed"];
 
-                    appDelegate.dictCustomer = response;
+                    appDelegate.dictCustomer = ( NSMutableDictionary * )response;
                     [self navigateAccordingLandingPageStatus:dictLoginResponse];
                 }
             }
@@ -400,7 +399,7 @@
              }
              else
              {
-                 appDelegate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
+                 appDelegate.dictCustomer = [NSMutableDictionary dictionaryWithDictionary:response];
              }
              
              [self navigateAccordingLandingPageStatus:dictLoginResponse];
@@ -665,9 +664,8 @@
     }
     else
     {
-        if ( [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] )
+        if ( [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] || [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"closed"]  )
         {
-            // Navigate To LOC Dashboard
             
             [Utilities setUserDefaultWithObject:@"1" andKey:@"islogin"];
             [Utilities setUserDefaultWithObject:[ response objectForKey:@"auth_token"] andKey:@"auth_token"];

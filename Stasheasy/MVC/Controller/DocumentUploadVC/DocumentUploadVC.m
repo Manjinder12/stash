@@ -45,7 +45,7 @@
 }
 - (void)viewWillAppear:(BOOL)animated
 {
-    if ( appDelegate.strFilePath != nil )
+    if ( appDelegate.strFilePath.length != 0  )
     {
         if ( !appDelegate.isDocFile )
         {

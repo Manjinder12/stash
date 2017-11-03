@@ -16,7 +16,7 @@
 #import <LGPlusButtonsView/LGPlusButtonsView.h>
 #import "DocumentUploadVC.h"
 
-@interface ProfileScreen ()<UICollectionViewDelegate,UICollectionViewDataSource,MWPhotoBrowserDelegate,LGPlusButtonsViewDelegate, UIActionSheetDelegate,UIImagePickerControllerDelegate, UIAlertViewDelegate>
+@interface ProfileScreen ()<UICollectionViewDelegate,UICollectionViewDataSource,MWPhotoBrowserDelegate,LGPlusButtonsViewDelegate, UIActionSheetDelegate,UIImagePickerControllerDelegate, UIAlertViewDelegate,UINavigationControllerDelegate>
 {
     AppDelegate *appDelegate;
     UIImagePickerController *imagePicker;
@@ -107,12 +107,9 @@
     marrPerHeader = [[NSMutableArray alloc]initWithObjects:@"Contact No.",@"Date of Birth",@"PAN No.",@"Aadhar Card No.",@"Current Address",@"Permanent Address", nil];
     personalTextArr = [[NSArray alloc]initWithObjects:@"9876543210",@"17 April 1973",@"BXIPX2014H",@"3181 6734 1296",@"77, jagjivan ram nagar indore-452001",@"Kastubra ward, Pipariya-461775", nil];
     
-    marrProHeader = [[NSMutableArray alloc]initWithObjects:@"Comapany Name",@"Designation",@"Employee ID",@"Work Since",@"Office Email",@"Office Landline No.",@"Company Address", nil];
+    marrProHeader = [[NSMutableArray alloc]initWithObjects:@"Company Name",@"Designation",@"Employee ID",@"Work Since",@"Office Email",@"Office Landline No.",@"Company Address", nil];
     proTextArr = [[NSArray alloc]initWithObjects:@"6 Degresit Pvt Ltd",@"Sr UI/UX developer",@"6D-UI-0001",@"July 2013",@"Testing@gmail.com",@"0731 -987654321",@"Geeta Bhavan Indore", nil];
     
-//    marrDocTitle = [[ NSMutableArray alloc ] initWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip1",@"Salary Slip2",@"Salary Slip3",@"Office ID", nil];
-    
-    [self setupProfileBlurScreen:appDelegate.dictCustomer[@"profile_pic"]];
     self.profileTableView.estimatedRowHeight = 30.0f;
     self.profileTableView.rowHeight = UITableViewAutomaticDimension;
     
@@ -121,24 +118,34 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     tab = 0;
-    marrDocTitle = [[ NSMutableArray alloc ] initWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip1",@"Salary Slip2",@"Salary Slip3",@"Office ID",nil];
-    marrDoc = [[NSMutableArray alloc] init];
 
     self.profileTableView.hidden = NO;
     self.docCollection.hidden = YES;
     self.btnUpload.hidden = YES;
+    
     [ self actionForTap ];
-    [self serverCallForPersonalDetail];
+    
+    if ( !isImageChange )
+    {
+        isImageChange = YES;
+        marrDoc = [[NSMutableArray alloc] init];
+        marrDocTitle = [[ NSMutableArray alloc ] initWithObjects:@"PAN Card",@"ID Proof",@"Address Proof",@"Employee ID",@"Salary Slip1",@"Salary Slip2",@"Salary Slip3",@"Office ID",nil];
+
+        [ self serverCallToGetLoginData ];
+        [ self serverCallForPersonalDetail];
+    }
 }
 #pragma mark UIImagePickerController delegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
-    selectedImage = [info valueForKey:UIImagePickerControllerOriginalImage];
-    
+    isImageChange = YES;
+    selectedImage = [info valueForKey:UIImagePickerControllerEditedImage];
+    [imagePicker dismissViewControllerAnimated:YES completion:nil];
     [self serverCallForUpdateProfile];
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
+    isImageChange = YES;
     [imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)didReceiveMemoryWarning
@@ -370,7 +377,6 @@
 #pragma mark - Instance Methods
 - (UIImage *)blurredImageWithImage:(UIImage *)sourceImage
 {
-    
     //  Create our blurred image
     CIContext *context = [CIContext contextWithOptions:nil];
     CIImage *inputImage = [CIImage imageWithCGImage:sourceImage.CGImage];
@@ -382,12 +388,11 @@
     CIImage *result = [filter valueForKey:kCIOutputImageKey];
     
     /*  CIGaussianBlur has a tendency to shrink the image a little, this ensures it matches
-     up exactly to the bounds of our original image */
+     *  up exactly to the bounds of our original image */
+    CGImageRef cgImage = [context createCGImage:result fromRect:[inputImage extent]];
     
-     CGImageRef cgImage = [context createCGImage:result fromRect:[inputImage extent]];
-     
-     UIImage *retVal = [UIImage imageWithCGImage:cgImage];
-     return retVal;
+    UIImage *retVal = [UIImage imageWithCGImage:cgImage];
+    return retVal;
 }
 -(void)setupProfileBlurScreen:(NSString *)url
 {
@@ -529,8 +534,37 @@
     [ self showPopupView:_viewPopup onViewController:self ];
 }
 #pragma mark Server Call
+- (void)serverCallToGetLoginData
+{
+    NSDictionary *dictParam = [NSDictionary dictionaryWithObject:@"getLoginData" forKey:@"mode"];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withCompletion:^(id response)
+     {
+         NSLog(@"response === %@", response);
+         
+         if ([response isKindOfClass:[NSDictionary class]])
+         {
+             NSString *errorStr = [response objectForKey:@"error"];
+             if ( errorStr.length > 0 )
+             {
+                 [Utilities showAlertWithMessage:errorStr];
+             }
+             else
+             {
+                 appDelegate.dictCustomer = [NSMutableDictionary dictionaryWithDictionary:response];
+             }
+         }
+         else
+         {
+             
+         }
+     }];
+}
 - (void)serverCallForPersonalDetail
 {
+    [ SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
+    [ SVProgressHUD show ];
+
     NSDictionary *param = [NSDictionary dictionaryWithObject:@"personalDetails" forKey:@"mode"];
     
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
@@ -555,7 +589,6 @@
         else
         {
             [Utilities showAlertWithMessage:response];
-            [SVProgressHUD dismiss];
         }
         [self serverCallForProfessionalDetail];
     }];
@@ -583,7 +616,6 @@
          else
          {
              [Utilities showAlertWithMessage:response];
-             [SVProgressHUD dismiss];
          }
          
          [self serverCallForDocumentsDetail];
@@ -596,7 +628,7 @@
     
     [ServerCall getServerResponseWithParameters:param withHUD:NO withCompletion:^(id response)
      {
-         NSLog(@"response === %@", response);
+         NSLog(@"documentsFormDetails response === %@", response);
          
          if ([response isKindOfClass:[NSDictionary class]])
          {
@@ -607,22 +639,23 @@
              }
              else
              {
-                 _viewOuter.hidden = YES;
-                 
+                _viewOuter.hidden = YES;
                  [self populatePersonalDetail:dictPersonal];
                  [self populateProfessionalDetail:dictProfessional];
                  [self populateDocumentsDetail:response];
                  
-//                 [self addStashFinButtonView];
-                 isStashExpand = NO;
+                 [ _profilepic setImageWithURL:[Utilities getFormattedImageURLFromString:appDelegate.dictCustomer[@"profile_pic"]] placeholderImage:[UIImage imageNamed:@"profile"]];
+                 UIImage *image = _profilepic.image;
+                 _imageBanner.image = [self blurredImageWithImage:image];
+                 [ SVProgressHUD dismiss ];
              }
+
          }
          else
          {
              [Utilities showAlertWithMessage:response];
          }
          
-         [SVProgressHUD dismiss];
      }];
 }
 - (void)populatePersonalDetail:(NSDictionary *)response
@@ -853,8 +886,6 @@
 }
 - (void)serverCallForUpdateProfile
 {
-    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient];
-    
     NSString *base64String = [ NSString stringWithFormat:@"data:image/jpg;base64,%@",[Utilities getBase64EncodedStringOfImage:selectedImage]];
 
     NSDictionary *dictParam = [[NSDictionary alloc] initWithObjectsAndKeys:@"updateProfilePic",@"mode",base64String,@"image", nil];
@@ -872,10 +903,13 @@
             }
             else
             {
+                [ appDelegate.dictCustomer setValue:response[@"file_url"] forKey:@"profile_pic" ];
+                [[ NSNotificationCenter defaultCenter ] postNotificationName:@"changeProfile" object:nil];
+
                 dispatch_async(dispatch_get_main_queue(), ^
                 {
-                    isImageChange = YES;
-                    [ self setupProfileBlurScreen:response[@"file_url"] ];
+                    _profilepic.image = selectedImage;
+                    _imageBanner.image = [self blurredImageWithImage:selectedImage];
                 });
             }
         }
@@ -885,8 +919,6 @@
         }
 
     }];
-    
-    [imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)setProfileImage
 {

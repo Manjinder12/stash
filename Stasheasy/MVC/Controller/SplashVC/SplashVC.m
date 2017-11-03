@@ -165,7 +165,7 @@
              }
              else
              {
-                 appDelegate.dictCustomer = [NSDictionary dictionaryWithDictionary:response];
+                 appDelegate.dictCustomer = [NSMutableDictionary dictionaryWithDictionary:response];
              }
              
              [self navigateAccordingLandingPageStatus:response];
@@ -242,7 +242,7 @@
     }
     else
     {
-        if ( [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] )
+        if ( [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"disbursed"] || [response[@"latest_loan_details"][@"current_status"] isEqualToString:@"closed"] )
         {
             // Navigate To LOC Dashboard
             

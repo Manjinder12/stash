@@ -10,7 +10,7 @@
 #import "SignupScreen.h"
 #import "AppDelegate.h"
 
-@interface ResidencePinVC ()<UITextFieldDelegate>
+@interface ResidencePinVC ()<UITextFieldDelegate,UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *pintextField;
 - (IBAction)backBtnTapped:(id)sender;
 - (IBAction)nextBtnTapped:(id)sender;
@@ -46,7 +46,8 @@
 
 - (IBAction)nextBtnTapped:(id)sender {
     
-    if (self.pintextField.text.length == 0) {
+    if (self.pintextField.text.length == 0)
+    {
         UIAlertController *alertController  = [UIAlertController alertControllerWithTitle:nil message:@"Please enter pin" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction =[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         }];
