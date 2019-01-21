@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -17,16 +17,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ySc-Tj-3lG">
-                    <rect key="frame" x="10" y="5" width="355" height="100"/>
+                    <rect key="frame" x="6" y="6" width="363" height="98"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MeZ-nq-8x7">
-                            <rect key="frame" x="10" y="5" width="335" height="90"/>
+                            <rect key="frame" x="10" y="5" width="343" height="88"/>
                             <state key="normal">
                                 <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                         </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow" translatesAutoresizingMaskIntoConstraints="NO" id="Cok-Pd-MOL">
-                            <rect key="frame" x="334" y="41" width="11" height="18"/>
+                            <rect key="frame" x="342" y="40" width="11" height="18"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="11" id="u3E-Mn-JFW"/>
                                 <constraint firstAttribute="height" constant="18" id="yxE-hp-huQ"/>
@@ -46,9 +46,9 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="ySc-Tj-3lG" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="5" id="CqN-1X-nU7"/>
+                <constraint firstItem="ySc-Tj-3lG" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="6" id="CqN-1X-nU7"/>
                 <constraint firstItem="ySc-Tj-3lG" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="R2D-hM-oJY"/>
-                <constraint firstItem="ySc-Tj-3lG" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="Sq1-hO-hDD"/>
+                <constraint firstItem="ySc-Tj-3lG" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="6" id="Sq1-hO-hDD"/>
                 <constraint firstItem="ySc-Tj-3lG" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="xed-En-xOl"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

@@ -2,8 +2,8 @@
 //  Constants.h
 //
 
-#ifndef HS_Constants_h
-#define HS_Constants_h
+#ifndef SF_Constants_h
+#define SF_Constants_h
 
 //----------------------------------------------------------------------------------------------
 #pragma mark -
@@ -12,7 +12,10 @@
 
 #define BASE_URL @"http://api.stashfin.com/StashfinApp/android"
 #define BASE_URL_OLD @"http://api.stashfin.com/webServicesMobile/StasheasyApp"
-//#define BASE_URL_OLD @"https://devapi.stasheasy.com/webServicesMobile/StasheasyApp" //Dev
+
+//Dev Environment
+//#define BASE_URL @"http://devapi.stasheasy.com/StashfinApp/android"
+//#define BASE_URL_OLD @"http://devapi.stasheasy.com/webServicesMobile/StasheasyApp"
 
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
@@ -22,18 +25,20 @@
 #define ROSE_PINK_COLOR                              [UIColor colorWithRed:250.0/255.0 green:51.0/255.0 blue:74.0/255.0 alpha:1]
 
 
-#define LikeCommentSaveFont         [ApplicationUtils GETFONT_REGULAR:14]
-#define TabBarFont                  [ApplicationUtils GETFONT_REGULAR:15]
-#define DetailViewTitleTagFont      [ApplicationUtils GETFONT_MEDIUM:17]
-#define DetailViewDescriptionFont   [ApplicationUtils GETFONT_REGULAR:17]
-#define ButtonFont                  [ApplicationUtils GETFONT_MEDIUM:15]
-
 
 #define LOGIN_STATUS            @"isUserLogin"
 #define LOGIN_DATA              @"LOGIN_DATA"
+#define LOC_DATA                @"LOC_DATA"
+#define CARD_DATA               @"CARD_DATA"
+
+#define CURRENCY_SYMBOL     @"₹"
+
 
 #define MOBILE_NUMBER_LENGTH        10
-#define OTP_LENGTH                  4
+#define MAX_OTP_LENGTH              6
+#define MIN_OTP_LENGTH              4
+#define PIN_LENGTH                  4
+
 
 //Do not change thsese tags
 #define FIELD_LABEL_TAG         100
@@ -64,16 +69,11 @@
 #define COMPANY_KEY                 @"COMPANY"
 #define SALARY_KEY                  @"SALARY"
 
-
-//-------------------------------------------------------------------------------------------------
-#define API_GET_HOME_GRID_URL                 @"/rest/pin/home"
-
-
 //-----------------------------------------------------------------------------------------------
 #pragma mark -
 #pragma mark - Extra Constants
 
-#define DATE_FORMATTER                        @"dd-MMM-yyyy"
+#define DATE_FORMATTER                        @"dd MMM YYYY"
 #define DATE_FORMAT_DOB                       @"YYYY-MM-dd"
 
 

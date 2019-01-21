@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -152,10 +152,11 @@
                         <constraint firstItem="jX8-3C-xKw" firstAttribute="top" secondItem="TjB-P4-NjA" secondAttribute="bottom" id="uFQ-ql-ut6"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U50-yz-HG2">
-                    <rect key="frame" x="91" y="378.5" width="138.5" height="42"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U50-yz-HG2" customClass="CountdownButton">
+                    <rect key="frame" x="86" y="378.5" width="148.5" height="45"/>
                     <constraints>
-                        <constraint firstAttribute="width" secondItem="U50-yz-HG2" secondAttribute="height" multiplier="33:10" id="QH7-SD-PHa"/>
+                        <constraint firstAttribute="width" secondItem="U50-yz-HG2" secondAttribute="height" multiplier="593:180" id="QH7-SD-PHa"/>
+                        <constraint firstAttribute="height" constant="45" id="hdR-Wc-RTz"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                     <inset key="titleEdgeInsets" minX="0.0" minY="-11" maxX="0.0" maxY="0.0"/>
@@ -167,7 +168,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aav-Qs-JxN">
-                    <rect key="frame" x="91" y="425.5" width="138.5" height="42.5"/>
+                    <rect key="frame" x="86" y="428.5" width="148.5" height="45.5"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                     <inset key="titleEdgeInsets" minX="0.0" minY="-11" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="Login" backgroundImage="log_in">
@@ -185,7 +186,6 @@
                 <constraint firstItem="UGE-cb-g4W" firstAttribute="leading" secondItem="8up-hN-jMy" secondAttribute="leading" id="72I-7d-SMN"/>
                 <constraint firstItem="e9V-53-OCq" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="51:203" id="C54-Xp-aAB"/>
                 <constraint firstItem="aav-Qs-JxN" firstAttribute="top" secondItem="U50-yz-HG2" secondAttribute="bottom" constant="5" id="DJ5-4u-J0h"/>
-                <constraint firstItem="U50-yz-HG2" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="99:406" id="FFB-dp-idi"/>
                 <constraint firstItem="z63-Ao-WZa" firstAttribute="centerY" secondItem="GUs-mT-qSK" secondAttribute="centerY" id="FTS-dH-kNL"/>
                 <constraint firstItem="U50-yz-HG2" firstAttribute="top" secondItem="UGE-cb-g4W" secondAttribute="bottom" constant="20" id="GG8-Nx-mBH"/>
                 <constraint firstItem="UGE-cb-g4W" firstAttribute="top" secondItem="8up-hN-jMy" secondAttribute="bottom" id="Iqp-08-5DG"/>

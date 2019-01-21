@@ -79,7 +79,8 @@
                 [ApplicationUtils showMessage:response[@"msg"] withTitle:@"" onView:self.view];
                 [self.otpView setHidden:NO];
                 [self.loginButton setHidden:NO];
-                [self.sendOTPButton setTitle:@"Resend OTP" forState:UIControlStateNormal];
+                
+                [self.sendOTPButton disableButtonAndStartTimer];
             }
         }];
     }
@@ -132,28 +133,7 @@
                     [ApplicationUtils pushVCWithFadeAnimation:obj andNavigationController:[AppDelegate instance].homeNavigationControler];
                 }
                 else {
-                    [ApplicationUtils save:[ApplicationUtils validateStringData:response[@"auth_token"]] :@"auth_token"];
-
-                    NSString *landingPage = [[ApplicationUtils validateStringData:response[@"landing_page"]] lowercaseString];
-                    
-                    if ([landingPage isEqualToString:@"basic"]) {
-                        [self navigateToSignUpScreenStep:1];
-                    }
-                    else if ([landingPage isEqualToString:@"professional"]) {
-                        [self navigateToSignUpScreenStep:2];
-                    }
-                    else if ([landingPage isEqualToString:@"bank"]) {
-                        [self navigateToSignUpScreenStep:3];
-                    }
-                    else if ([landingPage isEqualToString:@"document"]) {
-                        [self navigateToSignUpScreenStep:4];
-                    }
-                    else if ([landingPage isEqualToString:@"rejected"]) {
-                        [self navigateToSignUpScreenStep:5];
-                    }
-                    else {
-                        [[AppDelegate instance] navigateToHomeVC:response];
-                    }
+                    [[AppDelegate instance] navigateToCorrespondingScreenAfterLoginWithResponse:response withController:self];
                 }
             }
         }];
@@ -190,7 +170,7 @@
     
     if(textField == otf){
         NSUInteger newLength = [textField.text length] + [string length] - range.length;
-        return (newLength > OTP_LENGTH) ? NO : [string isEqualToString:filtered];
+        return (newLength > MAX_OTP_LENGTH) ? NO : [string isEqualToString:filtered];
     }
 
     return YES;

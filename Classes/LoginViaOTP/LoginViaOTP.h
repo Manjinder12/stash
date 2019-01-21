@@ -8,13 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoginViaOTP : UIViewController
+@interface LoginViaOTP : UIViewController {
+    NSTimer *clockTimer;
+    NSUInteger counter;
+}
 
 @property (assign, nonatomic) BOOL isFromRegisteration;
 @property (strong, nonatomic) NSDictionary *prefilledDic;
 @property (strong, nonatomic) NSDictionary *cardScanDic;
 
-@property (weak, nonatomic) IBOutlet UIButton *sendOTPButton;
+@property (weak, nonatomic) IBOutlet CountdownButton *sendOTPButton;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UILabel *loginLabel;
 @property (weak, nonatomic) IBOutlet UIView *mobileView;

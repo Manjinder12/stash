@@ -10,7 +10,6 @@
 
 @interface ApplicationUtils : NSObject
 
-+(AFHTTPClient *)generateHTTPHeaderWithOLDURL:(BOOL)isOLDURL;
 + (NSString*) sha1:(NSString*)input;
 + (NSString *)sha256:(NSString *)input;
 + (NSString *) md5:(NSString *) input;
@@ -81,5 +80,6 @@
 + (UIImage *)getRoundedImage:(float)height withImage:(UIImage *)image;
 + (void)insertBackgroundGradientLayer:(UIView *)bgView withFrame:(CGRect)frame;
 + (void)setFieldViewProperties:(UIView *)view;
++ (void)hideGreenCheckImageFromFieldView:(UIView *)view shouldHide:(BOOL)hide;
 
 @end

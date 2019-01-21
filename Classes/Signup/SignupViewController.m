@@ -284,13 +284,14 @@
         [self.reProcessingLabel setFont:[ApplicationUtils GETFONT_MEDIUM:17]];
         [self.reContinueButton.titleLabel setFont:[ApplicationUtils GETFONT_BOLD:18]];
         
-        [self.rejectLabel setFont:[ApplicationUtils GETFONT_BOLD:24]];
-        [self.rejectStaticLabel setFont:[ApplicationUtils GETFONT_MEDIUM:17]];
-        [self.rejectCloseButton.titleLabel setFont:[ApplicationUtils GETFONT_BOLD:18]];
-        
         [self.pminuteLabel setText:@"It may take us a minute. You can continue to fill other parts of the application while we get your offer ready."];
     }
-
+    
+    [self.rejectLabel setFont:[ApplicationUtils GETFONT_BOLD:24]];
+    [self.rejectStaticLabel setFont:[ApplicationUtils GETFONT_MEDIUM:17]];
+    [self.rejectCloseButton.titleLabel setFont:[ApplicationUtils GETFONT_BOLD:18]];
+    
+    [self.reloadPerfiosPageButton.titleLabel setFont:[ApplicationUtils GETFONT_BOLD:16]];
     [self.sUploadLabel setFont:[ApplicationUtils GETFONT_BOLD:24]];
     [self.sSignDocumentButton.titleLabel setFont:[ApplicationUtils GETFONT_BOLD:18]];
     [self.skipSignatureButton.titleLabel setFont:[ApplicationUtils GETFONT_BOLD:18]];
@@ -300,7 +301,7 @@
     [self.fProcessingLabel setFont:[ApplicationUtils GETFONT_MEDIUM:17]];
     [self.fContinueButton.titleLabel setFont:[ApplicationUtils GETFONT_BOLD:18]];
     
-    [self.rejectStaticLabel setText:@"Sorry! \n Your application can not be processed at this time."];
+    [self.rejectStaticLabel setText:@"We regret to inform you that we are unable to process your application at this time. You may apply again after 3 months."];
     
     [self.fProcessingLabel setText:@"Your application is now complete. \n Your card will now be processed. \n\n You can now login to StashFin app using your phone number & OTP to view your profile & documents"];
     
@@ -347,11 +348,11 @@
             [self setTextFieldFromView:self.salaryView WithKey:SALARY_KEY];
             
             if ([[ApplicationUtils validateStringData:self.prefilledDic[GENDER_KEY]] length]) {
-                [self hideGreenCheckImageFromFieldView:self.genderView shouldHide:NO];
+                [ApplicationUtils hideGreenCheckImageFromFieldView:self.genderView shouldHide:NO];
             }
             
             if ([[ApplicationUtils validateStringData:self.prefilledDic[DOB_KEY]] length]) {
-                [self hideGreenCheckImageFromFieldView:self.dobView shouldHide:NO];
+                [ApplicationUtils hideGreenCheckImageFromFieldView:self.dobView shouldHide:NO];
             }
             
             [self setTextFieldFromView:self.referralcodeView WithKey:REFERRAL_CODE];
@@ -373,7 +374,7 @@
     [tf setText:self.prefilledDic[key]];
    
     if ([tf.text length]) {
-        [self hideGreenCheckImageFromFieldView:view shouldHide:NO];
+        [ApplicationUtils hideGreenCheckImageFromFieldView:view shouldHide:NO];
     }
     
     return tf;
@@ -461,11 +462,6 @@
     UIView *view1 = (UIView *)[self.pcenterView viewWithTag:tag];
     UILabel *lbl1 = (UILabel *)[view1 viewWithTag:100];
     [lbl1 setFont:[ApplicationUtils GETFONT_REGULAR:16]];
-}
-
--(void)hideGreenCheckImageFromFieldView:(UIView *)view shouldHide:(BOOL)hide {
-    UIImageView *greenImageView = (UIImageView *)[view viewWithTag:FIELD_GREEN_MARK_TAG];
-    greenImageView.hidden = hide;
 }
 
 - (void)setTopButtonSelected:(UIButton *)btn isSelected:(BOOL)isSelected {
@@ -737,10 +733,7 @@
 }
 
 - (IBAction)fContinueButtonAction:(id)sender {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    EmailLoginViewController *obj = [storyboard instantiateViewControllerWithIdentifier:@"EmailLoginViewController"];
-    [self.navigationController popViewControllerAnimated:NO];
-    [[AppDelegate instance].homeNavigationControler pushViewController:obj animated:YES];
+    [self getLoginDetailsFromServer];
 }
 
 - (IBAction)skipSignatureButtonAction:(id)sender {
@@ -764,6 +757,9 @@
             
             if (!bankPerfiosDic) {
                 [self getBankStatementStatusFromServer];
+            }
+            else {
+                [self loadPerfiosWebPage];
             }
             
         }], nil];
@@ -1539,6 +1535,35 @@
 
 #pragma mark - Service
 
+- (void)getLoginDetailsFromServer
+{
+    NSMutableDictionary *dictParam = [NSMutableDictionary dictionary];
+    [dictParam setValue:@"getLoginData"     forKey:@"mode"];
+    [dictParam setValue:@"iOS"              forKey:@"device_type"];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withHudBgView:self.view withCompletion:^(id response) {
+        if ([[response class] isSubclassOfClass:[NSString class]]) {
+            [AlertViewManager sharedManager].alertView =  [[UIAlertView alloc] initWithTitle:@""
+                                                                                     message:response
+                                                                            cancelButtonItem:nil
+                                                                            otherButtonItems:
+                                                           [RIButtonItem itemWithLabel: NSLocalizedString(@"Ok", nil) action:^{
+                
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                EmailLoginViewController *obj = [storyboard instantiateViewControllerWithIdentifier:@"EmailLoginViewController"];
+                [self.navigationController popViewControllerAnimated:NO];
+                [[AppDelegate instance].homeNavigationControler pushViewController:obj animated:YES];
+
+            }], nil];
+            [[AlertViewManager sharedManager].alertView show];
+        }
+        else {
+            //Navigate to Home
+            [[AppDelegate instance] navigateToHomeVC:response];
+        }
+    }];
+}
+
 - (void)serverCallForUploadSignatureWithImageString:(NSString *)imageString
 {
     NSMutableDictionary *dictParam = [NSMutableDictionary dictionary];
@@ -1786,26 +1811,28 @@
     [dictParam setValue:@"getBankStatementStatus"       forKey:@"mode"];
 
     [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withHudBgView:self.view withCompletion:^(id response) {
-        if (![[response class] isSubclassOfClass:[NSString class]]) {
-            
+        if (![[response class] isSubclassOfClass:[NSString class]])
+        {
             bankPerfiosDic = [NSDictionary dictionaryWithDictionary:response];
-            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[ApplicationUtils validateStringData:bankPerfiosDic[@"link"]]]]];
-            [self performSelector:@selector(startActivityIndicator) withObject:nil afterDelay:0.2];
+            [self loadPerfiosWebPage];
         }
     }];
 }
 
-- (void)getLoginDataFromServer {
-    
-    NSMutableDictionary *dictParam = [NSMutableDictionary dictionary];
-    [dictParam setValue:@"getLoginData"         forKey:@"mode"];
-    [dictParam setValue:@"iOS"                  forKey:@"device_type"];
+- (void)loadPerfiosWebPage
+{    
+    if ([ApplicationUtils validateStringData:bankPerfiosDic[@"link"]].length != 0)
+    {
+        [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[ApplicationUtils validateStringData:bankPerfiosDic[@"link"]]]]];
+        [self performSelector:@selector(startActivityIndicator) withObject:nil afterDelay:0.2];
+    }
+    else {
+        [self navigateToDocumentUploadScreen];
+    }
+}
 
-    [ServerCall getServerResponseWithParameters:dictParam withHUD:YES withHudBgView:self.view withCompletion:^(id response) {
-        if (![[response class] isSubclassOfClass:[NSString class]]) {
-            
-        }
-    }];
+- (IBAction)reloadPerfiosPageButtonAction:(id)sender {
+    [self getBankStatementStatusFromServer];
 }
 
 - (void)submitBasicDetailsForSignup {
@@ -1902,20 +1929,26 @@
         }
         else {
             [ApplicationUtils fadeInOutView:0.0 duration:0.25 view:self.basic2ScrollView];
-            [ApplicationUtils fadeInOutView:1.0 duration:0.35 view:self.processingView];
-
-            CGPoint center = self.penjoyLabel.center;
-            center.y += 25;
+            [ApplicationUtils fadeInOutView:1.0 duration:0.35 view:self.professionalScrollView];
             
-            indicatorView = [[UIActivityIndicatorView alloc] init];
-            indicatorView.center = center;
-            indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-            [self.processingView addSubview:indicatorView];
-            [indicatorView startAnimating];
+            [self setTopButtonSelected:self.basicButton isSelected:NO];
+            [self setTopButtonSelected:self.professionalButton isSelected:YES];
 
-            [ApplicationUtils save:[ApplicationUtils validateStringData:response[@"auth_token"]] :@"auth_token"];
-
-            [self performSelector:@selector(checkPreApprovalFromServer) withObject:nil afterDelay:45.0];
+//            [ApplicationUtils fadeInOutView:0.0 duration:0.25 view:self.basic2ScrollView];
+//            [ApplicationUtils fadeInOutView:1.0 duration:0.35 view:self.processingView];
+//
+//            CGPoint center = self.penjoyLabel.center;
+//            center.y += 25;
+//
+//            indicatorView = [[UIActivityIndicatorView alloc] init];
+//            indicatorView.center = center;
+//            indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+//            [self.processingView addSubview:indicatorView];
+//            [indicatorView startAnimating];
+//
+//            [ApplicationUtils save:[ApplicationUtils validateStringData:response[@"auth_token"]] :@"auth_token"];
+//
+//            [self performSelector:@selector(checkPreApprovalFromServer) withObject:nil afterDelay:45.0];
         }
     }];
 }

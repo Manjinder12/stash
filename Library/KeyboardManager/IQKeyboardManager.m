@@ -976,7 +976,7 @@
     [toolbar sizeToFit];
     
     //  Create a cancel button to show on keyboard to resign it. Adding a selector to resign it.
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStyleDone target:target action:cancelAction];
+//    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStyleDone target:target action:cancelAction];
 
     //  Create a fake button to maintain flexibleSpace between doneButton and nilButton. (Actually it moves done button to right side.
     UIBarButtonItem *nilButton =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -995,7 +995,7 @@
 	}
 	
     //  Adding button to toolBar.
-    [toolbar setItems:[NSArray arrayWithObjects:cancelButton,nilButton,doneButton, nil]];
+    [toolbar setItems:[NSArray arrayWithObjects:nilButton,doneButton, nil]]; //cancelButton,
     
     //  Setting toolbar to keyboard.
     [(UITextField*)self setInputAccessoryView:toolbar];

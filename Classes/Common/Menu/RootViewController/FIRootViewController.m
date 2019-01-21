@@ -1,6 +1,6 @@
 //
 //  FIRootViewController.m
-//  mCollect
+//  StashFin
 //
 //  Created by Mac on 10/10/17.
 //  Copyright © 2017 Mac. All rights reserved.
@@ -32,7 +32,7 @@
     self.menuPreferredStatusBarStyle = UIStatusBarStyleLightContent;
     self.contentViewShadowColor = [UIColor whiteColor];
     self.contentViewInPortraitOffsetCenterX = [AppDelegate instance].window.frame.size.width*0.25;
-    self.contentViewShadowEnabled = NO;
+    self.contentViewShadowEnabled = YES;
     self.parallaxEnabled = NO;
     self.scaleContentView = NO;
     self.scaleMenuView = NO;
@@ -41,6 +41,7 @@
 
     self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentViewController"];
     self.leftMenuViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"leftMenuViewController"];
+    [AppDelegate instance].leftMenuReferenceVC = self.leftMenuViewController;
 }
 
 - (void)viewDidLoad

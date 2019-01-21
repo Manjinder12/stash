@@ -1,6 +1,6 @@
 //
 //  FIRootViewController.h
-//  mCollect
+//  StashFin
 //
 //  Created by Mac on 10/10/17.
 //  Copyright © 2017 Mac. All rights reserved.

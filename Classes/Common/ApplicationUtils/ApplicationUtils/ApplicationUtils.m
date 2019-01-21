@@ -10,31 +10,9 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <CommonCrypto/CommonKeyDerivation.h>
 
-@class FIAppDelegate;
 
 @implementation ApplicationUtils
 
-+(AFHTTPClient *)generateHTTPHeaderWithOLDURL:(BOOL)isOLDURL{
-    
-    AFHTTPClient *httpClient;
-    if (isOLDURL) {
-        httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:BASE_URL_OLD]];
-    }
-    else {
-        httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:BASE_URL]];
-    }
-    [httpClient setParameterEncoding:AFJSONParameterEncoding];
-
-    NSString *token = [NSString stringWithFormat:@"%@",[ApplicationUtils getValue:@"auth_token"]];
-    NSString *deviceID = [NSString stringWithFormat:@"%@",[ApplicationUtils getDeviceID]];
-    
-    [httpClient setDefaultHeader:@"auth_token" value:token];
-    [httpClient setDefaultHeader:@"device_id" value:deviceID];
-    [httpClient setDefaultHeader:@"Accept" value:@"application/json"];
-    [httpClient setDefaultHeader:@"Content-Type" value:@"application/json"];
-
-    return httpClient;
-}
 
 + (NSString*) sha1:(NSString*)input
 {
@@ -538,11 +516,11 @@
 }
 
 + (void)pushVCWithFadeAnimation:(UIViewController *)vc andNavigationController:(UINavigationController *)nc {
-    CATransition* transition = [CATransition animation];
-    transition.duration = 0.3;
-    transition.type = kCATransitionFade;
-    [nc.view.layer addAnimation:transition forKey:nil];
-    [nc pushViewController:vc animated:NO];
+//    CATransition* transition = [CATransition animation];
+//    transition.duration = 0.4;
+//    transition.type = kCATransitionFade;
+//    [nc.view.layer addAnimation:transition forKey:kCATransitionFade];
+    [nc pushViewController:vc animated:YES];
 }
 
 + (void)popToVCWithFadeAnimation:(UIViewController *)vc andNavigationController:(UINavigationController *)nc {
@@ -578,6 +556,8 @@
     [navigationBar setBackgroundImage:image    forBarMetrics:UIBarMetricsDefault];
     navigationBar.shadowImage = image;
     navigationBar.translucent = NO;
+
+//    [ApplicationUtils setTintColorForNavigationBackButton:[UIColor clearColor]];
 
     if ([headercolor isEqual:ROSE_PINK_COLOR]) {
         navigationBar.tintColor = [UIColor whiteColor];
@@ -720,7 +700,7 @@
     [tf setTextColor:[UIColor blackColor]];
     
     UILabel *linelbl = (UILabel *)[view viewWithTag:FIELD_SEPERATOR_TAG];
-    [linelbl setBackgroundColor:[UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0]];
+    [linelbl setBackgroundColor:[UIColor colorWithRed:235.0/255.0 green:235.0/255.0 blue:235.0/255.0 alpha:1.0]];
     
     UIImageView *greenImageView = (UIImageView *)[view viewWithTag:FIELD_GREEN_MARK_TAG];
     greenImageView.hidden = YES;
@@ -737,6 +717,11 @@
 
     UIButton *radioButton2 = (UIButton *)[view viewWithTag:FIELD_RADIO2_TAG];
     [radioButton2.titleLabel setFont:[ApplicationUtils GETFONT_REGULAR:20]];
+}
+
++ (void)hideGreenCheckImageFromFieldView:(UIView *)view shouldHide:(BOOL)hide {
+    UIImageView *greenImageView = (UIImageView *)[view viewWithTag:FIELD_GREEN_MARK_TAG];
+    greenImageView.hidden = hide;
 }
 
 + (NSString *)stringByFormattingAsCreditCardNumber:(NSString *)string

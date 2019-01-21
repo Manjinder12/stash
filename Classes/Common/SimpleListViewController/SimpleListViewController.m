@@ -49,7 +49,7 @@
         cell.backgroundView = nil;
     }
     [cell.textLabel setFont:[ApplicationUtils GETFONT_REGULAR:16]];
-    [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
+    [cell.textLabel setTextAlignment:NSTextAlignmentLeft];
     
     cell.textLabel.text = [self.listArray objectAtIndex:indexPath.row];
    

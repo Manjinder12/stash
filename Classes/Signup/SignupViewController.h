@@ -151,6 +151,8 @@
 @property (weak, nonatomic) IBOutlet UIView *bankView;
 @property (weak, nonatomic) IBOutlet UIButton *authencicateLaterButton;
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
+@property (weak, nonatomic) IBOutlet UIButton *reloadPerfiosPageButton;
+
 
 @property (weak, nonatomic) IBOutlet UIView *documentView;
 @property (weak, nonatomic) IBOutlet UITableView *documentTableView;
@@ -163,6 +165,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *adpvOKButton;
 
 
+- (IBAction)reloadPerfiosPageButtonAction:(id)sender;
 - (IBAction)adpvOKButtonAction:(id)sender;
 - (IBAction)adpvCancelButtonAction:(id)sender;
 - (IBAction)documentDoneButtonAction:(id)sender;

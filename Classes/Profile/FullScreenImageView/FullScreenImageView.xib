@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FullScreenImageView"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view alpha="0.0" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" id="iN0-l3-epB" customClass="FullScreenImageView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C8p-CO-WiH">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" maximumZoomScale="6" translatesAutoresizingMaskIntoConstraints="NO" id="ZCJ-1G-10k">
+                    <rect key="frame" x="15" y="15" width="345" height="637"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="R18-Lw-dbF">
+                            <rect key="frame" x="0.0" y="0.0" width="345" height="637"/>
+                        </imageView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="R18-Lw-dbF" secondAttribute="trailing" id="9rb-7B-yzq"/>
+                        <constraint firstItem="R18-Lw-dbF" firstAttribute="top" secondItem="ZCJ-1G-10k" secondAttribute="top" id="QnV-aL-38S"/>
+                        <constraint firstAttribute="bottom" secondItem="R18-Lw-dbF" secondAttribute="bottom" id="ZKa-43-zIi"/>
+                        <constraint firstItem="R18-Lw-dbF" firstAttribute="leading" secondItem="ZCJ-1G-10k" secondAttribute="leading" id="apj-3q-SRM"/>
+                        <constraint firstItem="R18-Lw-dbF" firstAttribute="centerY" secondItem="ZCJ-1G-10k" secondAttribute="centerY" id="ikI-1J-eGK"/>
+                        <constraint firstItem="R18-Lw-dbF" firstAttribute="centerX" secondItem="ZCJ-1G-10k" secondAttribute="centerX" id="qIL-pZ-NoP"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="delegate" destination="iN0-l3-epB" id="E1R-vc-NbE"/>
+                    </connections>
+                </scrollView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4aP-az-JW0">
+                    <rect key="frame" x="311" y="18" width="45" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="8bd-ga-QJw"/>
+                        <constraint firstAttribute="width" constant="45" id="GRO-jy-Cbo"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="36"/>
+                    <state key="normal" backgroundImage="closeDocument.png">
+                        <color key="titleColor" red="0.77351831896551715" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="closeButtonClicked:" destination="iN0-l3-epB" eventType="touchUpInside" id="uMy-bf-jrN"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="4aP-az-JW0" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="18" id="0oz-C2-EuV"/>
+                <constraint firstAttribute="trailing" secondItem="4aP-az-JW0" secondAttribute="trailing" constant="19" id="0wu-ad-0AL"/>
+                <constraint firstAttribute="trailing" secondItem="ZCJ-1G-10k" secondAttribute="trailing" constant="15" id="3Jw-me-sUf"/>
+                <constraint firstItem="ZCJ-1G-10k" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="55B-Wd-H2f"/>
+                <constraint firstAttribute="bottom" secondItem="ZCJ-1G-10k" secondAttribute="bottom" constant="15" id="5z7-Sb-oaI"/>
+                <constraint firstItem="C8p-CO-WiH" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Hfa-h3-TfQ"/>
+                <constraint firstAttribute="trailing" secondItem="C8p-CO-WiH" secondAttribute="trailing" id="jIo-ZD-nGy"/>
+                <constraint firstItem="ZCJ-1G-10k" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="rhs-hd-wfV"/>
+                <constraint firstItem="C8p-CO-WiH" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="tb4-5V-5qt"/>
+                <constraint firstAttribute="bottom" secondItem="C8p-CO-WiH" secondAttribute="bottom" id="yJJ-rC-HPm"/>
+            </constraints>
+            <connections>
+                <outlet property="bgScrollView" destination="ZCJ-1G-10k" id="elx-YQ-90o"/>
+                <outlet property="mainImageView" destination="R18-Lw-dbF" id="wr1-Lb-am2"/>
+            </connections>
+            <point key="canvasLocation" x="220" y="349"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="closeDocument.png" width="45" height="45"/>
+    </resources>
+</document>

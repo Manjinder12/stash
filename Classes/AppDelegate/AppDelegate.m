@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "ViewController.h"
+#import "SignupViewController.h"
+
 
 @interface AppDelegate ()
 
@@ -17,7 +19,6 @@
 static NSString * const kClientID = @"442977242723-r19ab8bkrour713tacqifvruj2jo41nv.apps.googleusercontent.com";
 
 @implementation AppDelegate
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -155,19 +156,6 @@ static NSString * const kClientID = @"442977242723-r19ab8bkrour713tacqifvruj2jo4
     }
 }
 
-#pragma mark - Home Screen
-
-- (void)navigateToHomeVC:(id)response
-{
-    if (response) {
-        NSError *error = nil;
-        response = [NSJSONSerialization dataWithJSONObject:response options:NSJSONWritingPrettyPrinted error:&error];
-        [ApplicationUtils save:[ApplicationUtils validateStringData:response] :LOGIN_DATA];
-    }
-    
-    [ApplicationUtils pushVCWithFadeAnimation:[[AppDelegate instance] intializeViewController:@"FIRootViewController"] andNavigationController:self.homeNavigationControler];
-}
-
 #pragma mark - CLLocationManager Delegate
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
@@ -239,6 +227,90 @@ static NSString * const kClientID = @"442977242723-r19ab8bkrour713tacqifvruj2jo4
     
     [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withHudBgView:self.window withCompletion:^(id response) {
 
+    }];
+}
+
+#pragma mark - Handle Navigation After Login
+
+- (void)navigateToCorrespondingScreenAfterLoginWithResponse:(id)response withController:(UIViewController *)vc {
+    [ApplicationUtils save:[ApplicationUtils validateStringData:response[@"auth_token"]] :@"auth_token"];
+    
+    NSString *landingPage = [[ApplicationUtils validateStringData:response[@"landing_page"]] lowercaseString];
+    NSString *loanStatus = [[ApplicationUtils validateStringData:response[@"latest_loan_details"][@"current_status"]] lowercaseString];
+    
+    if ([landingPage isEqualToString:@"basic"]) {
+        [self navigateToSignUpScreenStep:1 withController:vc];
+    }
+    else if ([landingPage isEqualToString:@"professional"]) {
+        [self navigateToSignUpScreenStep:2 withController:vc];
+    }
+    else if ([landingPage isEqualToString:@"bank"]) {
+        [self navigateToSignUpScreenStep:3 withController:vc];
+    }
+    else if ([landingPage isEqualToString:@"document"]) {
+        [self navigateToSignUpScreenStep:4 withController:vc];
+    }
+    else if ([landingPage isEqualToString:@"rejected"] || [loanStatus isEqualToString:@"rejected"]) {
+        [self navigateToSignUpScreenStep:5 withController:vc];
+    }
+    else {
+        [self navigateToHomeVC:response];
+    }
+}
+
+- (void)navigateToSignUpScreenStep:(NSInteger)step withController:(UIViewController *)vc {
+    SignupViewController *obj = [[SignupViewController alloc] init];
+    [obj setLandingPage:step];
+    [vc.navigationController popViewControllerAnimated:NO];
+    [ApplicationUtils pushVCWithFadeAnimation:obj andNavigationController:[AppDelegate instance].homeNavigationControler];
+}
+
+- (void)navigateToHomeVC:(id)response
+{
+    if (response) {
+        [self updateLoginData:response];
+    }
+    else {
+        //Auto Login
+        [self getLoginData];
+    }
+    [self getCardDetailsFromServer];
+}
+
+- (void)getCardDetailsFromServer {
+    NSMutableDictionary *dictParam = [NSMutableDictionary dictionary];
+    [dictParam setValue:@"cardOverview"     forKey:@"mode"];
+    
+    MRProgressOverlayView *overlayView = [MRProgressOverlayView showOverlayAddedTo:self.homeNavigationControler.view animated:YES];
+    overlayView.titleLabelText = @"Please wait while we are refreshing your profile";
+
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withHudBgView:nil withCompletion:^(id response) {
+        if (![[response class] isSubclassOfClass:[NSString class]]) {
+            [self updateCardData:response];
+        }
+        else {
+            [self updateCardData:nil];
+        }
+        
+        [self getLOCDetailsFromServer];
+    }];
+}
+
+- (void)getLOCDetailsFromServer {
+    NSMutableDictionary *dictParam = [NSMutableDictionary dictionary];
+    [dictParam setValue:@"locDetails"     forKey:@"mode"];
+    
+    [ServerCall getServerResponseWithParameters:dictParam withHUD:NO withHudBgView:nil withCompletion:^(id response) {
+        if (![[response class] isSubclassOfClass:[NSString class]]) {
+            [self updateLOCData:response];
+        }
+        else {
+            [self updateLOCData:nil];
+        }
+        
+        [MRProgressOverlayView dismissOverlayForView:self.homeNavigationControler.view animated:YES];
+
+        [ApplicationUtils pushVCWithFadeAnimation:[[AppDelegate instance] intializeViewController:@"FIRootViewController"] andNavigationController:self.homeNavigationControler];
     }];
 }
 
@@ -404,18 +476,55 @@ static NSString * const kClientID = @"442977242723-r19ab8bkrour713tacqifvruj2jo4
 }
 
 
--(void)updateLoginData:(id)responseObject {
-    if (responseObject && [[responseObject class] isSubclassOfClass:[NSData class]]) {
-        [ApplicationUtils save:responseObject :LOGIN_DATA];
-        self.loginData = nil;
-        [self getLoginData];
+-(void)updateCardData:(id)responseObject {
+    if (responseObject && [[responseObject class] isSubclassOfClass:[NSDictionary class]]) {
+        NSError *error = nil;
+        id responseData = [NSJSONSerialization dataWithJSONObject:responseObject
+                                                         options:NSJSONWritingPrettyPrinted
+                                                           error:&error];
+        
+        [ApplicationUtils save:responseData :CARD_DATA];
+        self.cardData = responseObject;
+    }
+    else {
+        self.cardData = nil;
+        [ApplicationUtils save:nil :CARD_DATA];
     }
 }
 
-- (id)getLoginData {
-    if (self.loginData && [[self.loginData allKeys] count]) {
-        return self.loginData;
+-(void)updateLOCData:(id)responseObject {
+    if (responseObject && [[responseObject class] isSubclassOfClass:[NSDictionary class]]) {
+        NSError *error = nil;
+        id responseData = [NSJSONSerialization dataWithJSONObject:responseObject
+                                                         options:NSJSONWritingPrettyPrinted
+                                                           error:&error];
+        
+        [ApplicationUtils save:responseData :LOC_DATA];
+        self.locData = responseObject;
     }
+    else {
+        self.locData = nil;
+        [ApplicationUtils save:nil :LOC_DATA];
+    }
+}
+
+-(void)updateLoginData:(id)responseObject {
+    if (responseObject && [[responseObject class] isSubclassOfClass:[NSDictionary class]]) {
+        NSError *error = nil;
+        id responseData = [NSJSONSerialization dataWithJSONObject:responseObject
+                                                               options:NSJSONWritingPrettyPrinted
+                                                                 error:&error];
+        
+        [ApplicationUtils save:responseData :LOGIN_DATA];
+        self.loginData = responseObject;
+    }
+    else {
+        self.loginData = nil;
+        [ApplicationUtils save:nil :LOGIN_DATA];
+    }
+}
+
+- (void)getLoginData {
     id responseObject = [ApplicationUtils getValue:LOGIN_DATA];
     
     if (responseObject && [[responseObject class] isSubclassOfClass:[NSData class]]) {
@@ -424,12 +533,6 @@ static NSString * const kClientID = @"442977242723-r19ab8bkrour713tacqifvruj2jo4
                                                          options:NSJSONReadingMutableContainers
                                                            error:&error];
     }
-    else {
-        self.loginData = nil;
-        [ApplicationUtils save:nil :LOGIN_DATA];
-    }
-    
-    return self.loginData;
 }
 
 @end

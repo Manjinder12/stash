@@ -11,8 +11,17 @@
 
 @interface HomeViewController : UIViewController
 
-@property (strong, nonatomic) NSDictionary *cardOverviewDic;
-@property (strong, nonatomic) NSDictionary *locDetailDic;
+@property (weak, nonatomic) IBOutlet UIView *topBGView;
+@property (weak, nonatomic) IBOutlet UIView *bg1View;
+@property (weak, nonatomic) IBOutlet UIView *bg2View;
+@property (weak, nonatomic) IBOutlet UIView *bg3View;
+
+@property (weak, nonatomic) IBOutlet UILabel *remainingAmountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *remainingAmountValue;
+@property (weak, nonatomic) IBOutlet UILabel *nextEMIDateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *nextEMIDateValue;
+@property (weak, nonatomic) IBOutlet UILabel *nextEMIAmountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *nextEMIAmountValue;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *approvedLimitLabel;
@@ -27,5 +36,7 @@
 @property (weak, nonatomic) IBOutlet SFCircleGradientView *pictureView;
 @property (weak, nonatomic) IBOutlet UIImageView *trasparentImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
+
+- (void)getLOCDetailsFromServer;
 
 @end

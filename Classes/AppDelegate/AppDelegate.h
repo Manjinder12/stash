@@ -9,16 +9,21 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "TIMERUIApplication.h"
+#import <FacebookSDK/FacebookSDK.h>
 #import <GoogleSignIn/GoogleSignIn.h>
+#import "FILeftMenuViewController.h"
 
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) id loginData;
+@property (strong, nonatomic) id locData;
+@property (strong, nonatomic) id cardData;
 @property (strong, nonatomic) UIView *notificationView;
 @property (strong, nonatomic) UILabel *lblNotificationBadge;
 @property (strong, nonatomic) UIButton *notifcationButton;
+@property (strong, nonatomic) FILeftMenuViewController *leftMenuReferenceVC;
 
 + (AppDelegate *)instance;
 - (NSString *)getLatitude;
@@ -26,11 +31,12 @@
 - (void)logoutUpdateUI;
 - (void)navigateToHomeVC:(id)response;
 - (void)showSessionExpiredAlertAndlogout;
-- (id)checkForTokenExpiryAndBackToLoginScreen:(id)responseObject;
-- (id)getLoginData;
 - (void)updateLoginData:(id)responseObject;
+-(void)updateCardData:(id)responseObject;
+-(void)updateLOCData:(id)responseObject;
+- (void)addNotificationButton;
 - (UIViewController *)intializeViewController:(NSString *)viewControllerIdentifier;
--(void)addNotificationButton;
+- (void)navigateToCorrespondingScreenAfterLoginWithResponse:(id)response withController:(UIViewController *)vc;
 
 @property (nonatomic, strong) UIImageView *imageView;
 @property (strong, nonatomic) NSDate *appInBackgroundDateTime;

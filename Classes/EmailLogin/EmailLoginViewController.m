@@ -9,7 +9,6 @@
 #import "EmailLoginViewController.h"
 #import "ForgotPasswordViewController.h"
 #import "LoginViaOTP.h"
-#import "SignupViewController.h"
 
 
 @interface EmailLoginViewController ()
@@ -40,14 +39,19 @@
     UITextField *etf = (UITextField *)[self.emailView viewWithTag:101];
     UITextField *ptf = (UITextField *)[self.passwordView viewWithTag:101];
 
+    //SK Change
 //    etf.text = @"ankur.bagla@stashfin.com";
 //    ptf.text = @"123456789";
 
 //    etf.text = @"raviprakashlts@gmail.com";
 //    ptf.text = @"12345678";
 
-    etf.text = @"pc@stashfin.com";
-    ptf.text = @"123456";
+//    etf.text = @"pc@stashfin.com";
+//    ptf.text = @"123456";
+
+    //Dev Environment
+//    etf.text = @"ravi.prakash@stashfin.com";
+//    ptf.text = @"123456";
 
     if (![ApplicationUtils validateStringData:etf.text].length || ![etf.text isEmail]) {
         [ApplicationUtils showAlertWithTitle:@"" andMessage:@"Please enter valid email"];
@@ -68,28 +72,7 @@
                 [ApplicationUtils showAlertWithTitle:@"" andMessage:response];
             }
             else {
-                [ApplicationUtils save:[ApplicationUtils validateStringData:response[@"auth_token"]] :@"auth_token"];
-
-                NSString *landingPage = [[ApplicationUtils validateStringData:response[@"landing_page"]] lowercaseString];
-                
-                if ([landingPage isEqualToString:@"basic"]) {
-                    [self navigateToSignUpScreenStep:1];
-                }
-                else if ([landingPage isEqualToString:@"professional"]) {
-                    [self navigateToSignUpScreenStep:2];
-                }
-                else if ([landingPage isEqualToString:@"bank"]) {
-                    [self navigateToSignUpScreenStep:3];
-                }
-                else if ([landingPage isEqualToString:@"document"]) {
-                    [self navigateToSignUpScreenStep:4];
-                }
-                else if ([landingPage isEqualToString:@"rejected"]) {
-                    [self navigateToSignUpScreenStep:5];
-                }
-                else {
-                    [[AppDelegate instance] navigateToHomeVC:response];
-                }
+                [[AppDelegate instance] navigateToCorrespondingScreenAfterLoginWithResponse:response withController:self];
             }
         }];
     }
@@ -107,13 +90,6 @@
 
 - (IBAction)backAction:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)navigateToSignUpScreenStep:(NSInteger)step {
-    SignupViewController *obj = [[SignupViewController alloc] init];
-    [obj setLandingPage:step];
-    [self.navigationController popViewControllerAnimated:NO];
-    [ApplicationUtils pushVCWithFadeAnimation:obj andNavigationController:[AppDelegate instance].homeNavigationControler];
 }
 
 @end
