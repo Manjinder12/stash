@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ReferralCodeViewController">
+            <connections>
+                <outlet property="applyButton" destination="5lr-y8-lhw" id="Sgq-Y3-YlM"/>
+                <outlet property="applyButtonTopConstraint" destination="pHL-jv-aHX" id="7gE-pm-Ige"/>
+                <outlet property="codeTF" destination="Fhg-wq-0Qp" id="GHh-Iz-nuL"/>
+                <outlet property="static1Label" destination="kc0-G4-hE8" id="ndr-jK-V6r"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" alpha="0.59999999999999998" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="24s-mF-nSc">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YoW-6k-2e6">
+                    <rect key="frame" x="20" y="20" width="280" height="528"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="refferral_Code_pop_up" translatesAutoresizingMaskIntoConstraints="NO" id="CXp-VO-tms">
+                            <rect key="frame" x="10" y="157.5" width="260" height="213"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="CXp-VO-tms" secondAttribute="height" multiplier="302:247" id="2Sf-CV-UPC"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter your StashFin Referral Code to secure your special offer" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kc0-G4-hE8">
+                            <rect key="frame" x="25" y="280" width="231.5" height="28"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                            <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fhg-wq-0Qp">
+                            <rect key="frame" x="88.5" y="318" width="103" height="26"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="Fhg-wq-0Qp" secondAttribute="height" multiplier="4:1" id="gcH-ES-L8U"/>
+                            </constraints>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5lr-y8-lhw">
+                            <rect key="frame" x="79" y="370.5" width="122" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="5lr-y8-lhw" secondAttribute="height" multiplier="143:42" id="44L-Ee-dIL"/>
+                            </constraints>
+                            <state key="normal" image="apply"/>
+                            <connections>
+                                <action selector="applyButtonAction:" destination="-1" eventType="touchUpInside" id="c6X-n2-lPd"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="Fhg-wq-0Qp" firstAttribute="centerX" secondItem="YoW-6k-2e6" secondAttribute="centerX" id="2Sc-fL-E29"/>
+                        <constraint firstItem="Fhg-wq-0Qp" firstAttribute="width" secondItem="CXp-VO-tms" secondAttribute="height" multiplier="15:31" id="JOU-rx-dBc"/>
+                        <constraint firstItem="CXp-VO-tms" firstAttribute="centerY" secondItem="YoW-6k-2e6" secondAttribute="centerY" id="cTH-pz-ACO"/>
+                        <constraint firstItem="5lr-y8-lhw" firstAttribute="width" secondItem="CXp-VO-tms" secondAttribute="height" multiplier="143:249" id="cst-hw-0dR"/>
+                        <constraint firstItem="kc0-G4-hE8" firstAttribute="leading" secondItem="CXp-VO-tms" secondAttribute="leading" constant="15" id="nR3-pG-VLv"/>
+                        <constraint firstItem="5lr-y8-lhw" firstAttribute="centerX" secondItem="CXp-VO-tms" secondAttribute="centerX" id="otW-ad-yGK"/>
+                        <constraint firstItem="5lr-y8-lhw" firstAttribute="top" secondItem="CXp-VO-tms" secondAttribute="bottom" id="pHL-jv-aHX"/>
+                        <constraint firstItem="kc0-G4-hE8" firstAttribute="centerX" secondItem="YoW-6k-2e6" secondAttribute="centerX" id="qzm-bX-dvJ"/>
+                        <constraint firstItem="CXp-VO-tms" firstAttribute="leading" secondItem="YoW-6k-2e6" secondAttribute="leading" constant="10" id="twK-g4-Fyj"/>
+                        <constraint firstItem="kc0-G4-hE8" firstAttribute="centerY" secondItem="YoW-6k-2e6" secondAttribute="centerY" constant="30" id="yiw-iy-eXU"/>
+                        <constraint firstItem="CXp-VO-tms" firstAttribute="centerX" secondItem="YoW-6k-2e6" secondAttribute="centerX" id="z6l-FU-T25"/>
+                        <constraint firstItem="Fhg-wq-0Qp" firstAttribute="centerY" secondItem="YoW-6k-2e6" secondAttribute="centerY" constant="67" id="zhP-SU-QRl"/>
+                    </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="EeD-Vv-KEN" appends="YES" id="cFJ-0P-krO"/>
+                    </connections>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="YoW-6k-2e6" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="0Hh-CG-NqW"/>
+                <constraint firstItem="YoW-6k-2e6" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="76C-qw-7mP"/>
+                <constraint firstItem="24s-mF-nSc" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="R9M-jT-7ez"/>
+                <constraint firstItem="24s-mF-nSc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="U4M-gp-qDG"/>
+                <constraint firstItem="YoW-6k-2e6" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Ueb-FU-FII"/>
+                <constraint firstItem="24s-mF-nSc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="blf-c7-XzJ"/>
+                <constraint firstItem="YoW-6k-2e6" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="dpS-7L-iGc"/>
+                <constraint firstItem="24s-mF-nSc" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="x4F-mW-V6K"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="34.5" y="54"/>
+        </view>
+        <tapGestureRecognizer id="EeD-Vv-KEN">
+            <connections>
+                <action selector="tapAction:" destination="-1" id="Z1F-lr-K3A"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="apply" width="136" height="30"/>
+        <image name="refferral_Code_pop_up" width="301" height="247"/>
+    </resources>
+</document>
