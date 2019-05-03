@@ -7,21 +7,227 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FAAFB30B2271895F00C5056D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFB30A2271895F00C5056D /* AppDelegate.swift */; };
-		FAAFB30D2271895F00C5056D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFB30C2271895F00C5056D /* ViewController.swift */; };
-		FAAFB3102271895F00C5056D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAAFB30E2271895F00C5056D /* Main.storyboard */; };
-		FAAFB3122271896100C5056D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAAFB3112271896100C5056D /* Assets.xcassets */; };
-		FAAFB3152271896100C5056D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAAFB3132271896100C5056D /* LaunchScreen.storyboard */; };
+		EEFCC67B15FDCE5535A3BED9 /* Pods_Stashfin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01E532307C3E22DA0B5EE324 /* Pods_Stashfin.framework */; };
+		FA0CF50F227A035C0017D72A /* PageSwitcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0CF50E227A035C0017D72A /* PageSwitcher.swift */; };
+		FA0CF511227A13340017D72A /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0CF510227A13340017D72A /* RootViewController.swift */; };
+		FA3116742271A6FA008D52E9 /* sign.gif in Resources */ = {isa = PBXBuildFile; fileRef = FA3116732271A6FA008D52E9 /* sign.gif */; };
+		FA3116EE2271A71A008D52E9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116772271A718008D52E9 /* AppDelegate.swift */; };
+		FA3116EF2271A71A008D52E9 /* SocialLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116792271A719008D52E9 /* SocialLoginViewController.swift */; };
+		FA3116F02271A71A008D52E9 /* PayNowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31167B2271A719008D52E9 /* PayNowViewController.swift */; };
+		FA3116F12271A71A008D52E9 /* DashBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31167C2271A719008D52E9 /* DashBoardViewController.swift */; };
+		FA3116F22271A71A008D52E9 /* CardPinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31167D2271A719008D52E9 /* CardPinViewController.swift */; };
+		FA3116F32271A71A008D52E9 /* CustomerCareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31167E2271A719008D52E9 /* CustomerCareViewController.swift */; };
+		FA3116F42271A71A008D52E9 /* LoadMyCardConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31167F2271A719008D52E9 /* LoadMyCardConfirmViewController.swift */; };
+		FA3116F52271A71A008D52E9 /* LoadMyCardDoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116802271A719008D52E9 /* LoadMyCardDoneViewController.swift */; };
+		FA3116F62271A71A008D52E9 /* ActivateCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116812271A719008D52E9 /* ActivateCardViewController.swift */; };
+		FA3116F72271A71A008D52E9 /* PayBackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116822271A719008D52E9 /* PayBackViewController.swift */; };
+		FA3116F82271A71A008D52E9 /* BlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116832271A719008D52E9 /* BlockViewController.swift */; };
+		FA3116F92271A71A008D52E9 /* LoanCalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116842271A719008D52E9 /* LoanCalculatorViewController.swift */; };
+		FA3116FA2271A71A008D52E9 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116852271A719008D52E9 /* ForgotPasswordViewController.swift */; };
+		FA3116FB2271A71A008D52E9 /* LoadMyCardSlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116862271A719008D52E9 /* LoadMyCardSlideViewController.swift */; };
+		FA3116FC2271A71A008D52E9 /* StashFinCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116872271A719008D52E9 /* StashFinCardViewController.swift */; };
+		FA3116FD2271A71A008D52E9 /* ActivateCardIntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116882271A719008D52E9 /* ActivateCardIntroViewController.swift */; };
+		FA3116FE2271A71A008D52E9 /* ApplicationStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116892271A719008D52E9 /* ApplicationStatusViewController.swift */; };
+		FA3116FF2271A71A008D52E9 /* TransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31168A2271A719008D52E9 /* TransactionViewController.swift */; };
+		FA3117002271A71A008D52E9 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31168B2271A719008D52E9 /* ProfileViewController.swift */; };
+		FA3117012271A71A008D52E9 /* OutgoingEmiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31168C2271A719008D52E9 /* OutgoingEmiViewController.swift */; };
+		FA3117022271A71A008D52E9 /* RejectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31168E2271A719008D52E9 /* RejectViewController.swift */; };
+		FA3117032271A71A008D52E9 /* EnachViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31168F2271A719008D52E9 /* EnachViewController.swift */; };
+		FA3117042271A71A008D52E9 /* SignatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116902271A719008D52E9 /* SignatureViewController.swift */; };
+		FA3117052271A71A008D52E9 /* PersonalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116912271A719008D52E9 /* PersonalViewController.swift */; };
+		FA3117062271A71A008D52E9 /* DocumentUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116922271A719008D52E9 /* DocumentUploadViewController.swift */; };
+		FA3117072271A71A008D52E9 /* PickupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116932271A719008D52E9 /* PickupViewController.swift */; };
+		FA3117082271A71A008D52E9 /* ApprovedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116942271A719008D52E9 /* ApprovedViewController.swift */; };
+		FA3117092271A71A008D52E9 /* ThankuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116952271A719008D52E9 /* ThankuViewController.swift */; };
+		FA31170A2271A71A008D52E9 /* RegisterLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116962271A719008D52E9 /* RegisterLoginViewController.swift */; };
+		FA31170C2271A71A008D52E9 /* BankStatementUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116982271A719008D52E9 /* BankStatementUploadViewController.swift */; };
+		FA31170D2271A71A008D52E9 /* ProfessionalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116992271A719008D52E9 /* ProfessionalViewController.swift */; };
+		FA31170E2271A71A008D52E9 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31169A2271A719008D52E9 /* RegisterViewController.swift */; };
+		FA31170F2271A71A008D52E9 /* EnachRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31169B2271A719008D52E9 /* EnachRegisterViewController.swift */; };
+		FA3117102271A71A008D52E9 /* BaseLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31169C2271A719008D52E9 /* BaseLoginViewController.swift */; };
+		FA3117112271A71A008D52E9 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31169D2271A719008D52E9 /* BaseViewController.swift */; };
+		FA3117122271A71A008D52E9 /* GetCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31169F2271A719008D52E9 /* GetCardViewController.swift */; };
+		FA3117132271A71A008D52E9 /* MainContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116A02271A719008D52E9 /* MainContainerViewController.swift */; };
+		FA3117142271A71A008D52E9 /* CardDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116A12271A719008D52E9 /* CardDetailsViewController.swift */; };
+		FA3117152271A71A008D52E9 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116A22271A719008D52E9 /* WebViewViewController.swift */; };
+		FA3117162271A71A008D52E9 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116A32271A719008D52E9 /* MenuViewController.swift */; };
+		FA3117172271A71A008D52E9 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116A42271A719008D52E9 /* SplashViewController.swift */; };
+		FA3117182271A71A008D52E9 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116A52271A719008D52E9 /* LoginViewController.swift */; };
+		FA3117192271A71A008D52E9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116A72271A719008D52E9 /* Constants.swift */; };
+		FA31171A2271A71A008D52E9 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116A82271A719008D52E9 /* Utilities.swift */; };
+		FA31171B2271A71A008D52E9 /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116A92271A719008D52E9 /* AppHelper.swift */; };
+		FA31171C2271A71A008D52E9 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116AA2271A719008D52E9 /* Logger.swift */; };
+		FA31171D2271A71A008D52E9 /* GDWebViewNavigationToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116AC2271A719008D52E9 /* GDWebViewNavigationToolbar.swift */; };
+		FA31171E2271A71A008D52E9 /* LabelSwitchBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116AD2271A719008D52E9 /* LabelSwitchBackView.swift */; };
+		FA31171F2271A71A008D52E9 /* LabelSwitchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116AF2271A719008D52E9 /* LabelSwitchState.swift */; };
+		FA3117202271A71A008D52E9 /* LabelSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116B02271A719008D52E9 /* LabelSwitch.swift */; };
+		FA3117212271A71A008D52E9 /* GDWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116B12271A719008D52E9 /* GDWebViewController.swift */; };
+		FA3117222271A71A008D52E9 /* NextResponderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116B22271A719008D52E9 /* NextResponderTextField.swift */; };
+		FA3117232271A71A008D52E9 /* LabelSwitchConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116B32271A719008D52E9 /* LabelSwitchConfig.swift */; };
+		FA3117242271A71A008D52E9 /* DatePickerDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116B42271A719008D52E9 /* DatePickerDialog.swift */; };
+		FA3117262271A71A008D52E9 /* AttachmentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116B62271A719008D52E9 /* AttachmentHandler.swift */; };
+		FA3117272271A71A008D52E9 /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116B72271A719008D52E9 /* CheckBox.swift */; };
+		FA3117282271A71A008D52E9 /* AppHelperExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116B92271A719008D52E9 /* AppHelperExtension.swift */; };
+		FA3117292271A71A008D52E9 /* AF+logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116BA2271A719008D52E9 /* AF+logging.swift */; };
+		FA31172A2271A71A008D52E9 /* EmptyCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116BB2271A719008D52E9 /* EmptyCheck.swift */; };
+		FA31172B2271A71A008D52E9 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116BD2271A719008D52E9 /* TableViewCell.swift */; };
+		FA31172C2271A71A008D52E9 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116BF2271A719008D52E9 /* ApiClient.swift */; };
+		FA31172D2271A71A008D52E9 /* ApiRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116C02271A719008D52E9 /* ApiRoute.swift */; };
+		FA31172E2271A71A008D52E9 /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116C22271A719008D52E9 /* Modal.swift */; };
+		FA31172F2271A71A008D52E9 /* ReferralCodeAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116C32271A719008D52E9 /* ReferralCodeAlertView.swift */; };
+		FA3117302271A71A008D52E9 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116C42271A719008D52E9 /* SessionManager.swift */; };
+		FA3117312271A71A008D52E9 /* AppVersionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116C62271A719008D52E9 /* AppVersionModel.swift */; };
+		FA3117322271A71A008D52E9 /* LoginResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116C72271A719008D52E9 /* LoginResponseModel.swift */; };
+		FA3117332271A71A008D52E9 /* ErrorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116C82271A719008D52E9 /* ErrorModel.swift */; };
+		FA3117342271A71A008D52E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3116CA2271A71A008D52E9 /* LaunchScreen.storyboard */; };
+		FA3117362271A71A008D52E9 /* StartLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3116CD2271A71A008D52E9 /* StartLaunchScreen.storyboard */; };
+		FA3117372271A71A008D52E9 /* CardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116CF2271A71A008D52E9 /* CardCell.swift */; };
+		FA3117382271A71A008D52E9 /* IosDropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116D02271A71A008D52E9 /* IosDropDown.swift */; };
+		FA3117392271A71A008D52E9 /* EMIDistributionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA3116D12271A71A008D52E9 /* EMIDistributionCell.xib */; };
+		FA31173C2271A71A008D52E9 /* SignatureIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116D42271A71A008D52E9 /* SignatureIntroView.swift */; };
+		FA31173D2271A71A008D52E9 /* CustomTypeField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116D52271A71A008D52E9 /* CustomTypeField.swift */; };
+		FA31173E2271A71A008D52E9 /* CardCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA3116D62271A71A008D52E9 /* CardCollectionViewCell.xib */; };
+		FA31173F2271A71A008D52E9 /* SignatureIntroView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA3116D72271A71A008D52E9 /* SignatureIntroView.xib */; };
+		FA3117402271A71A008D52E9 /* ChangePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA3116D82271A71A008D52E9 /* ChangePasswordViewController.xib */; };
+		FA3117412271A71A008D52E9 /* ForgotPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA3116D92271A71A008D52E9 /* ForgotPasswordViewController.xib */; };
+		FA3117422271A71A008D52E9 /* CardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116DA2271A71A008D52E9 /* CardCollectionViewCell.swift */; };
+		FA3117432271A71A008D52E9 /* CardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA3116DB2271A71A008D52E9 /* CardCell.xib */; };
+		FA3117452271A71A008D52E9 /* RegistrationNew.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3116DE2271A71A008D52E9 /* RegistrationNew.storyboard */; };
+		FA3117462271A71A008D52E9 /* RegistrationNew2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3116DF2271A71A008D52E9 /* RegistrationNew2.storyboard */; };
+		FA3117472271A71A008D52E9 /* RegistrationNew1.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3116E02271A71A008D52E9 /* RegistrationNew1.storyboard */; };
+		FA3117482271A71A008D52E9 /* old-Registrations.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3116E12271A71A008D52E9 /* old-Registrations.storyboard */; };
+		FA3117492271A71A008D52E9 /* Test.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3116E22271A71A008D52E9 /* Test.storyboard */; };
+		FA31174C2271A71A008D52E9 /* MainCard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3116E62271A71A008D52E9 /* MainCard.storyboard */; };
+		FA31174D2271A71A008D52E9 /* MainCardActivate.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3116E72271A71A008D52E9 /* MainCardActivate.storyboard */; };
+		FA31174E2271A71A008D52E9 /* MainOther.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3116E82271A71A008D52E9 /* MainOther.storyboard */; };
+		FA31174F2271A71A008D52E9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3116E92271A71A008D52E9 /* Main.storyboard */; };
+		FA3117502271A71A008D52E9 /* MainMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3116EA2271A71A008D52E9 /* MainMenu.storyboard */; };
+		FA3117512271A71A008D52E9 /* MainDashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3116EB2271A71A008D52E9 /* MainDashboard.storyboard */; };
+		FAA93E8422718CB700DA5245 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAA93E8322718CB700DA5245 /* Assets.xcassets */; };
+		FAB47C4A2273EFA900241253 /* DropDownCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAB47C402273EFA900241253 /* DropDownCell.xib */; };
+		FAB47C4B2273EFA900241253 /* DPDKeyboardListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB47C422273EFA900241253 /* DPDKeyboardListener.swift */; };
+		FAB47C4C2273EFA900241253 /* DPDConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB47C432273EFA900241253 /* DPDConstants.swift */; };
+		FAB47C4D2273EFA900241253 /* DPDUIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB47C442273EFA900241253 /* DPDUIView+Extension.swift */; };
+		FAB47C4F2273EFA900241253 /* DropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB47C472273EFA900241253 /* DropDown.swift */; };
+		FAB47C502273EFA900241253 /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB47C482273EFA900241253 /* DropDownCell.swift */; };
+		FAB47C512273EFA900241253 /* DropDown+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB47C492273EFA900241253 /* DropDown+Appearance.swift */; };
+		FAF0FC84227AC79200341E18 /* KeyValueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF0FC82227AC79200341E18 /* KeyValueTableViewCell.swift */; };
+		FAF0FC85227AC79200341E18 /* KeyValueTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAF0FC83227AC79200341E18 /* KeyValueTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		01E532307C3E22DA0B5EE324 /* Pods_Stashfin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stashfin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5EC4D7E62AE049DF61C700F1 /* Pods-Stashfin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stashfin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Stashfin/Pods-Stashfin.debug.xcconfig"; sourceTree = "<group>"; };
+		A2E9751704EE097EA8AE3D1C /* Pods-Stashfin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stashfin.release.xcconfig"; path = "Pods/Target Support Files/Pods-Stashfin/Pods-Stashfin.release.xcconfig"; sourceTree = "<group>"; };
+		FA0CF50E227A035C0017D72A /* PageSwitcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageSwitcher.swift; sourceTree = "<group>"; };
+		FA0CF510227A13340017D72A /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		FA3116732271A6FA008D52E9 /* sign.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = sign.gif; sourceTree = "<group>"; };
+		FA3116772271A718008D52E9 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FA3116792271A719008D52E9 /* SocialLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialLoginViewController.swift; sourceTree = "<group>"; };
+		FA31167B2271A719008D52E9 /* PayNowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayNowViewController.swift; sourceTree = "<group>"; };
+		FA31167C2271A719008D52E9 /* DashBoardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashBoardViewController.swift; sourceTree = "<group>"; };
+		FA31167D2271A719008D52E9 /* CardPinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardPinViewController.swift; sourceTree = "<group>"; };
+		FA31167E2271A719008D52E9 /* CustomerCareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomerCareViewController.swift; sourceTree = "<group>"; };
+		FA31167F2271A719008D52E9 /* LoadMyCardConfirmViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadMyCardConfirmViewController.swift; sourceTree = "<group>"; };
+		FA3116802271A719008D52E9 /* LoadMyCardDoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadMyCardDoneViewController.swift; sourceTree = "<group>"; };
+		FA3116812271A719008D52E9 /* ActivateCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivateCardViewController.swift; sourceTree = "<group>"; };
+		FA3116822271A719008D52E9 /* PayBackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PayBackViewController.swift; sourceTree = "<group>"; };
+		FA3116832271A719008D52E9 /* BlockViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockViewController.swift; sourceTree = "<group>"; };
+		FA3116842271A719008D52E9 /* LoanCalculatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoanCalculatorViewController.swift; sourceTree = "<group>"; };
+		FA3116852271A719008D52E9 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
+		FA3116862271A719008D52E9 /* LoadMyCardSlideViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadMyCardSlideViewController.swift; sourceTree = "<group>"; };
+		FA3116872271A719008D52E9 /* StashFinCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StashFinCardViewController.swift; sourceTree = "<group>"; };
+		FA3116882271A719008D52E9 /* ActivateCardIntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivateCardIntroViewController.swift; sourceTree = "<group>"; };
+		FA3116892271A719008D52E9 /* ApplicationStatusViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationStatusViewController.swift; sourceTree = "<group>"; };
+		FA31168A2271A719008D52E9 /* TransactionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionViewController.swift; sourceTree = "<group>"; };
+		FA31168B2271A719008D52E9 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		FA31168C2271A719008D52E9 /* OutgoingEmiViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutgoingEmiViewController.swift; sourceTree = "<group>"; };
+		FA31168E2271A719008D52E9 /* RejectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RejectViewController.swift; sourceTree = "<group>"; };
+		FA31168F2271A719008D52E9 /* EnachViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnachViewController.swift; sourceTree = "<group>"; };
+		FA3116902271A719008D52E9 /* SignatureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureViewController.swift; sourceTree = "<group>"; };
+		FA3116912271A719008D52E9 /* PersonalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalViewController.swift; sourceTree = "<group>"; };
+		FA3116922271A719008D52E9 /* DocumentUploadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentUploadViewController.swift; sourceTree = "<group>"; };
+		FA3116932271A719008D52E9 /* PickupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickupViewController.swift; sourceTree = "<group>"; };
+		FA3116942271A719008D52E9 /* ApprovedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApprovedViewController.swift; sourceTree = "<group>"; };
+		FA3116952271A719008D52E9 /* ThankuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThankuViewController.swift; sourceTree = "<group>"; };
+		FA3116962271A719008D52E9 /* RegisterLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterLoginViewController.swift; sourceTree = "<group>"; };
+		FA3116982271A719008D52E9 /* BankStatementUploadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankStatementUploadViewController.swift; sourceTree = "<group>"; };
+		FA3116992271A719008D52E9 /* ProfessionalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfessionalViewController.swift; sourceTree = "<group>"; };
+		FA31169A2271A719008D52E9 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		FA31169B2271A719008D52E9 /* EnachRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnachRegisterViewController.swift; sourceTree = "<group>"; };
+		FA31169C2271A719008D52E9 /* BaseLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseLoginViewController.swift; sourceTree = "<group>"; };
+		FA31169D2271A719008D52E9 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		FA31169F2271A719008D52E9 /* GetCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetCardViewController.swift; sourceTree = "<group>"; };
+		FA3116A02271A719008D52E9 /* MainContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainContainerViewController.swift; sourceTree = "<group>"; };
+		FA3116A12271A719008D52E9 /* CardDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardDetailsViewController.swift; sourceTree = "<group>"; };
+		FA3116A22271A719008D52E9 /* WebViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
+		FA3116A32271A719008D52E9 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		FA3116A42271A719008D52E9 /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		FA3116A52271A719008D52E9 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		FA3116A72271A719008D52E9 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		FA3116A82271A719008D52E9 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		FA3116A92271A719008D52E9 /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppHelper.swift; sourceTree = "<group>"; };
+		FA3116AA2271A719008D52E9 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		FA3116AC2271A719008D52E9 /* GDWebViewNavigationToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GDWebViewNavigationToolbar.swift; sourceTree = "<group>"; };
+		FA3116AD2271A719008D52E9 /* LabelSwitchBackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelSwitchBackView.swift; sourceTree = "<group>"; };
+		FA3116AF2271A719008D52E9 /* LabelSwitchState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelSwitchState.swift; sourceTree = "<group>"; };
+		FA3116B02271A719008D52E9 /* LabelSwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelSwitch.swift; sourceTree = "<group>"; };
+		FA3116B12271A719008D52E9 /* GDWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GDWebViewController.swift; sourceTree = "<group>"; };
+		FA3116B22271A719008D52E9 /* NextResponderTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextResponderTextField.swift; sourceTree = "<group>"; };
+		FA3116B32271A719008D52E9 /* LabelSwitchConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelSwitchConfig.swift; sourceTree = "<group>"; };
+		FA3116B42271A719008D52E9 /* DatePickerDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerDialog.swift; sourceTree = "<group>"; };
+		FA3116B62271A719008D52E9 /* AttachmentHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentHandler.swift; sourceTree = "<group>"; };
+		FA3116B72271A719008D52E9 /* CheckBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
+		FA3116B92271A719008D52E9 /* AppHelperExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppHelperExtension.swift; sourceTree = "<group>"; };
+		FA3116BA2271A719008D52E9 /* AF+logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AF+logging.swift"; sourceTree = "<group>"; };
+		FA3116BB2271A719008D52E9 /* EmptyCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyCheck.swift; sourceTree = "<group>"; };
+		FA3116BD2271A719008D52E9 /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		FA3116BF2271A719008D52E9 /* ApiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
+		FA3116C02271A719008D52E9 /* ApiRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiRoute.swift; sourceTree = "<group>"; };
+		FA3116C22271A719008D52E9 /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
+		FA3116C32271A719008D52E9 /* ReferralCodeAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralCodeAlertView.swift; sourceTree = "<group>"; };
+		FA3116C42271A719008D52E9 /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
+		FA3116C62271A719008D52E9 /* AppVersionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersionModel.swift; sourceTree = "<group>"; };
+		FA3116C72271A719008D52E9 /* LoginResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginResponseModel.swift; sourceTree = "<group>"; };
+		FA3116C82271A719008D52E9 /* ErrorModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorModel.swift; sourceTree = "<group>"; };
+		FA3116CB2271A71A008D52E9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FA3116CD2271A71A008D52E9 /* StartLaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StartLaunchScreen.storyboard; sourceTree = "<group>"; };
+		FA3116CF2271A71A008D52E9 /* CardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardCell.swift; sourceTree = "<group>"; };
+		FA3116D02271A71A008D52E9 /* IosDropDown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IosDropDown.swift; sourceTree = "<group>"; };
+		FA3116D12271A71A008D52E9 /* EMIDistributionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EMIDistributionCell.xib; sourceTree = "<group>"; };
+		FA3116D42271A71A008D52E9 /* SignatureIntroView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureIntroView.swift; sourceTree = "<group>"; };
+		FA3116D52271A71A008D52E9 /* CustomTypeField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTypeField.swift; sourceTree = "<group>"; };
+		FA3116D62271A71A008D52E9 /* CardCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardCollectionViewCell.xib; sourceTree = "<group>"; };
+		FA3116D72271A71A008D52E9 /* SignatureIntroView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignatureIntroView.xib; sourceTree = "<group>"; };
+		FA3116D82271A71A008D52E9 /* ChangePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangePasswordViewController.xib; sourceTree = "<group>"; };
+		FA3116D92271A71A008D52E9 /* ForgotPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordViewController.xib; sourceTree = "<group>"; };
+		FA3116DA2271A71A008D52E9 /* CardCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardCollectionViewCell.swift; sourceTree = "<group>"; };
+		FA3116DB2271A71A008D52E9 /* CardCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CardCell.xib; sourceTree = "<group>"; };
+		FA3116DE2271A71A008D52E9 /* RegistrationNew.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RegistrationNew.storyboard; sourceTree = "<group>"; };
+		FA3116DF2271A71A008D52E9 /* RegistrationNew2.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RegistrationNew2.storyboard; sourceTree = "<group>"; };
+		FA3116E02271A71A008D52E9 /* RegistrationNew1.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RegistrationNew1.storyboard; sourceTree = "<group>"; };
+		FA3116E12271A71A008D52E9 /* old-Registrations.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "old-Registrations.storyboard"; sourceTree = "<group>"; };
+		FA3116E22271A71A008D52E9 /* Test.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Test.storyboard; sourceTree = "<group>"; };
+		FA3116E62271A71A008D52E9 /* MainCard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainCard.storyboard; sourceTree = "<group>"; };
+		FA3116E72271A71A008D52E9 /* MainCardActivate.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainCardActivate.storyboard; sourceTree = "<group>"; };
+		FA3116E82271A71A008D52E9 /* MainOther.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainOther.storyboard; sourceTree = "<group>"; };
+		FA3116E92271A71A008D52E9 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		FA3116EA2271A71A008D52E9 /* MainMenu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainMenu.storyboard; sourceTree = "<group>"; };
+		FA3116EB2271A71A008D52E9 /* MainDashboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainDashboard.storyboard; sourceTree = "<group>"; };
+		FA3117562271ABA6008D52E9 /* HeaderBridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeaderBridging.h; sourceTree = "<group>"; };
+		FAA93E8322718CB700DA5245 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../../Desktop/ios/StashFinDemo/StashFinDemo/Assets.xcassets; sourceTree = "<group>"; };
 		FAAFB3072271895F00C5056D /* Stashfin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stashfin.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FAAFB30A2271895F00C5056D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FAAFB30C2271895F00C5056D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		FAAFB30F2271895F00C5056D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		FAAFB3112271896100C5056D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		FAAFB3142271896100C5056D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FAAFB3162271896100C5056D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FAB47C3E2273EFA900241253 /* DropDown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDown.h; sourceTree = "<group>"; };
+		FAB47C402273EFA900241253 /* DropDownCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DropDownCell.xib; sourceTree = "<group>"; };
+		FAB47C422273EFA900241253 /* DPDKeyboardListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPDKeyboardListener.swift; sourceTree = "<group>"; };
+		FAB47C432273EFA900241253 /* DPDConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPDConstants.swift; sourceTree = "<group>"; };
+		FAB47C442273EFA900241253 /* DPDUIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DPDUIView+Extension.swift"; sourceTree = "<group>"; };
+		FAB47C472273EFA900241253 /* DropDown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDown.swift; sourceTree = "<group>"; };
+		FAB47C482273EFA900241253 /* DropDownCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownCell.swift; sourceTree = "<group>"; };
+		FAB47C492273EFA900241253 /* DropDown+Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DropDown+Appearance.swift"; sourceTree = "<group>"; };
+		FAF0FC82227AC79200341E18 /* KeyValueTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueTableViewCell.swift; sourceTree = "<group>"; };
+		FAF0FC83227AC79200341E18 /* KeyValueTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KeyValueTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +235,261 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEFCC67B15FDCE5535A3BED9 /* Pods_Stashfin.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		03DACC4377489EB3C1853C44 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				01E532307C3E22DA0B5EE324 /* Pods_Stashfin.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B81FA87D849570A556754457 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5EC4D7E62AE049DF61C700F1 /* Pods-Stashfin.debug.xcconfig */,
+				A2E9751704EE097EA8AE3D1C /* Pods-Stashfin.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		FA3116752271A718008D52E9 /* handlers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = handlers;
+			sourceTree = "<group>";
+		};
+		FA3116762271A718008D52E9 /* application */ = {
+			isa = PBXGroup;
+			children = (
+				FA3116772271A718008D52E9 /* AppDelegate.swift */,
+			);
+			path = application;
+			sourceTree = "<group>";
+		};
+		FA3116782271A719008D52E9 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				FA31167A2271A719008D52E9 /* home */,
+				FA31168D2271A719008D52E9 /* registration */,
+				FA31169E2271A719008D52E9 /* test */,
+				FA0CF50E227A035C0017D72A /* PageSwitcher.swift */,
+				FA3116792271A719008D52E9 /* SocialLoginViewController.swift */,
+				FA31169C2271A719008D52E9 /* BaseLoginViewController.swift */,
+				FA31169D2271A719008D52E9 /* BaseViewController.swift */,
+				FA3116A42271A719008D52E9 /* SplashViewController.swift */,
+				FA3116A52271A719008D52E9 /* LoginViewController.swift */,
+				FA0CF510227A13340017D72A /* RootViewController.swift */,
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
+		FA31167A2271A719008D52E9 /* home */ = {
+			isa = PBXGroup;
+			children = (
+				FA31167B2271A719008D52E9 /* PayNowViewController.swift */,
+				FA31167C2271A719008D52E9 /* DashBoardViewController.swift */,
+				FA31167D2271A719008D52E9 /* CardPinViewController.swift */,
+				FA31167E2271A719008D52E9 /* CustomerCareViewController.swift */,
+				FA31167F2271A719008D52E9 /* LoadMyCardConfirmViewController.swift */,
+				FA3116802271A719008D52E9 /* LoadMyCardDoneViewController.swift */,
+				FA3116812271A719008D52E9 /* ActivateCardViewController.swift */,
+				FA3116822271A719008D52E9 /* PayBackViewController.swift */,
+				FA3116832271A719008D52E9 /* BlockViewController.swift */,
+				FA3116842271A719008D52E9 /* LoanCalculatorViewController.swift */,
+				FA3116852271A719008D52E9 /* ForgotPasswordViewController.swift */,
+				FA3116862271A719008D52E9 /* LoadMyCardSlideViewController.swift */,
+				FA3116872271A719008D52E9 /* StashFinCardViewController.swift */,
+				FA3116882271A719008D52E9 /* ActivateCardIntroViewController.swift */,
+				FA3116892271A719008D52E9 /* ApplicationStatusViewController.swift */,
+				FA31168A2271A719008D52E9 /* TransactionViewController.swift */,
+				FA31168B2271A719008D52E9 /* ProfileViewController.swift */,
+				FA31168C2271A719008D52E9 /* OutgoingEmiViewController.swift */,
+			);
+			path = home;
+			sourceTree = "<group>";
+		};
+		FA31168D2271A719008D52E9 /* registration */ = {
+			isa = PBXGroup;
+			children = (
+				FA31168E2271A719008D52E9 /* RejectViewController.swift */,
+				FA31168F2271A719008D52E9 /* EnachViewController.swift */,
+				FA3116902271A719008D52E9 /* SignatureViewController.swift */,
+				FA3116912271A719008D52E9 /* PersonalViewController.swift */,
+				FA3116922271A719008D52E9 /* DocumentUploadViewController.swift */,
+				FA3116932271A719008D52E9 /* PickupViewController.swift */,
+				FA3116942271A719008D52E9 /* ApprovedViewController.swift */,
+				FA3116952271A719008D52E9 /* ThankuViewController.swift */,
+				FA3116962271A719008D52E9 /* RegisterLoginViewController.swift */,
+				FA3116982271A719008D52E9 /* BankStatementUploadViewController.swift */,
+				FA3116992271A719008D52E9 /* ProfessionalViewController.swift */,
+				FA31169A2271A719008D52E9 /* RegisterViewController.swift */,
+				FA31169B2271A719008D52E9 /* EnachRegisterViewController.swift */,
+			);
+			path = registration;
+			sourceTree = "<group>";
+		};
+		FA31169E2271A719008D52E9 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				FA31169F2271A719008D52E9 /* GetCardViewController.swift */,
+				FA3116A02271A719008D52E9 /* MainContainerViewController.swift */,
+				FA3116A12271A719008D52E9 /* CardDetailsViewController.swift */,
+				FA3116A22271A719008D52E9 /* WebViewViewController.swift */,
+				FA3116A32271A719008D52E9 /* MenuViewController.swift */,
+			);
+			path = test;
+			sourceTree = "<group>";
+		};
+		FA3116A62271A719008D52E9 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				FA3116A72271A719008D52E9 /* Constants.swift */,
+				FA3116A82271A719008D52E9 /* Utilities.swift */,
+				FA3116A92271A719008D52E9 /* AppHelper.swift */,
+				FA3116AA2271A719008D52E9 /* Logger.swift */,
+				FA3116AB2271A719008D52E9 /* libs */,
+				FA3116B62271A719008D52E9 /* AttachmentHandler.swift */,
+				FA3116B72271A719008D52E9 /* CheckBox.swift */,
+				FA3116732271A6FA008D52E9 /* sign.gif */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		FA3116AB2271A719008D52E9 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				FAB47C3D2273EFA900241253 /* DropDown */,
+				FA3116AC2271A719008D52E9 /* GDWebViewNavigationToolbar.swift */,
+				FA3116AD2271A719008D52E9 /* LabelSwitchBackView.swift */,
+				FA3116AF2271A719008D52E9 /* LabelSwitchState.swift */,
+				FA3116B02271A719008D52E9 /* LabelSwitch.swift */,
+				FA3116B12271A719008D52E9 /* GDWebViewController.swift */,
+				FA3116B22271A719008D52E9 /* NextResponderTextField.swift */,
+				FA3116B32271A719008D52E9 /* LabelSwitchConfig.swift */,
+				FA3116B42271A719008D52E9 /* DatePickerDialog.swift */,
+				FA3117562271ABA6008D52E9 /* HeaderBridging.h */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		FA3116B82271A719008D52E9 /* extensions */ = {
+			isa = PBXGroup;
+			children = (
+				FA3116B92271A719008D52E9 /* AppHelperExtension.swift */,
+				FA3116BA2271A719008D52E9 /* AF+logging.swift */,
+				FA3116BB2271A719008D52E9 /* EmptyCheck.swift */,
+			);
+			path = extensions;
+			sourceTree = "<group>";
+		};
+		FA3116BC2271A719008D52E9 /* adapter */ = {
+			isa = PBXGroup;
+			children = (
+				FA3116BD2271A719008D52E9 /* TableViewCell.swift */,
+			);
+			path = adapter;
+			sourceTree = "<group>";
+		};
+		FA3116BE2271A719008D52E9 /* ApiRequest */ = {
+			isa = PBXGroup;
+			children = (
+				FA3116BF2271A719008D52E9 /* ApiClient.swift */,
+				FA3116C02271A719008D52E9 /* ApiRoute.swift */,
+			);
+			path = ApiRequest;
+			sourceTree = "<group>";
+		};
+		FA3116C12271A719008D52E9 /* managers */ = {
+			isa = PBXGroup;
+			children = (
+				FA3116C22271A719008D52E9 /* Modal.swift */,
+				FA3116C32271A719008D52E9 /* ReferralCodeAlertView.swift */,
+				FA3116C42271A719008D52E9 /* SessionManager.swift */,
+			);
+			path = managers;
+			sourceTree = "<group>";
+		};
+		FA3116C52271A719008D52E9 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				FA3116C62271A719008D52E9 /* AppVersionModel.swift */,
+				FA3116C72271A719008D52E9 /* LoginResponseModel.swift */,
+				FA3116C82271A719008D52E9 /* ErrorModel.swift */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		FA3116C92271A71A008D52E9 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				FA3116CE2271A71A008D52E9 /* custom_views */,
+				FA3116DD2271A71A008D52E9 /* register */,
+				FA3116E52271A71A008D52E9 /* Main */,
+				FA3116CA2271A71A008D52E9 /* LaunchScreen.storyboard */,
+				FA3116CD2271A71A008D52E9 /* StartLaunchScreen.storyboard */,
+				FA3116E22271A71A008D52E9 /* Test.storyboard */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		FA3116CE2271A71A008D52E9 /* custom_views */ = {
+			isa = PBXGroup;
+			children = (
+				FAF0FC81227AC77C00341E18 /* cell */,
+				FA3116CF2271A71A008D52E9 /* CardCell.swift */,
+				FA3116D02271A71A008D52E9 /* IosDropDown.swift */,
+				FA3116D12271A71A008D52E9 /* EMIDistributionCell.xib */,
+				FA3116D42271A71A008D52E9 /* SignatureIntroView.swift */,
+				FA3116D52271A71A008D52E9 /* CustomTypeField.swift */,
+				FA3116D62271A71A008D52E9 /* CardCollectionViewCell.xib */,
+				FA3116D72271A71A008D52E9 /* SignatureIntroView.xib */,
+				FA3116D82271A71A008D52E9 /* ChangePasswordViewController.xib */,
+				FA3116D92271A71A008D52E9 /* ForgotPasswordViewController.xib */,
+				FA3116DA2271A71A008D52E9 /* CardCollectionViewCell.swift */,
+				FA3116DB2271A71A008D52E9 /* CardCell.xib */,
+			);
+			path = custom_views;
+			sourceTree = "<group>";
+		};
+		FA3116DD2271A71A008D52E9 /* register */ = {
+			isa = PBXGroup;
+			children = (
+				FA3116DE2271A71A008D52E9 /* RegistrationNew.storyboard */,
+				FA3116DF2271A71A008D52E9 /* RegistrationNew2.storyboard */,
+				FA3116E02271A71A008D52E9 /* RegistrationNew1.storyboard */,
+				FA3116E12271A71A008D52E9 /* old-Registrations.storyboard */,
+			);
+			path = register;
+			sourceTree = "<group>";
+		};
+		FA3116E52271A71A008D52E9 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				FA3116E62271A71A008D52E9 /* MainCard.storyboard */,
+				FA3116E72271A71A008D52E9 /* MainCardActivate.storyboard */,
+				FA3116E82271A71A008D52E9 /* MainOther.storyboard */,
+				FA3116E92271A71A008D52E9 /* Main.storyboard */,
+				FA3116EA2271A71A008D52E9 /* MainMenu.storyboard */,
+				FA3116EB2271A71A008D52E9 /* MainDashboard.storyboard */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 		FAAFB2FE2271895F00C5056D = {
 			isa = PBXGroup;
 			children = (
 				FAAFB3092271895F00C5056D /* Stashfin */,
 				FAAFB3082271895F00C5056D /* Products */,
+				B81FA87D849570A556754457 /* Pods */,
+				03DACC4377489EB3C1853C44 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,14 +504,68 @@
 		FAAFB3092271895F00C5056D /* Stashfin */ = {
 			isa = PBXGroup;
 			children = (
-				FAAFB30A2271895F00C5056D /* AppDelegate.swift */,
-				FAAFB30C2271895F00C5056D /* ViewController.swift */,
-				FAAFB30E2271895F00C5056D /* Main.storyboard */,
-				FAAFB3112271896100C5056D /* Assets.xcassets */,
-				FAAFB3132271896100C5056D /* LaunchScreen.storyboard */,
+				FA3116BC2271A719008D52E9 /* adapter */,
+				FA3116BE2271A719008D52E9 /* ApiRequest */,
+				FA3116762271A718008D52E9 /* application */,
+				FA3116782271A719008D52E9 /* controller */,
+				FA3116B82271A719008D52E9 /* extensions */,
+				FA3116752271A718008D52E9 /* handlers */,
+				FA3116C12271A719008D52E9 /* managers */,
+				FA3116C52271A719008D52E9 /* models */,
+				FA3116A62271A719008D52E9 /* utils */,
+				FA3116C92271A71A008D52E9 /* views */,
+				FAA93E8322718CB700DA5245 /* Assets.xcassets */,
 				FAAFB3162271896100C5056D /* Info.plist */,
 			);
 			path = Stashfin;
+			sourceTree = "<group>";
+		};
+		FAB47C3D2273EFA900241253 /* DropDown */ = {
+			isa = PBXGroup;
+			children = (
+				FAB47C3E2273EFA900241253 /* DropDown.h */,
+				FAB47C3F2273EFA900241253 /* resources */,
+				FAB47C412273EFA900241253 /* helpers */,
+				FAB47C462273EFA900241253 /* src */,
+			);
+			path = DropDown;
+			sourceTree = "<group>";
+		};
+		FAB47C3F2273EFA900241253 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				FAB47C402273EFA900241253 /* DropDownCell.xib */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
+		FAB47C412273EFA900241253 /* helpers */ = {
+			isa = PBXGroup;
+			children = (
+				FAB47C422273EFA900241253 /* DPDKeyboardListener.swift */,
+				FAB47C432273EFA900241253 /* DPDConstants.swift */,
+				FAB47C442273EFA900241253 /* DPDUIView+Extension.swift */,
+			);
+			path = helpers;
+			sourceTree = "<group>";
+		};
+		FAB47C462273EFA900241253 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				FAB47C472273EFA900241253 /* DropDown.swift */,
+				FAB47C482273EFA900241253 /* DropDownCell.swift */,
+				FAB47C492273EFA900241253 /* DropDown+Appearance.swift */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		FAF0FC81227AC77C00341E18 /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				FAF0FC82227AC79200341E18 /* KeyValueTableViewCell.swift */,
+				FAF0FC83227AC79200341E18 /* KeyValueTableViewCell.xib */,
+			);
+			path = cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +575,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FAAFB3192271896100C5056D /* Build configuration list for PBXNativeTarget "Stashfin" */;
 			buildPhases = (
+				C921C6F74ADC5E85CE3E6724 /* [CP] Check Pods Manifest.lock */,
 				FAAFB3032271895F00C5056D /* Sources */,
 				FAAFB3042271895F00C5056D /* Frameworks */,
 				FAAFB3052271895F00C5056D /* Resources */,
+				C3265281DC51CE50592C64B4 /* [CP] Embed Pods Frameworks */,
+				FAA4C08F22776DDA00FB1700 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -122,39 +629,214 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FAAFB3152271896100C5056D /* LaunchScreen.storyboard in Resources */,
-				FAAFB3122271896100C5056D /* Assets.xcassets in Resources */,
-				FAAFB3102271895F00C5056D /* Main.storyboard in Resources */,
+				FA3117412271A71A008D52E9 /* ForgotPasswordViewController.xib in Resources */,
+				FA31173F2271A71A008D52E9 /* SignatureIntroView.xib in Resources */,
+				FA3117512271A71A008D52E9 /* MainDashboard.storyboard in Resources */,
+				FA31174F2271A71A008D52E9 /* Main.storyboard in Resources */,
+				FA3117452271A71A008D52E9 /* RegistrationNew.storyboard in Resources */,
+				FA31174D2271A71A008D52E9 /* MainCardActivate.storyboard in Resources */,
+				FA31174E2271A71A008D52E9 /* MainOther.storyboard in Resources */,
+				FA31173E2271A71A008D52E9 /* CardCollectionViewCell.xib in Resources */,
+				FA3117462271A71A008D52E9 /* RegistrationNew2.storyboard in Resources */,
+				FA3117492271A71A008D52E9 /* Test.storyboard in Resources */,
+				FA3117402271A71A008D52E9 /* ChangePasswordViewController.xib in Resources */,
+				FAF0FC85227AC79200341E18 /* KeyValueTableViewCell.xib in Resources */,
+				FA31174C2271A71A008D52E9 /* MainCard.storyboard in Resources */,
+				FA3117362271A71A008D52E9 /* StartLaunchScreen.storyboard in Resources */,
+				FA3117502271A71A008D52E9 /* MainMenu.storyboard in Resources */,
+				FA3117472271A71A008D52E9 /* RegistrationNew1.storyboard in Resources */,
+				FA3117392271A71A008D52E9 /* EMIDistributionCell.xib in Resources */,
+				FAB47C4A2273EFA900241253 /* DropDownCell.xib in Resources */,
+				FA3117432271A71A008D52E9 /* CardCell.xib in Resources */,
+				FA3117482271A71A008D52E9 /* old-Registrations.storyboard in Resources */,
+				FA3117342271A71A008D52E9 /* LaunchScreen.storyboard in Resources */,
+				FA3116742271A6FA008D52E9 /* sign.gif in Resources */,
+				FAA93E8422718CB700DA5245 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C3265281DC51CE50592C64B4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Stashfin/Pods-Stashfin-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/FSPagerView/FSPagerView.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftKeychainWrapper/SwiftKeychainWrapper.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyGif/SwiftyGif.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/Toast-Swift/Toast_Swift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSPagerView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftKeychainWrapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyGif.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toast_Swift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Stashfin/Pods-Stashfin-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C921C6F74ADC5E85CE3E6724 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Stashfin-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FAA4C08F22776DDA00FB1700 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" c9390c30bf1cbb0d3abf8a485667b52f1e8be287 79b3a40c29b77ba0edd6b15aba9c16475caa5b3e15fb96af009d1439f0651227\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FAAFB3032271895F00C5056D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FAAFB30D2271895F00C5056D /* ViewController.swift in Sources */,
-				FAAFB30B2271895F00C5056D /* AppDelegate.swift in Sources */,
+				FA3117332271A71A008D52E9 /* ErrorModel.swift in Sources */,
+				FA3117042271A71A008D52E9 /* SignatureViewController.swift in Sources */,
+				FA31170C2271A71A008D52E9 /* BankStatementUploadViewController.swift in Sources */,
+				FAB47C4D2273EFA900241253 /* DPDUIView+Extension.swift in Sources */,
+				FA31171F2271A71A008D52E9 /* LabelSwitchState.swift in Sources */,
+				FA3117322271A71A008D52E9 /* LoginResponseModel.swift in Sources */,
+				FA31170A2271A71A008D52E9 /* RegisterLoginViewController.swift in Sources */,
+				FA3117242271A71A008D52E9 /* DatePickerDialog.swift in Sources */,
+				FA3117082271A71A008D52E9 /* ApprovedViewController.swift in Sources */,
+				FA31171C2271A71A008D52E9 /* Logger.swift in Sources */,
+				FA3117122271A71A008D52E9 /* GetCardViewController.swift in Sources */,
+				FA31173C2271A71A008D52E9 /* SignatureIntroView.swift in Sources */,
+				FA3116F42271A71A008D52E9 /* LoadMyCardConfirmViewController.swift in Sources */,
+				FA3117422271A71A008D52E9 /* CardCollectionViewCell.swift in Sources */,
+				FA3117112271A71A008D52E9 /* BaseViewController.swift in Sources */,
+				FA31171E2271A71A008D52E9 /* LabelSwitchBackView.swift in Sources */,
+				FA3117132271A71A008D52E9 /* MainContainerViewController.swift in Sources */,
+				FA3116EE2271A71A008D52E9 /* AppDelegate.swift in Sources */,
+				FAB47C4C2273EFA900241253 /* DPDConstants.swift in Sources */,
+				FA3117022271A71A008D52E9 /* RejectViewController.swift in Sources */,
+				FA3116EF2271A71A008D52E9 /* SocialLoginViewController.swift in Sources */,
+				FA3116F32271A71A008D52E9 /* CustomerCareViewController.swift in Sources */,
+				FA3116FB2271A71A008D52E9 /* LoadMyCardSlideViewController.swift in Sources */,
+				FAB47C512273EFA900241253 /* DropDown+Appearance.swift in Sources */,
+				FA31172D2271A71A008D52E9 /* ApiRoute.swift in Sources */,
+				FA3117162271A71A008D52E9 /* MenuViewController.swift in Sources */,
+				FA3116F82271A71A008D52E9 /* BlockViewController.swift in Sources */,
+				FA31171B2271A71A008D52E9 /* AppHelper.swift in Sources */,
+				FA3116FE2271A71A008D52E9 /* ApplicationStatusViewController.swift in Sources */,
+				FAF0FC84227AC79200341E18 /* KeyValueTableViewCell.swift in Sources */,
+				FA31170E2271A71A008D52E9 /* RegisterViewController.swift in Sources */,
+				FA3117102271A71A008D52E9 /* BaseLoginViewController.swift in Sources */,
+				FA3117292271A71A008D52E9 /* AF+logging.swift in Sources */,
+				FA31170F2271A71A008D52E9 /* EnachRegisterViewController.swift in Sources */,
+				FA3116FD2271A71A008D52E9 /* ActivateCardIntroViewController.swift in Sources */,
+				FA3117142271A71A008D52E9 /* CardDetailsViewController.swift in Sources */,
+				FA3117052271A71A008D52E9 /* PersonalViewController.swift in Sources */,
+				FA31173D2271A71A008D52E9 /* CustomTypeField.swift in Sources */,
+				FA3117012271A71A008D52E9 /* OutgoingEmiViewController.swift in Sources */,
+				FA3117192271A71A008D52E9 /* Constants.swift in Sources */,
+				FA3117372271A71A008D52E9 /* CardCell.swift in Sources */,
+				FA3116F22271A71A008D52E9 /* CardPinViewController.swift in Sources */,
+				FA3117382271A71A008D52E9 /* IosDropDown.swift in Sources */,
+				FA3117002271A71A008D52E9 /* ProfileViewController.swift in Sources */,
+				FA3116F62271A71A008D52E9 /* ActivateCardViewController.swift in Sources */,
+				FA3116FC2271A71A008D52E9 /* StashFinCardViewController.swift in Sources */,
+				FA3116F72271A71A008D52E9 /* PayBackViewController.swift in Sources */,
+				FA3116F92271A71A008D52E9 /* LoanCalculatorViewController.swift in Sources */,
+				FA0CF511227A13340017D72A /* RootViewController.swift in Sources */,
+				FA3117232271A71A008D52E9 /* LabelSwitchConfig.swift in Sources */,
+				FAB47C4B2273EFA900241253 /* DPDKeyboardListener.swift in Sources */,
+				FA31172A2271A71A008D52E9 /* EmptyCheck.swift in Sources */,
+				FA3117092271A71A008D52E9 /* ThankuViewController.swift in Sources */,
+				FA0CF50F227A035C0017D72A /* PageSwitcher.swift in Sources */,
+				FA3117032271A71A008D52E9 /* EnachViewController.swift in Sources */,
+				FA3117152271A71A008D52E9 /* WebViewViewController.swift in Sources */,
+				FA31171A2271A71A008D52E9 /* Utilities.swift in Sources */,
+				FA3117312271A71A008D52E9 /* AppVersionModel.swift in Sources */,
+				FA31171D2271A71A008D52E9 /* GDWebViewNavigationToolbar.swift in Sources */,
+				FA3116FF2271A71A008D52E9 /* TransactionViewController.swift in Sources */,
+				FAB47C502273EFA900241253 /* DropDownCell.swift in Sources */,
+				FA3117262271A71A008D52E9 /* AttachmentHandler.swift in Sources */,
+				FA3117272271A71A008D52E9 /* CheckBox.swift in Sources */,
+				FA3117212271A71A008D52E9 /* GDWebViewController.swift in Sources */,
+				FA3117282271A71A008D52E9 /* AppHelperExtension.swift in Sources */,
+				FA3117172271A71A008D52E9 /* SplashViewController.swift in Sources */,
+				FA31172E2271A71A008D52E9 /* Modal.swift in Sources */,
+				FA3117182271A71A008D52E9 /* LoginViewController.swift in Sources */,
+				FA3116F52271A71A008D52E9 /* LoadMyCardDoneViewController.swift in Sources */,
+				FA31172B2271A71A008D52E9 /* TableViewCell.swift in Sources */,
+				FA3116FA2271A71A008D52E9 /* ForgotPasswordViewController.swift in Sources */,
+				FA3117072271A71A008D52E9 /* PickupViewController.swift in Sources */,
+				FAB47C4F2273EFA900241253 /* DropDown.swift in Sources */,
+				FA31172C2271A71A008D52E9 /* ApiClient.swift in Sources */,
+				FA3116F02271A71A008D52E9 /* PayNowViewController.swift in Sources */,
+				FA3117062271A71A008D52E9 /* DocumentUploadViewController.swift in Sources */,
+				FA3117222271A71A008D52E9 /* NextResponderTextField.swift in Sources */,
+				FA31170D2271A71A008D52E9 /* ProfessionalViewController.swift in Sources */,
+				FA3117302271A71A008D52E9 /* SessionManager.swift in Sources */,
+				FA3116F12271A71A008D52E9 /* DashBoardViewController.swift in Sources */,
+				FA3117202271A71A008D52E9 /* LabelSwitch.swift in Sources */,
+				FA31172F2271A71A008D52E9 /* ReferralCodeAlertView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		FAAFB30E2271895F00C5056D /* Main.storyboard */ = {
+		FA3116CA2271A71A008D52E9 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				FAAFB30F2271895F00C5056D /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		FAAFB3132271896100C5056D /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FAAFB3142271896100C5056D /* Base */,
+				FA3116CB2271A71A008D52E9 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -213,7 +895,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -268,7 +950,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -280,35 +962,42 @@
 		};
 		FAAFB31A2271896100C5056D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5EC4D7E62AE049DF61C700F1 /* Pods-Stashfin.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = NKF7DZ3X72;
 				INFOPLIST_FILE = Stashfin/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Stashfin.iOS.Stashfin;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Stashfin.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = /Users/macbook/Documents/projects/ios/Stashfin/Stashfin/utils/libs/HeaderBridging.h;
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		FAAFB31B2271896100C5056D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A2E9751704EE097EA8AE3D1C /* Pods-Stashfin.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NKF7DZ3X72;
 				INFOPLIST_FILE = Stashfin/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Stashfin.iOS.Stashfin;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Stashfin.iOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = /Users/macbook/Documents/projects/ios/Stashfin/Stashfin/utils/libs/HeaderBridging.h;
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

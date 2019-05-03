@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Profile View Controller-->
+        <scene sceneID="QQF-Qu-aNs">
+            <objects>
+                <viewController storyboardIdentifier="ProfileViewController" automaticallyAdjustsScrollViewInsets="NO" id="9SQ-gn-ZbO" customClass="ProfileViewController" customModule="Stashfin" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Orn-Ot-BCP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="18y-zB-7ih">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="J5l-kP-CuR">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="267"/>
+                                        <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </imageView>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="HEq-bw-sBd">
+                                        <rect key="frame" x="0.0" y="267" width="375" height="400"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                        <prototypes>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DocumentCell" rowHeight="50" id="1f5-gi-2n6" customClass="DocumentCell" customModule="Stashfin" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="55.5" width="375" height="50"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1f5-gi-2n6" id="KFx-lz-QWR">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Document" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="vli-Rd-aqU" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
+                                                            <rect key="frame" x="16" y="15" width="67.5" height="19.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="fontSize">
+                                                                    <real key="value" value="14"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5uj-CU-EJ2" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
+                                                            <rect key="frame" x="321" y="14.5" width="38" height="20.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="fontSize">
+                                                                    <real key="value" value="15"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="vli-Rd-aqU" firstAttribute="centerY" secondItem="KFx-lz-QWR" secondAttribute="centerY" id="adQ-UV-JhK"/>
+                                                        <constraint firstItem="5uj-CU-EJ2" firstAttribute="centerY" secondItem="vli-Rd-aqU" secondAttribute="centerY" id="mMV-9b-UIh"/>
+                                                        <constraint firstItem="vli-Rd-aqU" firstAttribute="leading" secondItem="KFx-lz-QWR" secondAttribute="leading" constant="16" id="w9s-my-tkL"/>
+                                                        <constraint firstAttribute="trailing" secondItem="5uj-CU-EJ2" secondAttribute="trailing" constant="16" id="yDg-xN-43s"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <connections>
+                                                    <outlet property="keyName" destination="vli-Rd-aqU" id="pzm-Xo-QRs"/>
+                                                    <outlet property="valueName" destination="5uj-CU-EJ2" id="5uo-ug-l5C"/>
+                                                </connections>
+                                            </tableViewCell>
+                                        </prototypes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="9SQ-gn-ZbO" id="YHJ-uT-B0V"/>
+                                            <outlet property="delegate" destination="9SQ-gn-ZbO" id="DPx-fw-G8u"/>
+                                        </connections>
+                                    </tableView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9BR-Cc-dl7">
+                                        <rect key="frame" x="134" y="100" width="107" height="107"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="9BR-Cc-dl7" secondAttribute="height" multiplier="100:100" id="CN4-d2-zzR"/>
+                                        </constraints>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mdB-7J-Bt9">
+                                        <rect key="frame" x="230" y="190" width="16" height="22"/>
+                                        <state key="normal" image="cam"/>
+                                        <connections>
+                                            <action selector="changeProfilePic:" destination="9SQ-gn-ZbO" eventType="touchUpInside" id="dr0-bN-WCF"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="HEq-bw-sBd" secondAttribute="bottom" id="98u-B0-R8j"/>
+                                    <constraint firstItem="mdB-7J-Bt9" firstAttribute="bottom" secondItem="9BR-Cc-dl7" secondAttribute="bottom" constant="5" id="CqX-Ad-v2l"/>
+                                    <constraint firstItem="9BR-Cc-dl7" firstAttribute="centerX" secondItem="J5l-kP-CuR" secondAttribute="centerX" id="Dmy-Yi-pjb"/>
+                                    <constraint firstAttribute="trailing" secondItem="J5l-kP-CuR" secondAttribute="trailing" id="HrD-T3-OhL"/>
+                                    <constraint firstItem="J5l-kP-CuR" firstAttribute="top" secondItem="18y-zB-7ih" secondAttribute="top" id="NbB-MG-4Ec"/>
+                                    <constraint firstItem="J5l-kP-CuR" firstAttribute="leading" secondItem="18y-zB-7ih" secondAttribute="leading" id="SgY-0d-HrC"/>
+                                    <constraint firstItem="J5l-kP-CuR" firstAttribute="centerX" secondItem="18y-zB-7ih" secondAttribute="centerX" id="Si8-g7-vbf"/>
+                                    <constraint firstItem="HEq-bw-sBd" firstAttribute="top" secondItem="J5l-kP-CuR" secondAttribute="bottom" id="YcB-HY-hMG"/>
+                                    <constraint firstItem="9BR-Cc-dl7" firstAttribute="centerY" secondItem="J5l-kP-CuR" secondAttribute="centerY" constant="20" id="Ymh-uE-i2H"/>
+                                    <constraint firstItem="J5l-kP-CuR" firstAttribute="height" secondItem="18y-zB-7ih" secondAttribute="height" multiplier="0.4" id="ZlP-lK-dor"/>
+                                    <constraint firstItem="9BR-Cc-dl7" firstAttribute="height" secondItem="J5l-kP-CuR" secondAttribute="height" multiplier="0.4" id="aiO-ch-EPM"/>
+                                    <constraint firstItem="HEq-bw-sBd" firstAttribute="leading" secondItem="18y-zB-7ih" secondAttribute="leading" id="d9v-LZ-fxh"/>
+                                    <constraint firstItem="mdB-7J-Bt9" firstAttribute="trailing" secondItem="9BR-Cc-dl7" secondAttribute="trailing" constant="5" id="ier-XL-rTV"/>
+                                    <constraint firstAttribute="trailing" secondItem="HEq-bw-sBd" secondAttribute="trailing" id="yAf-fB-GG3"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="18y-zB-7ih" firstAttribute="leading" secondItem="Ez7-ar-i6t" secondAttribute="leading" id="BFh-fT-eum"/>
+                            <constraint firstAttribute="top" secondItem="18y-zB-7ih" secondAttribute="top" id="VxY-zq-daw"/>
+                            <constraint firstItem="Ez7-ar-i6t" firstAttribute="trailing" secondItem="18y-zB-7ih" secondAttribute="trailing" id="geO-Xx-vK8"/>
+                            <constraint firstItem="Ez7-ar-i6t" firstAttribute="bottom" secondItem="18y-zB-7ih" secondAttribute="bottom" id="lgI-4h-eZf"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Ez7-ar-i6t"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="YWr-zS-5Jr"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="coverPicImg" destination="J5l-kP-CuR" id="QET-nU-hxQ"/>
+                        <outlet property="profilePicImg" destination="9BR-Cc-dl7" id="FU4-na-Aeb"/>
+                        <outlet property="profileTableView" destination="HEq-bw-sBd" id="BsI-az-1yw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="onW-em-pkR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4578" y="1602"/>
+        </scene>
+        <!--Documents View Controller-->
+        <scene sceneID="aha-7S-aea">
+            <objects>
+                <viewController storyboardIdentifier="DocumentsViewController" automaticallyAdjustsScrollViewInsets="NO" id="GH0-hQ-QvK" customClass="DocumentsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="uh4-4h-PBG">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="hx6-16-9KV">
+                                <rect key="frame" x="117.5" y="40" width="140" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="140" id="jOj-8W-8TY"/>
+                                    <constraint firstAttribute="height" constant="35" id="vh3-Bp-pxe"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Gallery"/>
+                                    <segment title="PDF"/>
+                                </segments>
+                            </segmentedControl>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" estimatedRowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="s3T-Q8-53e">
+                                <rect key="frame" x="0.0" y="95" width="375" height="572"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="PDFCell" id="8G2-JM-pCc">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8G2-JM-pCc" id="JI7-7U-0GL">
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="49.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="K3y-UJ-rVf">
+                                <rect key="frame" x="0.0" y="95" width="375" height="572"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="bIs-xA-3Fa">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="s3T-Q8-53e" firstAttribute="top" secondItem="hx6-16-9KV" secondAttribute="bottom" constant="20" id="1kI-gL-esw"/>
+                            <constraint firstItem="s3T-Q8-53e" firstAttribute="leading" secondItem="oJs-Rh-KKz" secondAttribute="leading" id="A7l-nD-Jlu"/>
+                            <constraint firstItem="hx6-16-9KV" firstAttribute="centerX" secondItem="uh4-4h-PBG" secondAttribute="centerX" id="BTO-H3-iL3"/>
+                            <constraint firstItem="K3y-UJ-rVf" firstAttribute="top" secondItem="hx6-16-9KV" secondAttribute="bottom" constant="20" id="NaR-Lm-aJC"/>
+                            <constraint firstItem="oJs-Rh-KKz" firstAttribute="trailing" secondItem="s3T-Q8-53e" secondAttribute="trailing" id="Nd3-WH-XfW"/>
+                            <constraint firstItem="oJs-Rh-KKz" firstAttribute="trailing" secondItem="K3y-UJ-rVf" secondAttribute="trailing" id="PzT-CS-D9p"/>
+                            <constraint firstItem="oJs-Rh-KKz" firstAttribute="bottom" secondItem="K3y-UJ-rVf" secondAttribute="bottom" id="gpf-bP-DFF"/>
+                            <constraint firstItem="oJs-Rh-KKz" firstAttribute="bottom" secondItem="s3T-Q8-53e" secondAttribute="bottom" id="gqu-W7-ucM"/>
+                            <constraint firstItem="K3y-UJ-rVf" firstAttribute="leading" secondItem="oJs-Rh-KKz" secondAttribute="leading" id="hzO-1t-X41"/>
+                            <constraint firstItem="hx6-16-9KV" firstAttribute="top" secondItem="oJs-Rh-KKz" secondAttribute="top" constant="20" id="yos-Zb-JoB"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="oJs-Rh-KKz"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8ym-Gx-0KR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5511.1999999999998" y="1602.5487256371816"/>
+        </scene>
+        <!--ViewPDF View Controller-->
+        <scene sceneID="BLI-1D-upN">
+            <objects>
+                <viewController storyboardIdentifier="ViewPDFViewController" id="ho6-dg-K8z" customClass="ViewPDFViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CeN-0K-9yH">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q8J-sE-Ywd">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="q8J-sE-Ywd" firstAttribute="top" secondItem="j27-7H-cvE" secondAttribute="top" id="Mym-ea-AJc"/>
+                            <constraint firstItem="j27-7H-cvE" firstAttribute="bottom" secondItem="q8J-sE-Ywd" secondAttribute="bottom" id="QXl-T8-4V9"/>
+                            <constraint firstItem="q8J-sE-Ywd" firstAttribute="leading" secondItem="j27-7H-cvE" secondAttribute="leading" id="p0o-zG-QIK"/>
+                            <constraint firstItem="j27-7H-cvE" firstAttribute="trailing" secondItem="q8J-sE-Ywd" secondAttribute="trailing" id="vke-kq-YS0"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="j27-7H-cvE"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4mn-zs-eaK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6244" y="1602.5487256371816"/>
+        </scene>
+        <!--LoadMyCardConfirmViewController-->
+        <scene sceneID="5FT-3g-Obn">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="LoadMyCardConfirmViewController" storyboardName="MainCard" referencedIdentifier="LoadMyCardConfirmViewController" id="6IO-w9-uRk" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fFh-5g-FXG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5126" y="78"/>
+        </scene>
+        <!--CardDetailsViewController-->
+        <scene sceneID="9W0-EU-umN">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="CardDetailsViewController" storyboardName="MainCard" referencedIdentifier="CardDetailsViewController" id="kOS-o0-30E" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="a0e-Gw-hk1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4066" y="412"/>
+        </scene>
+        <!--ApplicationStatusViewController-->
+        <scene sceneID="e1J-sp-y1k">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="ApplicationStatusViewController" storyboardName="MainCard" referencedIdentifier="ApplicationStatusViewController" id="2w0-Tw-NLd" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IXb-1E-WTx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3906" y="689"/>
+        </scene>
+        <!--BlockViewController-->
+        <scene sceneID="Huo-cu-bIp">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="BlockViewController" storyboardName="MainCard" referencedIdentifier="BlockViewController" id="uH1-55-MsV" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="loh-4C-EXk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4702" y="662"/>
+        </scene>
+        <!--LoadMyCardSlideViewController-->
+        <scene sceneID="APH-pA-ab9">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="LoadMyCardSlideViewController" storyboardName="MainCard" referencedIdentifier="LoadMyCardSlideViewController" id="el8-J9-qCH" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="t6r-qf-jIO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4411" y="78"/>
+        </scene>
+        <!--DashBoardViewController-->
+        <scene sceneID="VZC-gW-TO8">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="DashBoardViewController" storyboardName="MainCard" referencedIdentifier="DashBoardViewController" id="3q3-1y-j8l" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NH8-Va-QZf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4820" y="412"/>
+        </scene>
+        <!--MenuViewController-->
+        <scene sceneID="Qxw-va-mRp">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="MenuViewController" storyboardName="MainMenu" referencedIdentifier="MenuViewController" id="BoD-dy-fFE" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="z3d-rW-fGM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4157" y="983"/>
+        </scene>
+        <!--MainContainerViewController-->
+        <scene sceneID="77Y-52-jAt">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="MainContainerViewController" storyboardName="MainMenu" referencedIdentifier="MainContainerViewController" id="iNj-2l-pMV" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="i8k-zl-5PI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2465" y="967"/>
+        </scene>
+        <!--LeftMenuNavigationController-->
+        <scene sceneID="vMt-JT-q6r">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="LeftMenuNavigationController" storyboardName="MainMenu" referencedIdentifier="LeftMenuNavigationController" id="S4F-jh-HNE" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wfh-W8-ATO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3297" y="967"/>
+        </scene>
+        <!--TransactionViewController-->
+        <scene sceneID="q6f-VB-aY9">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="TransactionViewController" storyboardName="MainDashboard" referencedIdentifier="TransactionViewController" id="HsK-2O-6Kq" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="umK-4S-Ie8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6481" y="580"/>
+        </scene>
+        <!--OutgoingEmiViewController-->
+        <scene sceneID="jsG-N9-Zmh">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="OutgoingEmiViewController" storyboardName="MainDashboard" referencedIdentifier="OutgoingEmiViewController" id="CC3-E8-Imi" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="D7t-Dx-SxT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7268" y="580"/>
+        </scene>
+        <!--PayNowViewController-->
+        <scene sceneID="wWf-kz-Lvw">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="PayNowViewController" storyboardName="MainDashboard" referencedIdentifier="PayNowViewController" id="ghn-mz-Z8C" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="b1g-Ck-3xZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5695" y="540"/>
+        </scene>
+        <!--PaybackResultViewController-->
+        <scene sceneID="uHd-Ho-sH9">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="PaybackResultViewController" storyboardName="MainOther" referencedIdentifier="PaybackResultViewController" id="DkZ-UF-k8w" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TvN-Dt-sxZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="8411.2000000000007" y="1546.3268365817094"/>
+        </scene>
+        <!--WebViewViewController-->
+        <scene sceneID="Cn2-No-wxY">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="WebViewViewController" storyboardName="MainOther" referencedIdentifier="WebViewViewController" id="K6f-Rw-pBd" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8IG-hK-IM2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7971.1999999999998" y="1314.2428785607196"/>
+        </scene>
+        <!--LoanCalculatorViewController-->
+        <scene sceneID="uHE-jh-z1c">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="LoanCalculatorViewController" storyboardName="MainOther" referencedIdentifier="LoanCalculatorViewController" id="rkQ-4h-Kbe" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bj0-zS-rAO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="8824" y="1314.2428785607196"/>
+        </scene>
+        <!--CustomerCareViewController-->
+        <scene sceneID="Keq-Ry-WfY">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="CustomerCareViewController" storyboardName="MainOther" referencedIdentifier="CustomerCareViewController" id="PLN-Zb-Tp6" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fe1-fz-uer" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7263.1999999999998" y="1314.2428785607196"/>
+        </scene>
+        <!--PayBackViewController-->
+        <scene sceneID="bvR-As-zwY">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="PayBackViewController" storyboardName="MainOther" referencedIdentifier="PayBackViewController" id="yLs-HF-H5P" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kqr-ZL-shK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7643.1999999999998" y="1546.3268365817094"/>
+        </scene>
+        <!--GetCardViewController-->
+        <scene sceneID="ZAb-vx-VbY">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="GetCardViewController" storyboardName="MainCardActivate" referencedIdentifier="GetCardViewController" id="tfD-C4-R2a" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2be-pN-f4J" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4862" y="987"/>
+        </scene>
+        <!--CardPinViewController-->
+        <scene sceneID="dVf-wW-FUO">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="CardPinViewController" storyboardName="MainCardActivate" referencedIdentifier="CardPinViewController" id="ZCO-LD-8Lu" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SAb-Lx-XIs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6981" y="987"/>
+        </scene>
+        <!--ActivateCardIntroViewController-->
+        <scene sceneID="K6K-3Q-Poi">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="ActivateCardIntroViewController" storyboardName="MainCardActivate" referencedIdentifier="ActivateCardIntroViewController" id="l5I-Zp-kR7" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KbZ-hK-ZkF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5542" y="985"/>
+        </scene>
+        <!--StashFin Card-->
+        <scene sceneID="8dG-T8-yQl">
+            <objects>
+                <viewController storyboardIdentifier="StashFinCardViewController" id="qMJ-hQ-rfa" customClass="StashFinCardViewController" customModule="Stashfin" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="IAY-bU-I3v">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="9HD-KJ-Ggs">
+                                <rect key="frame" x="16" y="80" width="343" height="571"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="84W-UF-jkr" customClass="RoundUIView" customModule="Stashfin" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="281.5"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="card_gray" translatesAutoresizingMaskIntoConstraints="NO" id="car-qh-Y6O">
+                                                <rect key="frame" x="142" y="8" width="193" height="125.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="car-qh-Y6O" secondAttribute="height" multiplier="57:37" id="Zbz-QE-t09"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="A0K-zI-MT6" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
+                                                <rect key="frame" x="10" y="135.5" width="323" height="92"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="A0K-zI-MT6" secondAttribute="height" multiplier="323:92" id="zmf-8v-3EX"/>
+                                                </constraints>
+                                                <string key="text">The StashFin Credit Line Credit Line card is a prepaid card. You can load money on the card from your approved line of credit. The amount which is loaded on the card gets converted into EMIs.</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="HE3-IQ-43P" customClass="RCButton" customModule="Stashfin" customModuleProvider="target">
+                                                <rect key="frame" x="8" y="237.5" width="226.5" height="34"/>
+                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="HE3-IQ-43P" secondAttribute="height" multiplier="200:30" id="9PQ-Sn-d08"/>
+                                                </constraints>
+                                                <connections>
+                                                    <action selector="physicalCardBtn:" destination="qMJ-hQ-rfa" eventType="touchUpInside" id="naf-YQ-c1u"/>
+                                                </connections>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Physical Card" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="taa-Ok-UOD" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
+                                                <rect key="frame" x="8" y="103" width="126" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="car-qh-Y6O" firstAttribute="top" secondItem="84W-UF-jkr" secondAttribute="top" constant="8" id="0hD-nv-mOe"/>
+                                            <constraint firstItem="HE3-IQ-43P" firstAttribute="top" secondItem="A0K-zI-MT6" secondAttribute="bottom" constant="10" id="6zj-RN-8kk"/>
+                                            <constraint firstItem="car-qh-Y6O" firstAttribute="leading" secondItem="taa-Ok-UOD" secondAttribute="trailing" constant="8" id="7pN-RM-FPv"/>
+                                            <constraint firstAttribute="bottom" secondItem="HE3-IQ-43P" secondAttribute="bottom" constant="10" id="Jvq-dG-LLw"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HE3-IQ-43P" secondAttribute="trailing" constant="50" id="RuA-Eg-gal"/>
+                                            <constraint firstItem="A0K-zI-MT6" firstAttribute="leading" secondItem="84W-UF-jkr" secondAttribute="leading" constant="10" id="WGB-Dz-rqr"/>
+                                            <constraint firstAttribute="trailing" secondItem="car-qh-Y6O" secondAttribute="trailing" constant="8" id="lCU-yG-sv3"/>
+                                            <constraint firstItem="taa-Ok-UOD" firstAttribute="leading" secondItem="84W-UF-jkr" secondAttribute="leading" constant="8" id="mQV-pX-nMm"/>
+                                            <constraint firstItem="car-qh-Y6O" firstAttribute="bottom" secondItem="taa-Ok-UOD" secondAttribute="bottom" constant="10" id="maK-K4-RDs"/>
+                                            <constraint firstAttribute="trailing" secondItem="A0K-zI-MT6" secondAttribute="trailing" constant="10" id="mlb-a0-ZYi"/>
+                                            <constraint firstItem="HE3-IQ-43P" firstAttribute="leading" secondItem="84W-UF-jkr" secondAttribute="leading" constant="8" id="vAx-DP-PCA"/>
+                                            <constraint firstItem="car-qh-Y6O" firstAttribute="leading" secondItem="84W-UF-jkr" secondAttribute="leading" constant="142" id="yyX-y8-MLK"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iba-AA-xfa" customClass="RoundUIView" customModule="Stashfin" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="289.5" width="343" height="281.5"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="NFi-TT-22q" customClass="RCButton" customModule="Stashfin" customModuleProvider="target">
+                                                <rect key="frame" x="8" y="239.5" width="226.5" height="34"/>
+                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="NFi-TT-22q" secondAttribute="height" multiplier="200:30" id="iFn-wF-ZUg"/>
+                                                </constraints>
+                                                <connections>
+                                                    <action selector="virtualCardBtn:" destination="qMJ-hQ-rfa" eventType="touchUpInside" id="vg9-JZ-SXc"/>
+                                                </connections>
+                                            </button>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="card_blue" translatesAutoresizingMaskIntoConstraints="NO" id="Xwg-Hs-42u">
+                                                <rect key="frame" x="142" y="8" width="191" height="124"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="Xwg-Hs-42u" secondAttribute="height" multiplier="57:37" id="SWb-xT-Qlm"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="Lpj-yy-206" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
+                                                <rect key="frame" x="10" y="137.5" width="323" height="92"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="Lpj-yy-206" secondAttribute="height" multiplier="323:92" id="o7i-in-GUa"/>
+                                                </constraints>
+                                                <string key="text">The StashFin Virtual Card is an add-on card issued on your primary StashFin card. Activate your Virtual Card now to transact online using funds from your approved credit limit.            </string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Virtual Card" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="8pl-ck-q4Y" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
+                                                <rect key="frame" x="8" y="101.5" width="124" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="Lpj-yy-206" secondAttribute="trailing" constant="10" id="3Yt-Mm-URu"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="NFi-TT-22q" secondAttribute="trailing" constant="50" id="45P-Fi-hIG"/>
+                                            <constraint firstAttribute="trailing" secondItem="Xwg-Hs-42u" secondAttribute="trailing" constant="10" id="6bc-Kr-DFk"/>
+                                            <constraint firstItem="8pl-ck-q4Y" firstAttribute="leading" secondItem="iba-AA-xfa" secondAttribute="leading" constant="8" id="GIR-yZ-qT1"/>
+                                            <constraint firstItem="Xwg-Hs-42u" firstAttribute="leading" secondItem="iba-AA-xfa" secondAttribute="leading" constant="142" id="QI6-AL-m8I"/>
+                                            <constraint firstItem="Xwg-Hs-42u" firstAttribute="top" secondItem="iba-AA-xfa" secondAttribute="top" constant="8" id="Uun-90-huk"/>
+                                            <constraint firstItem="Xwg-Hs-42u" firstAttribute="leading" secondItem="8pl-ck-q4Y" secondAttribute="trailing" constant="10" id="b0g-3D-WDo"/>
+                                            <constraint firstAttribute="bottom" secondItem="NFi-TT-22q" secondAttribute="bottom" constant="8" id="gKM-eJ-3BY"/>
+                                            <constraint firstItem="NFi-TT-22q" firstAttribute="top" secondItem="Lpj-yy-206" secondAttribute="bottom" constant="10" id="ijU-zH-QLs"/>
+                                            <constraint firstItem="Lpj-yy-206" firstAttribute="leading" secondItem="iba-AA-xfa" secondAttribute="leading" constant="10" id="oBS-UY-kCH"/>
+                                            <constraint firstItem="NFi-TT-22q" firstAttribute="leading" secondItem="iba-AA-xfa" secondAttribute="leading" constant="8" id="qkL-5C-krk"/>
+                                            <constraint firstItem="8pl-ck-q4Y" firstAttribute="bottom" secondItem="Xwg-Hs-42u" secondAttribute="bottom" constant="-10" id="zfH-jB-XNF"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="9HD-KJ-Ggs" secondAttribute="trailing" constant="16" id="8UC-P7-hHZ"/>
+                            <constraint firstItem="ZSV-Oy-bwL" firstAttribute="bottom" secondItem="9HD-KJ-Ggs" secondAttribute="bottom" constant="16" id="FnB-o1-k9L"/>
+                            <constraint firstItem="9HD-KJ-Ggs" firstAttribute="leading" secondItem="ZSV-Oy-bwL" secondAttribute="leading" constant="16" id="R8o-IA-Kdm"/>
+                            <constraint firstItem="9HD-KJ-Ggs" firstAttribute="top" secondItem="ZSV-Oy-bwL" secondAttribute="top" constant="16" id="z3r-s9-9Mm"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ZSV-Oy-bwL"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="StashFin Card" id="12S-ku-PtI"/>
+                    <connections>
+                        <outlet property="physicalBtn" destination="HE3-IQ-43P" id="wcp-K5-IEg"/>
+                        <outlet property="virtualBtn" destination="NFi-TT-22q" id="EUH-9O-wZE"/>
+                        <outlet property="virtualCardView" destination="iba-AA-xfa" id="YcK-VU-p2R"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qa7-aB-Xok" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3063.1999999999998" y="1570.1649175412294"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ldc-bc-NI8">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tft-lo-X1m" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Hoz-Ai-ril">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="qMJ-hQ-rfa" kind="relationship" relationship="rootViewController" id="NMH-nG-ogx"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cpk-Zr-C3x" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2124" y="1570.1649175412294"/>
+        </scene>
+        <!--ActivateCardViewController-->
+        <scene sceneID="44l-2d-Txs">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="ActivateCardViewController" storyboardName="MainCardActivate" referencedIdentifier="ActivateCardViewController" id="phA-qY-iin" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iWm-90-mNH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5541" y="1067"/>
+        </scene>
+        <!--LoadMyCardDoneViewController-->
+        <scene sceneID="ozO-5Z-ve5">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="LoadMyCardDoneViewController" storyboardName="MainCardActivate" referencedIdentifier="LoadMyCardDoneViewController" id="tpn-Vw-rkI" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="92m-Bh-6GT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4862" y="1062"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="cam" width="16.319999694824219" height="16.079999923706055"/>
+        <image name="card_blue" width="1064" height="671"/>
+        <image name="card_gray" width="1061" height="669"/>
+    </resources>
+</document>
