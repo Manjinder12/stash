@@ -10,13 +10,18 @@
 import UIKit
 import SwiftyJSON
 
-class EnachViewController: BaseLoginViewController {
+class BankDetailsViewController: BaseLoginViewController {
+   
     //    weak var delegate:BaseViewdelagate?
     @IBOutlet weak var accountNumber: UITextField!
     @IBOutlet weak var confirmAccountNumber: UITextField!
     @IBOutlet weak var ifscCode: UITextField!
     
     
+    static func getInstance(storyboard: UIStoryboard) -> BankDetailsViewController{
+        return storyboard.instantiateViewController(withIdentifier: String(describing: self.classForCoder())) as! BankDetailsViewController
+    }
+
     // MARK: - Init
     
     

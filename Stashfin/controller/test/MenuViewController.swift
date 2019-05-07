@@ -77,14 +77,14 @@ class MenuViewController: BaseLoginViewController,UITableViewDataSource,UITableV
             profilePicImg.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "user-1"),options: SDWebImageOptions(rawValue: 0), completed: { (image, error, cacheType, imageURL) in
                 if let img = image{
                     self.profilePicImg.maskCircle(anyImage: img,number: 3)
-                    self.coverPicImg.image=img
                     
-                    let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.light)
-                    let blurView = UIVisualEffectView(effect: darkBlur)
-                    blurView.frame =  self.coverPicImg.frame
-                    blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-                    blurView.alpha=0.9
-                    self.coverPicImg.addSubview(blurView)
+//                    self.coverPicImg.image=img
+//                    let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
+//                    let blurView = UIVisualEffectView(effect: darkBlur)
+//                    blurView.frame =  self.coverPicImg.frame
+//                    blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//                    blurView.alpha=0.9
+//                    self.coverPicImg.addSubview(blurView)
                 }
             })
             
@@ -93,13 +93,15 @@ class MenuViewController: BaseLoginViewController,UITableViewDataSource,UITableV
     }
     
     private func setMenu(){
-       let applicationStatus = SessionManger.getInstance.getApplicationStatus()
+        let applicationStatus = SessionManger.getInstance.getApplicationStatus()
         Log("menu status : \(applicationStatus)")
         switch applicationStatus {
         case Constants.ApplicationStatus.REJECTED:
             initMenu(menuType: Constants.ApplicationStatus.REJECTED)
-        case Constants.ApplicationStatus.APPROVED:
-            initMenu(menuType:"status")
+        case Constants.ApplicationStatus.DOCPICK,Constants.ApplicationStatus.DOCPICKDONE,Constants.ApplicationStatus.START,Constants.ApplicationStatus.THANKU,Constants.ApplicationStatus.APPROVED:
+            initMenu(menuType:"preApproved")
+//        case Constants.ApplicationStatus.APPROVED:
+//            initMenu(menuType:"status")
         case Constants.ApplicationStatus.DISBURSED,Constants.ApplicationStatus.CLOSED:
             initMenu(menuType:"loc")
         case "sa":
@@ -113,15 +115,22 @@ class MenuViewController: BaseLoginViewController,UITableViewDataSource,UITableV
     private func initMenu(menuType:String=""){
         menus.append(MenuModel(itemName: "Home",itemImg: "home_dark"))
 //        menus.append(MenuModel(itemName: "Pay Now",itemImg: "home"))
-        switch menuType {
-        case Constants.ApplicationStatus.REJECTED:
-             menus.append(MenuModel(itemName: "Rejected",itemImg: "payment_history_grey"))
-//        case "loc":
-        case "elv8":
-            menus.append(MenuModel(itemName: "Pay Now",itemImg: "payment_history_grey"))
-        default:
-            Log(menuType)
-        }
+        
+        
+//        switch menuType {
+//        case "preApproved":
+//            menus.append(MenuModel(itemName: "Document",itemImg: "doc_up"))
+//
+//        case Constants.ApplicationStatus.REJECTED:
+//             menus.append(MenuModel(itemName: "Rejected",itemImg: "payment_history_grey"))
+////        case "loc":
+//        case "elv8":
+//            menus.append(MenuModel(itemName: "Pay Now",itemImg: "payment_history_grey"))
+//        default:
+//            Log(menuType)
+//        }
+        
+        
         // card condition
         
         /*
@@ -135,6 +144,9 @@ class MenuViewController: BaseLoginViewController,UITableViewDataSource,UITableV
         menus.append(MenuModel(itemName: "StashFin Card",itemImg: "card_grey"))
         
         menus.append(MenuModel(itemName: "Profile",itemImg: "profile-1"))
+        if menuType=="preApproved"{
+             menus.append(MenuModel(itemName: "Documents",itemImg: "doc_up"))
+        }
 //        menus.append(MenuModel(itemName: "Loan Calculator",itemImg: "loan_calc_2"))
 //        menus.append(MenuModel(itemName: "Payback",itemImg: "payback_logo_white"))
 
@@ -214,6 +226,11 @@ class MenuViewController: BaseLoginViewController,UITableViewDataSource,UITableV
             self.changeViewController(controllerName: Constants.Controllers.LOAN_CALCULATOR)
         case "Payback":
             self.changeViewController(controllerName: Constants.Controllers.PAYBACK)
+        case "Documents":
+//            self.changeViewController(controllerName: Constants.Controllers.PAYBACK)
+            let controller = DocumentUploadViewController.getInstance(storyboard: self.storyBoardRegister)
+            controller.pageType = "profile"
+            self.goToNextViewController(controller:controller)
         case "Help":
             self.changeViewController(controllerName: Constants.Controllers.CUSTOMER_CARE)
         case "FAQs":

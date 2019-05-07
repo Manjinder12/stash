@@ -12,6 +12,12 @@ import WebKit
 import SwiftyJSON
 
 class BankStatementUploadViewController: BaseLoginViewController {
+    
+    static func getInstance(storyboard: UIStoryboard) -> BankStatementUploadViewController{
+        return storyboard.instantiateViewController(withIdentifier: String(describing: self.classForCoder())) as! BankStatementUploadViewController
+    }
+    
+    
     var webView : WKWebView!
     var url = ""
     var return_url = ""
@@ -150,6 +156,19 @@ class BankStatementUploadViewController: BaseLoginViewController {
     }
     
     @IBAction func openWebViewBankPage(_ sender: UIButton) {
+       
+        if SessionManger.getInstance.isTester(){
+            if salariedType{
+                self.changeViewController(controllerName: Constants.Controllers.DOCUMENTS_SALARY)
+            }else{
+                self.changeViewController(controllerName: Constants.Controllers.DOCUMENTS_BUSINESS)
+            }
+        }else{
+            submitDetails()
+        }
+    }
+    
+    private func submitDetails(){
         webLoadView.isHidden = false
         introBankView.isHidden = true
         loadUrl()

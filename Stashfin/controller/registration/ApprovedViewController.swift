@@ -11,6 +11,12 @@ import UIKit
 import SwiftyJSON
 
 class ApprovedViewController: BaseLoginViewController {
+    
+    static func getInstance(storyboard: UIStoryboard) -> ApprovedViewController{
+        return storyboard.instantiateViewController(withIdentifier: String(describing: self.classForCoder())) as! ApprovedViewController
+    }
+    
+    
     @IBOutlet weak var amount: CustomUILabel!
     @IBOutlet weak var tenure: CustomUILabel!
     @IBOutlet weak var emiAmount: CustomUILabel!
@@ -20,7 +26,13 @@ class ApprovedViewController: BaseLoginViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        checkPreApprovedApi()
+        if SessionManger.getInstance.isTester(){
+            self.amount.text = Constants.Values.RupeeSign + "500"
+            self.tenure.text = "3" + " Months"
+            self.emiAmount.text = Constants.Values.RupeeSign + "173"
+        }else{
+            checkPreApprovedApi()
+        }
     }
     
     private func checkPreApprovedApi(){
@@ -32,9 +44,9 @@ class ApprovedViewController: BaseLoginViewController {
             switch status{
             case .success:
                 if let json = try? JSON(data:result!){
-                self.amount.text = json["approved_amount"].stringValue
-                   self.tenure.text = json["approved_tenure"].stringValue
-                   self.emiAmount.text = json["emi_amount"].stringValue
+                    self.amount.text = Constants.Values.RupeeSign + json["approved_amount"].stringValue
+                    self.tenure.text = json["approved_tenure"].stringValue + " Months"
+                    self.emiAmount.text = Constants.Values.RupeeSign + json["emi_amount"].stringValue
                     self.landing_page = json["landing_page"].stringValue
                 }
             case .errors(let errors):
@@ -50,6 +62,15 @@ class ApprovedViewController: BaseLoginViewController {
     // MARK: - Handlers
     
     @IBAction func nextBtn(_ sender: UIButton) {
+        if SessionManger.getInstance.isTester(){
+            self.changeViewController(controllerName: Constants.Controllers.PICKUP)
+            
+        }else{
+            submitDetails()
+        }
+    }
+    
+    private func submitDetails(){
         self.changeViewController(controllerName: landing_page)
     }
     

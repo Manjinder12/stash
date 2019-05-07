@@ -15,7 +15,7 @@ import SideMenu
 
 struct LandingPageResponse: Codable {
     let status, message, landingPage: String?
-  
+    
     enum CodingKeys: String, CodingKey {
         case status, message
         case landingPage = "landing_page"
@@ -23,10 +23,10 @@ struct LandingPageResponse: Codable {
 }
 
 class BaseLoginViewController: UIViewController {
-//    var responseModel:LoginResponseModel?
+    //    var responseModel:LoginResponseModel?
     var mobileNumbers:String=""
     var cardTypes:String=""
-//    var response: Data = "".data(using: .utf8)!
+    //    var response: Data = "".data(using: .utf8)!
     let storyBoardMain:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
     let storyBoardRegister:UIStoryboard = UIStoryboard(name: "RegistrationNew", bundle: nil)
     
@@ -39,13 +39,13 @@ class BaseLoginViewController: UIViewController {
     func addMenuBarButtonItem() {
         let image = UIImage(named: "hamburger_icon")
         let backItem = UIBarButtonItem(image: image,
-                                       style: .done,
+                                       style: UIBarButtonItem.Style.plain,
                                        target: self,
                                        action: #selector(showSideMenu))
-       
+        
         //        bar.alpha = 0.0
         self.navigationItem.leftBarButtonItem = backItem
-       
+        
     }
     
     @objc func showSideMenu(){
@@ -65,12 +65,14 @@ class BaseLoginViewController: UIViewController {
                 return
             }
             SessionManger.getInstance.saveCustomerId(id: response["customer_id"].stringValue)
-
+            
             SessionManger.getInstance.saveAuthToken(token: authToken)
             SessionManger.getInstance.saveApplicationStatus(status: response["latest_loan_details"]["current_status"].stringValue)
             SessionManger.getInstance.saveProfilePic(profile: response["profile_pic"].stringValue)
             SessionManger.getInstance.saveName(name: response["customer_name"].stringValue)
             SessionManger.getInstance.saveEmail(email: response["email"].stringValue)
+            SessionManger.getInstance.saveOccupationStatus(status: response["occupation"].stringValue)
+            
             if !SessionManger.getInstance.getDeviceSaved(){
                 ApiClient.updateAppDetails(){
                     result, status in
@@ -79,10 +81,11 @@ class BaseLoginViewController: UIViewController {
                 }
             }
             
-          changeViewController(response:result)
-//            changeViewController(controllerName: "")
-//            AppDelegate.shared.rootViewController.switchToMainScreen()
-
+            
+            changeViewController(response:result)
+            //            changeViewController(controllerName: "")
+            //            AppDelegate.shared.rootViewController.switchToMainScreen()
+            
         }else{
             self.view.makeToast(Constants.Values.server_error)
         }
@@ -111,17 +114,17 @@ class BaseLoginViewController: UIViewController {
         var controller:String = controllerName
         if let json = try? JSON(data:response!){
             if let page = json["landing_page"].string{
-            controller = page
+                controller = page
             }
         }
         
         print("controller name: \(controller)")
-      
+        
         
         switch controller {
         // MARK: registration controllers
         case Constants.Controllers.REGISTER:
-            let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "PersonalViewController") as! RegisterViewController
+            let storyBoardController = RegisterViewController.getInstance(storyboard:storyBoardRegister)
             storyBoardController.mobileNumber=personalData
             goToNextViewController(controller: storyBoardController, pushStatus: false)
             
@@ -129,63 +132,66 @@ class BaseLoginViewController: UIViewController {
             goToNextViewController(controller: SocialLoginViewController.getInstance(storyboard: storyBoardRegister),pushStatus: false)
             
         case Constants.Controllers.PERSONAL:
-            let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "BasicViewController") as! PersonalViewController
-             if let json = try? JSON(data:response!){
-            storyBoardController.cityValue=json["city_name"].stringValue
+            let storyBoardController = PersonalViewController.getInstance(storyboard:storyBoardRegister)
+            if let json = try? JSON(data:response!){
+                storyBoardController.cityValue=json["city_name"].stringValue
             }
             goToNextViewController(controller: storyBoardController, pushStatus: false)
             
             
         case Constants.Controllers.PROFESSIONAL:
-            let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "ProfessionalViewController") as! ProfessionalViewController
-           goToNextViewController(controller: storyBoardController, pushStatus: false)
-            
-        case Constants.Controllers.ENACH:
-            let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "EnachRegisterViewController") as! EnachRegisterViewController
-            storyBoardController.response=response
-           goToNextViewController(controller: storyBoardController, pushStatus: false)
-            
-        case Constants.Controllers.DOCUMENT:
-            let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "DocumentUploadViewController") as! DocumentUploadViewController
-           goToNextViewController(controller: storyBoardController, pushStatus: false)
-            
-            
-        case Constants.Controllers.REJECT:
-            goToNextViewController(controller: RejectViewController.getInstance(storyboard: storyBoardRegister),pushStatus: false)
+            let storyBoardController = ProfessionalViewController.getInstance(storyboard:storyBoardRegister)
+            goToNextViewController(controller: storyBoardController, pushStatus: false)
             
         case Constants.Controllers.PROFESSIONAL_ABOVE_SALARY,Constants.Controllers.PROFESSIONAL_BUSINESS:
-            let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "ProfessionalViewController") as! ProfessionalViewController
+            let storyBoardController = ProfessionalViewController.getInstance(storyboard:storyBoardRegister)
             storyBoardController.salariedStatus=false
             goToNextViewController(controller: storyBoardController, pushStatus: false)
             
-         case Constants.Controllers.PROFESSIONAL, Constants.Controllers.PROFESSIONAL_BELOW_SALARY:
-            let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "ProfessionalViewController") as! ProfessionalViewController
+        case Constants.Controllers.PROFESSIONAL, Constants.Controllers.PROFESSIONAL_BELOW_SALARY:
+            let storyBoardController = ProfessionalViewController.getInstance(storyboard:storyBoardRegister)
             storyBoardController.salariedStatus=true
             goToNextViewController(controller: storyBoardController, pushStatus: false)
             
+            
+        case Constants.Controllers.ENACH:
+            let storyBoardController = EnachRegisterViewController.getInstance(storyboard:storyBoardRegister)
+            storyBoardController.response=response
+            goToNextViewController(controller: storyBoardController, pushStatus: false)
+            
+        case Constants.Controllers.DOCUMENTS_SALARY,Constants.Controllers.DOCUMENT:
+            let storyBoardController = DocumentUploadViewController.getInstance(storyboard:storyBoardRegister)
+            storyBoardController.isSalaried = true
+            goToNextViewController(controller: storyBoardController, pushStatus: false)
+            
+        case Constants.Controllers.DOCUMENTS_BUSINESS:
+            let storyBoardController = DocumentUploadViewController.getInstance(storyboard:storyBoardRegister)
+            storyBoardController.isSalaried = false
+            goToNextViewController(controller: storyBoardController, pushStatus: false)
+            
+            
+        case Constants.Controllers.REJECT_PAGE:
+            goToNextViewController(controller: RejectViewController.getInstance(storyboard: storyBoardRegister))
+            
         case  Constants.Controllers.BANK_DETAILS_BUSINESS, Constants.Controllers.BANK_DETAILS_SALARY:
-            let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "EnachViewController") as! EnachViewController
+            let storyBoardController = BankDetailsViewController.getInstance(storyboard:storyBoardRegister)
             goToNextViewController(controller: storyBoardController, pushStatus: false)
             
         case Constants.Controllers.BANK_STATEMENT_SALARY:
-            let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "BankStatementUploadViewController") as! BankStatementUploadViewController
+            let storyBoardController = BankStatementUploadViewController.getInstance(storyboard:storyBoardRegister)
             storyBoardController.salariedType = true
             goToNextViewController(controller: storyBoardController, pushStatus: false)
             
         case  Constants.Controllers.BANK_STATEMENT_BUSINESS:
-            let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "BankStatementUploadViewController") as! BankStatementUploadViewController
+            let storyBoardController = BankStatementUploadViewController.getInstance(storyboard:storyBoardRegister)
             storyBoardController.salariedType = false
-           goToNextViewController(controller: storyBoardController, pushStatus: false)
-            
-        case Constants.Controllers.DOCUMENTS_SALARY, Constants.Controllers.DOCUMENTS_BUSINESS:
-            let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "DocumentUploadViewController") as! DocumentUploadViewController
             goToNextViewController(controller: storyBoardController, pushStatus: false)
             
-        case Constants.Controllers.THANK_YOU:
+        case Constants.Controllers.THANK_YOU_PAGE:
             goToNextViewController(controller: ThankuViewController.getInstance(storyboard:storyBoardRegister))
             
         case Constants.Controllers.PICKUP:
-            let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "PickupViewController") as! PickupViewController
+            let storyBoardController = PickupViewController.getInstance(storyboard:storyBoardRegister)
             storyBoardController.address = getPickupAddress(response: response).0
             storyBoardController.currrent_date = getPickupAddress(response: response).1
             storyBoardController.pdf_url = getPickupAddress(response: response).2
@@ -193,15 +199,15 @@ class BaseLoginViewController: UIViewController {
             goToNextViewController(controller: storyBoardController, pushStatus: false)
             
         case Constants.Controllers.SIGNATURE:
-            let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "SignatureViewController") as! SignatureViewController
-          goToNextViewController(controller: storyBoardController, pushStatus: false)
+            let storyBoardController = SignatureViewController.getInstance(storyboard:storyBoardRegister)
+            goToNextViewController(controller: storyBoardController, pushStatus: false)
             
         case Constants.Controllers.APPROVED:
-            let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "ApprovedViewController") as! ApprovedViewController
+            let storyBoardController = ApprovedViewController.getInstance(storyboard:storyBoardRegister)
             goToNextViewController(controller: storyBoardController, pushStatus: false)
             
         case Constants.Controllers.ENACH_WEBVIEW:
-            let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "EnachViewController") as! EnachViewController
+            let storyBoardController =  BankDetailsViewController.getInstance(storyboard: storyBoardRegister)
             goToNextViewController(controller: storyBoardController, pushStatus: false)
             
         case Constants.Controllers.REGISTRATION_LOGIN:
@@ -220,20 +226,16 @@ class BaseLoginViewController: UIViewController {
             let controller = ActivateCardViewController.getInstance(storyboard: storyBoardMain)
             controller.cardTypeStatus = cardType
             goToNextViewController(controller: controller)
-
+            
         case Constants.Controllers.CHANGE_CARD_PIN:
             goToNextViewController(controller: CardPinViewController.getInstance(storyboard: storyBoardMain))
-
+            
         case Constants.Controllers.PROFILE_PAGE:
             goToNextViewController(controller: ProfileViewController.getInstance(storyboard: storyBoardMain))
-
-        case Constants.Controllers.LOAN_STATUS:
-            setApplicationStatus(response: response)
             
-            //profile key
-        case Constants.Controllers.DASHBOARD, Constants.Controllers.APPLICATION_STATUS:
-            openMainPage()
-           
+        case Constants.Controllers.LOAN_STATUS_PAGE:
+            goToNextViewController(controller: ApplicationStatusViewController.getInstance(storyboard: storyBoardMain))
+            
         case Constants.Controllers.DASHBOARD_PAGE:
             goToNextViewController(controller: DashBoardViewController.getInstance(storyboard: storyBoardMain))
             
@@ -250,11 +252,9 @@ class BaseLoginViewController: UIViewController {
             let controller = ForgotPasswordViewController(nibName: "ForgotPasswordViewController", bundle: nil)
             goToNextViewController(controller: controller)
             
-            
         case Constants.Controllers.OUTGOING_EMI:
-//            let settingVC : OutgoingEmiViewController = OutgoingEmiViewController(nibName :"OutgoingEmiViewController",bundle : nil)
             goToNextViewController(controller: OutgoingEmiViewController.getInstance(storyBoard: storyBoardMain))
-
+            
         case Constants.Controllers.CUSTOMER_CARE:
             goToNextViewController(controller: CustomerCareViewController
                 .getInstance(storyboard: storyBoardMain))
@@ -275,34 +275,54 @@ class BaseLoginViewController: UIViewController {
             let controller = LoadMyCardDoneViewController.getInstance(storyboard:storyBoardMain)
             goToNextViewController(controller: controller)
             
-
+            
         case Constants.Controllers.LOAD_MY_CARD_CONFIRM:
             let controller = LoadMyCardConfirmViewController.getInstance(storyboard:storyBoardMain)
             controller.locResponse = response
             goToNextViewController(controller: controller)
             
-
-        case Constants.Controllers.NO_LANDING_PAGE:
-            print("no_page")
-            self.view.makeToast(Constants.Values.something_went_wrong)
+            
+        case Constants.Controllers.APPLICATION_STATUS:
+            setApplicationStatus(response: response)
+            
+        //profile key
+        case Constants.Controllers.DASHBOARD:
+            openMainPage()
             
         case Constants.Controllers.LOGIN:
             goToNextViewController(controller: LoginViewController.getInstance(storyboard:storyBoardRegister),pushStatus: false)
             
-        case "el_intro","EL_FORM","EL_DOCUMENT","EL_DOCUMENT_REJECT","aadhar_scan","el_dashboard","penny_drop","EL_ADDRESS_ERROR","el_reference","el_loan_agreement","payment_page","EL_BUREAU_ERROR":
-            
-            print("Elv8 customer ",controllerName)
+        case Constants.Controllers.THANK_YOU:
+            SessionManger.getInstance.saveApplicationStatus(status:
+                Constants.ApplicationStatus.THANKU)
             openMainPage("thanku")
             
+        case Constants.Controllers.REJECT:
+            SessionManger.getInstance.saveApplicationStatus(status:
+                Constants.ApplicationStatus.REJECTED)
+            openMainPage("reject")
+            
+        case Constants.Controllers.EL_INTRO,Constants.Controllers.EL_FORM,Constants.Controllers.EL_DOC,Constants.Controllers.EL_DOC_REJECT,Constants.Controllers.AADHAAR_SCAN,Constants.Controllers.EL_DASHBOARD,Constants.Controllers.PENNY_DROP,Constants.Controllers.EL_ADDRESS_ERROR,Constants.Controllers.EL_REFERENCE,Constants.Controllers.EL_LOAN_AGREEMENT,Constants.Controllers.PAYMENT_PAGE,Constants.Controllers.EL_BUREAU_ERROR:
+            
+            print("Elv8 customer ",controllerName)
+            SessionManger.getInstance.saveApplicationStatus(status:
+                Constants.ApplicationStatus.THANKU)
+            openMainPage("thanku")
+            
+        case Constants.Controllers.NO_LANDING_PAGE:
+            print("no_page")
+            self.view.makeToast(Constants.Values.something_went_wrong)
+            
         default:
-           openMainPage("thanku")
-           
+            SessionManger.getInstance.saveApplicationStatus(status:
+                Constants.ApplicationStatus.THANKU)
+            openMainPage("thanku")
+            
             print("no view controller found ",controllerName)
         }
     }
     
     private func openMainPage(_ page:String=""){
-    
         let statusViewController = MainContainerViewController.getInstance(storyboard: storyBoardMain)
         statusViewController.pageType = page
         let navigationController = UINavigationController(rootViewController: statusViewController)
@@ -312,24 +332,28 @@ class BaseLoginViewController: UIViewController {
     public func showLandingPage(){
         
         SessionManger.getInstance.saveAuthToken(token: "")
-
+        
         if SessionManger.getInstance.getUserLogin(){
-//            changeViewController(controllerName: Constants.Controllers.LOGIN)
+            //            changeViewController(controllerName: Constants.Controllers.LOGIN)
             AppDelegate.shared.rootViewController.showLoginScreen()
         }else{
             changeViewController(controllerName: Constants.Controllers.LANDING_PAGE)
-
+            
         }
     }
     
     public func showHomePage(){
-        switch SessionManger.getInstance.getApplicationStatus() {
+        let status = SessionManger.getInstance.getApplicationStatus()
+        Log("Home page: \(status)")
+        switch status {
+        case Constants.ApplicationStatus.THANKU:
+            changeViewController(controllerName: Constants.Controllers.THANK_YOU_PAGE)
         case Constants.ApplicationStatus.REJECTED:
-            changeViewController(controllerName: Constants.Controllers.REJECT)
+            changeViewController(controllerName: Constants.Controllers.REJECT_PAGE)
         case Constants.ApplicationStatus.DISBURSED, Constants.ApplicationStatus.CLOSED:
             changeViewController(controllerName: Constants.Controllers.DASHBOARD_PAGE)
         case Constants.ApplicationStatus.APPROVED,Constants.ApplicationStatus.DOCPICK,Constants.ApplicationStatus.DOCPICKDONE,Constants.ApplicationStatus.START:
-            changeViewController(controllerName: Constants.Controllers.LOAN_STATUS)
+            changeViewController(controllerName: Constants.Controllers.LOAN_STATUS_PAGE)
         default:
             changeViewController(controllerName: Constants.Controllers.LOGIN)
         }
@@ -342,47 +366,48 @@ class BaseLoginViewController: UIViewController {
         var virtualCardRegistred:Bool = false
         let response = SessionManger.getInstance.getCardResponse()
         if !response.isEmpty{
-        if let json = try? JSON(data: response.data(using: .utf8, allowLossyConversion: true)!){
-            
-            if json["cards"]["physical"].dictionary != nil{
+            if let json = try? JSON(data: response.data(using: .utf8, allowLossyConversion: true)!){
+                
+                if json["cards"]["physical"].dictionary != nil{
                     physicalCardFound = true
                     if json["cards"]["physical"]["registered"].boolValue{
                         physicalCardRegistered = true
                     }
                 }
                 
-            if json["cards"]["virtual"].dictionary != nil{
+                if json["cards"]["virtual"].dictionary != nil{
                     virtualCardFound = true
                     if json["cards"]["virtual"]["registered"].boolValue{
                         virtualCardRegistred = true
                     }
                 }
-            
-            if physicalCardFound || virtualCardFound{
-                if physicalCardRegistered || virtualCardRegistred {
-                    if physicalCardRegistered && virtualCardRegistred {
-                        changeViewController(controllerName: Constants.Controllers.CHANGE_CARD_PIN)
-                    }else if virtualCardRegistred{
-                        changeViewController(controllerName: Constants.Controllers.STASHFIN_CARD)
-                    }else if physicalCardRegistered{
-                        if virtualCardFound{
-                            changeViewController(controllerName: Constants.Controllers.STASHFIN_CARD)
-                        }else{
+                
+                if physicalCardFound || virtualCardFound{
+                    if physicalCardRegistered || virtualCardRegistred {
+                        if physicalCardRegistered && virtualCardRegistred {
                             changeViewController(controllerName: Constants.Controllers.CHANGE_CARD_PIN)
+                        }else if virtualCardRegistred{
+                            changeViewController(controllerName: Constants.Controllers.STASHFIN_CARD)
+                        }else if physicalCardRegistered{
+                            if virtualCardFound{
+                                changeViewController(controllerName: Constants.Controllers.STASHFIN_CARD)
+                            }else{
+                                changeViewController(controllerName: Constants.Controllers.CHANGE_CARD_PIN)
+                            }
                         }
+                    }else{
+                        changeViewController(controllerName: Constants.Controllers.STASHFIN_CARD)
                     }
                 }else{
-                    changeViewController(controllerName: Constants.Controllers.STASHFIN_CARD)
+                    changeViewController(controllerName: Constants.Controllers.GET_STASHFIN_CARD)
                 }
             }else{
-                changeViewController(controllerName: Constants.Controllers.GET_STASHFIN_CARD)
-            }
-        }else{
-            changeViewController(controllerName: Constants.Controllers.STASHFIN_CARD)
+                changeViewController(controllerName: Constants.Controllers.STASHFIN_CARD)
             }
         }else{
             Log("card action not found")
-            checkCardStatusApi()
+            //            checkCardStatusApi()
+            changeViewController(controllerName: Constants.Controllers.STASHFIN_CARD)
         }
     }
     
@@ -392,19 +417,17 @@ class BaseLoginViewController: UIViewController {
     
     public func goToNextViewController(controller:UIViewController, pushStatus:Bool = true){
         DispatchQueue.main.async {
-                if pushStatus{
-                    if let navigator = self.navigationController {
-                        
-                        navigator.pushViewController(controller, animated: true)
-                        
-                    }else{
-                        self.present(controller, animated: true, completion: nil)
-                    }
+            if pushStatus{
+                if let navigator = self.navigationController {
+                    navigator.pushViewController(controller, animated: true)
                 }else{
                     self.present(controller, animated: true, completion: nil)
                 }
-                Log("present: \(controller)")
+            }else{
+                self.present(controller, animated: true, completion: nil)
             }
+            Log("present: \(controller)")
+        }
     }
     
     public func onBackPressed(){
@@ -436,13 +459,13 @@ class BaseLoginViewController: UIViewController {
             
         }
     }
-
+    
     public func dismissPopAllViewViewControllers() {
-
+        
     }
     
     public func setApplicationStatus(response:Data?){
-       
+        
         if let json = try? JSON(data: response!){
             
             if json["start"].boolValue {
@@ -459,20 +482,26 @@ class BaseLoginViewController: UIViewController {
             }
         }
         
-        goToNextViewController(controller: ApplicationStatusViewController.getInstance(storyboard: storyBoardMain))
+        openMainPage()
     }
-        public func getPickupAddress(response:Data?) -> (String, String,String,String){
+    public func getPickupAddress(response:Data?) -> (String, String,String,String){
         var address = ""
         var current_date=""
         var pdf_url = ""
         var occupation_type = ""
         if let json = try? JSON(data: response!){
-            address = "\(json["address"].stringValue), \(json["city_name"].stringValue), \(json["state_name"].stringValue), \(json["pin"].stringValue) (\(json["landmark"].stringValue))"
+            let adrs=json["address"].stringValue.isEmpty ? "" : "\(json["address"].stringValue), "
+            let city=json["city_name"].stringValue.isEmpty ? "" : "\(json["city_name"].stringValue), "
+            let state=json["state_name"].stringValue.isEmpty ? "" : "\(json["state_name"].stringValue), "
+            let pin=json["pincode"].stringValue.isEmpty ? "" : "\(json["pincode"].stringValue)"
+            let land=json["landmark"].stringValue.isEmpty ? "" : ", (\(json["landmark"].stringValue))"
+            
+            address = "\(adrs)\(city)\(state)\(pin)\(land)"
             
             current_date = json["current_date"].stringValue
             occupation_type = json["occupation"].stringValue
             pdf_url = "\(json["agreement_links"]["applicant_pdf_url"].stringValue)CFAForm_\(json["loan_id"].stringValue).pdf"
-
+            
         }
         return (address, current_date, pdf_url,occupation_type)
     }
@@ -480,53 +509,53 @@ class BaseLoginViewController: UIViewController {
     public func downloadFile(urlString:String){
         Log("urlString :  \(urlString)")
         guard let url = URL(string: urlString) else { return }
-//        guard let url = URL(string: "https://www.tutorialspoint.com/swift/swift_tutorial.pdf") else { return }
-
+        //        guard let url = URL(string: "https://www.tutorialspoint.com/swift/swift_tutorial.pdf") else { return }
+        
         let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
         
         let downloadTask = urlSession.downloadTask(with: url)
         downloadTask.resume()
         
-//        if let url = URL(string: urlString) {
-//            let fileName = String((url.lastPathComponent)) as NSString
-//            // Create destination URL
-//            let documentsUrl =  (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first as! URL)
-//            let destinationFileUrl = documentsUrl.appendingPathComponent("\(fileName)")
-//            //Create URL to the source file you want to download
-//            let fileURL = URL(string: urlString)
-//            let sessionConfig = URLSessionConfiguration.default
-//            let session = URLSession(configuration: sessionConfig)
-//            let request = URLRequest(url:fileURL!)
-//            let task = session.downloadTask(with: request) { (tempLocalUrl, response, error) in
-//                if let tempLocalUrl = tempLocalUrl, error == nil {
-//                    // Success
-//                    if let statusCode = (response as? HTTPURLResponse)?.statusCode {
-//                        print("Successfully downloaded. Status code: \(statusCode)")
-//                    }
-//                    do {
-//                        try FileManager.default.copyItem(at: tempLocalUrl, to: destinationFileUrl)
-//                        do {
-//                            //Show UIActivityViewController to save the downloaded file
-//                            let contents  = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
-//                            for indexx in 0..<contents.count {
-//                                if contents[indexx].lastPathComponent == destinationFileUrl.lastPathComponent {
-//                                    let activityViewController = UIActivityViewController(activityItems: [contents[indexx]], applicationActivities: nil)
-//                                    self.present(activityViewController, animated: true, completion: nil)
-//                                }
-//                            }
-//                        }
-//                        catch (let err) {
-//                            print("error: \(err)")
-//                        }
-//                    } catch (let writeError) {
-//                        print("Error creating a file \(destinationFileUrl) : \(writeError)")
-//                    }
-//                } else {
-//                    print("Error took place while downloading a file. Error description: \(error?.localizedDescription ?? "")")
-//                }
-//            }
-//            task.resume()
-//        }
+        //        if let url = URL(string: urlString) {
+        //            let fileName = String((url.lastPathComponent)) as NSString
+        //            // Create destination URL
+        //            let documentsUrl =  (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first as! URL)
+        //            let destinationFileUrl = documentsUrl.appendingPathComponent("\(fileName)")
+        //            //Create URL to the source file you want to download
+        //            let fileURL = URL(string: urlString)
+        //            let sessionConfig = URLSessionConfiguration.default
+        //            let session = URLSession(configuration: sessionConfig)
+        //            let request = URLRequest(url:fileURL!)
+        //            let task = session.downloadTask(with: request) { (tempLocalUrl, response, error) in
+        //                if let tempLocalUrl = tempLocalUrl, error == nil {
+        //                    // Success
+        //                    if let statusCode = (response as? HTTPURLResponse)?.statusCode {
+        //                        print("Successfully downloaded. Status code: \(statusCode)")
+        //                    }
+        //                    do {
+        //                        try FileManager.default.copyItem(at: tempLocalUrl, to: destinationFileUrl)
+        //                        do {
+        //                            //Show UIActivityViewController to save the downloaded file
+        //                            let contents  = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+        //                            for indexx in 0..<contents.count {
+        //                                if contents[indexx].lastPathComponent == destinationFileUrl.lastPathComponent {
+        //                                    let activityViewController = UIActivityViewController(activityItems: [contents[indexx]], applicationActivities: nil)
+        //                                    self.present(activityViewController, animated: true, completion: nil)
+        //                                }
+        //                            }
+        //                        }
+        //                        catch (let err) {
+        //                            print("error: \(err)")
+        //                        }
+        //                    } catch (let writeError) {
+        //                        print("Error creating a file \(destinationFileUrl) : \(writeError)")
+        //                    }
+        //                } else {
+        //                    print("Error took place while downloading a file. Error description: \(error?.localizedDescription ?? "")")
+        //                }
+        //            }
+        //            task.resume()
+        //        }
     }
     
     public func openHomePageDialog(title:String,message:String){
@@ -553,7 +582,7 @@ extension BaseLoginViewController:  URLSessionDownloadDelegate {
         // copy from temp to Document
         do {
             try FileManager.default.copyItem(at: location, to: destinationURL)
-//            self.pdfURL = destinationURL
+            //            self.pdfURL = destinationURL
             self.showToast("File saved at location: \(destinationURL)")
         } catch let error {
             print("Copy Error: \(error.localizedDescription)")

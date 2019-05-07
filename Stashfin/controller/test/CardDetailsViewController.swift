@@ -141,7 +141,7 @@ class CardDetailsViewController: BaseLoginViewController, FSPagerViewDataSource,
         cardPagerView.deselectItem(at: index, animated: true)
         cardPagerView.scrollToItem(at: index, animated: true)
         if cardData.count>0{
-            if cardData[index].cardType!.contains("NotRegister"){
+            if cardData[index].cardType!.contains("Register"){
                 self.changeViewController(controllerName: Constants.Controllers.STASHFIN_CARD)
             }
         }

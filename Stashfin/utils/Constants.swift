@@ -14,14 +14,14 @@ struct Server {
     struct Urls {
         // 192.168.60.149
 //        static let baseUrl="https://devapi.stasheasy.com/"//dev
-//        static let baseUrl="http://devapi.stashfin.com/"//dev
+        static let baseUrl="http://devapi.stashfin.com/"//dev
 //        static let baseUrl="http://192.168.60.149/stashfin_app_v2_20-02-2019/"//dev
-        static let baseUrl="https://api.stashfin.com/"//live
+//        static let baseUrl="https://api.stashfin.com/"//live
         static let serviceAndroidUrl="StashfinApp/android/"
         static let serviceStasheasyUrl="WebServicesMobile/StasheasyApp/"
         static let serviceV2Url="v2/api/"
         static let chatUrl="https://tawk.to/chat/5b20baa307752b51e61462c2/default/?$_tawk_popout=true"
-        static let faqsUrl="https://www.stashfin.com/faqs"
+        static let faqsUrl="https://www.stashfin.com/faqs?type=app"
 
     }
     
@@ -72,6 +72,7 @@ enum Constants {
         static let DISBURSED = "disbursed"
         static let REJECTED = "rejected"
         static let CLOSED = "closed"
+        static let THANKU = "thanku"
     }
     
     enum Modes {
@@ -112,10 +113,12 @@ enum Constants {
         case token="token"
         case CUSTOMER_ID="customer_id"
         case applicationStatus="applicationStatus"
+        case occuptionStatus="occupationStatus"
         case loanStatus="loanStatus"
         case cardStatus="cardStatus"
         case UserName="UserName"
         case UserLogin="UserLogin"
+        case IsTester="isTester"
         case DEVICE_SAVED="DeviceSaved"
         case UserPass="UserPass"
         case CardResponse="CardResponse"
@@ -163,7 +166,7 @@ enum Constants {
         static let COMPLETE_REGISTRATION = "completed"
         static let UPLOAD_SIGNATURE = "signature"
         static let NO_PAGE = "no"
-        static let CONGRATULATION = "congratulation"
+//        static let CONGRATULATION = "congratulation"
         static let PRE_APPROVED = "preApproved"
         static let ENACH = "enach"
         static let PERSONAL = "personal"
@@ -174,15 +177,23 @@ enum Constants {
         static let BASIC = "basic"
         static let BANK = "bank"
         static let EL_FORM = "EL_FORM"
+        static let EL_INTRO = "el_intro"
         static let EL_DOC = "EL_DOCUMENT"
         static let EL_DOC_REJECT = "EL_DOCUMENT_REJECT"
         static let EL_BANK = "EL_BANK"
         static let EL_SCAN = "EL_SCAN"
+        static let AADHAAR_SCAN = "aadhar_scan"
         static let EL_APPROVE = "EL_APPROVED"
         static let EL_SUBMITTED = "EL_SUBMITTED"
         static let EL_HOME = "EL_HOME"
         static let EL_DEBIT = "EL_DEBIT"
         static let EL_ADDRESS_ERROR = "EL_ADDRESS_ERROR"
+        static let EL_BUREAU_ERROR = "EL_BUREAU_ERROR"
+        static let EL_DASHBOARD = "el_dashboard"
+        static let EL_REFERENCE = "el_reference"
+        static let EL_LOAN_AGREEMENT = "el_loan_agreement"
+        static let PENNY_DROP = "penny_drop"
+        static let PAYMENT_PAGE = "payment_page"
 
         //new registration flow
         static let PROFESSIONAL_ABOVE_SALARY = "professional_m40k" // for above 40k salary and salaried mode
@@ -192,8 +203,10 @@ enum Constants {
         static let BANK_STATEMENT_BUSINESS = "bankstatement_business" // for salary bank statement
         static let DOCUMENTS_SALARY = "documents_salary" // for salary document
         static let DOCUMENTS_BUSINESS = "documents_business" // for business document
+        static let THANK_YOU_PAGE = "thankyou_page"
         static let THANK_YOU = "thankyou"
         static let REJECT = "reject"
+        static let REJECT_PAGE = "reject_page"
         static let ELEVATE = "elevate"
         static let REGISTRATION = "registration"
         static let REGISTRATION_LOGIN = "registration_login"
@@ -206,7 +219,7 @@ enum Constants {
         static let NO_LANDING_PAGE = "no_page"
         static let LANDING_PAGE = "landing_page"
         static let APPLICATION_STATUS = "application_status"
-        static let LOAN_STATUS = "loan_status"
+        static let LOAN_STATUS_PAGE = "loan_status_page"
         static let DASHBOARD_PAGE = "dashboard"
         static let LOAD_MY_CARD = "load_my_card"
         static let LOAD_MY_CARD_DONE = "load_my_card_done"

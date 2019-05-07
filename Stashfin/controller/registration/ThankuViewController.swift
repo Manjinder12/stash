@@ -28,6 +28,14 @@ class ThankuViewController: BaseViewController {
     }
     
     @IBAction func nextThankyouBtn(_ sender: UIButton) {
+        if SessionManger.getInstance.isTester(){
+            self.changeViewController(controllerName: Constants.Controllers.APPROVED)
+        }else{
+            submitDetails()
+        }
+    }
+    
+    private func submitDetails(){
         exit(0)
     }
     

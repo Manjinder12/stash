@@ -23,7 +23,7 @@ class CustomerCareViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         listItemBtn.adjustsFontSizeToFitWidth = true
-        listItemBtn.dropDown.width=view.frame.width*0.9
+//        listItemBtn.dropDown.width=view.frame.width*0.9
         setListItem()
         checkListApi()
         listItemBtn.didSelect{

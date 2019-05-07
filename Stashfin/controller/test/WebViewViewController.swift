@@ -129,7 +129,18 @@ class WebViewViewController: BaseLoginViewController {
             case "faqs":
                 self.onBackPressed()
             case "enach":
-                  self.getLoginDataApi()
+                self.showProgress()
+            
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5) , execute: {
+                     self.hideProgress()
+                    let alert = UIAlertController.init(title: "E-Nach", message: "\nIf you successfully completed E-Nach. It may take some time to update E-Nach status.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction.init(title: "OK", style: .default, handler: {(_) ->
+                        Void in
+                        self.getLoginDataApi()
+                    }
+                    ))
+                    self.present(alert,animated: true,completion: nil)
+                })
             case "payment":
                 self.showProgress()
                 SessionManger.getInstance.saveLocResponse(locResponse: "")

@@ -32,7 +32,7 @@
 		FA3117002271A71A008D52E9 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31168B2271A719008D52E9 /* ProfileViewController.swift */; };
 		FA3117012271A71A008D52E9 /* OutgoingEmiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31168C2271A719008D52E9 /* OutgoingEmiViewController.swift */; };
 		FA3117022271A71A008D52E9 /* RejectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31168E2271A719008D52E9 /* RejectViewController.swift */; };
-		FA3117032271A71A008D52E9 /* EnachViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31168F2271A719008D52E9 /* EnachViewController.swift */; };
+		FA3117032271A71A008D52E9 /* BankDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA31168F2271A719008D52E9 /* BankDetailsViewController.swift */; };
 		FA3117042271A71A008D52E9 /* SignatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116902271A719008D52E9 /* SignatureViewController.swift */; };
 		FA3117052271A71A008D52E9 /* PersonalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116912271A719008D52E9 /* PersonalViewController.swift */; };
 		FA3117062271A71A008D52E9 /* DocumentUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116922271A719008D52E9 /* DocumentUploadViewController.swift */; };
@@ -143,7 +143,7 @@
 		FA31168B2271A719008D52E9 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		FA31168C2271A719008D52E9 /* OutgoingEmiViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutgoingEmiViewController.swift; sourceTree = "<group>"; };
 		FA31168E2271A719008D52E9 /* RejectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RejectViewController.swift; sourceTree = "<group>"; };
-		FA31168F2271A719008D52E9 /* EnachViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnachViewController.swift; sourceTree = "<group>"; };
+		FA31168F2271A719008D52E9 /* BankDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankDetailsViewController.swift; sourceTree = "<group>"; };
 		FA3116902271A719008D52E9 /* SignatureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureViewController.swift; sourceTree = "<group>"; };
 		FA3116912271A719008D52E9 /* PersonalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalViewController.swift; sourceTree = "<group>"; };
 		FA3116922271A719008D52E9 /* DocumentUploadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentUploadViewController.swift; sourceTree = "<group>"; };
@@ -320,7 +320,7 @@
 			isa = PBXGroup;
 			children = (
 				FA31168E2271A719008D52E9 /* RejectViewController.swift */,
-				FA31168F2271A719008D52E9 /* EnachViewController.swift */,
+				FA31168F2271A719008D52E9 /* BankDetailsViewController.swift */,
 				FA3116902271A719008D52E9 /* SignatureViewController.swift */,
 				FA3116912271A719008D52E9 /* PersonalViewController.swift */,
 				FA3116922271A719008D52E9 /* DocumentUploadViewController.swift */,
@@ -668,6 +668,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Stashfin/Pods-Stashfin-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/CropViewController/CropViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/FSPagerView/FSPagerView.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
@@ -683,6 +684,7 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CropViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSPagerView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
@@ -799,7 +801,7 @@
 				FA31172A2271A71A008D52E9 /* EmptyCheck.swift in Sources */,
 				FA3117092271A71A008D52E9 /* ThankuViewController.swift in Sources */,
 				FA0CF50F227A035C0017D72A /* PageSwitcher.swift in Sources */,
-				FA3117032271A71A008D52E9 /* EnachViewController.swift in Sources */,
+				FA3117032271A71A008D52E9 /* BankDetailsViewController.swift in Sources */,
 				FA3117152271A71A008D52E9 /* WebViewViewController.swift in Sources */,
 				FA31171A2271A71A008D52E9 /* Utilities.swift in Sources */,
 				FA3117312271A71A008D52E9 /* AppVersionModel.swift in Sources */,

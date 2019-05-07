@@ -40,10 +40,15 @@ class RegisterViewController: BaseLoginViewController{
     }
     
     @IBAction func personalBtn(_ sender: UIButton) {
-        if(nameET.isEditBoxNotEmpty()&&mobileET.isEditBoxNotEmpty()&&stateET.isEditBoxNotEmpty()&&cityET.isEditBoxNotEmpty()&&monthlyET.isEditBoxNotEmpty()){
+        if SessionManger.getInstance.isTester(){
+            self.changeViewController(controllerName: Constants.Controllers.PERSONAL)
+        }else{
+            submitDetailsApi()
+        }
+    }
+    
+    private func submitDetailsApi(){ if(nameET.isEditBoxNotEmpty()&&mobileET.isEditBoxNotEmpty()&&stateET.isEditBoxNotEmpty()&&cityET.isEditBoxNotEmpty()&&monthlyET.isEditBoxNotEmpty()){
             if !profile_pic_base64.isEmpty{
-                //            outgoingEMIs:2000
-                //            profile_pic:base64
                 Log("success personal")
                 if active_loan_status=="1"{
                     if !monthlyEmiField.isEditBoxNotEmpty(){
@@ -68,11 +73,11 @@ class RegisterViewController: BaseLoginViewController{
                     }
                 }
             }else{
+                self.nameET.becomeFirstResponder()
                 self.showToast("Please take a nice selfie")
             }
         }
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         mobileET.text=mobileNumber
@@ -103,27 +108,30 @@ class RegisterViewController: BaseLoginViewController{
     // MARK: - Properties
     
     // MARK: - Handlers
-    private func submitApiDetails(){
-        if (nameET.text.isNilOrEmpty ){
-            //            submitStatus=true
-        }
-        
-    }
-    
+
     
     @IBAction func activeLoanSwitch(_ sender: UISwitch) {
-        if sender.isOn{
-            monthlyEmiStack.isHidden=false
-            active_loan_status="1"
-        }else{
-            monthlyEmiStack.isHidden=true
-            active_loan_status="0"
+        if sender.isOn {
+            UIView.transition(with: monthlyEmiStack, duration: 0.3, options: .showHideTransitionViews, animations: {
+                self.monthlyEmiStack.isHidden=false
+                self.active_loan_status="1"
+            })
+        }
+        else {
+            UIView.transition(with: monthlyEmiStack, duration: 0.3, options: .showHideTransitionViews, animations: {
+                self.monthlyEmiStack.isHidden=true
+                self.active_loan_status="0"            })
         }
     }
     
     @IBAction func captureProfilePic(_ sender: UIButton) {
-        AttachmentHandler.shared.showAttachmentActionSheet(vc: self,title: "Profile Pic",captureType: "camera")
-//        AttachmentHandler.shared.showAttachmentActionSheet(vc: self,title: "Profile Pic")
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            AttachmentHandler.shared.showAttachmentActionSheet(vc: self,title: "Profile Pic",captureType: "camera")
+        }else{
+            Log("@************* -- camera not available ******** ")
+            AttachmentHandler.shared.showAttachmentActionSheet(vc: self,title: "Profile Pic")
+        }
+        
         AttachmentHandler.shared.imagePickedBlock = { (image) in
             /* get your image here */
             //            self.profileImg.image = image

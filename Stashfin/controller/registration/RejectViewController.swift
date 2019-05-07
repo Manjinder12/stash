@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RejectViewController: BaseLoginViewController {
+class RejectViewController: BaseViewController {
     
     static func getInstance(storyboard: UIStoryboard) -> RejectViewController{
         return storyboard.instantiateViewController(withIdentifier: String(describing: self.classForCoder())) as! RejectViewController
@@ -16,7 +16,7 @@ class RejectViewController: BaseLoginViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.title="Home"
         // Do any additional setup after loading the view.
     }
     

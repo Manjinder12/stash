@@ -14,7 +14,7 @@
         <!--Register View Controller-->
         <scene sceneID="Hng-Dy-Ov5">
             <objects>
-                <viewController storyboardIdentifier="PersonalViewController" id="DyS-Yv-I28" customClass="RegisterViewController" customModule="Stashfin" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RegisterViewController" id="DyS-Yv-I28" customClass="RegisterViewController" customModule="Stashfin" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PLm-NQ-Mw0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1050"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -114,7 +114,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="TCD-bF-MzM">
-                                        <rect key="frame" x="16" y="273.5" width="288" height="471.5"/>
+                                        <rect key="frame" x="16" y="273.5" width="288" height="464"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name (as per ID proof)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2hH-Qi-aaY" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="288" height="23.5"/>
@@ -145,55 +145,55 @@
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="State" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="faR-R2-Wk5" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="143" width="288" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="143" width="288" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YGj-ln-SsQ" customClass="DropDownBox" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="175.5" width="288" height="30"/>
+                                                <rect key="frame" x="0.0" y="172.5" width="288" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDg-Kv-cTp" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="214.5" width="288" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="211.5" width="288" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9Kx-C5-b5Z" customClass="DropDownBox" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="247" width="288" height="30"/>
+                                                <rect key="frame" x="0.0" y="241" width="288" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Monthly Income" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bbb-tY-9On" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="286" width="288" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="280" width="288" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gWw-KS-Ut7" customClass="CustomUITextField" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="318.5" width="288" height="30"/>
+                                                <rect key="frame" x="0.0" y="312.5" width="288" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             </textField>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="jBD-EL-lOu">
-                                                <rect key="frame" x="0.0" y="357.5" width="288" height="42.5"/>
+                                                <rect key="frame" x="0.0" y="351.5" width="288" height="41"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="G8M-KE-i1X">
-                                                        <rect key="frame" x="0.0" y="0.0" width="237" height="42.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="230" height="41"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Do you have any active loan from any bank / NBFC?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="Vf9-wc-eiT" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="0.0" width="237" height="23.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="230" height="23.5"/>
                                                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="(personal loan, auto loan, home loan, gold loan etc.)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="5" translatesAutoresizingMaskIntoConstraints="NO" id="0HT-7D-yP7" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="28.5" width="237" height="14"/>
+                                                                <rect key="frame" x="0.0" y="28.5" width="230" height="12.5"/>
                                                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="9"/>
                                                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
@@ -206,7 +206,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="QeZ-jl-fxm">
-                                                        <rect key="frame" x="246" y="5.5" width="44" height="31"/>
+                                                        <rect key="frame" x="239" y="5" width="51" height="31"/>
                                                         <connections>
                                                             <action selector="activeLoanSwitch:" destination="DyS-Yv-I28" eventType="valueChanged" id="wWb-Bl-a0f"/>
                                                         </connections>
@@ -214,7 +214,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="FzM-q0-nhg">
-                                                <rect key="frame" x="0.0" y="404.5" width="288" height="29"/>
+                                                <rect key="frame" x="0.0" y="397" width="288" height="29"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Outgoing EMIs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tXq-x5-2aX" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="288" height="21"/>
@@ -234,13 +234,13 @@
                                                 </subviews>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Referral code (optional)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3DG-7k-jJk" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="409" width="288" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="401.5" width="288" height="23.5"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="OTG-nD-qto" customClass="CustomUITextField" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="441.5" width="288" height="30"/>
+                                                <rect key="frame" x="0.0" y="434" width="288" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
@@ -252,7 +252,7 @@
                                         <variation key="heightClass=regular-widthClass=compact" distribution="equalSpacing"/>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xsr-uJ-W5x" customClass="RCButton" customModule="Stashfin" customModuleProvider="target">
-                                        <rect key="frame" x="60" y="785" width="200" height="37"/>
+                                        <rect key="frame" x="60" y="777.5" width="200" height="37"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="37" id="00I-fh-jsv"/>
@@ -343,7 +343,7 @@
         <!--Personal View Controller-->
         <scene sceneID="009-TQ-TXo">
             <objects>
-                <viewController storyboardIdentifier="BasicViewController" id="0qy-iQ-SWI" customClass="PersonalViewController" customModule="Stashfin" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PersonalViewController" id="0qy-iQ-SWI" customClass="PersonalViewController" customModule="Stashfin" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Bs0-tJ-qsE">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1750"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -695,7 +695,7 @@
                                                 <rect key="frame" x="0.0" y="982" width="288" height="60"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Is your current address same as permanent address" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="Oss-2s-4tK" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                        <rect key="frame" x="5" y="7" width="221" height="46.5"/>
+                                                        <rect key="frame" x="5" y="9.5" width="221" height="41"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -807,9 +807,9 @@
                                                 <rect key="frame" x="0.0" y="1400" width="288" height="101"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A2D-UI-dya">
-                                                        <rect key="frame" x="5" y="5" width="30" height="29"/>
+                                                        <rect key="frame" x="5" y="3" width="20" height="19"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="30" id="DW1-J5-DNB"/>
+                                                            <constraint firstAttribute="width" constant="20" id="DW1-J5-DNB"/>
                                                             <constraint firstAttribute="width" secondItem="A2D-UI-dya" secondAttribute="height" multiplier="50:50" constant="1" id="xwo-wD-uzN"/>
                                                         </constraints>
                                                         <state key="normal" title="Button" backgroundImage="box"/>
@@ -818,7 +818,7 @@
                                                         </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="p3T-x1-jBb" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                        <rect key="frame" x="43" y="0.0" width="245" height="66"/>
+                                                        <rect key="frame" x="33" y="0.0" width="255" height="101.5"/>
                                                         <string key="text">I have read and agree to the End User License agreement, Privacy policy, Credit Line General terms and condition on the Stashfin App/ Website</string>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
@@ -837,7 +837,7 @@
                                                     <constraint firstItem="p3T-x1-jBb" firstAttribute="leading" secondItem="A2D-UI-dya" secondAttribute="trailing" constant="8" symbolic="YES" id="LnL-kf-DDy"/>
                                                     <constraint firstItem="p3T-x1-jBb" firstAttribute="top" secondItem="pNy-Xw-r94" secondAttribute="top" id="TDp-sa-u0d"/>
                                                     <constraint firstAttribute="height" constant="101" id="daN-7u-lar"/>
-                                                    <constraint firstItem="A2D-UI-dya" firstAttribute="top" secondItem="pNy-Xw-r94" secondAttribute="top" constant="5" id="gqC-NK-fsx"/>
+                                                    <constraint firstItem="A2D-UI-dya" firstAttribute="top" secondItem="pNy-Xw-r94" secondAttribute="top" constant="3" id="gqC-NK-fsx"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -1016,16 +1016,16 @@
                                 <rect key="frame" x="0.0" y="120" width="375" height="987"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Wp4-6Q-QSn">
-                                        <rect key="frame" x="16" y="10" width="343" height="652"/>
+                                        <rect key="frame" x="16" y="10" width="343" height="628"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Company Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E8e-k7-KCg" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="343" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ziR-SF-FpO" customClass="CustomUITextField" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="33.5" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="30.5" width="343" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="D1g-n3-jem"/>
                                                 </constraints>
@@ -1034,79 +1034,79 @@
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Official Email ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xgD-LT-THL" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="73.5" width="343" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="70.5" width="343" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="I3V-Uh-LjH" customClass="CustomUITextField" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="107" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="101" width="343" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mode of Salary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EyJ-xa-DFI" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="147" width="343" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="141" width="343" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jJF-GP-LhR" customClass="DropDownBox" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="180.5" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="171.5" width="343" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Experience" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="07D-3r-do8" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="220.5" width="343" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="211.5" width="343" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="years" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PSL-DU-FXM" customClass="DropDownBox" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="254" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="242" width="343" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Office Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cr8-yd-SIm" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="294" width="343" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="282" width="343" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YSh-XY-88u" customClass="CustomUITextField" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="327.5" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="312.5" width="343" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Landmark" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="99v-ze-juL" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="367.5" width="343" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="352.5" width="343" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lB6-M7-UvP" customClass="CustomUITextField" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="401" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="383" width="343" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PIN Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SKD-Ja-z9r" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="441" width="343" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="423" width="343" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9QO-Oc-uk4" customClass="CustomUITextField" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="474.5" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="453.5" width="343" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" textContentType="postal-code"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="State" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WII-P4-0D7" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="514.5" width="343" height="24"/>
+                                                <rect key="frame" x="0.0" y="493.5" width="343" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="A9I-WZ-Vdl"/>
                                                 </constraints>
@@ -1115,19 +1115,19 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="l41-iH-5Rx" customClass="DropDownBox" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="548.5" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="527.5" width="343" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dxW-6F-fVW" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="588.5" width="343" height="23.5"/>
+                                                <rect key="frame" x="0.0" y="567.5" width="343" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3VF-ea-h5a" customClass="DropDownBox" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="622" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="598" width="343" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
@@ -1139,7 +1139,7 @@
                                         </constraints>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="neS-XT-bPB" customClass="RCButton" customModule="Stashfin" customModuleProvider="target">
-                                        <rect key="frame" x="87.5" y="702" width="200" height="35"/>
+                                        <rect key="frame" x="87.5" y="678" width="200" height="35"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="fhj-dT-Wl3"/>
@@ -1279,7 +1279,7 @@
                                                 <rect key="frame" x="0.0" y="426" width="335" height="60"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Is your current address same as permanent address" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="P3J-hg-htT" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                        <rect key="frame" x="5" y="7" width="268" height="46.5"/>
+                                                        <rect key="frame" x="5" y="9.5" width="268" height="41"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -1582,10 +1582,10 @@
                                 <rect key="frame" x="0.0" y="120" width="375" height="547"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iiv-Xj-7xD">
-                                        <rect key="frame" x="10" y="10" width="355" height="618"/>
+                                        <rect key="frame" x="10" y="10" width="355" height="641"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upload your Salary Account bank statement" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="KyV-Ny-Ei8" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="10" y="10" width="335" height="49.5"/>
+                                                <rect key="frame" x="10" y="10" width="335" height="41"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -1596,14 +1596,14 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="secure_new" translatesAutoresizingMaskIntoConstraints="NO" id="wxb-re-4rU">
-                                                <rect key="frame" x="115" y="74.5" width="125" height="75"/>
+                                                <rect key="frame" x="115" y="66" width="125" height="75"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="aLR-6q-VSs"/>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" secondItem="wxb-re-4rU" secondAttribute="height" multiplier="1:1" constant="50" id="dj6-P4-NU5"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100% safe and secure" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="57N-R8-oUm" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="78" y="174.5" width="199" height="25"/>
+                                                <rect key="frame" x="93.5" y="166" width="168" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="57N-R8-oUm" secondAttribute="height" multiplier="159:20" id="0Cu-s9-eF7"/>
                                                 </constraints>
@@ -1617,7 +1617,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="W0w-fr-1XJ" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="10" y="219.5" width="335" height="249"/>
+                                                <rect key="frame" x="10" y="207" width="335" height="284.5"/>
                                                 <string key="text">2,50,00+ users have submitted their bank statement securely via StashFin.
 
 Via quick net banking login you will be done within 30 seconds.
@@ -1635,7 +1635,7 @@ You will be required to login to your SALARY LINKED BANK ACCOUNT for verificatio
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lqo-pT-4C4" customClass="RCButton" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="77.5" y="498.5" width="200" height="35"/>
+                                                <rect key="frame" x="77.5" y="521.5" width="200" height="35"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="35" id="YLT-HX-Rs6"/>
@@ -1647,7 +1647,7 @@ You will be required to login to your SALARY LINKED BANK ACCOUNT for verificatio
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Td-t5-rvA" customClass="RCButton" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="77.5" y="553.5" width="200" height="35"/>
+                                                <rect key="frame" x="77.5" y="576.5" width="200" height="35"/>
                                                 <color key="backgroundColor" red="1" green="0.024170271520000002" blue="0.0" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="2Td-t5-rvA" secondAttribute="height" multiplier="200:35" id="OI1-FW-ugc"/>
@@ -1740,10 +1740,10 @@ You will be required to login to your SALARY LINKED BANK ACCOUNT for verificatio
             </objects>
             <point key="canvasLocation" x="-638" y="581"/>
         </scene>
-        <!--Enach View Controller-->
+        <!--Bank Details View Controller-->
         <scene sceneID="owh-px-G9u">
             <objects>
-                <viewController storyboardIdentifier="EnachViewController" id="6Oh-0s-haL" customClass="EnachViewController" customModule="Stashfin" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BankDetailsViewController" id="6Oh-0s-haL" customClass="BankDetailsViewController" customModule="Stashfin" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bHW-Oe-Mco">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2010,7 +2010,6 @@ You will be required to login to your SALARY LINKED BANK ACCOUNT for verificatio
                                     <constraint firstItem="zBA-jO-b7d" firstAttribute="leading" secondItem="eD6-h1-AFa" secondAttribute="leading" constant="10" id="EXq-Kc-RbX"/>
                                     <constraint firstAttribute="trailing" secondItem="sXs-IX-bSH" secondAttribute="trailing" id="GIr-fe-4aD"/>
                                     <constraint firstAttribute="height" constant="120" id="YSy-VN-vQv"/>
-                                    <constraint firstItem="zBA-jO-b7d" firstAttribute="top" relation="greaterThanOrEqual" secondItem="eD6-h1-AFa" secondAttribute="top" constant="35" id="aRi-Ga-TdK"/>
                                     <constraint firstAttribute="bottom" secondItem="sXs-IX-bSH" secondAttribute="bottom" id="cgL-zM-bAj"/>
                                     <constraint firstItem="sXs-IX-bSH" firstAttribute="top" secondItem="zBA-jO-b7d" secondAttribute="bottom" id="rFR-Nv-XBM"/>
                                 </constraints>
@@ -2024,7 +2023,6 @@ You will be required to login to your SALARY LINKED BANK ACCOUNT for verificatio
                                 </constraints>
                                 <state key="normal" title="Next"/>
                                 <connections>
-                                    <action selector="nextButton:" destination="yVE-IC-UkU" eventType="touchUpInside" id="feX-XJ-NF4"/>
                                     <action selector="nextDocBtn:" destination="yVE-IC-UkU" eventType="touchUpInside" id="Ay1-ko-JfH"/>
                                 </connections>
                             </button>

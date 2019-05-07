@@ -10,7 +10,11 @@ import UIKit
 import SwiftyJSON
 
 class EnachRegisterViewController: BaseLoginViewController {
-
+    
+    static func getInstance(storyboard: UIStoryboard) -> EnachRegisterViewController{
+        return storyboard.instantiateViewController(withIdentifier: String(describing: self.classForCoder())) as! EnachRegisterViewController
+    }
+    
     @IBOutlet weak var accountNumberLabel: UILabel!
     @IBOutlet weak var ifscFeild: UILabel!
     @IBOutlet weak var bankNameFeild: UILabel!
@@ -23,46 +27,49 @@ class EnachRegisterViewController: BaseLoginViewController {
     var bankName=""
     var enachSkip=""
     var enachUrl=""
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
-          if let json = try? JSON(data:response!){
+        if let json = try? JSON(data:response!){
             self.accountNumber=json["account_no"].stringValue
             self.ifscCode=json["ifsc_code"].stringValue
             self.bankName=json["bank_name"].stringValue
             self.enachSkip=json["enach_skip"].stringValue
             self.enachUrl=json["enach_url"].stringValue
         }
-       
-        if enachSkip=="1"{
-            skipButton.isHidden=false
-        }
+        
+        //        if enachSkip=="1"{
+        skipButton.isHidden=false
+        //        }
         accountNumberLabel.text=accountNumber
         ifscFeild.text=ifscCode
         bankNameFeild.text=bankName
     }
-
-
+    
+    
     @IBAction func submitEnach(_ sender: UIButton) {
         let controller = WebViewViewController.getInstance(storyBoard: self.storyBoardMain)
         controller.url = self.enachUrl
         controller.urlType = "enach"
         self.goToNextViewController(controller:controller)
-//        guard let url = URL(string: self.enachUrl) else
-//       {
-//        self.showToast("Path is not valid")
-//        return }
-//       UIApplication.shared.open(url)
+        //        guard let url = URL(string: self.enachUrl) else
+        //       {
+        //        self.showToast("Path is not valid")
+        //        return }
+        //       UIApplication.shared.open(url)
     }
     
     private func skipApi(){
+        self.showProgress()
         let params=["mode":"enachSkipped"]
         ApiClient.getJSONResponses(route: APIRouter.v2Api(param: params)){
             result, status in
+            self.hideProgress()
             switch status{
-            case .success: self.changeViewController(response: result)
+            case .success:
+                self.changeViewController(response: result)
                 
             case .errors(let error):
                 self.showToast(error)
@@ -71,7 +78,15 @@ class EnachRegisterViewController: BaseLoginViewController {
     }
     
     @IBAction func skipBtn(_ sender: UIButton) {
-       skipApi()
+        let alert = UIAlertController.init(title: "eNach", message: "\neNach is mandatory for loan application, Please complete eNach process.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction.init(title: "Skip", style: .default, handler: {_ in
+            self.skipApi()
+            //            self.showToast("Skiped")
+        }))
+        alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
+        present(alert,animated: true, completion: nil)
+        
+        
     }
     
     

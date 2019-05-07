@@ -24,55 +24,11 @@
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="J5l-kP-CuR">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="267"/>
-                                        <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="HEq-bw-sBd">
                                         <rect key="frame" x="0.0" y="267" width="375" height="400"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                        <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DocumentCell" rowHeight="50" id="1f5-gi-2n6" customClass="DocumentCell" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="55.5" width="375" height="50"/>
-                                                <autoresizingMask key="autoresizingMask"/>
-                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1f5-gi-2n6" id="KFx-lz-QWR">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Document" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="vli-Rd-aqU" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                            <rect key="frame" x="16" y="15" width="67.5" height="19.5"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="fontSize">
-                                                                    <real key="value" value="14"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                            </userDefinedRuntimeAttributes>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5uj-CU-EJ2" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                            <rect key="frame" x="321" y="14.5" width="38" height="20.5"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="fontSize">
-                                                                    <real key="value" value="15"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                            </userDefinedRuntimeAttributes>
-                                                        </label>
-                                                    </subviews>
-                                                    <constraints>
-                                                        <constraint firstItem="vli-Rd-aqU" firstAttribute="centerY" secondItem="KFx-lz-QWR" secondAttribute="centerY" id="adQ-UV-JhK"/>
-                                                        <constraint firstItem="5uj-CU-EJ2" firstAttribute="centerY" secondItem="vli-Rd-aqU" secondAttribute="centerY" id="mMV-9b-UIh"/>
-                                                        <constraint firstItem="vli-Rd-aqU" firstAttribute="leading" secondItem="KFx-lz-QWR" secondAttribute="leading" constant="16" id="w9s-my-tkL"/>
-                                                        <constraint firstAttribute="trailing" secondItem="5uj-CU-EJ2" secondAttribute="trailing" constant="16" id="yDg-xN-43s"/>
-                                                    </constraints>
-                                                </tableViewCellContentView>
-                                                <connections>
-                                                    <outlet property="keyName" destination="vli-Rd-aqU" id="pzm-Xo-QRs"/>
-                                                    <outlet property="valueName" destination="5uj-CU-EJ2" id="5uo-ug-l5C"/>
-                                                </connections>
-                                            </tableViewCell>
-                                        </prototypes>
                                         <connections>
                                             <outlet property="dataSource" destination="9SQ-gn-ZbO" id="YHJ-uT-B0V"/>
                                             <outlet property="delegate" destination="9SQ-gn-ZbO" id="DPx-fw-G8u"/>
@@ -426,7 +382,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Physical Card" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="taa-Ok-UOD" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="8" y="103" width="126" height="20.5"/>
+                                                <rect key="frame" x="8" y="100" width="126" height="23.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -453,7 +409,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iba-AA-xfa" customClass="RoundUIView" customModule="Stashfin" customModuleProvider="target">
+                                    <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iba-AA-xfa" customClass="RoundUIView" customModule="Stashfin" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="289.5" width="343" height="281.5"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="NFi-TT-22q" customClass="RCButton" customModule="Stashfin" customModuleProvider="target">
@@ -483,7 +439,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Virtual Card" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="8pl-ck-q4Y" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="8" y="101.5" width="124" height="20.5"/>
+                                                <rect key="frame" x="8" y="98.5" width="124" height="23.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>

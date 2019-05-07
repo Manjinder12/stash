@@ -11,6 +11,11 @@ import UIKit
 
 class PickupViewController: BaseLoginViewController {
     
+    static func getInstance(storyboard: UIStoryboard) -> PickupViewController{
+        return storyboard.instantiateViewController(withIdentifier: String(describing: self.classForCoder())) as! PickupViewController
+    }
+    
+    
     @IBOutlet weak var pickupAddressLabel: CustomUILabel!
     @IBOutlet weak var instructionField: UITextField!
     @IBOutlet weak var shedulePickupBtn: DropDownButton!
@@ -23,6 +28,9 @@ class PickupViewController: BaseLoginViewController {
     @IBOutlet weak var pickupItem1: CustomUILabel!
     @IBOutlet weak var pickupItem2: CustomUILabel!
     @IBOutlet weak var pickupItem3: CustomUILabel!
+    @IBOutlet weak var pickupInstruction: CustomUILabel!
+    @IBOutlet weak var pickupInstructionLabel: CustomUILabel!
+    
     
     
     var timeList = [String]()
@@ -38,16 +46,22 @@ class PickupViewController: BaseLoginViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        pickupAddressLabel.text = address
-        pickupAddressLabel.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        pickupAddressLabel.layer.borderWidth = 0.5
-        pickupAddressLabel.layer.cornerRadius = 5
-        pickupAddressLabel.layer.masksToBounds = true
+        if SessionManger.getInstance.isTester(){
+            occupation_type = SessionManger.getInstance.getOccupationStatus()
+            pickupAddressLabel.text = "this is address"
+        }else{
+            pickupAddressLabel.text = address
+        }
         
-        pickupAddress.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        pickupAddress.layer.borderWidth = 0.5
-        pickupAddress.layer.cornerRadius = 5
-        pickupAddress.layer.masksToBounds = true
+//        pickupAddressLabel.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+//        pickupAddressLabel.layer.borderWidth = 0.5
+//        pickupAddressLabel.layer.cornerRadius = 5
+//        pickupAddressLabel.layer.masksToBounds = true
+        
+//        pickupAddress.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+//        pickupAddress.layer.borderWidth = 0.5
+//        pickupAddress.layer.cornerRadius = 5
+//        pickupAddress.layer.masksToBounds = true
         
         // Do any additional setup after loading the view.
         formatter.dateFormat = "yyyy-MM-dd"
@@ -91,16 +105,27 @@ class PickupViewController: BaseLoginViewController {
     }
     
     @IBAction func submitpickup(_ sender: UIButton) {
-        
-        let date = shedulePickupBtn.titleLabel?.text ?? ""
-        let time = scheduleTimeBtn.titleLabel?.text ?? ""
-        if !date.isEmpty && !time.isEmpty {
-            pickupDate.text = self.shedulePickupBtn.currentTitle
-            pickupTime.text = self.scheduleTimeBtn.currentTitle
+        var date:String=""
+        var time:String=""
+         date = self.shedulePickupBtn.currentTitle ?? ""
+        time = self.scheduleTimeBtn.currentTitle ?? ""
+        Log("\(date)....\(time)..")
+        if date.count > 1 && time.count > 1  {
+            pickupDate.text = date
+            pickupTime.text = time
+            if let instruction = instructionField.text, instruction.count > 1 {
+                pickupInstruction.text = instruction
+                pickupInstruction.isHidden=false
+                pickupInstructionLabel.isHidden=false
+            }else{
+                pickupInstruction.isHidden=true
+                pickupInstructionLabel.isHidden=true
+            }
+            
             pickupAddress.text =  pickupAddressLabel.text.isNilOrValue
             pickupConfirmDialogView.isHidden=false
             
-            self.downloadFile(urlString: pdf_url)
+//            self.downloadFile(urlString: pdf_url)
         }else{
             self.showToast("Please select pickup date and time")
         }
@@ -154,14 +179,22 @@ class PickupViewController: BaseLoginViewController {
     }
     
     @IBAction func pickupConfirm(_ sender: UIButton) {
-        
+        if SessionManger.getInstance.isTester(){
+            self.changeViewController(controllerName: Constants.Controllers.SIGNATURE)
+        }else{
+            submitDetails()
+        }
+    }
+    
+    private func submitDetails(){
         let myDate = self.formatterShow.date(from: pickupDate.text.isNilOrValue)!
         let date = self.formatter.string(from: myDate)
-       
+       self.showProgress()
         let params = ["mode":"pickup_details","date":date,"time_slot":pickupTime.text.isNilOrValue,"instruction":instructionField.text.isNilOrValue]
         ApiClient.getJSONResponses(route: APIRouter.v2Api(param: params))
         {
             result, status in
+            self.hideProgress()
                 switch status {
                 case .success:
                     self.changeViewController(response: result)

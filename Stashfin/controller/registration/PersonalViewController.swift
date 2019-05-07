@@ -12,7 +12,10 @@ import SwiftyJSON
 
 
 class PersonalViewController: BaseLoginViewController {
-    //    weak var delegate:BaseViewdelagate?
+    
+    static func getInstance(storyboard: UIStoryboard) -> PersonalViewController{
+        return storyboard.instantiateViewController(withIdentifier: String(describing: self.classForCoder())) as! PersonalViewController
+    }
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var stackView: UIStackView!
@@ -270,35 +273,37 @@ class PersonalViewController: BaseLoginViewController {
         }
     }
     @IBAction func maleTap(_ sender: UIButton) {
-        //        sender.isSelected = !sender.isSelected
-        
-        //        if let image  = UIImage(named: "male") {
         sender.setBackgroundImage(#imageLiteral(resourceName: "male"), for: .normal)
-        //        sender.setTitleColor(.white, for: .normal)
         genderValue="M"
         self.femaleBtn.setBackgroundImage(#imageLiteral(resourceName: "female"), for: .normal)
-        //        }
     }
     
     @IBAction func femaleTap(_ sender: UIButton) {
-        //        sender.isSelected = !sender.isSelected
-        
-        //        if let image = UIImage(named: "female_2"){
         sender.setBackgroundImage(#imageLiteral(resourceName: "female_2"), for: .normal)
-        //        sender.setTitleColor(.white, for: .normal)
-        
         genderValue="F"
         self.maleBtn.setBackgroundImage(#imageLiteral(resourceName: "male_2"), for: .normal)
-        //        }
     }
     
     
     @IBAction func backBtn(_ sender: UIButton) {
         onBackPressed()
     }
+
     
     @IBAction func openProfessionalBtn(_ sender: UIButton) {
-        
+        if SessionManger.getInstance.isTester(){
+            SessionManger.getInstance.saveOccupationStatus(status: employmentBox.text.isNilOrValue )
+            if employmentBox.text.isNilOrValue == "Self Employed"{
+                self.changeViewController(controllerName: Constants.Controllers.PROFESSIONAL_ABOVE_SALARY)
+            }else{
+                self.changeViewController(controllerName: Constants.Controllers.PROFESSIONAL_BELOW_SALARY)
+            }
+        }else{
+            submitDetails()
+        }
+    }
+    
+    private func submitDetails(){
         if emailBox.isEditBoxNotEmpty() && marritalMenu.isEditBoxNotEmpty() && panBox.isEditBoxNotEmpty() && aadhaarBox.isEditBoxNotEmpty() && employmentBox.isEditBoxNotEmpty() && residenceTypeMenu.isEditBoxNotEmpty() && cityBox.isEditBoxNotEmpty() && currentAddressBox.isEditBoxNotEmpty() && landmarkBox.isEditBoxNotEmpty() && pinCodeBox.isEditBoxNotEmpty() && occupiedSinceMonth.isEditBoxNotEmpty() && occupiedSinceYear.isEditBoxNotEmpty() {
             if let dob = dobBox.titleLabel?.text{
                 if !genderValue.isEmpty{
@@ -362,7 +367,6 @@ class PersonalViewController: BaseLoginViewController {
             }
         }
     }
-    
     private func hitPersonalApi(_ dob:String){
         if self.checkBoxBtn.currentBackgroundImage != #imageLiteral(resourceName: "check_box") {
             self.showToast("Please select terms and condition.")

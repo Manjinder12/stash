@@ -16,7 +16,7 @@ class RegisterLoginViewController :BaseLoginViewController,UITextFieldDelegate{
     static func getInstance(storyboard: UIStoryboard) -> RegisterLoginViewController{
         return storyboard.instantiateViewController(withIdentifier: String(describing: self.classForCoder())) as! RegisterLoginViewController
     }
-
+    
     
     @IBOutlet weak var backgroundImg: UIImageView!
     @IBOutlet weak var mobileNumberBox: UITextField!
@@ -59,32 +59,32 @@ class RegisterLoginViewController :BaseLoginViewController,UITextFieldDelegate{
     }
     
     @IBAction func nextNutton(_ sender: UIButton) {
-
+        
         if mobileNumberBox.isEditBoxNotEmpty() {
-            if mobileNumberBox.text != "1111111111"{
+            if mobileNumberBox.text == "2222222222"{
+                #if DEBUG
+                SessionManger.getInstance.setTester(status: true)
+                self.changeViewController(controllerName:Constants.Controllers.REGISTER)
+                #else
+                self.showToast("Number is not valid")
+                #endif
+                
+            }else{
+                SessionManger.getInstance.setTester(status: false)
                 if otpBox.isEditBoxNotEmpty(){
                     let params:[String:String] = ["mode":Constants.Modes.VERIFY_OTP_REGISTRATION,"otp":otpBox.text.isNilOrValue,"phone_number":mobileNumberBox.text.isNilOrValue]
                     ApiClient.getJSONResponses(route: APIRouter.v2Api(param: params)){
                         result, code in
                         switch code{
                         case .success:
-                            SessionManger.getInstance.setRegistrationPage(page: Constants.Controllers.SegueController.Personal.rawValue)
-                           
-                           self.personalData = self.mobileNumberBox.text.isNilOrValue
-                            self.changeViewController(controllerName:Constants.Controllers.REGISTER)
-//                           let controller = RegisterViewController.getInstance(storyboard: self.storyBoardRegister)
                             
-//                           controller.mobileNumber = self.mobileNumbers
-//                            self.goToNextViewController(controller: controller)
+                            self.personalData = self.mobileNumberBox.text.isNilOrValue
+                            self.changeViewController(controllerName:Constants.Controllers.REGISTER)
                         case .errors(let error):
                             self.showToast(error)
                         }
                     }
                 }
-            }else{
-//                self.showToast("sucessfully  personal api")
-//                self.view.makeToast("sucessfully  personal api")
-                self.changeViewController(controllerName:Constants.Controllers.REGISTER)
             }
         }
     }
@@ -119,10 +119,10 @@ class RegisterLoginViewController :BaseLoginViewController,UITextFieldDelegate{
                 self.showToast("Mobile number not valid")
             }
         }
-//        else{
-//                    changeViewController(controllerName: Constants.Controllers.UPLOAD_DOCUMENT)
-//        }
+        //        else{
+        //                    changeViewController(controllerName: Constants.Controllers.UPLOAD_DOCUMENT)
+        //        }
     }
     
-  
+    
 }

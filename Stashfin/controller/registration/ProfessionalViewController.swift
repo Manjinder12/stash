@@ -12,6 +12,10 @@ import SwiftyJSON
 
 class ProfessionalViewController: BaseLoginViewController {
     
+    static func getInstance(storyboard: UIStoryboard) -> ProfessionalViewController{
+        return storyboard.instantiateViewController(withIdentifier: String(describing: self.classForCoder())) as! ProfessionalViewController
+    }
+    
     //salaried
     @IBOutlet weak var companyName: UITextField!
     @IBOutlet weak var officialEmail: UITextField!
@@ -135,16 +139,27 @@ class ProfessionalViewController: BaseLoginViewController {
     @IBAction func submitButton
         (_ sender: UIButton) {
         
-        var params:[String:String] = ["":""]
+        if SessionManger.getInstance.isTester(){
+            if salariedStatus{
+                self.changeViewController(controllerName: Constants.Controllers.BANK_STATEMENT_SALARY)
+            }else{
+                self.changeViewController(controllerName: Constants.Controllers.BANK_DETAILS_BUSINESS)
+            }
+        }else{
+            submitDetails()
+        }
+    }
+    
+    private func submitDetails(){
+        
         if salariedStatus{
             if companyName.isEditBoxNotEmpty() && modeOfIncome.isEditBoxNotEmpty() && totalExperiance.isEditBoxNotEmpty() && officeAddress.isEditBoxNotEmpty() && landmark.isEditBoxNotEmpty() && pinCode.isEditBoxNotEmpty() && stateBoxMenu.isEditBoxNotEmpty() && cityBoxMenu.isEditBoxNotEmpty(){
                 
                 if officeAddress.text.isNilOrValue.count>5{
                     if landmark.text.isNilOrValue.count>5{
                         if pinCode.text.isNilOrValue.count==6{
-                            params = ["mode":"professional_details_l40k","company_name":companyName.text.isNilOrValue,"office_email":officialEmail.text.isNilOrValue,"experience":totalExperiance.text.isNilOrValue,"salary_mode":modeOfIncome.text.isNilOrValue,"office_address":officeAddress.text.isNilOrValue,"landmark":landmark.text.isNilOrValue,"pincode":pinCode.text.isNilOrValue,"city_name":cityBoxMenu.text.isNilOrValue]
-                            
-                            self.submitApi(params:params)
+                           
+                            self.submitApi(salaried: true)
                         }else{
                             pinCode.becomeFirstResponder()
                             self.showToast("Pin code is not valid")
@@ -166,10 +181,7 @@ class ProfessionalViewController: BaseLoginViewController {
                         if businessAddress.text.isNilOrValue.count>5{
                             if businessLandmark.text.isNilOrValue.count>5{
                                 if businessPin.text.isNilOrValue.count==6{
-                                    params = ["mode":"business_details","business_name":businessNameLabel.text.isNilOrValue,"annual_turnover":incomeITR.text.isNilOrValue,"no_of_employees":numberOfEmployees.text.isNilOrValue,"working_since":businessSince.text.isNilOrValue,"business_type":natureSince.text.isNilOrValue,"itr_flag":(twoYearITRSwitch.isOn ? "1" : "0"),"gst_flag":(gstSwitch.isOn ? "1" : "0"),"offc_home_flag":(businessSwitch.isOn ? "1" : "0"),"ownership_type":officePremisse.text.isNilOrValue,"office_address":businessAddress.text.isNilOrValue,"city_name":businessCity.text.isNilOrValue,"landmark":businessLandmark.text.isNilOrValue,"pincode":businessPin.text.isNilOrValue]
-                                    
-                                    
-                                    self.submitApi(params:params)
+                                    self.submitApi(salaried: false)
                                 }else{
                                     businessPin.becomeFirstResponder()
                                     self.showToast("Pin code is not valid")
@@ -184,16 +196,22 @@ class ProfessionalViewController: BaseLoginViewController {
                         }
                     }
                 }else{
-                    params = ["mode":"business_details","business_name":businessNameLabel.text.isNilOrValue,"annual_turnover":incomeITR.text.isNilOrValue,"no_of_employees":numberOfEmployees.text.isNilOrValue,"working_since":businessSince.text.isNilOrValue,"business_type":natureSince.text.isNilOrValue,"itr_flag":(twoYearITRSwitch.isOn ? "1" : "0"),"gst_flag":(gstSwitch.isOn ? "1" : "0"),"offc_home_flag":(businessSwitch.isOn ? "1" : "0"),"ownership_type":officePremisse.text.isNilOrValue,"office_address":businessAddress.text.isNilOrValue,"city_name":businessCity.text.isNilOrValue,"landmark":businessLandmark.text.isNilOrValue,"pincode":businessPin.text.isNilOrValue]
-                    
-                    self.submitApi(params:params)
+                    self.submitApi(salaried: false)
                 
                 }
             }
         }
     }
     
-    func submitApi(params:[String:String]){
+    func submitApi(salaried:Bool){
+       var params:[String:String] = ["":""]
+        if salaried{
+            params = ["mode":"professional_details_l40k","company_name":companyName.text.isNilOrValue,"office_email":officialEmail.text.isNilOrValue,"experience":totalExperiance.text.isNilOrValue,"salary_mode":modeOfIncome.text.isNilOrValue,"office_address":officeAddress.text.isNilOrValue,"landmark":landmark.text.isNilOrValue,"pincode":pinCode.text.isNilOrValue,"city_name":cityBoxMenu.text.isNilOrValue]
+            
+        }else{
+            params = ["mode":"business_details","business_name":businessNameLabel.text.isNilOrValue,"annual_turnover":incomeITR.text.isNilOrValue,"no_of_employees":numberOfEmployees.text.isNilOrValue,"working_since":businessSince.text.isNilOrValue,"business_type":natureSince.text.isNilOrValue,"itr_flag":(twoYearITRSwitch.isOn ? "1" : "0"),"gst_flag":(gstSwitch.isOn ? "1" : "0"),"offc_home_flag":(businessSwitch.isOn ? "1" : "0"),"ownership_type":officePremisse.text.isNilOrValue,"office_address":businessAddress.text.isNilOrValue,"city_name":businessCity.text.isNilOrValue,"landmark":businessLandmark.text.isNilOrValue,"pincode":businessPin.text.isNilOrValue]
+            
+        }
         ApiClient.getJSONResponses(route: APIRouter.v2Api(param: params)){
             result, status in
             switch status{

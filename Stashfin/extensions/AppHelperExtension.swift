@@ -11,7 +11,6 @@ import MBProgressHUD
 import Toast_Swift
 
 extension UIViewController {
-    
     func showProgress(_ progressLabel:String = ""){
         DispatchQueue.main.async {
             let progressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
@@ -79,7 +78,6 @@ extension UIImage {
             }
         case .jpeg(let compression):
             imageData = self.jpegData(compressionQuality: compression)
-            Log(" *** \(String(describing: imageData?.count))")
             
             if let img = imageData?.base64EncodedString(){
                 base64String = "data:image/jpeg;base64,"+img

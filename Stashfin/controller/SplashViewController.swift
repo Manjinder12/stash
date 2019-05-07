@@ -36,7 +36,7 @@ class SplashViewController: BaseLoginViewController {
     private func makeServiceCall() {
         
         DispatchQueue.main.async {
-//                      self.changeViewController(controllerName: Constants.Controllers.PROFILE_PAGE)
+//          self.changeViewController(controllerName: Constants.Controllers.APPROVED)
             
             if !SessionManger.getInstance.getAuthToken().isEmpty{
 //                self.showProgress()

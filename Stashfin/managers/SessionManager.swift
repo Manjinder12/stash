@@ -12,7 +12,8 @@ public class SessionManger {
     static let getInstance=SessionManger()
     
     let userDefaults=UserDefaults.standard
-    
+    let userDefaultslGobal=UserDefaults.standard
+
     private init() {
         
     }
@@ -49,21 +50,21 @@ public class SessionManger {
     
     // boolean global save
     private func getGlobalBoolValue(key:String)->Bool{
-        return userDefaults.bool(forKey: key)
+        return userDefaultslGobal.bool(forKey: key)
     }
     
     private func setGlobalBoolValue(key:String,value:Bool){
-        return userDefaults.set(value, forKey: key)
+        return userDefaultslGobal.set(value, forKey: key)
     }
 
     // string global save
     private func saveGlobalDefaultValue(key:String,value:String){
-        userDefaults.set(value, forKey: key)
+        userDefaultslGobal.set(value, forKey: key)
 //        KeychainWrapper.standard.set(value, forKey: key)
     }
 
     private func getGlobalStringValue(key:String)->String{
-        return userDefaults.string(forKey: key) ?? ""
+        return userDefaultslGobal.string(forKey: key) ?? ""
 //        return KeychainWrapper.standard.string(forKey: key) ?? ""
     }
 
@@ -77,12 +78,21 @@ public class SessionManger {
     }
     
 
-   public func saveApplicationStatus(status:String){
+    public func saveApplicationStatus(status:String){
         saveDefaultValue(key: Constants.SavedKeys.applicationStatus.rawValue, value: status)
     }
     
     func getApplicationStatus()->String{
         return getStringValue(key: Constants.SavedKeys.applicationStatus.rawValue)
+    }
+    
+
+    public func saveOccupationStatus(status:String){
+        saveDefaultValue(key: Constants.SavedKeys.occuptionStatus.rawValue, value: status)
+    }
+    
+    func getOccupationStatus()->String{
+        return getStringValue(key: Constants.SavedKeys.occuptionStatus.rawValue)
     }
     
     func saveLoanStatus(status:String){
@@ -133,10 +143,6 @@ public class SessionManger {
         return getStringValue(key: Constants.SavedKeys.EMAIL.rawValue)
     }
     
-    func saveCardRequest(cardResponse:Bool){
-        setBoolValue(key: Constants.SavedKeys.CardRequest.rawValue, value: cardResponse)
-    }
-    
     func setDeviceSaved(status:Bool){
         setBoolValue(key: Constants.SavedKeys.DEVICE_SAVED.rawValue, value: status)
     }
@@ -145,19 +151,26 @@ public class SessionManger {
         return getBoolValue(key: Constants.SavedKeys.DEVICE_SAVED.rawValue)
     }
     
-    public func getCardRequest()->Bool{
-        return getBoolValue(key: Constants.SavedKeys.CardRequest.rawValue)
-    }
+   
     
-    public func setRegistrationPage(page:String){
-        saveDefaultValue(key: Constants.SavedKeys.REGISTRATION_PAGE.rawValue, value: page)
-    }
-    
-    public func getRegistrationPage()-> String{
-        return userDefaults.string(forKey: Constants.SavedKeys.REGISTRATION_PAGE.rawValue) ??  Constants.Controllers.SegueController.Personal.rawValue
-    }
+//    public func setRegistrationPage(page:String){
+//        saveDefaultValue(key: Constants.SavedKeys.REGISTRATION_PAGE.rawValue, value: page)
+//    }
+//
+//    public func getRegistrationPage()-> String{
+//        return userDefaults.string(forKey: Constants.SavedKeys.REGISTRATION_PAGE.rawValue) ??  Constants.Controllers.SegueController.Personal.rawValue
+//    }
     
     // global values
+    
+    func saveCardRequest(cardResponse:Bool){
+        setGlobalBoolValue(key: Constants.SavedKeys.CardRequest.rawValue + getCustomerId(), value: cardResponse)
+    }
+    
+    public func getCardRequest()->Bool{
+        return getGlobalBoolValue(key: Constants.SavedKeys.CardRequest.rawValue + getCustomerId())
+    }
+    
     func setUserLogin(status:Bool){
         setGlobalBoolValue(key: Constants.SavedKeys.UserLogin.rawValue, value: status)
     }
@@ -165,7 +178,15 @@ public class SessionManger {
     public func getUserLogin()->Bool{
         return getGlobalBoolValue(key: Constants.SavedKeys.UserLogin.rawValue)
     }
- 
+    
+    func setTester(status:Bool){
+        setGlobalBoolValue(key: Constants.SavedKeys.IsTester.rawValue, value: status)
+    }
+    
+    public func isTester()->Bool{
+        return getGlobalBoolValue(key: Constants.SavedKeys.IsTester.rawValue)
+    }
+    
     public func saveCustomerId(id:String){
         saveGlobalDefaultValue(key: Constants.SavedKeys.CUSTOMER_ID.rawValue, value: id)
     }
@@ -181,5 +202,18 @@ public class SessionManger {
         saveLoanStatus(status: "")
         saveLocResponse(locResponse: "")
         saveCustomerId(id: "")
+        setTester(status: false)
+        saveCardRequest(cardResponse: false)
+        saveEmail(email: "")
+        saveOccupationStatus(status: "")
+//      resetDefaults()
+    }
+    
+    func resetDefaults() {
+        let dictionary = userDefaults.dictionaryRepresentation()
+        dictionary.keys.forEach { key in
+            Log("Key:----****** \(key)")
+            userDefaults.removeObject(forKey: key)
+        }
     }
 }

@@ -65,14 +65,6 @@ class AttachmentHandler: NSObject{
         
         if captureType == "camera"{
            self.authorisationStatus(attachmentTypeEnum: .camera, vc: self.currentVC!)
-            
-//            actionSheet.addAction(UIAlertAction(title: Constants.camera, style: .default, handler: { (action) -> Void in
-//                self.authorisationStatus(attachmentTypeEnum: .camera, vc: self.currentVC!)
-//            }))
-            
-//            actionSheet.addAction(UIAlertAction(title: Constants.phoneLibrary, style: .default, handler: { (action) -> Void in
-//                self.authorisationStatus(attachmentTypeEnum: .photoLibrary, vc: self.currentVC!)
-//            }))
         }else{
             actionSheet.addAction(UIAlertAction(title: Constants.camera, style: .default, handler: { (action) -> Void in
                 self.authorisationStatus(attachmentTypeEnum: .camera, vc: self.currentVC!)

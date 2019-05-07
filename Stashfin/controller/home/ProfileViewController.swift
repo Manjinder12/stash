@@ -47,12 +47,17 @@ class ProfileViewController: BaseViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title="Profile"
+        
         setUpMenuButton()
+        
+        profileTableView.register(UINib(nibName: "KeyValueTableViewCell", bundle: nil), forCellReuseIdentifier: "KeyValueTableViewCell")
+
+        
         self.personalCellData = [DataName(key: "Name",value: ""),DataName(key: "Email",value: ""),DataName(key: "Phone",value: ""),DataName(key: "DOB",value: "")]
         
         self.professionalCellData = [DataName(key: "Company Name",value: ""),DataName(key: "Designation",value: ""),DataName(key: "Working Since",value: ""),DataName(key: "Office Email",value: "")]
         
-        self.tableData = [DocumentModel(opened: false, title: "Personal", cellData: self.personalCellData), DocumentModel(opened: false, title: "Professional", cellData: self.professionalCellData), DocumentModel(opened: false, title: "Personal", cellData: self.professionalCellData)]
+        self.tableData = [DocumentModel(opened: false, title: "Personal", cellData: self.personalCellData), DocumentModel(opened: false, title: "Professional", cellData: self.professionalCellData)]
         
         setImage()
         checkProfileApi()
@@ -61,7 +66,6 @@ class ProfileViewController: BaseViewController{
     
     @IBAction func changeProfilePic(_ sender: UIButton) {
         AttachmentHandler.shared.showAttachmentActionSheet(vc: self,title: "Profile Pic",captureType: "camera")
-        //        AttachmentHandler.shared.showAttachmentActionSheet(vc: self,title: "Profile Pic")
         AttachmentHandler.shared.imagePickedBlock = { (image) in
            
             self.showProgress()
@@ -111,15 +115,52 @@ class ProfileViewController: BaseViewController{
                     let blurView = UIVisualEffectView(effect: darkBlur)
                     blurView.frame =  self.coverPicImg.frame
                     blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-                    blurView.alpha=0.9
+                    blurView.alpha=0.8
                     self.coverPicImg.addSubview(blurView)
                 }
             })
-            
         }
     }
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+        if   let bar:UINavigationBar =  self.navigationController?.navigationBar{
+        //        self.title = "Whatever..."
+        bar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        bar.shadowImage = UIImage()
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if  let bar:UINavigationBar =  self.navigationController?.navigationBar{
+        //        self.title = "Whatever..."
+        bar.setBackgroundImage(UIImage(named: "UINavigationBarBackground.png"),
+                               for: .default)
+        //        bar.shadowImage =
+        }
+    }
+    
+    func setUpMenuButton(){
+        let menuBtn = UIButton(type: .custom)
+        menuBtn.frame = CGRect(x: 0.0, y: 0.0, width: 20, height: 20)
+        menuBtn.setImage(UIImage(named:"doc_up"), for: .normal)
+        menuBtn.addTarget(self, action: #selector(onDocMenuButtonPressed), for: UIControl.Event.touchUpInside)
+        
+        let menuBarItem = UIBarButtonItem(customView: menuBtn)
+        let currWidth = menuBarItem.customView?.widthAnchor.constraint(equalToConstant: 24)
+        currWidth?.isActive = true
+        let currHeight = menuBarItem.customView?.heightAnchor.constraint(equalToConstant: 24)
+        currHeight?.isActive = true
+        self.navigationItem.rightBarButtonItem = menuBarItem
+    }
+    
+    @objc func onDocMenuButtonPressed(){
+        let controller = DocumentUploadViewController.getInstance(storyboard: self.storyBoardRegister)
+        controller.pageType = "profile"
+        self.goToNextViewController(controller:controller)
+        
+    }
     
     private func checkProfileApi(){
         let params=["mode":"getProfileDetails"]
@@ -172,10 +213,11 @@ extension ProfileViewController:  UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentCell", for: indexPath) as! DocumentCell
-        
-        cell.keyName.text = tableData[indexPath.section].cellData[indexPath.row].key
-        cell.valueName.text = tableData[indexPath.section].cellData[indexPath.row].value
+        //        let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentCell", for: indexPath) as! DocumentCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "KeyValueTableViewCell", for: indexPath) as! KeyValueTableViewCell
+
+        cell.keyLabel.text = tableData[indexPath.section].cellData[indexPath.row].key
+        cell.valueLabel.text = tableData[indexPath.section].cellData[indexPath.row].value
         
         return cell
     }
@@ -185,40 +227,4 @@ extension ProfileViewController:  UITableViewDataSource, UITableViewDelegate{
         return tableData[section].title
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-        let bar:UINavigationBar! =  self.navigationController?.navigationBar
-        //        self.title = "Whatever..."
-        bar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        bar.shadowImage = UIImage()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        let bar:UINavigationBar! =  self.navigationController?.navigationBar
-        //        self.title = "Whatever..."
-        bar.setBackgroundImage(UIImage(named: "UINavigationBarBackground.png"),
-                                for: .default)
-//        bar.shadowImage =
-    }
-    
-    func setUpMenuButton(){
-        let menuBtn = UIButton(type: .custom)
-        menuBtn.frame = CGRect(x: 0.0, y: 0.0, width: 20, height: 20)
-        menuBtn.setImage(UIImage(named:"doc_up"), for: .normal)
-        menuBtn.addTarget(self, action: #selector(onDocMenuButtonPressed), for: UIControl.Event.touchUpInside)
-        
-        let menuBarItem = UIBarButtonItem(customView: menuBtn)
-        let currWidth = menuBarItem.customView?.widthAnchor.constraint(equalToConstant: 24)
-        currWidth?.isActive = true
-        let currHeight = menuBarItem.customView?.heightAnchor.constraint(equalToConstant: 24)
-        currHeight?.isActive = true
-        self.navigationItem.rightBarButtonItem = menuBarItem
-    }
-    
-    @objc func onDocMenuButtonPressed(){
-        let controller = DocumentUploadViewController.getInstance(storyboard: self.storyBoardRegister)
-        controller.pageType = "profile"
-        self.goToNextViewController(controller:controller)
-        
-    }
 }

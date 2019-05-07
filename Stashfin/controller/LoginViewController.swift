@@ -31,7 +31,8 @@ class LoginViewController:BaseLoginViewController {
     override func viewDidLoad() {
         print("viewDidLoad")
         view.sendSubviewToBack(backgroundImg)
-        
+//        fatalError("Failed to load a MyCustomCell from the table.")
+
         //        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         emailNumberBox.addTarget(self, action: #selector(emailFeildDidChange), for: .editingChanged)
         passwordOtpBox.isSecureTextEntry.toggle()

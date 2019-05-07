@@ -23,9 +23,9 @@ class MainContainerViewController: BaseViewController {
         setSideMenu()
         switch pageType {
         case "thanku":
-            self.changeViewController(controllerName: Constants.Controllers.THANK_YOU)
+            self.changeViewController(controllerName: Constants.Controllers.THANK_YOU_PAGE)
         case "reject":
-            self.changeViewController(controllerName: Constants.Controllers.REJECT)
+            self.changeViewController(controllerName: Constants.Controllers.REJECT_PAGE)
         default:
             showDashboard()
         }

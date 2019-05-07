@@ -40,7 +40,7 @@ class documentViewTableViewCell:UITableViewCell{
     @IBOutlet weak var documentImage: UIImageView!
     @IBOutlet weak var documentName: UILabel!
     @IBOutlet weak var docIconStatus: UIImageView!
-   
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -48,7 +48,7 @@ class documentViewTableViewCell:UITableViewCell{
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
+        //        super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
     }
 }
@@ -67,7 +67,11 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
     @IBOutlet weak var viewHeightConst: NSLayoutConstraint!
     
     var pageType=""
-    
+    var isSalaried = true
+    let ovdDocument="Officially Valid ID Proof"
+    let drivingLicense = "Driving Licence"
+    let passprot="Passport"
+    let voterId="Voter Id Card"
     
     @IBOutlet weak var nextButtonHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var nextButton: UIButton!
@@ -79,6 +83,14 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
     let dropDown = DropDown()
     
     @IBAction func nextDocBtn(_ sender: UIButton) {
+        if SessionManger.getInstance.isTester(){
+            self.changeViewController(controllerName: Constants.Controllers.THANK_YOU_PAGE)
+        }else{
+            submitApi()
+        }
+    }
+    
+    private func submitApi(){
         var requiredDocStatus = false
         for doc in documentList{
             if doc.isRequired, doc.documentImg.isEmpty{
@@ -123,10 +135,16 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
             let topBarHeight = UIApplication.shared.statusBarFrame.size.height +
                 (self.navigationController?.navigationBar.frame.height ?? 0.0)
             viewHeightConst.constant = topBarHeight
-
+            
             self.title = "Documents"
             nextButton.isHidden=true
             nextButtonHeightConstraint.constant=1
+        }
+        
+        if SessionManger.getInstance.getOccupationStatus() == "self employed"{
+            isSalaried = false
+        }else{
+            isSalaried = true
         }
         
         self.showProgress()
@@ -136,69 +154,107 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
             self.hideProgress()
             switch status {
             case .success:
-                if  let json = try? JSON(data: result!){
-                    if let otherDocs = json["other_selected_docs"].array{
-                        for doc in otherDocs{
-                            self.otherDocumentList.append(DocumentUploadModel(documentName: "other", documentTitleName: doc["document_name"].stringValue, documentId: doc["id"].stringValue,documentImg:doc["document_path"].stringValue, status: !doc["document_path"].stringValue.isEmpty, reset: doc["document_status"].stringValue=="0"))
-                        }
-                    }
-                    
-                    let bankStatementChoice = json["bank_statement_status"].intValue;
-                    let gstChoice = json["gst_status"].intValue;
-                    let itrChoice = json["itr_status"].intValue;
-                    let permanentChoice = json["permanent_status"].intValue;
+                self.showProgress()
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2) , execute: {
+                    self.hideProgress()
+                })
                 
-                    self.documentList.append(DocumentUploadModel(documentName: "pan_proof", documentTitleName: "PAN Card", documentId: "pan_proof",documentImg:json["docs"]["pan_proof"].stringValue, status: !json["docs"]["pan_proof"].stringValue.isEmpty, reset: json["docs"]["pan_status"].stringValue=="0",isRequired:true))
-                    
-                    self.documentList.append(DocumentUploadModel(documentName: "id_proof", documentTitleName: "Aadhaar Card Front", documentId: "id_proof", documentImg:json["docs"]["id_proof"].stringValue,status: !json["docs"]["id_proof"].stringValue.isEmpty, reset: json["docs"]["id_proof_status"].stringValue=="0",isRequired:true))
-                    
-                    // self.documentList.append(DocumentUploadModel(documentName: "other", documentTitleName: "Aadhaar Card Back", documentId: "other", status: docsList[i]["id_proof"].stringValue.isEmpty, reset: docsList[i]["pan_status"].stringValue=="1"))
-                    
-                    self.documentList.append(DocumentUploadModel(documentName: "address_proof", documentTitleName: "Current Address Proof 1", documentId: "address_proof", documentImg:json["docs"]["address_proof"].stringValue,status: !json["docs"]["address_proof"].stringValue.isEmpty, reset: json["docs"]["address_status"].stringValue=="0",isRequired:true))
-                    
-                   
-                   
-                    if bankStatementChoice == 1{ self.documentList.append(DocumentUploadModel(uploadModel: self.getDocItem(itemName:"Bank Statement"),isRequired:true))
-                    }
-                    
-                    if permanentChoice == 1{
-                        self.documentList.append(DocumentUploadModel(uploadModel: self.getDocItem(itemName:"Permanent Address"),isRequired:true))
-                    }
-                    
-                    if itrChoice == 1{
-                        
-                        self.documentList.append(DocumentUploadModel(documentName: "income_tax_return", documentTitleName: "ITR 1", documentId: "income_tax_return", status: !json["docs"]["income_tax_return"].stringValue.isEmpty, reset: (json["docs"]["income_tax_return_status"].stringValue=="0"),isRequired:true))
-                        
-                        self.documentList.append(DocumentUploadModel(documentName: "income_tax_return2", documentTitleName: "ITR 2", documentId: "income_tax_return2", status: !json["docs"]["income_tax_return2"].stringValue.isEmpty, reset: (json["docs"]["income_tax_return2_status"].stringValue=="0"),isRequired:false))
-                    }
-                    
-                    if gstChoice == 1{
-                        self.documentList.append(DocumentUploadModel(uploadModel: self.getDocItem(itemName:"GST"),isRequired:true))
-                    }
-                    
-                    self.documentList.append(self.getDocItem(itemName:"Officially Valid ID Proof"))
-                    
-                    self.documentList.append(self.getDocItem(itemName:"Current Address Proof 2"))
-                    
-                    self.documentList.append(self.getDocItem(itemName:"Business Address Proof"))
-                    
-                    self.documentList.append(DocumentUploadModel(documentName: "salary_slip1", documentTitleName: "Salary Slip 1", documentId: "salary_slip1", status: !json["docs"]["salary_slip1"].stringValue.isEmpty, reset: (json["docs"]["salary_slip1_status"].stringValue=="0"),isRequired:false))
-                    
-                    self.documentList.append(DocumentUploadModel(documentName: "salary_slip2", documentTitleName: "Salary Slip 2", documentId: "salary_slip2", status: !json["docs"]["salary_slip2"].stringValue.isEmpty, reset: (json["docs"]["salary_slip2_status"].stringValue=="0"),isRequired:false))
-                    
-                    self.documentList.append(DocumentUploadModel(documentName: "salary_slip3", documentTitleName: "Salary Slip 3", documentId: "salary_slip3", status: !json["docs"]["salary_slip3"].stringValue.isEmpty, reset: (json["docs"]["salary_slip3_status"].stringValue=="0"),isRequired:false))
-                    
-                    for doc in self.otherDocumentList{
-                        self.documentList.append(doc)
-                    }
-                    
-                    self.addOtherDocument()
-                }
-                self.tableViewHeros.reloadData()
+                self.setDocumentData(result:result)
+                
             case .errors(let error):
-                self.showToast(error)
+                if SessionManger.getInstance.isTester(){
+                    self.documentList.append(DocumentUploadModel(documentName: "pan_proof", documentTitleName: "PAN Card", documentId: "pan_proof",documentImg:"", status: false, reset: false, isRequired:true))
+                    
+                    self.documentList.append(DocumentUploadModel(documentName: "id_proof", documentTitleName: "Aadhaar Card", documentId: "id_proof",documentImg:"", status: false, reset: false, isRequired:true))
+                    self.tableViewHeros.reloadData()
+                }else{
+                    self.showToast(error)
+                }
             }
         }
+    }
+    
+    private func setDocumentData(result:Data?)
+    {
+        if  let json = try? JSON(data: result!){
+            if let otherDocs = json["other_selected_docs"].array{
+                for doc in otherDocs{
+                    self.otherDocumentList.append(DocumentUploadModel(documentName: "other", documentTitleName: doc["document_name"].stringValue, documentId: doc["id"].stringValue,documentImg:doc["document_path"].stringValue, status: !doc["document_path"].stringValue.isEmpty, reset: doc["document_status"].stringValue=="0"))
+                }
+            }
+            
+            let bankStatementChoice = json["bank_statement_status"].intValue;
+            let gstChoice = json["gst_status"].intValue;
+            let itrChoice = json["itr_status"].intValue;
+            let permanentChoice = json["permanent_status"].intValue;
+            
+            self.documentList.append(DocumentUploadModel(documentName: "pan_proof", documentTitleName: "PAN Card", documentId: "pan_proof",documentImg:json["docs"]["pan_proof"].stringValue, status: !json["docs"]["pan_proof"].stringValue.isEmpty, reset: json["docs"]["pan_status"].stringValue=="0",isRequired:true))
+            
+            self.documentList.append(DocumentUploadModel(documentName: "id_proof", documentTitleName: "Aadhaar Card Front", documentId: "id_proof", documentImg:json["docs"]["id_proof"].stringValue,status: !json["docs"]["id_proof"].stringValue.isEmpty, reset: json["docs"]["id_proof_status"].stringValue=="0",isRequired:true))
+            
+            self.documentList.append(self.getDocItem(itemName:"Aadhaar Card Back"))
+            
+            self.documentList.append(DocumentUploadModel(documentName: "address_proof", documentTitleName: "Current Address Proof 1", documentId: "address_proof", documentImg:json["docs"]["address_proof"].stringValue,status: !json["docs"]["address_proof"].stringValue.isEmpty, reset: json["docs"]["address_status"].stringValue=="0",isRequired:true))
+            
+            
+            if bankStatementChoice == 1{ self.documentList.append(DocumentUploadModel(uploadModel: self.getDocItem(itemName:"Bank Statement"),isRequired:false))
+            }
+            
+            if permanentChoice == 1{
+                self.documentList.append(DocumentUploadModel(uploadModel: self.getDocItem(itemName:"Permanent Address"),isRequired:true))
+            }
+            
+            if itrChoice == 1{
+                
+                self.documentList.append(DocumentUploadModel(documentName: "income_tax_return", documentTitleName: "ITR 1", documentId: "income_tax_return", documentImg:json["docs"]["income_tax_return"].stringValue, status: !json["docs"]["income_tax_return"].stringValue.isEmpty, reset: json["docs"]["income_tax_return_status"].stringValue=="0",isRequired:true))
+                
+                self.documentList.append(DocumentUploadModel(documentName: "income_tax_return2", documentTitleName: "ITR 2", documentId: "income_tax_return2", documentImg:json["docs"]["income_tax_return2"].stringValue, status: !json["docs"]["income_tax_return2"].stringValue.isEmpty, reset: json["docs"]["income_tax_return_status2"].stringValue=="0",isRequired:true))
+                
+            }
+            
+            if gstChoice == 1{
+                self.documentList.append(DocumentUploadModel(uploadModel: self.getDocItem(itemName:"GST"),isRequired:true))
+            }
+            
+            // update ovd doc list if uploaded
+            let drivingLicenseDoc = self.getDocItem(itemName: self.drivingLicense)
+            if drivingLicenseDoc.documentId.isEmpty{
+                let passportDoc = self.getDocItem(itemName: self.passprot)
+                if passportDoc.documentId.isEmpty{
+                    let voterIdDoc = self.getDocItem(itemName: self.voterId)
+                    if passportDoc.documentId.isEmpty{
+                        self.documentList.append(self.getDocItem(itemName: self.ovdDocument))
+                    }else{
+                        self.documentList.append(voterIdDoc)
+                    }
+                }else{
+                    self.documentList.append(passportDoc)
+                }
+            }else{
+                self.documentList.append(drivingLicenseDoc)
+            }
+            
+            self.documentList.append(self.getDocItem(itemName:"Current Address Proof 2"))
+            
+            self.documentList.append(self.getDocItem(itemName:"Business Address Proof"))
+            
+            if self.isSalaried {
+                
+                self.documentList.append(DocumentUploadModel(documentName: "salary_slip1", documentTitleName: "Salary Slip 1", documentId: "salary_slip1", status: !json["docs"]["salary_slip1"].stringValue.isEmpty, reset: (json["docs"]["salary_slip1_status"].stringValue=="0"),isRequired:false))
+                
+                self.documentList.append(DocumentUploadModel(documentName: "salary_slip2", documentTitleName: "Salary Slip 2", documentId: "salary_slip2", status: !json["docs"]["salary_slip2"].stringValue.isEmpty, reset: (json["docs"]["salary_slip2_status"].stringValue=="0"),isRequired:false))
+                
+                self.documentList.append(DocumentUploadModel(documentName: "salary_slip3", documentTitleName: "Salary Slip 3", documentId: "salary_slip3", status: !json["docs"]["salary_slip3"].stringValue.isEmpty, reset: (json["docs"]["salary_slip3_status"].stringValue=="0"),isRequired:false))
+                
+            }
+            
+            for doc in self.otherDocumentList{
+                self.documentList.append(doc)
+            }
+            
+            self.addOtherDocument()
+        }
+        self.tableViewHeros.reloadData()
     }
     
     private func addOtherDocument(){
@@ -216,7 +272,7 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
         }
         return docModel
     }
-
+    
     // MARK: - Init
     
     // MARK: - Properties
@@ -246,6 +302,21 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
     }
     
     func uploadDocumentApi(document:DocumentUploadModel,docString:String,uploadedImage:UIImage, index:IndexPath){
+        
+        if SessionManger.getInstance.isTester(){
+            document.status = true
+            document.reset = true
+            document.documentImg = self.successDefaultIcon
+            self.documentList[index.row] = document
+            
+            self.tableViewHeros.reloadData()
+        }else{
+            submitDetails(document:document,docString: docString, uploadedImage:uploadedImage,index: index)
+        }
+    }
+    
+    private func submitDetails(document:DocumentUploadModel,docString:String,uploadedImage:UIImage, index:IndexPath){
+        
         let cell:documentViewTableViewCell=self.tableViewHeros.cellForRow(at: index) as! documentViewTableViewCell
         cell.documentImage.image = uploadedImage
         document.reset = true
@@ -258,7 +329,7 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
         if  !self.ovdValue.isEmpty {
             params["ovd_id"] = self.ovdValue
         }
-//
+        //
         ApiClient.getJSONResponses(route: APIRouter.v2Api(param: params)){
             result,status in
             self.hideProgress()
@@ -277,7 +348,7 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
                 }else{
                     self.showToast("Something went wrong, Please try again later")
                 }
-
+                
             case .errors(let error):
                 self.showToast(error)
             }
@@ -290,7 +361,7 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let doc = documentList[indexPath.row]
         if doc.documentImg.isEmpty || doc.reset{
-            if doc.documentTitleName == "Officially Valid ID Proof" ||  doc.documentTitleName == "Driving Licence" ||  doc.documentTitleName == "Passport"  ||  doc.documentTitleName == "Voter Id Card"{
+            if doc.documentTitleName == ovdDocument ||  doc.documentTitleName == drivingLicense ||  doc.documentTitleName == passprot  ||  doc.documentTitleName == voterId {
                 openValidIdProofDialog(position: indexPath,document:doc)
             }else if doc.documentTitleName == "Add other document"{
                 showSigninForm(position: indexPath,document:doc,type: "new")
@@ -321,7 +392,7 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
         }
         
         if  !document.documentImg.isEmpty{
-        cell.documentImage.sd_setImage(with: URL(string: document.documentImg), placeholderImage: UIImage(named: "gallery.png"))
+            cell.documentImage.sd_setImage(with: URL(string: document.documentImg), placeholderImage: UIImage(named: "gallery.png"))
             
             cell.docIconStatus.isHidden = false
             if document.reset {
@@ -356,11 +427,11 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
     
     
     func openAddOtherDocumentDialog(position: IndexPath){
-       
+        
     }
     
     weak var actionToEnable : UIAlertAction?
-
+    
     // Sign in form
     private func showSigninForm(position: IndexPath,document:DocumentUploadModel,type:String) {
         let titleStr:String
@@ -377,7 +448,7 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
         
         alert.addTextField(configurationHandler: {(textField: UITextField) in
             textField.placeholder = placeHolder
-//            textField.borderStyle = .roundedRect
+            //            textField.borderStyle = .roundedRect
             textField.addTarget(self, action: #selector(self.textChanged), for: .editingChanged)
         })
         
@@ -410,7 +481,7 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
         self.present(alert, animated: true, completion: nil)
     }
     
-   @objc func textChanged(sender:UITextField) {
+    @objc func textChanged(sender:UITextField) {
         self.actionToEnable?.isEnabled = (sender.text!.count > 0)
     }
 }

@@ -1043,15 +1043,15 @@
             </objects>
             <point key="canvasLocation" x="1952" y="1553"/>
         </scene>
-        <!--Enach View Controller-->
+        <!--Bank Details View Controller-->
         <scene sceneID="Qkq-Xb-Sfs">
             <objects>
-                <viewController storyboardIdentifier="EnachViewController" id="1ue-0L-yKw" customClass="EnachViewController" customModule="StashFinDemo" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="D5g-0F-hNJ">
+                <viewController storyboardIdentifier="EnachViewController" id="1ue-0L-yKw" customClass="BankDetailsViewController" customModule="StashFinDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="D5g-0F-hNJ">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZyF-ZZ-HTk">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZyF-ZZ-HTk">
                                 <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="card" translatesAutoresizingMaskIntoConstraints="NO" id="PQi-4x-oZg">
@@ -1184,13 +1184,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Documents" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jkq-P3-SyK">
-                                                    <rect key="frame" x="34" y="39" width="256" height="30"/>
+                                                    <rect key="frame" x="34" y="39" width="481" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HYj-qx-MAk">
-                                                    <rect key="frame" x="300" y="27" width="50" height="50"/>
+                                                    <rect key="frame" x="525" y="27" width="50" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="XlB-Wz-abe"/>
                                                         <constraint firstAttribute="height" constant="50" id="r71-z0-vhQ"/>
@@ -1440,7 +1440,7 @@
             <objects>
                 <viewController id="1v8-qO-D8e" customClass="ContainerViewController" customModule="StashFinDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qbl-RL-tc4">
-                        <rect key="frame" x="0.0" y="0.0" width="365" height="546"/>
+                        <rect key="frame" x="0.0" y="0.0" width="590" height="479"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="NJR-8W-diu"/>
@@ -1473,17 +1473,17 @@
                                 <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vBb-7r-yHp">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="320.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="325"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sign_up_1" translatesAutoresizingMaskIntoConstraints="NO" id="hzj-Cf-PQ1">
-                                                <rect key="frame" x="240" y="100" width="120" height="120"/>
+                                                <rect key="frame" x="240" y="102.5" width="120" height="120"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="hzj-Cf-PQ1" secondAttribute="height" multiplier="1:1" id="UWK-3b-2mr"/>
                                                     <constraint firstAttribute="height" constant="120" id="Wu6-aw-0aQ"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="middleTruncation" numberOfLines="0" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="cdo-WD-Tho" customClass="MediumUILabel" customModule="StashFinDemo" customModuleProvider="target">
-                                                <rect key="frame" x="38" y="228" width="524" height="36.5"/>
+                                                <rect key="frame" x="38" y="230.5" width="524" height="38.5"/>
                                                 <string key="text">Instant Personal Loan Approval
 Fastest-Quickest-Easiest Personal loan</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1503,13 +1503,13 @@ Fastest-Quickest-Easiest Personal loan</string>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ad0-2X-qQt">
-                                        <rect key="frame" x="0.0" y="328.5" width="600" height="251.5"/>
+                                        <rect key="frame" x="0.0" y="333" width="600" height="247"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="yl7-yM-FMG">
-                                                <rect key="frame" x="20" y="10" width="560" height="231.5"/>
+                                                <rect key="frame" x="20" y="10" width="560" height="227"/>
                                                 <subviews>
                                                     <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6nB-SJ-Jmc" userLabel="Sign up with Google" customClass="RCButton" customModule="StashFinDemo" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="560" height="40"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="560" height="39"/>
                                                         <color key="backgroundColor" red="0.74117647060000003" green="0.29803921570000003" blue="0.22352941179999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal">
                                                             <string key="title"> Sign up with Google
@@ -1522,7 +1522,7 @@ Fastest-Quickest-Easiest Personal loan</string>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KzD-Vu-0Vt" userLabel="Sign up with Email" customClass="RCButton" customModule="StashFinDemo" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="48" width="560" height="39.5"/>
+                                                        <rect key="frame" x="0.0" y="47" width="560" height="39"/>
                                                         <color key="backgroundColor" red="0.12549019610000001" green="0.47843137250000001" blue="0.71372549019999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal">
                                                             <string key="title">Sign up with Email
@@ -1535,13 +1535,13 @@ Fastest-Quickest-Easiest Personal loan</string>
                                                         </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Already registered user" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="LO0-33-2rW" customClass="MediumUILabel" customModule="StashFinDemo" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="95.5" width="560" height="40"/>
+                                                        <rect key="frame" x="0.0" y="94" width="560" height="39"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E1P-eZ-Bbi" customClass="RCButton" customModule="StashFinDemo" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="143.5" width="560" height="40"/>
+                                                        <rect key="frame" x="0.0" y="141" width="560" height="39"/>
                                                         <color key="backgroundColor" red="0.25098039220000001" green="0.33725490200000002" blue="0.56862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" title="Sign In">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1551,10 +1551,10 @@ Fastest-Quickest-Easiest Personal loan</string>
                                                         </connections>
                                                     </button>
                                                     <stackView opaque="NO" contentMode="center" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="EqP-24-x3j">
-                                                        <rect key="frame" x="0.0" y="191.5" width="560" height="40"/>
+                                                        <rect key="frame" x="0.0" y="188" width="560" height="39"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ruy-nH-boO" customClass="CheckBox" customModule="StashFinDemo" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="5" width="30" height="30"/>
+                                                                <rect key="frame" x="0.0" y="4.5" width="30" height="30"/>
                                                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="30" id="l1o-rp-ieA"/>
@@ -1562,7 +1562,7 @@ Fastest-Quickest-Easiest Personal loan</string>
                                                                 </constraints>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I have referral code" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="meu-1q-hc7" customClass="MediumUILabel" customModule="StashFinDemo" customModuleProvider="target">
-                                                                <rect key="frame" x="38" y="10" width="522" height="20.5"/>
+                                                                <rect key="frame" x="38" y="9.5" width="522" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
