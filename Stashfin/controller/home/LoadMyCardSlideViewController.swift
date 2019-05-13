@@ -9,12 +9,37 @@
 import UIKit
 import SwiftyJSON
 
-class LoadMyCardSlideViewController: BaseLoginViewController {
+
+class AmountCollectionViewCell:UICollectionViewCell{
+    
+    @IBOutlet weak var amountLabel: UILabel!
+    
+}
+
+class LoadMyCardSlideViewController: BaseLoginViewController,UICollectionViewDelegate,UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 20
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "amountCell", for: indexPath) as! AmountCollectionViewCell
+        
+        // Configure the cell
+        // 3
+//        cell.backgroundColor = cellColor ? UIColor.red : UIColor.blue
+//        cellColor = !cellColor
+        
+        cell.amountLabel.text="\(Constants.Values.RupeeSign)\((max_amount/20)*(indexPath.row+1))"
+        return cell
+    }
+    
     
     static func getInstance(storyboard: UIStoryboard) -> LoadMyCardSlideViewController{
         return storyboard.instantiateViewController(withIdentifier: String(describing: self.classForCoder())) as! LoadMyCardSlideViewController
     }
     
+    
+    @IBOutlet weak var amountCollectionScroll: UICollectionView!
     @IBOutlet weak var amountSlider: UISlider!
     @IBOutlet weak var tenureSlider: UISlider!
     @IBOutlet weak var minAmountLabel: UILabel!
@@ -28,6 +53,7 @@ class LoadMyCardSlideViewController: BaseLoginViewController {
     @IBOutlet weak var tenureLabel: UITextField!
     var min_tenure:Int = 0
     var min_amount:Int = 0
+    var max_amount:Int = 0
     var request_amount_step:Int = 1000
     var roi:Double = 0
     private var popGesture: UIGestureRecognizer?
@@ -46,7 +72,16 @@ class LoadMyCardSlideViewController: BaseLoginViewController {
             self.popGesture = navigationController!.interactivePopGestureRecognizer
             self.navigationController!.view.removeGestureRecognizer(navigationController!.interactivePopGestureRecognizer!)
         }
-        
+        setLayoutHorizontal()
+    }
+//    amountCell
+    private func setLayoutHorizontal(){
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width/3 - 15, height: 45)
+        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        flowLayout.scrollDirection = .horizontal
+        flowLayout.minimumInteritemSpacing = 0.0
+        amountCollectionScroll.collectionViewLayout = flowLayout
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -57,6 +92,7 @@ class LoadMyCardSlideViewController: BaseLoginViewController {
         }
         
     }
+    
     private func hitLocApi(){
         self.showProgress()
         let params=["mode":"locWithdrawalRequestform"]
@@ -72,9 +108,9 @@ class LoadMyCardSlideViewController: BaseLoginViewController {
                         self.request_amount_step = json["request_amount_increment_step"].intValue
                     }
                     
-                    let max_amount = (json["remaining_loc"].intValue-self.min_amount)
+                    self.max_amount = (json["remaining_loc"].intValue-self.min_amount)
                     let max_tenure = json["max_tenure"].intValue
-                    self.amountSlider.maximumValue = Float(max_amount)
+                    self.amountSlider.maximumValue = Float(self.max_amount)
                     self.tenureSlider.maximumValue = Float(((max_tenure/3) - (self.min_tenure/3)))
                     self.maxAmountLabel.text = Constants.Values.RupeeSign + json["remaining_loc"].stringValue
                     self.minAmountLabel.text = Constants.Values.RupeeSign + "\(self.min_amount)"
@@ -85,7 +121,7 @@ class LoadMyCardSlideViewController: BaseLoginViewController {
                     
                     self.amountLabel.text = json["minimum_request_amount"].stringValue
                     self.tenureLabel.text = json["min_tenure"].stringValue
-                    
+                    self.amountCollectionScroll.reloadData()
                     self.calculateEmi()
                 }
             case .errors(let error):
@@ -182,4 +218,5 @@ class LoadMyCardSlideViewController: BaseLoginViewController {
             }
         }
     }
+   
 }

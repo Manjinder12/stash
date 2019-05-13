@@ -26,7 +26,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="267"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </imageView>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="HEq-bw-sBd">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="HEq-bw-sBd">
                                         <rect key="frame" x="0.0" y="267" width="375" height="400"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                         <connections>
@@ -34,7 +34,7 @@
                                             <outlet property="delegate" destination="9SQ-gn-ZbO" id="DPx-fw-G8u"/>
                                         </connections>
                                     </tableView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9BR-Cc-dl7">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user_red" translatesAutoresizingMaskIntoConstraints="NO" id="9BR-Cc-dl7">
                                         <rect key="frame" x="134" y="100" width="107" height="107"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="9BR-Cc-dl7" secondAttribute="height" multiplier="100:100" id="CN4-d2-zzR"/>
@@ -528,5 +528,6 @@
         <image name="cam" width="16.319999694824219" height="16.079999923706055"/>
         <image name="card_blue" width="1064" height="671"/>
         <image name="card_gray" width="1061" height="669"/>
+        <image name="user_red" width="54.720001220703125" height="54.720001220703125"/>
     </resources>
 </document>

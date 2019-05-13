@@ -19,8 +19,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwO-dy-Acl" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                        <rect key="frame" x="262" y="11.5" width="42" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwO-dy-Acl" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
+                        <rect key="frame" x="268.5" y="13" width="35.5" height="18"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -30,8 +30,8 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sg3-k4-EBv" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                        <rect key="frame" x="16" y="11.5" width="28.5" height="20.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Key" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sg3-k4-EBv" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
+                        <rect key="frame" x="16" y="13.5" width="20" height="16.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -43,6 +43,7 @@
                     </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="bwO-dy-Acl" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Sg3-k4-EBv" secondAttribute="trailing" constant="20" id="9Tc-4I-51N"/>
                     <constraint firstItem="bwO-dy-Acl" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Dg5-2Y-CGW"/>
                     <constraint firstAttribute="trailing" secondItem="bwO-dy-Acl" secondAttribute="trailing" constant="16" id="GKB-aI-7PJ"/>
                     <constraint firstItem="Sg3-k4-EBv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="LwK-fT-kgV"/>

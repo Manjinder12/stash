@@ -64,7 +64,18 @@ class AttachmentHandler: NSObject{
         let actionSheet = UIAlertController(title: title, message: Constants.actionFileTypeDescription, preferredStyle: .actionSheet)
         
         if captureType == "camera"{
-           self.authorisationStatus(attachmentTypeEnum: .camera, vc: self.currentVC!)
+            
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                self.authorisationStatus(attachmentTypeEnum: .camera, vc: self.currentVC!)
+                actionSheet.addAction(UIAlertAction(title: Constants.camera, style: .default, handler: { (action) -> Void in
+                    self.authorisationStatus(attachmentTypeEnum: .camera, vc: self.currentVC!)
+                }))
+            }else{
+                Log("camera not found")
+                actionSheet.addAction(UIAlertAction(title: Constants.phoneLibrary, style: .default, handler: { (action) -> Void in
+                    self.authorisationStatus(attachmentTypeEnum: .photoLibrary, vc: self.currentVC!)
+                }))
+            }
         }else{
             actionSheet.addAction(UIAlertAction(title: Constants.camera, style: .default, handler: { (action) -> Void in
                 self.authorisationStatus(attachmentTypeEnum: .camera, vc: self.currentVC!)

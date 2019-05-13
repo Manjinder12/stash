@@ -35,6 +35,7 @@ class CardCell: FSPagerViewCell{
         }
         if model.cardRegitster! {
             self.cellCardNumber.text = model.cardNumber
+//            self.cellCardNumber.text = "xxxx   xxxx   xxxx   1234"
             self.cellCardName.text = model.cardName?.uppercased()
             self.cellCardValidity.text = model.cardValidity
         }

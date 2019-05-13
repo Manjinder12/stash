@@ -14,9 +14,9 @@ struct Server {
     struct Urls {
         // 192.168.60.149
 //        static let baseUrl="https://devapi.stasheasy.com/"//dev
-        static let baseUrl="http://devapi.stashfin.com/"//dev
+//        static let baseUrl="http://devapi.stashfin.com/"//dev
 //        static let baseUrl="http://192.168.60.149/stashfin_app_v2_20-02-2019/"//dev
-//        static let baseUrl="https://api.stashfin.com/"//live
+        static let baseUrl="https://api.stashfin.com/"//live
         static let serviceAndroidUrl="StashfinApp/android/"
         static let serviceStasheasyUrl="WebServicesMobile/StasheasyApp/"
         static let serviceV2Url="v2/api/"
