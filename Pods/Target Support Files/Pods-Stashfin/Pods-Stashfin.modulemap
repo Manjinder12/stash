@@ -1,0 +1,6 @@
+framework module Pods_Stashfin {
+  umbrella header "Pods-Stashfin-umbrella.h"
+
+  export *
+  module * { export * }
+}
