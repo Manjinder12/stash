@@ -60,10 +60,10 @@ public class ApiClient{
     //        getJSONResponses(route: APIRouter.GetLoginData, completionHandler: completionHandler)
     //    }
     
-//    var vc:UIViewController?
-//    init(vc:UIViewController) {
-//        self.vc=vc
-//    }
+    //    var vc:UIViewController?
+    //    init(vc:UIViewController) {
+    //        self.vc=vc
+    //    }
     
     static func getStateList(completionHandler: @escaping(_ response: Data?, _ status: ApiHandler)->Void){
         let params:[String:String] = ["mode":"getStates"]
@@ -104,11 +104,11 @@ public class ApiClient{
     }
     
     static func updateAppDetails(completionHandler: @escaping(_ response: Data?, _ status: ApiHandler)->Void){
-      
+        
         let appVersion = Utilities.getAppInfo()
-       
+        
         let device = UIDevice.current
-
+        
         let model = device.model
         Log(model) // e.g. "iPhone"
         
@@ -131,9 +131,9 @@ public class ApiClient{
         
         Log("App version: \(appVersion)")
         let params=["mode":"uploadDeviceInfo","manufacture":"Apple","app_version":appVersion,"osVersion":systemVersion,"brand":model,"model":modelName,"device_id":Utilities.getDeviceIds(),"device":model]
-//
+        //
         getJSONResponses(route: APIRouter.stasheasyApi(param: params), completionHandler: completionHandler)
-
+        
     }
     
     //
@@ -143,8 +143,8 @@ public class ApiClient{
     
     static func getJSONResponses(route:APIRouter,
                                  completionHandler: @escaping (_ responses: Data?,_ status: ApiHandler) -> Void) {
-       
-        guard  Reachability.isConnectedToNetwork() else {
+        
+        guard  Utilities.isConnectedToNetwork() else {
             print("Internet Connection not Available!")
             return
                 completionHandler(nil,.errors(error: Constants.Values.network_error))
@@ -161,7 +161,7 @@ public class ApiClient{
                         return
                     }
                     
-//                    Log.servers("Body: \(String(describing: String(data: (response.request?.httpBody)!, encoding: .utf8)))")
+                    //                    Log.servers("Body: \(String(describing: String(data: (response.request?.httpBody)!, encoding: .utf8)))")
                     
                     if let data = response.data, let dataResponse = String(data: data, encoding: .utf8){
                         Log("Response:..code: \(String(describing: response.response?.statusCode))...response: \(dataResponse)")
@@ -177,27 +177,27 @@ public class ApiClient{
                         default:
                             print("default error...\(dataResponse)")
                             var error:String="Something went wrong"
-                                if let json = try? JSON(data: data){
-                                    error = json["message"].stringValue
-                                    if error.isEmpty{
-                                        error = json["error"].stringValue
-                                    }
+                            if let json = try? JSON(data: data){
+                                error = json["message"].stringValue
+                                if error.isEmpty{
+                                    error = json["error"].stringValue
+                                }
                             }
                             if error == "Login Expired"{
-                               error = "Session expired!, Please login again to continue."
+                                error = "Session expired!, Please login again to continue."
                                 SessionManger.getInstance.saveAuthToken(token: "")
-//                                let storyBoardRegister:UIStoryboard = UIStoryboard(name: "RegistrationNew", bundle: nil)
-//                                let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "BasicViewController") as! PersonalViewController
-//                                DispatchQueue.main.async {
-//                                    vc.present(storyBoardController,animated: false,completion: nil)
-//                                }
+                                //                                let storyBoardRegister:UIStoryboard = UIStoryboard(name: "RegistrationNew", bundle: nil)
+                                //                                let storyBoardController = storyBoardRegister.instantiateViewController(withIdentifier: "BasicViewController") as! PersonalViewController
+                                //                                DispatchQueue.main.async {
+                                //                                    vc.present(storyBoardController,animated: false,completion: nil)
+                                //                                }
                             }
                             completionHandler(nil,.errors(error: error))
                             
                         }
                     }
                 case .failure(_):
-                    print("Error message:\(String(describing: response.result.error))")
+                    print("Error message:\(String(describing: response.result))")
                     completionHandler(nil, .errors(error: "\(Constants.Values.server_error)\nerror_code: 113"))
                     break
                 }
@@ -206,62 +206,62 @@ public class ApiClient{
     
     
     
-   static func get(path: String, params: [String:Any]?,
-             completion: @escaping ((_ jsonResponse: Data?, _ responseStatus: ApiHandler) -> Void)) {
-   
-    let headers:HTTPHeaders = [
-        HTTPHeaderField.contentType.rawValue: ContentType.enc.rawValue,
-        Constants.Params.DEVICE_ID: Utilities.getDeviceIds(),
-       Constants.Params.AUTH_TOKEN:SessionManger.getInstance.getAuthToken()
-    ]
-    
-
-    AF.request(path,method:.get, parameters: params, headers: headers).response { response in
-//        Log(String(data:response.result.value as! Data, encoding: .utf8)!)
-                if let json = response.result.value {
-                    Log("response:__   \(String(describing: json))")
-                    completion(json, .success)
-                } else {
-                    completion(nil, .errors(error: response.result.error?.localizedDescription ?? "error"))
-                }
-            }
-    }
-    
-    
-    
-    public class Reachability {
+    static func get(path: String, params: [String:Any]?,
+                    completion: @escaping ((_ jsonResponse: Data?, _ responseStatus: ApiHandler) -> Void)) {
         
-        class func isConnectedToNetwork() -> Bool {
-            
-            var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
-            zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
-            zeroAddress.sin_family = sa_family_t(AF_INET)
-            
-            let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
-                $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
-                    SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
-                }
+        let headers:HTTPHeaders = [
+            HTTPHeaderField.contentType.rawValue: ContentType.enc.rawValue,
+            Constants.Params.DEVICE_ID: Utilities.getDeviceIds(),
+            Constants.Params.AUTH_TOKEN:SessionManger.getInstance.getAuthToken()
+        ]
+        
+        
+        AF.request(path,method:.get, parameters: params, headers: headers).response { response in
+            //        Log(String(data:response.result.value as! Data, encoding: .utf8)!)
+            if let json = response.result.value {
+                Log("response:__   \(String(describing: json))")
+                completion(json, .success)
+            } else {
+                completion(nil, .errors(error: response.result.error?.localizedDescription ?? "error"))
             }
-            
-            var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags(rawValue: 0)
-            if SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) == false {
-                return false
-            }
-            
-            /* Only Working for WIFI
-             let isReachable = flags == .reachable
-             let needsConnection = flags == .connectionRequired
-             
-             return isReachable && !needsConnection
-             */
-            
-            // Working for Cellular and WIFI
-            let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
-            let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
-            let ret = (isReachable && !needsConnection)
-            
-            return ret
-            
         }
     }
+    
+    
+    
+//    public class Reachability {
+//
+//        class func isConnectedToNetwork() -> Bool {
+//
+//            var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
+//            zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+//            zeroAddress.sin_family = sa_family_t(AF_INET)
+//
+//            let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
+//                $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
+//                    SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+//                }
+//            }
+//
+//            var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags(rawValue: 0)
+//            if SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) == false {
+//                return false
+//            }
+//
+//            /* Only Working for WIFI
+//             let isReachable = flags == .reachable
+//             let needsConnection = flags == .connectionRequired
+//
+//             return isReachable && !needsConnection
+//             */
+//
+//            // Working for Cellular and WIFI
+//            let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
+//            let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
+//            let ret = (isReachable && !needsConnection)
+//
+//            return ret
+//
+//        }
+//    }
 }

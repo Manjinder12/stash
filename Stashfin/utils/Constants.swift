@@ -13,10 +13,13 @@ struct Server {
     // MARK: baseUrl
     struct Urls {
         // 192.168.60.149
-//        static let baseUrl="https://devapi.stasheasy.com/"//dev
-//        static let baseUrl="http://devapi.stashfin.com/"//dev
-//        static let baseUrl="http://192.168.60.149/stashfin_app_v2_20-02-2019/"//dev
-        static let baseUrl="https://api.stashfin.com/"//live
+        //        static let baseUrl="https://devapi.stasheasy.com/"//dev
+//                static let baseUrl="http://devapi.stashfin.com/"//dev
+        //        static let baseUrl="http://192.168.60.149/stashfin_app_v2_20-02-2019/"//dev
+//        static let baseUrl="https://api.stashfin.com/"//live
+        static let baseUrl="https://sf-public-api.stashfin.com/"
+        //        static let baseUrl="https://77231309.ngrok.io/"
+        
         static let serviceAndroidUrl="StashfinApp/android/"
         static let serviceStasheasyUrl="WebServicesMobile/StasheasyApp/"
         static let serviceV2Url="v2/api/"
@@ -92,11 +95,13 @@ enum Constants {
     enum Values{
         static let RupeeSign="\u{20B9} "
         static let device_type="device_type"
-        static let ios="ios"
+        static let ios="iOS"
         static let device_id="device_id"
         static let server_error="Could not reach server"
         static let something_went_wrong="Something went wrong"
         static let network_error="Internet Connection not Available!"
+        static let ELV8_USER="elv8_user"
+        static let NORMAL_USER="normal_user"
     }
     
     enum Key {
@@ -119,14 +124,24 @@ enum Constants {
         case UserName="UserName"
         case UserLogin="UserLogin"
         case IsTester="isTester"
+        case IsBillCustomer="isBillCustomer"
+        case isMpinActive="isMpinActive"
         case DEVICE_SAVED="DeviceSaved"
+        case PAYBACK_STATUS="PaybackStatus"
+        case BillGiftintro="billGiftIntro"
         case UserPass="UserPass"
         case CardResponse="CardResponse"
         case LocResponse="LocResponse"
         case PROFILE_PIC="profile_pic"
         case NAME="name"
         case EMAIL="email"
+        case NUMBER="number"
+        case PAYBACK_VALUE="Payback_value"
+        case USER_TYPE = "user_type"
         case CardRequest="CardRequest"
+        case TranxStatus="tranx_status"
+        case SalesCode="sales_code"
+        case RefferalCode="refferal_code"
         case REGISTRATION_PAGE = "registration_pages"
     }
     
@@ -156,6 +171,7 @@ enum Constants {
         }
         
         static let LOGIN = "login"
+        static let MPIN="mpin"
         static let DASHBOARD = "profile"
         static let PROFILE_PAGE = "profile_page"
         static let PROFESSIONAL_INFO = "professional"
@@ -178,21 +194,24 @@ enum Constants {
         static let BANK = "bank"
         static let EL_FORM = "EL_FORM"
         static let EL_INTRO = "el_intro"
+        static let EL_APPLY = "el_apply"
         static let EL_DOC = "EL_DOCUMENT"
         static let EL_DOC_REJECT = "EL_DOCUMENT_REJECT"
         static let EL_BANK = "EL_BANK"
-        static let EL_SCAN = "EL_SCAN"
-        static let AADHAAR_SCAN = "aadhar_scan"
+        static let EL_AADHAAR_SCAN = "aadhar_scan"
         static let EL_APPROVE = "EL_APPROVED"
         static let EL_SUBMITTED = "EL_SUBMITTED"
         static let EL_HOME = "EL_HOME"
-        static let EL_DEBIT = "EL_DEBIT"
+//        static let EL_DEBIT = "EL_DEBIT"
         static let EL_ADDRESS_ERROR = "EL_ADDRESS_ERROR"
         static let EL_BUREAU_ERROR = "EL_BUREAU_ERROR"
         static let EL_DASHBOARD = "el_dashboard"
         static let EL_REFERENCE = "el_reference"
         static let EL_LOAN_AGREEMENT = "el_loan_agreement"
-        static let PENNY_DROP = "penny_drop"
+        static let EL_CHOOSE_LOAN="choose_loan"
+        static let EL_LOAN_APPROVED="loan_approved"
+        static let EL_CHOOSE_REPAYMENT="choose_repayment"
+        static let EL_PENNY_DROP = "penny_drop"
         static let PAYMENT_PAGE = "payment_page"
 
         //new registration flow
@@ -227,9 +246,16 @@ enum Constants {
         static let TRANSACTION = "transaction"
         static let PAY_NOW = "pay_now_emi"
         static let FORGOT_PASSWORD = "forgot_password"
+        static let APP_LOCKER = "app_locker"
         static let OUTGOING_EMI = "outgoing_emi"
+        static let BILL_OUTGOING_EMI="outgoing_bill"
+        static let BILL_LOAD_MY_CARD = "bill_load_my_card"
+        static let BILL_LOAD_MY_CARD_CONFIRM="bill_load_my_card_confirm"
+        static let BILL_INTRO="bill_intro"
+        static let BILL_PAY_NOW="bill_pay_now"
         static let BLOCK_CARD = "BLOCK_CARD"
         static let LOAN_CALCULATOR = "LoanCalculator"
+        static let PAYMENT_HISTORY = "payment_history"
         static let PAYBACK = "payback"
         static let CUSTOMER_CARE = "customer_care"
         static let GET_STASHFIN_CARD = "get_stashfin_card"
@@ -238,6 +264,14 @@ enum Constants {
         static let ACTIVE_STASHFIN_CARD_INTRO = "activate_stashfin_card_intro"
         static let ACTIVE_STASHFIN_CARD = "activate_stashfin_card"
 
+//        static let ELV8_DASHBOARD="Elv8DashBoard"
+//        static let ELV8_INTRO="elv8_intro"
+//        static let ELV8_PENNY_DROP="elv8_penny_drop"
+//        static let ELV8_AADHAAR_CARD="elv8_aadhaar_card"
+//        static let ELV8_BANK="elv8_bank"
+//        static let ELV8_REFERENCE="elv8_reference"
+//        static let ELV8_LOAN_AGREEMENT = "elv8_agreement"
+
     }
 }
 
@@ -245,6 +279,7 @@ struct Colors {
     static let colorPrimary=UIColor(red: 0, green: 192/255, blue: 255/255, alpha: 1)
     static let black=UIColor(red: 0, green: 0, blue: 0, alpha: 1)
     static let white=UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+     static let lightGray=UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
 
 }
 
@@ -255,6 +290,8 @@ struct Fonts {
     static let avenirNextRegular = "AvenirNext-Regular"
     static let avenirNextItalic = "AvenirNext-Italic"
     static let avenirNextBold = "AvenirNext-Bold"
+    static let halventicBold="HelveticaNeue-Bold"
+    static let halventicMedium="HelveticaNeue-Medium"
 }
 
 

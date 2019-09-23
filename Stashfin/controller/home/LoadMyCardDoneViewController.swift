@@ -19,17 +19,29 @@ class LoadMyCardDoneViewController: BaseViewController {
     @IBOutlet weak var disburseAmountLabel: UILabel!
     @IBOutlet weak var emiAmountLabel: UILabel!
     @IBOutlet weak var emiDateLabel: UILabel!
+    @IBOutlet weak var emiAmountTitle: CustomUILabel!
+    @IBOutlet weak var emiDateTitle: CustomUILabel!
     @IBOutlet weak var doneBtn: UIButton!
     public var loan_amount=""
     public var disburse_amount=""
     public var emi_date=""
-    public var emi_amount=""
+    public var emi_amount:Int=0
+    public var bill_amount:Int = 0
     
     override func viewDidLoad() {
         loanAmountLabel.text=loan_amount
         disburseAmountLabel.text=disburse_amount
-        emiAmountLabel.text=emi_amount
+        
         emiDateLabel.text=emi_date
+        if bill_amount > 0 {
+            emiAmountLabel.text="0%"
+            emiDateTitle.text = "Bill Date"
+            emiAmountTitle.text = "ROI"
+        }else{
+            emiAmountLabel.text="\(emi_amount)"
+            emiDateTitle.text = "Next EMI date"
+            emiAmountTitle.text = "EMI Amount"
+        }
     }
     
     @IBAction func goToHomeBtn(_ sender: UIButton) {

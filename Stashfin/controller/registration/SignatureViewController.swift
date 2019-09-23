@@ -151,8 +151,7 @@ class SignatureViewController: BaseLoginViewController, UIScrollViewDelegate, Cr
     
     func createSlides() -> [SignatureIntroView] {
         let gifManager = SwiftyGifManager(memoryLimit:100)
-        let gif = UIImage(gifName: "sign")
-        
+       
         let slide1:SignatureIntroView = Bundle.main.loadNibNamed("SignatureIntroView", owner: self, options: nil)?.first as! SignatureIntroView
         
         slide1.introIcon.image = UIImage(named: "signature_1")
@@ -172,6 +171,7 @@ class SignatureViewController: BaseLoginViewController, UIScrollViewDelegate, Cr
         slide3.introDesc.text = "Crop and adjust image of signature before uploading"
         
         let slide4:SignatureIntroView = Bundle.main.loadNibNamed("SignatureIntroView", owner: self, options: nil)?.first as! SignatureIntroView
+        let gif = UIImage(gifName: "sign")
         slide4.introIcon.setGifImage(gif, manager: gifManager, loopCount: -1)
         slide4.label.text = "Signature"
         slide4.introDesc.text = "I verify the information I have entered and agree that my signature will be used on these documents."
@@ -180,19 +180,19 @@ class SignatureViewController: BaseLoginViewController, UIScrollViewDelegate, Cr
     }
 }
 
-extension UIApplication {
-    class func topViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
-        if let nav = base as? UINavigationController {
-            return topViewController(base: nav.visibleViewController)
-        }
-        if let tab = base as? UITabBarController {
-            if let selected = tab.selectedViewController {
-                return topViewController(base: selected)
-            }
-        }
-        if let presented = base?.presentedViewController {
-            return topViewController(base: presented)
-        }
-        return base
-    }
-}
+//extension UIApplication {
+//    class func topViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+//        if let nav = base as? UINavigationController {
+//            return topViewController(base: nav.visibleViewController)
+//        }
+//        if let tab = base as? UITabBarController {
+//            if let selected = tab.selectedViewController {
+//                return topViewController(base: selected)
+//            }
+//        }
+//        if let presented = base?.presentedViewController {
+//            return topViewController(base: presented)
+//        }
+//        return base
+//    }
+//}

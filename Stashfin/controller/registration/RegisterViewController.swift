@@ -33,7 +33,7 @@ class RegisterViewController: BaseLoginViewController{
     var stateListIds:[Int] = []
     var cityList:[String]=[]
     var profile_pic_base64 = ""
-     var active_loan_status="0"
+    var active_loan_status="0"
     
     @IBAction func backBtn(_ sender: UIButton) {
         onBackPressed()
@@ -48,47 +48,51 @@ class RegisterViewController: BaseLoginViewController{
     }
     
     private func submitDetailsApi(){ if(nameET.isEditBoxNotEmpty()&&mobileET.isEditBoxNotEmpty()&&stateET.isEditBoxNotEmpty()&&cityET.isEditBoxNotEmpty()&&monthlyET.isEditBoxNotEmpty()){
-            if !profile_pic_base64.isEmpty{
-                Log("success personal")
-                if active_loan_status=="1"{
-                    if !monthlyEmiField.isEditBoxNotEmpty(){
-                        return
-                    }
+        if !profile_pic_base64.isEmpty{
+            Log("success personal")
+            if active_loan_status=="1"{
+                if !monthlyEmiField.isEditBoxNotEmpty(){
+                    return
                 }
-                let param:[String:String]=["mode":Constants.Modes.REGISTER,"name":nameET.text.isNilOrValue,"phone":mobileET.text.isNilOrValue,"city":cityET.text.isNilOrValue,"salary":monthlyET.text.isNilOrValue,"activeLoan":active_loan_status,"outgoingEMIs":monthlyEmiField.text.isNilOrValue,"profile_pic":profile_pic_base64,"referral_code":referralET.text.isNilOrValue,Constants.Values.device_id: Utilities.getDeviceIds()]
-                self.showProgress()
-                ApiClient.getJSONResponses(route: APIRouter.v2Api(param: param)){
-                    result, code in
-                    self.hideProgress()
-                    switch code{
-                    case .success:
-                        print("result....\(String(describing: result!))");
-                        if let json = try? JSON(data: result!){
-                            SessionManger.getInstance.saveAuthToken(token: json[Constants.Key.AUTH_TOKEN].stringValue)
-                            self.changeViewController(controllerName: json[Constants.Key.LANDING_PAGE].stringValue)
-                        }
-                    case .errors(let error):
-                        print(error)
-                        self.showToast(error)
-                    }
-                }
-            }else{
-                self.nameET.becomeFirstResponder()
-                self.showToast("Please take a nice selfie")
             }
+            let param:[String:String]=["mode":Constants.Modes.REGISTER,"name":nameET.text.isNilOrValue,"phone":mobileET.text.isNilOrValue,"city":cityET.text.isNilOrValue,"salary":monthlyET.text.isNilOrValue,"activeLoan":active_loan_status,"outgoingEMIs":monthlyEmiField.text.isNilOrValue,"profile_pic":profile_pic_base64,"referral_code":referralET.text.isNilOrValue,Constants.Values.device_id: Utilities.getDeviceIds(),"agent_code":SessionManger.getInstance.getSalesValue()]
+            
+            self.showProgress()
+            ApiClient.getJSONResponses(route: APIRouter.v2Api(param: param)){
+                result, code in
+                self.hideProgress()
+                switch code{
+                case .success:
+                    print("result....\(String(describing: result!))");
+                    if let json = try? JSON(data: result!){
+                        SessionManger.getInstance.saveAuthToken(token: json[Constants.Key.AUTH_TOKEN].stringValue)
+                        self.changeViewController(controllerName: json[Constants.Key.LANDING_PAGE].stringValue)
+                        SessionManger.getInstance.setSalesValue(value: "")
+                        SessionManger.getInstance.setReferralValue(value: "")
+                    }
+                case .errors(let error):
+                    print(error)
+                    self.showToast(error)
+                }
+            }
+        }else{
+            self.nameET.becomeFirstResponder()
+            self.showToast("Please take a nice selfie")
+        }
         }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         mobileET.text=mobileNumber
         checkStateListApi()
+        referralET.text=SessionManger.getInstance.getRefferalValue()
         if mobileET.text?.count==10{
             mobileET.isUserInteractionEnabled = false
         }
         nameET.addTarget(self, action: #selector(cardName(field:)), for: .editingChanged)
         monthlyET.addTarget(self, action: #selector(checkValidAmount(field:)), for: .editingChanged)
         monthlyEmiField.addTarget(self, action: #selector(checkValidAmount(field:)), for: .editingChanged)
-
+        
     }
     
     @objc func checkValidAmount(field: UITextField){
@@ -108,7 +112,7 @@ class RegisterViewController: BaseLoginViewController{
     // MARK: - Properties
     
     // MARK: - Handlers
-
+    
     
     @IBAction func activeLoanSwitch(_ sender: UISwitch) {
         if sender.isOn {

@@ -8,8 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		EEFCC67B15FDCE5535A3BED9 /* Pods_Stashfin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01E532307C3E22DA0B5EE324 /* Pods_Stashfin.framework */; };
+		FA03A8E422A8FEC60025CFEC /* elv8_peny_drop_flow.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = FA03A8E322A8FEA30025CFEC /* elv8_peny_drop_flow.mp4 */; };
 		FA0CF50F227A035C0017D72A /* PageSwitcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0CF50E227A035C0017D72A /* PageSwitcher.swift */; };
 		FA0CF511227A13340017D72A /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0CF510227A13340017D72A /* RootViewController.swift */; };
+		FA1D3F8422982B41007ABD2F /* RegistrationElv8.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA1D3F8322982B41007ABD2F /* RegistrationElv8.storyboard */; };
+		FA24821B22EC7B2F00C3DEDD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA24821A22EC7B2F00C3DEDD /* GoogleService-Info.plist */; };
+		FA29E15A22A11AD0007A132D /* Elv8BankDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA29E15922A11AD0007A132D /* Elv8BankDetailsViewController.swift */; };
+		FA29E15C22A12018007A132D /* Elv8ReferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA29E15B22A12018007A132D /* Elv8ReferenceViewController.swift */; };
+		FA29E15E22A126F6007A132D /* Elv8LoanAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA29E15D22A126F6007A132D /* Elv8LoanAgreementViewController.swift */; };
+		FA29E16022A1290A007A132D /* Elv8ChooseLoanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA29E15F22A1290A007A132D /* Elv8ChooseLoanViewController.swift */; };
+		FA29E16222A137FD007A132D /* Elv8ChooseRepaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA29E16122A137FD007A132D /* Elv8ChooseRepaymentViewController.swift */; };
+		FA29E16422A1407E007A132D /* Elv8LoanApprovedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA29E16322A1407E007A132D /* Elv8LoanApprovedViewController.swift */; };
+		FA29E16822A140F3007A132D /* Elv8DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA29E16722A140F3007A132D /* Elv8DashboardViewController.swift */; };
+		FA29E16A22A1413A007A132D /* Elv8CheckEligibiltyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA29E16922A1413A007A132D /* Elv8CheckEligibiltyViewController.swift */; };
+		FA29E17022A14E67007A132D /* Elv8IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA29E16E22A14E67007A132D /* Elv8IntroView.swift */; };
+		FA29E17122A14E67007A132D /* Elv8IntroView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA29E16F22A14E67007A132D /* Elv8IntroView.xib */; };
+		FA29E17422A2416C007A132D /* Elv8Intro5View.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA29E17222A2416C007A132D /* Elv8Intro5View.swift */; };
+		FA29E17522A2416C007A132D /* Elv8Intro5View.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA29E17322A2416C007A132D /* Elv8Intro5View.xib */; };
 		FA3116742271A6FA008D52E9 /* sign.gif in Resources */ = {isa = PBXBuildFile; fileRef = FA3116732271A6FA008D52E9 /* sign.gif */; };
 		FA3116EE2271A71A008D52E9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116772271A718008D52E9 /* AppDelegate.swift */; };
 		FA3116EF2271A71A008D52E9 /* SocialLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116792271A719008D52E9 /* SocialLoginViewController.swift */; };
@@ -55,7 +70,6 @@
 		FA3117182271A71A008D52E9 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116A52271A719008D52E9 /* LoginViewController.swift */; };
 		FA3117192271A71A008D52E9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116A72271A719008D52E9 /* Constants.swift */; };
 		FA31171A2271A71A008D52E9 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116A82271A719008D52E9 /* Utilities.swift */; };
-		FA31171B2271A71A008D52E9 /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116A92271A719008D52E9 /* AppHelper.swift */; };
 		FA31171C2271A71A008D52E9 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116AA2271A719008D52E9 /* Logger.swift */; };
 		FA31171D2271A71A008D52E9 /* GDWebViewNavigationToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116AC2271A719008D52E9 /* GDWebViewNavigationToolbar.swift */; };
 		FA31171E2271A71A008D52E9 /* LabelSwitchBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116AD2271A719008D52E9 /* LabelSwitchBackView.swift */; };
@@ -74,7 +88,6 @@
 		FA31172C2271A71A008D52E9 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116BF2271A719008D52E9 /* ApiClient.swift */; };
 		FA31172D2271A71A008D52E9 /* ApiRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116C02271A719008D52E9 /* ApiRoute.swift */; };
 		FA31172E2271A71A008D52E9 /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116C22271A719008D52E9 /* Modal.swift */; };
-		FA31172F2271A71A008D52E9 /* ReferralCodeAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116C32271A719008D52E9 /* ReferralCodeAlertView.swift */; };
 		FA3117302271A71A008D52E9 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116C42271A719008D52E9 /* SessionManager.swift */; };
 		FA3117312271A71A008D52E9 /* AppVersionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116C62271A719008D52E9 /* AppVersionModel.swift */; };
 		FA3117322271A71A008D52E9 /* LoginResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3116C72271A719008D52E9 /* LoginResponseModel.swift */; };
@@ -103,7 +116,11 @@
 		FA31174F2271A71A008D52E9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3116E92271A71A008D52E9 /* Main.storyboard */; };
 		FA3117502271A71A008D52E9 /* MainMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3116EA2271A71A008D52E9 /* MainMenu.storyboard */; };
 		FA3117512271A71A008D52E9 /* MainDashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA3116EB2271A71A008D52E9 /* MainDashboard.storyboard */; };
-		FAA93E8422718CB700DA5245 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAA93E8322718CB700DA5245 /* Assets.xcassets */; };
+		FA66E07B22E6D66800FDFD2A /* PaymentHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA66E07A22E6D66800FDFD2A /* PaymentHistoryViewController.swift */; };
+		FA6B3AD22298D25A00826BF8 /* Elev8IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B3AD12298D25A00826BF8 /* Elev8IntroViewController.swift */; };
+		FA82C80C228C429100715FF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA82C80B228C429100715FF7 /* Assets.xcassets */; };
+		FAA3C9B222E339A2000E286D /* AppLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA3C9AF22E339A2000E286D /* AppLocker.swift */; };
+		FAA3C9B322E339A2000E286D /* UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA3C9B022E339A2000E286D /* UI.swift */; };
 		FAB47C4A2273EFA900241253 /* DropDownCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAB47C402273EFA900241253 /* DropDownCell.xib */; };
 		FAB47C4B2273EFA900241253 /* DPDKeyboardListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB47C422273EFA900241253 /* DPDKeyboardListener.swift */; };
 		FAB47C4C2273EFA900241253 /* DPDConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB47C432273EFA900241253 /* DPDConstants.swift */; };
@@ -111,16 +128,45 @@
 		FAB47C4F2273EFA900241253 /* DropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB47C472273EFA900241253 /* DropDown.swift */; };
 		FAB47C502273EFA900241253 /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB47C482273EFA900241253 /* DropDownCell.swift */; };
 		FAB47C512273EFA900241253 /* DropDown+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB47C492273EFA900241253 /* DropDown+Appearance.swift */; };
+		FAB675C922CDC5F800A4EA01 /* BillIntroView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAB675C822CDC5F800A4EA01 /* BillIntroView.xib */; };
+		FAB675CB22CDC60E00A4EA01 /* BillIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB675CA22CDC60E00A4EA01 /* BillIntroView.swift */; };
+		FAB675CD22CDCA8400A4EA01 /* BillIntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB675CC22CDCA8400A4EA01 /* BillIntroViewController.swift */; };
+		FAB675CF22CDD56B00A4EA01 /* BillLoadMyCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB675CE22CDD56B00A4EA01 /* BillLoadMyCardViewController.swift */; };
+		FAB675D122CDD67500A4EA01 /* BillLoadMyCardConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB675D022CDD67500A4EA01 /* BillLoadMyCardConfirmViewController.swift */; };
+		FAB675D322CDDB0200A4EA01 /* BillPayNowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB675D222CDDB0200A4EA01 /* BillPayNowViewController.swift */; };
+		FAC090FF22AFDE300092EB73 /* MpinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC090FE22AFDE300092EB73 /* MpinViewController.swift */; };
+		FAC0910222AFDFF50092EB73 /* Other.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAC0910122AFDFF50092EB73 /* Other.storyboard */; };
+		FAC50FFD22E3543A003A3BE7 /* AppLocker.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAC50FFC22E3543A003A3BE7 /* AppLocker.xib */; };
+		FAD289C12299338E008B3A43 /* Elv8ApplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD289C02299338E008B3A43 /* Elv8ApplyViewController.swift */; };
+		FAD289C322996B02008B3A43 /* Elv8AadhaarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD289C222996B02008B3A43 /* Elv8AadhaarViewController.swift */; };
+		FAD289C522996F5B008B3A43 /* Elv8PennyDropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD289C422996F5B008B3A43 /* Elv8PennyDropViewController.swift */; };
 		FAF0FC84227AC79200341E18 /* KeyValueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF0FC82227AC79200341E18 /* KeyValueTableViewCell.swift */; };
 		FAF0FC85227AC79200341E18 /* KeyValueTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAF0FC83227AC79200341E18 /* KeyValueTableViewCell.xib */; };
+		FAFA47F622CC6B9E009A9ABA /* OutgoingBillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFA47F522CC6B9E009A9ABA /* OutgoingBillViewController.swift */; };
+		FAFBC36622C722BB00B38FD8 /* MainBill.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAFBC36522C722BB00B38FD8 /* MainBill.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		01E532307C3E22DA0B5EE324 /* Pods_Stashfin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stashfin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EC4D7E62AE049DF61C700F1 /* Pods-Stashfin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stashfin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Stashfin/Pods-Stashfin.debug.xcconfig"; sourceTree = "<group>"; };
 		A2E9751704EE097EA8AE3D1C /* Pods-Stashfin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stashfin.release.xcconfig"; path = "Pods/Target Support Files/Pods-Stashfin/Pods-Stashfin.release.xcconfig"; sourceTree = "<group>"; };
+		FA03A8E322A8FEA30025CFEC /* elv8_peny_drop_flow.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = elv8_peny_drop_flow.mp4; path = ../elv8_peny_drop_flow.mp4; sourceTree = "<group>"; };
 		FA0CF50E227A035C0017D72A /* PageSwitcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageSwitcher.swift; sourceTree = "<group>"; };
 		FA0CF510227A13340017D72A /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		FA1D3F8322982B41007ABD2F /* RegistrationElv8.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RegistrationElv8.storyboard; sourceTree = "<group>"; };
+		FA24821A22EC7B2F00C3DEDD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FA29E15922A11AD0007A132D /* Elv8BankDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elv8BankDetailsViewController.swift; sourceTree = "<group>"; };
+		FA29E15B22A12018007A132D /* Elv8ReferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elv8ReferenceViewController.swift; sourceTree = "<group>"; };
+		FA29E15D22A126F6007A132D /* Elv8LoanAgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elv8LoanAgreementViewController.swift; sourceTree = "<group>"; };
+		FA29E15F22A1290A007A132D /* Elv8ChooseLoanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elv8ChooseLoanViewController.swift; sourceTree = "<group>"; };
+		FA29E16122A137FD007A132D /* Elv8ChooseRepaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elv8ChooseRepaymentViewController.swift; sourceTree = "<group>"; };
+		FA29E16322A1407E007A132D /* Elv8LoanApprovedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elv8LoanApprovedViewController.swift; sourceTree = "<group>"; };
+		FA29E16722A140F3007A132D /* Elv8DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elv8DashboardViewController.swift; sourceTree = "<group>"; };
+		FA29E16922A1413A007A132D /* Elv8CheckEligibiltyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elv8CheckEligibiltyViewController.swift; sourceTree = "<group>"; };
+		FA29E16E22A14E67007A132D /* Elv8IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elv8IntroView.swift; sourceTree = "<group>"; };
+		FA29E16F22A14E67007A132D /* Elv8IntroView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Elv8IntroView.xib; sourceTree = "<group>"; };
+		FA29E17222A2416C007A132D /* Elv8Intro5View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elv8Intro5View.swift; sourceTree = "<group>"; };
+		FA29E17322A2416C007A132D /* Elv8Intro5View.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Elv8Intro5View.xib; sourceTree = "<group>"; };
 		FA3116732271A6FA008D52E9 /* sign.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = sign.gif; sourceTree = "<group>"; };
 		FA3116772271A718008D52E9 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FA3116792271A719008D52E9 /* SocialLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialLoginViewController.swift; sourceTree = "<group>"; };
@@ -166,7 +212,6 @@
 		FA3116A52271A719008D52E9 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		FA3116A72271A719008D52E9 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		FA3116A82271A719008D52E9 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
-		FA3116A92271A719008D52E9 /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppHelper.swift; sourceTree = "<group>"; };
 		FA3116AA2271A719008D52E9 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		FA3116AC2271A719008D52E9 /* GDWebViewNavigationToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GDWebViewNavigationToolbar.swift; sourceTree = "<group>"; };
 		FA3116AD2271A719008D52E9 /* LabelSwitchBackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelSwitchBackView.swift; sourceTree = "<group>"; };
@@ -185,7 +230,6 @@
 		FA3116BF2271A719008D52E9 /* ApiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		FA3116C02271A719008D52E9 /* ApiRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiRoute.swift; sourceTree = "<group>"; };
 		FA3116C22271A719008D52E9 /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
-		FA3116C32271A719008D52E9 /* ReferralCodeAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralCodeAlertView.swift; sourceTree = "<group>"; };
 		FA3116C42271A719008D52E9 /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		FA3116C62271A719008D52E9 /* AppVersionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersionModel.swift; sourceTree = "<group>"; };
 		FA3116C72271A719008D52E9 /* LoginResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginResponseModel.swift; sourceTree = "<group>"; };
@@ -215,7 +259,11 @@
 		FA3116EA2271A71A008D52E9 /* MainMenu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainMenu.storyboard; sourceTree = "<group>"; };
 		FA3116EB2271A71A008D52E9 /* MainDashboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainDashboard.storyboard; sourceTree = "<group>"; };
 		FA3117562271ABA6008D52E9 /* HeaderBridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeaderBridging.h; sourceTree = "<group>"; };
-		FAA93E8322718CB700DA5245 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../../Desktop/ios/StashFinDemo/StashFinDemo/Assets.xcassets; sourceTree = "<group>"; };
+		FA66E07A22E6D66800FDFD2A /* PaymentHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHistoryViewController.swift; sourceTree = "<group>"; };
+		FA6B3AD12298D25A00826BF8 /* Elev8IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elev8IntroViewController.swift; sourceTree = "<group>"; };
+		FA82C80B228C429100715FF7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FAA3C9AF22E339A2000E286D /* AppLocker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLocker.swift; sourceTree = "<group>"; };
+		FAA3C9B022E339A2000E286D /* UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI.swift; sourceTree = "<group>"; };
 		FAAFB3072271895F00C5056D /* Stashfin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stashfin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAAFB3162271896100C5056D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FAB47C3E2273EFA900241253 /* DropDown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDown.h; sourceTree = "<group>"; };
@@ -226,8 +274,22 @@
 		FAB47C472273EFA900241253 /* DropDown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDown.swift; sourceTree = "<group>"; };
 		FAB47C482273EFA900241253 /* DropDownCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownCell.swift; sourceTree = "<group>"; };
 		FAB47C492273EFA900241253 /* DropDown+Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DropDown+Appearance.swift"; sourceTree = "<group>"; };
+		FAB675C822CDC5F800A4EA01 /* BillIntroView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BillIntroView.xib; sourceTree = "<group>"; };
+		FAB675CA22CDC60E00A4EA01 /* BillIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillIntroView.swift; sourceTree = "<group>"; };
+		FAB675CC22CDCA8400A4EA01 /* BillIntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillIntroViewController.swift; sourceTree = "<group>"; };
+		FAB675CE22CDD56B00A4EA01 /* BillLoadMyCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillLoadMyCardViewController.swift; sourceTree = "<group>"; };
+		FAB675D022CDD67500A4EA01 /* BillLoadMyCardConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillLoadMyCardConfirmViewController.swift; sourceTree = "<group>"; };
+		FAB675D222CDDB0200A4EA01 /* BillPayNowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillPayNowViewController.swift; sourceTree = "<group>"; };
+		FAC090FE22AFDE300092EB73 /* MpinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MpinViewController.swift; sourceTree = "<group>"; };
+		FAC0910122AFDFF50092EB73 /* Other.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Other.storyboard; sourceTree = "<group>"; };
+		FAC50FFC22E3543A003A3BE7 /* AppLocker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppLocker.xib; sourceTree = "<group>"; };
+		FAD289C02299338E008B3A43 /* Elv8ApplyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elv8ApplyViewController.swift; sourceTree = "<group>"; };
+		FAD289C222996B02008B3A43 /* Elv8AadhaarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elv8AadhaarViewController.swift; sourceTree = "<group>"; };
+		FAD289C422996F5B008B3A43 /* Elv8PennyDropViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elv8PennyDropViewController.swift; sourceTree = "<group>"; };
 		FAF0FC82227AC79200341E18 /* KeyValueTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueTableViewCell.swift; sourceTree = "<group>"; };
 		FAF0FC83227AC79200341E18 /* KeyValueTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KeyValueTableViewCell.xib; sourceTree = "<group>"; };
+		FAFA47F522CC6B9E009A9ABA /* OutgoingBillViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingBillViewController.swift; sourceTree = "<group>"; };
+		FAFBC36522C722BB00B38FD8 /* MainBill.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainBill.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,11 +321,24 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		FA3116752271A718008D52E9 /* handlers */ = {
+		FA1D3F8222982B22007ABD2F /* elev8 */ = {
 			isa = PBXGroup;
 			children = (
+				FA29E16B22A14AD2007A132D /* elv8_custom_views */,
+				FA1D3F8322982B41007ABD2F /* RegistrationElv8.storyboard */,
 			);
-			path = handlers;
+			path = elev8;
+			sourceTree = "<group>";
+		};
+		FA29E16B22A14AD2007A132D /* elv8_custom_views */ = {
+			isa = PBXGroup;
+			children = (
+				FA29E16E22A14E67007A132D /* Elv8IntroView.swift */,
+				FA29E16F22A14E67007A132D /* Elv8IntroView.xib */,
+				FA29E17222A2416C007A132D /* Elv8Intro5View.swift */,
+				FA29E17322A2416C007A132D /* Elv8Intro5View.xib */,
+			);
+			path = elv8_custom_views;
 			sourceTree = "<group>";
 		};
 		FA3116762271A718008D52E9 /* application */ = {
@@ -277,6 +352,8 @@
 		FA3116782271A719008D52E9 /* controller */ = {
 			isa = PBXGroup;
 			children = (
+				FAFA47F422CC6B7C009A9ABA /* bills */,
+				FA6B3AD02298D21C00826BF8 /* elv8 */,
 				FA31167A2271A719008D52E9 /* home */,
 				FA31168D2271A719008D52E9 /* registration */,
 				FA31169E2271A719008D52E9 /* test */,
@@ -287,6 +364,7 @@
 				FA3116A42271A719008D52E9 /* SplashViewController.swift */,
 				FA3116A52271A719008D52E9 /* LoginViewController.swift */,
 				FA0CF510227A13340017D72A /* RootViewController.swift */,
+				FAA3C9AF22E339A2000E286D /* AppLocker.swift */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -312,6 +390,7 @@
 				FA31168A2271A719008D52E9 /* TransactionViewController.swift */,
 				FA31168B2271A719008D52E9 /* ProfileViewController.swift */,
 				FA31168C2271A719008D52E9 /* OutgoingEmiViewController.swift */,
+				FA66E07A22E6D66800FDFD2A /* PaymentHistoryViewController.swift */,
 			);
 			path = home;
 			sourceTree = "<group>";
@@ -344,6 +423,7 @@
 				FA3116A12271A719008D52E9 /* CardDetailsViewController.swift */,
 				FA3116A22271A719008D52E9 /* WebViewViewController.swift */,
 				FA3116A32271A719008D52E9 /* MenuViewController.swift */,
+				FAC090FE22AFDE300092EB73 /* MpinViewController.swift */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -351,14 +431,14 @@
 		FA3116A62271A719008D52E9 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				FA03A8E322A8FEA30025CFEC /* elv8_peny_drop_flow.mp4 */,
+				FA3116732271A6FA008D52E9 /* sign.gif */,
 				FA3116A72271A719008D52E9 /* Constants.swift */,
 				FA3116A82271A719008D52E9 /* Utilities.swift */,
-				FA3116A92271A719008D52E9 /* AppHelper.swift */,
 				FA3116AA2271A719008D52E9 /* Logger.swift */,
 				FA3116AB2271A719008D52E9 /* libs */,
 				FA3116B62271A719008D52E9 /* AttachmentHandler.swift */,
 				FA3116B72271A719008D52E9 /* CheckBox.swift */,
-				FA3116732271A6FA008D52E9 /* sign.gif */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -366,6 +446,7 @@
 		FA3116AB2271A719008D52E9 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				FAA3C9AD22E339A2000E286D /* AppLocker */,
 				FAB47C3D2273EFA900241253 /* DropDown */,
 				FA3116AC2271A719008D52E9 /* GDWebViewNavigationToolbar.swift */,
 				FA3116AD2271A719008D52E9 /* LabelSwitchBackView.swift */,
@@ -411,7 +492,6 @@
 			isa = PBXGroup;
 			children = (
 				FA3116C22271A719008D52E9 /* Modal.swift */,
-				FA3116C32271A719008D52E9 /* ReferralCodeAlertView.swift */,
 				FA3116C42271A719008D52E9 /* SessionManager.swift */,
 			);
 			path = managers;
@@ -430,6 +510,8 @@
 		FA3116C92271A71A008D52E9 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				FAC0910022AFDFDA0092EB73 /* other */,
+				FA1D3F8222982B22007ABD2F /* elev8 */,
 				FA3116CE2271A71A008D52E9 /* custom_views */,
 				FA3116DD2271A71A008D52E9 /* register */,
 				FA3116E52271A71A008D52E9 /* Main */,
@@ -473,14 +555,44 @@
 		FA3116E52271A71A008D52E9 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				FAB675C722CDC59100A4EA01 /* main_custom */,
 				FA3116E62271A71A008D52E9 /* MainCard.storyboard */,
 				FA3116E72271A71A008D52E9 /* MainCardActivate.storyboard */,
 				FA3116E82271A71A008D52E9 /* MainOther.storyboard */,
 				FA3116E92271A71A008D52E9 /* Main.storyboard */,
 				FA3116EA2271A71A008D52E9 /* MainMenu.storyboard */,
 				FA3116EB2271A71A008D52E9 /* MainDashboard.storyboard */,
+				FAFBC36522C722BB00B38FD8 /* MainBill.storyboard */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		FA6B3AD02298D21C00826BF8 /* elv8 */ = {
+			isa = PBXGroup;
+			children = (
+				FA6B3AD12298D25A00826BF8 /* Elev8IntroViewController.swift */,
+				FAD289C02299338E008B3A43 /* Elv8ApplyViewController.swift */,
+				FAD289C222996B02008B3A43 /* Elv8AadhaarViewController.swift */,
+				FAD289C422996F5B008B3A43 /* Elv8PennyDropViewController.swift */,
+				FA29E15922A11AD0007A132D /* Elv8BankDetailsViewController.swift */,
+				FA29E15B22A12018007A132D /* Elv8ReferenceViewController.swift */,
+				FA29E15D22A126F6007A132D /* Elv8LoanAgreementViewController.swift */,
+				FA29E15F22A1290A007A132D /* Elv8ChooseLoanViewController.swift */,
+				FA29E16122A137FD007A132D /* Elv8ChooseRepaymentViewController.swift */,
+				FA29E16322A1407E007A132D /* Elv8LoanApprovedViewController.swift */,
+				FA29E16722A140F3007A132D /* Elv8DashboardViewController.swift */,
+				FA29E16922A1413A007A132D /* Elv8CheckEligibiltyViewController.swift */,
+			);
+			path = elv8;
+			sourceTree = "<group>";
+		};
+		FAA3C9AD22E339A2000E286D /* AppLocker */ = {
+			isa = PBXGroup;
+			children = (
+				FAC50FFC22E3543A003A3BE7 /* AppLocker.xib */,
+				FAA3C9B022E339A2000E286D /* UI.swift */,
+			);
+			path = AppLocker;
 			sourceTree = "<group>";
 		};
 		FAAFB2FE2271895F00C5056D = {
@@ -509,13 +621,13 @@
 				FA3116762271A718008D52E9 /* application */,
 				FA3116782271A719008D52E9 /* controller */,
 				FA3116B82271A719008D52E9 /* extensions */,
-				FA3116752271A718008D52E9 /* handlers */,
 				FA3116C12271A719008D52E9 /* managers */,
 				FA3116C52271A719008D52E9 /* models */,
 				FA3116A62271A719008D52E9 /* utils */,
 				FA3116C92271A71A008D52E9 /* views */,
-				FAA93E8322718CB700DA5245 /* Assets.xcassets */,
+				FA82C80B228C429100715FF7 /* Assets.xcassets */,
 				FAAFB3162271896100C5056D /* Info.plist */,
+				FA24821A22EC7B2F00C3DEDD /* GoogleService-Info.plist */,
 			);
 			path = Stashfin;
 			sourceTree = "<group>";
@@ -559,6 +671,23 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		FAB675C722CDC59100A4EA01 /* main_custom */ = {
+			isa = PBXGroup;
+			children = (
+				FAB675C822CDC5F800A4EA01 /* BillIntroView.xib */,
+				FAB675CA22CDC60E00A4EA01 /* BillIntroView.swift */,
+			);
+			path = main_custom;
+			sourceTree = "<group>";
+		};
+		FAC0910022AFDFDA0092EB73 /* other */ = {
+			isa = PBXGroup;
+			children = (
+				FAC0910122AFDFF50092EB73 /* Other.storyboard */,
+			);
+			path = other;
+			sourceTree = "<group>";
+		};
 		FAF0FC81227AC77C00341E18 /* cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -566,6 +695,18 @@
 				FAF0FC83227AC79200341E18 /* KeyValueTableViewCell.xib */,
 			);
 			path = cell;
+			sourceTree = "<group>";
+		};
+		FAFA47F422CC6B7C009A9ABA /* bills */ = {
+			isa = PBXGroup;
+			children = (
+				FAFA47F522CC6B9E009A9ABA /* OutgoingBillViewController.swift */,
+				FAB675CC22CDCA8400A4EA01 /* BillIntroViewController.swift */,
+				FAB675CE22CDD56B00A4EA01 /* BillLoadMyCardViewController.swift */,
+				FAB675D022CDD67500A4EA01 /* BillLoadMyCardConfirmViewController.swift */,
+				FAB675D222CDDB0200A4EA01 /* BillPayNowViewController.swift */,
+			);
+			path = bills;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -629,11 +770,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA03A8E422A8FEC60025CFEC /* elv8_peny_drop_flow.mp4 in Resources */,
 				FA3117412271A71A008D52E9 /* ForgotPasswordViewController.xib in Resources */,
 				FA31173F2271A71A008D52E9 /* SignatureIntroView.xib in Resources */,
 				FA3117512271A71A008D52E9 /* MainDashboard.storyboard in Resources */,
 				FA31174F2271A71A008D52E9 /* Main.storyboard in Resources */,
 				FA3117452271A71A008D52E9 /* RegistrationNew.storyboard in Resources */,
+				FAFBC36622C722BB00B38FD8 /* MainBill.storyboard in Resources */,
+				FAC50FFD22E3543A003A3BE7 /* AppLocker.xib in Resources */,
 				FA31174D2271A71A008D52E9 /* MainCardActivate.storyboard in Resources */,
 				FA31174E2271A71A008D52E9 /* MainOther.storyboard in Resources */,
 				FA31173E2271A71A008D52E9 /* CardCollectionViewCell.xib in Resources */,
@@ -641,17 +785,23 @@
 				FA3117492271A71A008D52E9 /* Test.storyboard in Resources */,
 				FA3117402271A71A008D52E9 /* ChangePasswordViewController.xib in Resources */,
 				FAF0FC85227AC79200341E18 /* KeyValueTableViewCell.xib in Resources */,
+				FA29E17522A2416C007A132D /* Elv8Intro5View.xib in Resources */,
 				FA31174C2271A71A008D52E9 /* MainCard.storyboard in Resources */,
+				FAB675C922CDC5F800A4EA01 /* BillIntroView.xib in Resources */,
 				FA3117362271A71A008D52E9 /* StartLaunchScreen.storyboard in Resources */,
+				FA29E17122A14E67007A132D /* Elv8IntroView.xib in Resources */,
 				FA3117502271A71A008D52E9 /* MainMenu.storyboard in Resources */,
 				FA3117472271A71A008D52E9 /* RegistrationNew1.storyboard in Resources */,
 				FA3117392271A71A008D52E9 /* EMIDistributionCell.xib in Resources */,
 				FAB47C4A2273EFA900241253 /* DropDownCell.xib in Resources */,
 				FA3117432271A71A008D52E9 /* CardCell.xib in Resources */,
+				FA24821B22EC7B2F00C3DEDD /* GoogleService-Info.plist in Resources */,
 				FA3117482271A71A008D52E9 /* old-Registrations.storyboard in Resources */,
+				FA1D3F8422982B41007ABD2F /* RegistrationElv8.storyboard in Resources */,
 				FA3117342271A71A008D52E9 /* LaunchScreen.storyboard in Resources */,
+				FAC0910222AFDFF50092EB73 /* Other.storyboard in Resources */,
 				FA3116742271A6FA008D52E9 /* sign.gif in Resources */,
-				FAA93E8422718CB700DA5245 /* Assets.xcassets in Resources */,
+				FA82C80C228C429100715FF7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -666,18 +816,22 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Stashfin/Pods-Stashfin-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Stashfin/Pods-Stashfin-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/CropViewController/CropViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/FSPagerView/FSPagerView.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/QRCodeReader.swift/QRCodeReader.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftKeychainWrapper/SwiftKeychainWrapper.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyGif/SwiftyGif.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/Toast-Swift/Toast_Swift.framework",
+				"${BUILT_PRODUCTS_DIR}/Valet/Valet.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -686,18 +840,22 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CropViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSPagerView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QRCodeReader.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftKeychainWrapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyGif.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toast_Swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Valet.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Stashfin/Pods-Stashfin-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Stashfin/Pods-Stashfin-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C921C6F74ADC5E85CE3E6724 /* [CP] Check Pods Manifest.lock */ = {
@@ -749,21 +907,29 @@
 			files = (
 				FA3117332271A71A008D52E9 /* ErrorModel.swift in Sources */,
 				FA3117042271A71A008D52E9 /* SignatureViewController.swift in Sources */,
+				FA29E17022A14E67007A132D /* Elv8IntroView.swift in Sources */,
 				FA31170C2271A71A008D52E9 /* BankStatementUploadViewController.swift in Sources */,
 				FAB47C4D2273EFA900241253 /* DPDUIView+Extension.swift in Sources */,
 				FA31171F2271A71A008D52E9 /* LabelSwitchState.swift in Sources */,
+				FA29E15E22A126F6007A132D /* Elv8LoanAgreementViewController.swift in Sources */,
 				FA3117322271A71A008D52E9 /* LoginResponseModel.swift in Sources */,
+				FAA3C9B322E339A2000E286D /* UI.swift in Sources */,
 				FA31170A2271A71A008D52E9 /* RegisterLoginViewController.swift in Sources */,
 				FA3117242271A71A008D52E9 /* DatePickerDialog.swift in Sources */,
 				FA3117082271A71A008D52E9 /* ApprovedViewController.swift in Sources */,
 				FA31171C2271A71A008D52E9 /* Logger.swift in Sources */,
 				FA3117122271A71A008D52E9 /* GetCardViewController.swift in Sources */,
+				FAB675CF22CDD56B00A4EA01 /* BillLoadMyCardViewController.swift in Sources */,
+				FAB675D322CDDB0200A4EA01 /* BillPayNowViewController.swift in Sources */,
 				FA31173C2271A71A008D52E9 /* SignatureIntroView.swift in Sources */,
+				FAB675CD22CDCA8400A4EA01 /* BillIntroViewController.swift in Sources */,
 				FA3116F42271A71A008D52E9 /* LoadMyCardConfirmViewController.swift in Sources */,
 				FA3117422271A71A008D52E9 /* CardCollectionViewCell.swift in Sources */,
 				FA3117112271A71A008D52E9 /* BaseViewController.swift in Sources */,
 				FA31171E2271A71A008D52E9 /* LabelSwitchBackView.swift in Sources */,
 				FA3117132271A71A008D52E9 /* MainContainerViewController.swift in Sources */,
+				FA29E16222A137FD007A132D /* Elv8ChooseRepaymentViewController.swift in Sources */,
+				FA6B3AD22298D25A00826BF8 /* Elev8IntroViewController.swift in Sources */,
 				FA3116EE2271A71A008D52E9 /* AppDelegate.swift in Sources */,
 				FAB47C4C2273EFA900241253 /* DPDConstants.swift in Sources */,
 				FA3117022271A71A008D52E9 /* RejectViewController.swift in Sources */,
@@ -773,10 +939,15 @@
 				FAB47C512273EFA900241253 /* DropDown+Appearance.swift in Sources */,
 				FA31172D2271A71A008D52E9 /* ApiRoute.swift in Sources */,
 				FA3117162271A71A008D52E9 /* MenuViewController.swift in Sources */,
+				FAD289C522996F5B008B3A43 /* Elv8PennyDropViewController.swift in Sources */,
+				FA29E16A22A1413A007A132D /* Elv8CheckEligibiltyViewController.swift in Sources */,
+				FAA3C9B222E339A2000E286D /* AppLocker.swift in Sources */,
 				FA3116F82271A71A008D52E9 /* BlockViewController.swift in Sources */,
-				FA31171B2271A71A008D52E9 /* AppHelper.swift in Sources */,
 				FA3116FE2271A71A008D52E9 /* ApplicationStatusViewController.swift in Sources */,
+				FAB675CB22CDC60E00A4EA01 /* BillIntroView.swift in Sources */,
+				FAD289C322996B02008B3A43 /* Elv8AadhaarViewController.swift in Sources */,
 				FAF0FC84227AC79200341E18 /* KeyValueTableViewCell.swift in Sources */,
+				FAB675D122CDD67500A4EA01 /* BillLoadMyCardConfirmViewController.swift in Sources */,
 				FA31170E2271A71A008D52E9 /* RegisterViewController.swift in Sources */,
 				FA3117102271A71A008D52E9 /* BaseLoginViewController.swift in Sources */,
 				FA3117292271A71A008D52E9 /* AF+logging.swift in Sources */,
@@ -791,29 +962,39 @@
 				FA3116F22271A71A008D52E9 /* CardPinViewController.swift in Sources */,
 				FA3117382271A71A008D52E9 /* IosDropDown.swift in Sources */,
 				FA3117002271A71A008D52E9 /* ProfileViewController.swift in Sources */,
+				FA29E17422A2416C007A132D /* Elv8Intro5View.swift in Sources */,
 				FA3116F62271A71A008D52E9 /* ActivateCardViewController.swift in Sources */,
 				FA3116FC2271A71A008D52E9 /* StashFinCardViewController.swift in Sources */,
 				FA3116F72271A71A008D52E9 /* PayBackViewController.swift in Sources */,
 				FA3116F92271A71A008D52E9 /* LoanCalculatorViewController.swift in Sources */,
+				FA29E15C22A12018007A132D /* Elv8ReferenceViewController.swift in Sources */,
 				FA0CF511227A13340017D72A /* RootViewController.swift in Sources */,
 				FA3117232271A71A008D52E9 /* LabelSwitchConfig.swift in Sources */,
 				FAB47C4B2273EFA900241253 /* DPDKeyboardListener.swift in Sources */,
+				FA29E16022A1290A007A132D /* Elv8ChooseLoanViewController.swift in Sources */,
 				FA31172A2271A71A008D52E9 /* EmptyCheck.swift in Sources */,
 				FA3117092271A71A008D52E9 /* ThankuViewController.swift in Sources */,
+				FA29E16422A1407E007A132D /* Elv8LoanApprovedViewController.swift in Sources */,
+				FAD289C12299338E008B3A43 /* Elv8ApplyViewController.swift in Sources */,
 				FA0CF50F227A035C0017D72A /* PageSwitcher.swift in Sources */,
 				FA3117032271A71A008D52E9 /* BankDetailsViewController.swift in Sources */,
 				FA3117152271A71A008D52E9 /* WebViewViewController.swift in Sources */,
+				FA29E16822A140F3007A132D /* Elv8DashboardViewController.swift in Sources */,
 				FA31171A2271A71A008D52E9 /* Utilities.swift in Sources */,
+				FA66E07B22E6D66800FDFD2A /* PaymentHistoryViewController.swift in Sources */,
 				FA3117312271A71A008D52E9 /* AppVersionModel.swift in Sources */,
 				FA31171D2271A71A008D52E9 /* GDWebViewNavigationToolbar.swift in Sources */,
+				FA29E15A22A11AD0007A132D /* Elv8BankDetailsViewController.swift in Sources */,
 				FA3116FF2271A71A008D52E9 /* TransactionViewController.swift in Sources */,
 				FAB47C502273EFA900241253 /* DropDownCell.swift in Sources */,
 				FA3117262271A71A008D52E9 /* AttachmentHandler.swift in Sources */,
 				FA3117272271A71A008D52E9 /* CheckBox.swift in Sources */,
 				FA3117212271A71A008D52E9 /* GDWebViewController.swift in Sources */,
+				FAC090FF22AFDE300092EB73 /* MpinViewController.swift in Sources */,
 				FA3117282271A71A008D52E9 /* AppHelperExtension.swift in Sources */,
 				FA3117172271A71A008D52E9 /* SplashViewController.swift in Sources */,
 				FA31172E2271A71A008D52E9 /* Modal.swift in Sources */,
+				FAFA47F622CC6B9E009A9ABA /* OutgoingBillViewController.swift in Sources */,
 				FA3117182271A71A008D52E9 /* LoginViewController.swift in Sources */,
 				FA3116F52271A71A008D52E9 /* LoadMyCardDoneViewController.swift in Sources */,
 				FA31172B2271A71A008D52E9 /* TableViewCell.swift in Sources */,
@@ -828,7 +1009,6 @@
 				FA3117302271A71A008D52E9 /* SessionManager.swift in Sources */,
 				FA3116F12271A71A008D52E9 /* DashBoardViewController.swift in Sources */,
 				FA3117202271A71A008D52E9 /* LabelSwitch.swift in Sources */,
-				FA31172F2271A71A008D52E9 /* ReferralCodeAlertView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -880,7 +1060,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;

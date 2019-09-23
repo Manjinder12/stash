@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -129,7 +129,9 @@
                                             <constraint firstAttribute="height" constant="35" id="ClU-RF-tbk"/>
                                             <constraint firstAttribute="width" secondItem="Ogi-0B-kaw" secondAttribute="height" multiplier="200:35" id="mhk-Z0-0Xv"/>
                                         </constraints>
-                                        <state key="normal" title="Generate eNach"/>
+                                        <state key="normal" title="Generate eNach">
+                                            <color key="titleColor" red="1" green="0.97028450320000004" blue="0.99326939650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
                                         <connections>
                                             <action selector="submitEnach:" destination="vh4-pA-3O6" eventType="touchUpInside" id="c6B-J9-01X"/>
                                         </connections>
@@ -234,11 +236,18 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s9I-hf-rBY" customClass="RCButton" customModule="Stashfin" customModuleProvider="target">
-                                <rect key="frame" x="40" y="592" width="295" height="35"/>
+                                <rect key="frame" x="100" y="592" width="175" height="35"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.92165492959999995" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="b51-wU-ruG"/>
+                                    <constraint firstAttribute="width" secondItem="s9I-hf-rBY" secondAttribute="height" multiplier="200:40" id="djI-y5-RXu"/>
                                 </constraints>
-                                <state key="normal" title="Close"/>
+                                <state key="normal" title="Close">
+                                    <color key="titleColor" red="1" green="0.97028450320000004" blue="0.99326939650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="closeBtn:" destination="L8z-My-vfR" eventType="touchUpInside" id="haT-ml-z4p"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reject" translatesAutoresizingMaskIntoConstraints="NO" id="lmu-5F-Xbt">
                                 <rect key="frame" x="84" y="48" width="201" height="200"/>
@@ -261,11 +270,10 @@
                         <constraints>
                             <constraint firstItem="cYX-N7-Xy6" firstAttribute="top" secondItem="lmu-5F-Xbt" secondAttribute="bottom" constant="8" symbolic="YES" id="1IF-x1-IYB"/>
                             <constraint firstItem="lmu-5F-Xbt" firstAttribute="leading" secondItem="Gvq-PG-USK" secondAttribute="leading" constant="84" id="31D-Bx-YEy"/>
-                            <constraint firstItem="cYX-N7-Xy6" firstAttribute="trailing" secondItem="s9I-hf-rBY" secondAttribute="trailing" id="5nV-bI-6qD"/>
                             <constraint firstItem="Gvq-PG-USK" firstAttribute="trailing" secondItem="TcH-ez-er1" secondAttribute="trailing" constant="43" id="97V-Tu-F4Q"/>
                             <constraint firstItem="lmu-5F-Xbt" firstAttribute="centerX" secondItem="TcH-ez-er1" secondAttribute="centerX" id="Dty-hX-wim"/>
                             <constraint firstItem="lmu-5F-Xbt" firstAttribute="top" secondItem="Gvq-PG-USK" secondAttribute="top" constant="28" id="JkS-AW-oCa"/>
-                            <constraint firstItem="cYX-N7-Xy6" firstAttribute="leading" secondItem="s9I-hf-rBY" secondAttribute="leading" id="NII-rL-BZu"/>
+                            <constraint firstItem="s9I-hf-rBY" firstAttribute="centerX" secondItem="Gvq-PG-USK" secondAttribute="centerX" id="UKF-dH-Drb"/>
                             <constraint firstItem="TcH-ez-er1" firstAttribute="leading" secondItem="Gvq-PG-USK" secondAttribute="leading" constant="37" id="VXE-yd-iwS"/>
                             <constraint firstItem="TcH-ez-er1" firstAttribute="top" secondItem="cYX-N7-Xy6" secondAttribute="bottom" constant="38" id="WgY-jn-qcU"/>
                             <constraint firstItem="Gvq-PG-USK" firstAttribute="bottom" secondItem="s9I-hf-rBY" secondAttribute="bottom" constant="40" id="aos-fo-zdS"/>
@@ -324,7 +332,9 @@
                                     <constraint firstAttribute="width" secondItem="qtK-s6-vWC" secondAttribute="height" multiplier="200:35" id="dyB-nC-3HX"/>
                                 </constraints>
                                 <inset key="titleEdgeInsets" minX="0.0" minY="-3" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="Sign Document"/>
+                                <state key="normal" title="Sign Document">
+                                    <color key="titleColor" red="1" green="0.97028450320000004" blue="0.99326939650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="signBtn:" destination="7zc-uT-H07" eventType="touchUpInside" id="mkm-T8-fHY"/>
                                 </connections>
@@ -403,7 +413,9 @@
                                     <constraint firstAttribute="height" constant="35" id="6by-ug-hNf"/>
                                     <constraint firstAttribute="width" secondItem="z7n-ug-yU9" secondAttribute="height" multiplier="200:35" id="b2v-an-ShJ"/>
                                 </constraints>
-                                <state key="normal" title="Close"/>
+                                <state key="normal" title="Close">
+                                    <color key="titleColor" red="1" green="0.97028450320000004" blue="0.99326939650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="nextThankyouBtn:" destination="Sol-OO-bpL" eventType="touchUpInside" id="1jD-fE-7YW"/>
                                 </connections>
@@ -470,7 +482,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dn4-hu-Qcm" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="451" width="335" height="41"/>
+                                        <rect key="frame" x="20" y="452" width="335" height="41"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="41" id="jKK-d6-QbY"/>
                                         </constraints>
@@ -526,7 +538,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4w3-mV-2Js" customClass="DropDownButton" customModule="Stashfin" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="403" width="100" height="33"/>
+                                        <rect key="frame" x="20" y="403" width="100" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="100" id="mlm-mm-uHi"/>
                                         </constraints>
@@ -538,7 +550,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IgF-r5-Dfs" customClass="DropDownButton" customModule="Stashfin" customModuleProvider="target">
-                                        <rect key="frame" x="255" y="403" width="100" height="33"/>
+                                        <rect key="frame" x="255" y="403" width="100" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="100" id="nyY-QO-g9N"/>
                                         </constraints>
@@ -550,13 +562,15 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iax-1g-1Iw" customClass="RCButton" customModule="Stashfin" customModuleProvider="target">
-                                        <rect key="frame" x="73" y="522" width="229" height="40"/>
+                                        <rect key="frame" x="73" y="523" width="229" height="40"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="1Q7-G4-m86"/>
                                             <constraint firstAttribute="width" secondItem="Iax-1g-1Iw" secondAttribute="height" multiplier="200:35" id="4sv-CW-wel"/>
                                         </constraints>
-                                        <state key="normal" title="Submit"/>
+                                        <state key="normal" title="Submit">
+                                            <color key="titleColor" red="1" green="0.97028450320000004" blue="0.99326939650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
                                         <connections>
                                             <action selector="submitpickup:" destination="Fcf-5E-aLV" eventType="touchUpInside" id="Sac-8S-gcF"/>
                                         </connections>
@@ -743,7 +757,7 @@
                                                 <rect key="frame" x="20" y="281" width="315" height="34.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pan card" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="Jyp-GQ-MhP" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="81" height="34.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="83" height="34.5"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
@@ -755,7 +769,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aadhaar" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="tvk-WY-zac" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
-                                                        <rect key="frame" x="82" y="0.0" width="80.5" height="34.5"/>
+                                                        <rect key="frame" x="84" y="0.0" width="79" height="34.5"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
@@ -767,7 +781,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bank Statement" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="pfN-jV-hJL" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
-                                                        <rect key="frame" x="163.5" y="0.0" width="151.5" height="34.5"/>
+                                                        <rect key="frame" x="164" y="0.0" width="151" height="34.5"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
@@ -781,7 +795,7 @@
                                                 </subviews>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Credit facility application form" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u2W-8V-x9m" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="81.5" y="330.5" width="192.5" height="0.0"/>
+                                                <rect key="frame" x="63" y="330.5" width="229" height="0.0"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -810,7 +824,9 @@
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="GTc-31-iEx" secondAttribute="height" multiplier="200:35" id="Bit-hC-GBO"/>
                                                 </constraints>
-                                                <state key="normal" title="Confirm Schedule"/>
+                                                <state key="normal" title="Confirm Schedule">
+                                                    <color key="titleColor" red="1" green="0.97028450320000004" blue="0.99326939650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
                                                 <connections>
                                                     <action selector="pickupConfirm:" destination="Fcf-5E-aLV" eventType="touchUpInside" id="49M-uw-6KB"/>
                                                 </connections>
@@ -827,7 +843,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instructions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Geg-nz-a8e" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="189" width="80" height="20"/>
+                                                <rect key="frame" x="20" y="189" width="90.5" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20" id="Hlw-ch-zl2"/>
                                                 </constraints>
@@ -841,7 +857,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oT4-ks-kzF" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="108" y="189" width="0.0" height="20"/>
+                                                <rect key="frame" x="118.5" y="189" width="0.0" height="20"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -986,14 +1002,14 @@
                                                         </constraints>
                                                     </view>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="congratulation" translatesAutoresizingMaskIntoConstraints="NO" id="xKq-CA-1TW">
-                                                        <rect key="frame" x="117.5" y="38" width="100" height="130.5"/>
+                                                        <rect key="frame" x="95.5" y="38" width="144" height="150"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="150" id="186-od-IKQ"/>
                                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="rQj-fA-6WC"/>
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Congratulations!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zqm-0G-271">
-                                                        <rect key="frame" x="74" y="176.5" width="187" height="59.5"/>
+                                                        <rect key="frame" x="74" y="196" width="187" height="38"/>
                                                         <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="23"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -1004,7 +1020,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your application has been successfully approved" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="61k-Y9-S3v" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                        <rect key="frame" x="30" y="244" width="275" height="79.5"/>
+                                                        <rect key="frame" x="30" y="242" width="275" height="81.5"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="100" id="4WP-qm-hIW"/>
                                                         </constraints>
@@ -1131,7 +1147,9 @@
                                                     <constraint firstAttribute="width" secondItem="8yc-qs-JiI" secondAttribute="height" multiplier="200:35" id="JBF-x9-wMQ"/>
                                                     <constraint firstAttribute="height" constant="40" id="JP7-yE-nGc"/>
                                                 </constraints>
-                                                <state key="normal" title="Next"/>
+                                                <state key="normal" title="Next">
+                                                    <color key="titleColor" red="1" green="0.97028450320000004" blue="0.99326939650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
                                                 <connections>
                                                     <action selector="nextBtn:" destination="7rl-ZK-tNC" eventType="touchUpInside" id="ds4-RF-EQr"/>
                                                 </connections>
@@ -1179,12 +1197,12 @@
         </scene>
     </scenes>
     <resources>
-        <image name="congratulation" width="69.120002746582031" height="69.120002746582031"/>
+        <image name="congratulation" width="144" height="144"/>
         <image name="cross_new" width="74" height="74"/>
-        <image name="e_nach" width="386" height="358"/>
-        <image name="pickup_confirm" width="277" height="277"/>
-        <image name="reject" width="616" height="425"/>
-        <image name="select" width="128" height="128"/>
-        <image name="thank_u" width="138" height="138"/>
+        <image name="e_nach" width="193" height="179"/>
+        <image name="pickup_confirm" width="138.5" height="138.5"/>
+        <image name="reject" width="308" height="212.5"/>
+        <image name="select" width="42.666667938232422" height="42.666667938232422"/>
+        <image name="thank_u" width="191.66667175292969" height="191.66667175292969"/>
     </resources>
 </document>

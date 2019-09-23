@@ -21,6 +21,8 @@ class LoadMyCardConfirmViewController: BaseLoginViewController {
     var checked:Bool=false
     let dropDown=DropDown()
     var chargesList=[String]()
+    
+    var emiAmount:Int=0
     @IBOutlet weak var monthsLabel: UILabel!
     @IBOutlet weak var roiLabel: UILabel!
     @IBOutlet weak var emidateLabel: UILabel!
@@ -50,6 +52,7 @@ class LoadMyCardConfirmViewController: BaseLoginViewController {
             self.roiLabel.text = json["rate_of_interest"].stringValue
             self.emidateLabel.text = json["first_emi_date"].stringValue.replacingOccurrences(of: "th", with: "")
             self.monthlyEmiLabel.text = Constants.Values.RupeeSign + json["emi_amount"].stringValue
+            self.emiAmount=json["emi_amount"].intValue
             self.totalPaymentLabel.text = Constants.Values.RupeeSign + json["net_amount_payable"].stringValue
             let procesing=json["processing_fees"].doubleValue
             let upfront_interest=json["upfront_interest"].doubleValue
@@ -79,7 +82,7 @@ class LoadMyCardConfirmViewController: BaseLoginViewController {
             DispatchQueue.main.asyncAfter(deadline: ( .now() + .seconds(2)), execute: {
                 self.nextPage()
             })
-            
+
             #else
             confirmApi()
             #endif
@@ -116,7 +119,7 @@ class LoadMyCardConfirmViewController: BaseLoginViewController {
         controller.loan_amount = self.requestedAmountLabel.text.isNilOrValue
         
         controller.disburse_amount = self.finalDisAmntLabel.text.isNilOrValue
-        controller.emi_amount = self.monthlyEmiLabel.text.isNilOrValue
+        controller.emi_amount = self.emiAmount
         controller.emi_date = self.emidateLabel.text.isNilOrValue
         self.goToNextViewController(controller: controller)
     }

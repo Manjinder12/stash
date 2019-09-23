@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 extension AppDelegate{
     static var shared:AppDelegate{
@@ -38,19 +39,35 @@ class RootViewController: UIViewController{
         current.didMove(toParent: self)
     }
     
-    func showLoginScreen() {
+    func showLoginScreen(mpinStatus:Bool,mode:String="") {
         
-//        let new = UINavigationController(rootViewController: LoginViewController())                               // 1
-        let new = LoginViewController.getInstance(storyboard: UIStoryboard(name: "RegistrationNew", bundle: nil))
-        addChild(new)                    // 2
-        new.view.frame = view.bounds                   // 3
-        view.addSubview(new.view)                      // 4
-        new.didMove(toParent: self)      // 5
-        current.willMove(toParent: nil)  // 6
-        current.view.removeFromSuperview()            // 7
-        current.removeFromParent()       // 8
-        current = new                                  // 9
+        if Utilities.isMpinActive() && mpinStatus{
+            var appearance = ALAppearance()
+            appearance.title = "StashFin"
+            //        appearance.isSensorsEnabled = true
+            AppLocker.present(with: .validate, and: appearance)
+            
+        }else if (mode == "create"){
+            var appearance = ALAppearance()
+            appearance.title = "StashFin"
+            //        appearance.isSensorsEnabled = true
+            AppLocker.present(with: .create, and: appearance)
+            
+        }else{
+            let new = LoginViewController.getInstance(storyboard: UIStoryboard(name: "RegistrationNew", bundle: nil))
+            addChild(new)
+            new.view.frame = view.bounds
+            view.addSubview(new.view)
+            new.didMove(toParent: self)
+            current.willMove(toParent: nil)
+            current.view.removeFromSuperview()
+            current.removeFromParent()
+            current = new
+        }
     }
+    
+    
+    
 
     func switchToMainScreen() {
 //        let mainViewController = MainContainerViewController()

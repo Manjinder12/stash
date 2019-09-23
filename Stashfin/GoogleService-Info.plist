@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>442977242723-6sffse2e726i98d5thhh1s3656gm8ng3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.442977242723-6sffse2e726i98d5thhh1s3656gm8ng3</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>442977242723-7vh398fkbo20pbtn3e5ct1f8ijhebbun.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD46v-P_8E0zguvZLjxqehv2bqc3wIc40k</string>
+	<key>GCM_SENDER_ID</key>
+	<string>442977242723</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.Stashfin.iOS</string>
+	<key>PROJECT_ID</key>
+	<string>stashfin-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>stashfin-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:442977242723:ios:3135fe43830f4648</string>
+	<key>DATABASE_URL</key>
+	<string>https://stashfin-app.firebaseio.com</string>
+</dict>
+</plist>

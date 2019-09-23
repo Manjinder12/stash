@@ -17,9 +17,6 @@ class ForgotPasswordViewController: BaseLoginViewController {
     @IBOutlet weak var otpViews: UIView!
     @IBOutlet weak var passwordViews: UIView!
     
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         

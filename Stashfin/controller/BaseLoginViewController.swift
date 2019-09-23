@@ -12,6 +12,7 @@ import Toast_Swift
 import Foundation
 import SwiftyJSON
 import SideMenu
+import SDWebImage
 
 struct LandingPageResponse: Codable {
     let status, message, landingPage: String?
@@ -22,19 +23,21 @@ struct LandingPageResponse: Codable {
     }
 }
 
-class BaseLoginViewController: UIViewController {
+public class BaseLoginViewController: UIViewController {
     //    var responseModel:LoginResponseModel?
     var mobileNumbers:String=""
     var cardTypes:String=""
     //    var response: Data = "".data(using: .utf8)!
     let storyBoardMain:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+    let storyBoadBill:UIStoryboard = UIStoryboard(name: "MainBill", bundle: nil)
+    let storyBoardElv8:UIStoryboard = UIStoryboard(name: "RegistrationElv8", bundle: nil)
     let storyBoardRegister:UIStoryboard = UIStoryboard(name: "RegistrationNew", bundle: nil)
+    let storyBoardOther:UIStoryboard = UIStoryboard(name: "Other",bundle: nil)
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         print("view Did Load")
     }
-    
     
     func addMenuBarButtonItem() {
         let image = UIImage(named: "hamburger_icon")
@@ -43,7 +46,6 @@ class BaseLoginViewController: UIViewController {
                                        target: self,
                                        action: #selector(showSideMenu))
         
-        //        bar.alpha = 0.0
         self.navigationItem.leftBarButtonItem = backItem
         
     }
@@ -51,6 +53,58 @@ class BaseLoginViewController: UIViewController {
     @objc func showSideMenu(){
         DispatchQueue.main.async {
             self.present(SideMenuManager.default.menuLeftNavigationController!, animated: true, completion: nil)
+        }
+    }
+    
+    private func isVersionUpdated(requiredVersion:Int,update_required:Int)->(Bool,Bool){
+        let buildNumberString = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+        
+        let current_version:Int = Int(buildNumberString) ?? 0
+        if current_version>2{
+            Log("current \(current_version)  ****  \(requiredVersion)")
+            if current_version >= requiredVersion{
+                Log("current 1")
+                return (true,false)
+            }else if (current_version < requiredVersion && update_required == 1){
+                Log("current 2")
+                return (false,false)
+            }else if (current_version >= requiredVersion-2 && update_required == 0){
+                Log("current 3")
+                return (false,true)
+            }else if (current_version < requiredVersion-1){
+                Log("current 4")
+                return (false,false)
+            }
+        }
+        return (true,false)
+    }
+    
+    private func showVersionUpdateAlert(status:Bool,result: Data?){
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+            let alert = UIAlertController.init(title: "Update Available", message: "\nA newer and improved version of the Stashfin is available. Please update for better experience.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction.init(title: "Update Now", style: .destructive, handler: {(_) -> Void in
+                self.openAppStore()
+            }))
+            if status{
+                alert.addAction(UIAlertAction.init(title: "Update Later", style: .default, handler: {(_)->Void in
+                    self.changeViewController(response:result)
+                }))
+            }
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    private func openAppStore() {
+        if let url = URL(string: "itms-apps://itunes.apple.com/app/apple-store/id1276990457?mt=8"),
+            UIApplication.shared.canOpenURL(url){
+            UIApplication.shared.open(url, options: [:]) { (opened) in
+                if(opened){
+                    print("App Store Opened")
+                }
+            }
+        } else {
+            self.showToast("Failed to update from App Store!")
+            print("Can't Open URL on Simulator")
         }
     }
     
@@ -65,14 +119,25 @@ class BaseLoginViewController: UIViewController {
                 return
             }
             SessionManger.getInstance.saveCustomerId(id: response["customer_id"].stringValue)
+            SessionManger.getInstance.setBillCustomer(status: response["free_loc_eligible"].boolValue)
+            
+            //            SessionManger.getInstance.setBillGiftIntroShowed(status: false)
+            //             SessionManger.getInstance.setBillCustomer(status:true)
             
             SessionManger.getInstance.saveAuthToken(token: authToken)
             SessionManger.getInstance.saveApplicationStatus(status: response["latest_loan_details"]["current_status"].stringValue)
             SessionManger.getInstance.saveProfilePic(profile: response["profile_pic"].stringValue)
             SessionManger.getInstance.saveName(name: response["customer_name"].stringValue)
             SessionManger.getInstance.saveEmail(email: response["email"].stringValue)
+            SessionManger.getInstance.saveNumber(number: response["phone"].stringValue)
             SessionManger.getInstance.saveOccupationStatus(status: response["occupation"].stringValue)
+            SessionManger.getInstance.setPaybackStatus(status: response["paybackStatus"].boolValue)
             
+            if response["product"].stringValue.contains("ELV"){
+                SessionManger.getInstance.setUserType(value: Constants.Values.ELV8_USER)
+            }else{
+                SessionManger.getInstance.setUserType(value: Constants.Values.NORMAL_USER)
+            }
             if !SessionManger.getInstance.getDeviceSaved(){
                 ApiClient.updateAppDetails(){
                     result, status in
@@ -81,10 +146,15 @@ class BaseLoginViewController: UIViewController {
                 }
             }
             
+            let (appUpdated, optionalStatus) = self.isVersionUpdated(requiredVersion:response["app_version"].intValue,update_required:response["update_required"].intValue)
+            if !appUpdated{
+                showVersionUpdateAlert(status:optionalStatus,result: result)
+                return
+            }
             
             changeViewController(response:result)
-            //            changeViewController(controllerName: "")
-            //            AppDelegate.shared.rootViewController.switchToMainScreen()
+            
+            //            self.changeViewController(controllerName: Constants.Controllers.BILL_OUTGOING_EMI)
             
         }else{
             self.view.makeToast(Constants.Values.server_error)
@@ -118,7 +188,7 @@ class BaseLoginViewController: UIViewController {
             }
         }
         
-        print("controller name: \(controller)")
+        Log("controller name: \(controller)")
         
         
         switch controller {
@@ -192,10 +262,11 @@ class BaseLoginViewController: UIViewController {
             
         case Constants.Controllers.PICKUP:
             let storyBoardController = PickupViewController.getInstance(storyboard:storyBoardRegister)
-            storyBoardController.address = getPickupAddress(response: response).0
-            storyBoardController.currrent_date = getPickupAddress(response: response).1
-            storyBoardController.pdf_url = getPickupAddress(response: response).2
-            storyBoardController.occupation_type = getPickupAddress(response: response).3
+            let pickup=getPickupAddress(response: response)
+            storyBoardController.address = pickup.0
+            storyBoardController.currrent_date = pickup.1
+            storyBoardController.pdf_url = pickup.2
+            storyBoardController.occupation_type = pickup.3
             goToNextViewController(controller: storyBoardController, pushStatus: false)
             
         case Constants.Controllers.SIGNATURE:
@@ -204,7 +275,12 @@ class BaseLoginViewController: UIViewController {
             
         case Constants.Controllers.APPROVED:
             let storyBoardController = ApprovedViewController.getInstance(storyboard:storyBoardRegister)
-            goToNextViewController(controller: storyBoardController, pushStatus: false)
+            let details=getApprovedDetails(response: response)
+            storyBoardController.amountResponse = details.0
+            storyBoardController.tenureResponse = details.1
+            storyBoardController.emiAmountResponse = details.2
+            goToNextViewController(controller:
+                storyBoardController, pushStatus: false)
             
         case Constants.Controllers.ENACH_WEBVIEW:
             let storyBoardController =  BankDetailsViewController.getInstance(storyboard: storyBoardRegister)
@@ -237,7 +313,15 @@ class BaseLoginViewController: UIViewController {
             goToNextViewController(controller: ApplicationStatusViewController.getInstance(storyboard: storyBoardMain))
             
         case Constants.Controllers.DASHBOARD_PAGE:
+            //            if SessionManger.getInstance.isBillCustomer(){
+            //                if  !SessionManger.getInstance.isBillGiftIntroShowed(){
+            //                    goToNextViewController(controller: DashBoardViewController.getInstance(storyboard: storyBoardMain),pushStatus: false)
+            //                }else{
+            //                    goToNextViewController(controller: DashBoardViewController.getInstance(storyboard: storyBoardMain))
+            //                }
+            //            }else{
             goToNextViewController(controller: DashBoardViewController.getInstance(storyboard: storyBoardMain))
+            //            }
             
         case Constants.Controllers.BLOCK_CARD:
             goToNextViewController(controller: BlockViewController.getInstance(storyboard: storyBoardMain))
@@ -252,8 +336,33 @@ class BaseLoginViewController: UIViewController {
             let controller = ForgotPasswordViewController(nibName: "ForgotPasswordViewController", bundle: nil)
             goToNextViewController(controller: controller)
             
+            
+        case Constants.Controllers.APP_LOCKER:
+            let controller = AppLocker(nibName: ALConstants.nibName, bundle: nil)
+            goToNextViewController(controller: controller)
+            
+            
         case Constants.Controllers.OUTGOING_EMI:
             goToNextViewController(controller: OutgoingEmiViewController.getInstance(storyBoard: storyBoardMain))
+            
+        case Constants.Controllers.BILL_OUTGOING_EMI:
+            goToNextViewController(controller: OutgoingBillViewController.getInstance(storyBoard: storyBoadBill))
+            
+            
+        case Constants.Controllers.BILL_PAY_NOW:
+            goToNextViewController(controller: BillPayNowViewController.getInstance(storyBoard: storyBoadBill))
+            
+        case Constants.Controllers.BILL_INTRO:
+            goToNextViewController(controller: BillIntroViewController.getInstance(storyboard: storyBoadBill))
+            
+        case Constants.Controllers.BILL_LOAD_MY_CARD:
+            goToNextViewController(controller: BillLoadMyCardViewController.getInstance(storyboard: storyBoadBill))
+            
+        case Constants.Controllers.BILL_LOAD_MY_CARD_CONFIRM:
+            let controller=BillLoadMyCardConfirmViewController.getInstance(storyboard: storyBoadBill)
+            controller.locResponse = response
+            goToNextViewController(controller: controller)
+            
             
         case Constants.Controllers.CUSTOMER_CARE:
             goToNextViewController(controller: CustomerCareViewController
@@ -266,6 +375,10 @@ class BaseLoginViewController: UIViewController {
         case Constants.Controllers.LOAN_CALCULATOR:
             goToNextViewController(controller: LoanCalculatorViewController
                 .getInstance(storyboard: storyBoardMain))
+            
+        case Constants.Controllers.PAYMENT_HISTORY:
+            goToNextViewController(controller: PaymentHistoryViewController
+                .getInstance(storyboard: storyBoadBill))
             
         case Constants.Controllers.LOAD_MY_CARD:
             goToNextViewController(controller: LoadMyCardSlideViewController.getInstance(storyboard:storyBoardMain))
@@ -302,7 +415,66 @@ class BaseLoginViewController: UIViewController {
                 Constants.ApplicationStatus.REJECTED)
             openMainPage("reject")
             
-        case Constants.Controllers.EL_INTRO,Constants.Controllers.EL_FORM,Constants.Controllers.EL_DOC,Constants.Controllers.EL_DOC_REJECT,Constants.Controllers.AADHAAR_SCAN,Constants.Controllers.EL_DASHBOARD,Constants.Controllers.PENNY_DROP,Constants.Controllers.EL_ADDRESS_ERROR,Constants.Controllers.EL_REFERENCE,Constants.Controllers.EL_LOAN_AGREEMENT,Constants.Controllers.PAYMENT_PAGE,Constants.Controllers.EL_BUREAU_ERROR:
+        case Constants.Controllers.MPIN:
+            goToNextViewController(controller: MpinViewController.getInstance(storyboard:storyBoardOther),pushStatus: false)
+            
+            //elv8 pages
+            
+            //        case Constants.Controllers.EL_APPLY:
+            //            let controller=Elv8ApplyViewController.getInstance(storyboard: storyBoardElv8)
+            //            goToNextViewController(controller: controller)
+            //
+            //        case Constants.Controllers.EL_INTRO:
+            //            let controller=Elev8IntroViewController.getInstance(storyboard: storyBoardElv8)
+            //            goToNextViewController(controller: controller)
+            //
+            //        case Constants.Controllers.EL_PENNY_DROP:
+            //            let controller=Elv8PennyDropViewController.getInstance(storyboard: storyBoardElv8)
+            //            goToNextViewController(controller: controller)
+            //
+            //        case Constants.Controllers.EL_AADHAAR_SCAN:
+            //            let controller=Elv8AadhaarViewController.getInstance(storyboard: storyBoardElv8)
+            //            goToNextViewController(controller: controller)
+            //
+            //        case Constants.Controllers.EL_BANK:
+            //            let controller=Elv8BankDetailsViewController.getInstance(storyboard: storyBoardElv8)
+            //            goToNextViewController(controller: controller)
+            //
+            //        case Constants.Controllers.EL_DOC:
+            //            let controller=DocumentUploadViewController.getInstance(storyboard: storyBoardRegister)
+            //             controller.docType=Constants.Controllers.EL_DOC
+            //            goToNextViewController(controller: controller)
+            //
+            //        case Constants.Controllers.EL_DOC_REJECT:
+            //            let controller=DocumentUploadViewController.getInstance(storyboard: storyBoardRegister)
+            //            controller.docType=Constants.Controllers.EL_DOC_REJECT
+            //            goToNextViewController(controller: controller)
+            //
+            //        case Constants.Controllers.EL_REFERENCE:
+            //            let controller=Elv8ReferenceViewController.getInstance(storyboard: storyBoardElv8)
+            //            goToNextViewController(controller: controller)
+            //
+            //        case Constants.Controllers.EL_LOAN_AGREEMENT:
+            //            let controller=Elv8LoanAgreementViewController.getInstance(storyboard: storyBoardElv8)
+            //            goToNextViewController(controller: controller)
+            //
+            //        case Constants.Controllers.EL_DASHBOARD:
+            //            let controller=Elv8DashboardViewController.getInstance(storyboard: storyBoardElv8)
+            //            goToNextViewController(controller: controller)
+            //
+            //        case Constants.Controllers.EL_CHOOSE_LOAN:
+            //            let controller=Elv8ChooseLoanViewController.getInstance(storyboard: storyBoardElv8)
+            //            goToNextViewController(controller: controller)
+            //
+            //        case Constants.Controllers.EL_CHOOSE_REPAYMENT:
+            //            let controller=Elv8ChooseRepaymentViewController.getInstance(storyboard: storyBoardElv8)
+            //            goToNextViewController(controller: controller)
+            //
+            //        case Constants.Controllers.EL_LOAN_APPROVED:
+            //            let controller=Elv8LoanApprovedViewController.getInstance(storyboard: storyBoardElv8)
+            //            goToNextViewController(controller: controller)
+            
+        case Constants.Controllers.EL_APPLY,Constants.Controllers.EL_INTRO,Constants.Controllers.EL_PENNY_DROP,Constants.Controllers.EL_AADHAAR_SCAN,Constants.Controllers.EL_BANK ,Constants.Controllers.EL_DOC,Constants.Controllers.EL_DOC_REJECT,Constants.Controllers.EL_FORM,Constants.Controllers.EL_DOC_REJECT,Constants.Controllers.EL_DASHBOARD,Constants.Controllers.EL_CHOOSE_LOAN,Constants.Controllers.EL_CHOOSE_REPAYMENT,Constants.Controllers.EL_ADDRESS_ERROR,Constants.Controllers.EL_REFERENCE,Constants.Controllers.EL_LOAN_AGREEMENT,Constants.Controllers.EL_LOAN_APPROVED,Constants.Controllers.PAYMENT_PAGE,Constants.Controllers.EL_BUREAU_ERROR:
             
             print("Elv8 customer ",controllerName)
             SessionManger.getInstance.saveApplicationStatus(status:
@@ -312,6 +484,7 @@ class BaseLoginViewController: UIViewController {
         case Constants.Controllers.NO_LANDING_PAGE:
             print("no_page")
             self.view.makeToast(Constants.Values.something_went_wrong)
+            
             
         default:
             SessionManger.getInstance.saveApplicationStatus(status:
@@ -335,10 +508,9 @@ class BaseLoginViewController: UIViewController {
         
         if SessionManger.getInstance.getUserLogin(){
             //            changeViewController(controllerName: Constants.Controllers.LOGIN)
-            AppDelegate.shared.rootViewController.showLoginScreen()
+            AppDelegate.shared.rootViewController.showLoginScreen(mpinStatus: true)
         }else{
             changeViewController(controllerName: Constants.Controllers.LANDING_PAGE)
-            
         }
     }
     
@@ -441,14 +613,42 @@ class BaseLoginViewController: UIViewController {
     
     
     public func getLoginDataApi(){
-        ApiClient.getLoginData(){
-            result, status in
-            switch status {
-            case .success:
-                self.parseResonse(result: result)
-            case .errors(let errors):
-                self.showToast(errors)
+        //        ApiClient.getLoginData(){
+        //            result, status in
+        //            switch status {
+        //            case .success:
+        //                self.parseResonse(result: result)
+        //            case .errors(let errors):
+        //                self.showToast(errors)
+        //            }
+        //        }
+        
+        if !SessionManger.getInstance.getAuthToken().isEmpty{
+            //                self.showProgress()
+            ApiClient.getLoginData(){
+                result, status in
+                //                    self.hideProgress()
+                switch status{
+                case .success:
+                    Log(result)
+                    if let json = try? JSON(data: result!){
+                        if json["landing_page"].string != nil{
+                            //                              self.dismiss(animated: true, completion: nil)
+                            self.parseResonse(result: result)
+                        }else{
+                            self.showLandingPage()
+                        }
+                    }else{
+                        self.showLandingPage()
+                    }
+                    
+                case .errors(let errors):
+                    Log(errors)
+                    self.showLandingPage()
+                }
             }
+        }else{
+            self.showLandingPage()
         }
     }
     
@@ -484,6 +684,19 @@ class BaseLoginViewController: UIViewController {
         
         openMainPage()
     }
+    
+    public func getApprovedDetails(response:Data?)->(String,String,String){
+         var amount:String=""
+         var tenure:String=""
+         var emiAmount:String=""
+        if let json = try? JSON(data: response!){
+            amount =  json["approved_amount"].stringValue
+            tenure = json["approved_tenure"].stringValue
+            emiAmount = json["emi_amount"].stringValue
+        }
+        return (amount,tenure,emiAmount)
+    }
+    
     public func getPickupAddress(response:Data?) -> (String, String,String,String){
         var address = ""
         var current_date=""
@@ -504,6 +717,23 @@ class BaseLoginViewController: UIViewController {
             
         }
         return (address, current_date, pdf_url,occupation_type)
+    }
+    
+    public func openLoadMyCardPage(){
+        if SessionManger.getInstance.isBillCustomer(){
+            self.changeViewController(controllerName: Constants.Controllers.BILL_LOAD_MY_CARD)
+        }else{
+            self.changeViewController(controllerName: Constants.Controllers.LOAD_MY_CARD)
+        }
+    }
+    
+    public func openPaymentPage(){
+        //        if SessionManger.getInstance.isBillCustomer(){
+        self.changeViewController(controllerName: Constants.Controllers.BILL_PAY_NOW)
+        //        }
+        //        else{
+        //            self.changeViewController(controllerName: Constants.Controllers.PAY_NOW)
+        //        }
     }
     
     public func downloadFile(urlString:String){
@@ -559,7 +789,7 @@ class BaseLoginViewController: UIViewController {
     }
     
     public func openHomePageDialog(title:String,message:String){
-        DispatchQueue.main.async {
+        DispatchQueue.main.asyncAfter(deadline: .now()+1) {
             let alert = UIAlertController.init(title: title, message: "\n\(message)", preferredStyle: .alert)
             alert.addAction(UIAlertAction.init(title: "OK", style: .default, handler: {(_) -> Void in
                 self.showHomePage()
@@ -567,10 +797,65 @@ class BaseLoginViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
         }
     }
+    
+    public func pin(_ mode: ALMode) {
+        
+        var appearance = ALAppearance()
+        appearance.image = #imageLiteral(resourceName: "app_icon_round")
+        appearance.title = "StashFin"
+        //        appearance.isSensorsEnabled = true
+        
+        if mode == .create{
+            AppDelegate.shared.rootViewController.showLoginScreen(mpinStatus:false, mode:"create")
+            self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+        }else{
+            AppLocker.present(with: mode, and: appearance)
+        }
+        
+        //        AppLocker.present(with: mode, and: appearance)
+        
+        //        let locker = AppLocker(nibName: ALConstants.nibName, bundle: nil)
+        //
+        ////        locker.messageLabel.text = config?.title ?? ""
+        ////        locker.submessageLabel.text = config?.subtitle ?? ""
+        ////        locker.view.backgroundColor = config?.color ?? Colors.white
+        ////        locker.mode = mode
+        ////
+        ////        if config?.isSensorsEnabled ?? false {
+        ////            locker.checkSensors()
+        ////        }
+        ////
+        //        //    if let image = config?.image {
+        //        //      locker.photoImageView.image = image
+        //        if let url = URL(string: SessionManger.getInstance.getProfilePic()) {
+        //
+        //            locker.photoImageView.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "app_lock_icon") ,options: SDWebImageOptions(rawValue: 0), completed: { (image, error, cacheType, imageURL) in
+        //                if let img = image{
+        //                    locker.photoImageView.maskCircle(anyImage: img,number: 3)
+        //                }
+        //            })
+        //
+        //        }else{
+        //            //            locker.photoImageView.image =  #imageLiteral(resourceName: "app_icon_round")
+        //            locker.photoImageView.maskCircle(anyImage: #imageLiteral(resourceName: "app_lock_icon"),number: 3)
+        //        }
+        //
+        //        //    } else {
+        //        //      locker.photoImageView.isHidden = true
+        //        //    }
+        //
+        //        DispatchQueue.main.async {
+        //            //            getTopMostViewController()?.present(alertController, animated: true, completion: nil)
+        //
+        ////            self.present(locker,animated: true,completion: nil)
+        //            self.goToNextViewController(controller: locker,pushStatus: false)
+        //
+        //        }
+    }
 }
 
 extension BaseLoginViewController:  URLSessionDownloadDelegate {
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+    public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         
         Log("downloadLocation: \(location)")
         // create destination URL with the original pdf name

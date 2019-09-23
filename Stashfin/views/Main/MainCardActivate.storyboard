@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -515,14 +515,14 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="congratulation" translatesAutoresizingMaskIntoConstraints="NO" id="7Bo-iZ-t6K">
-                                        <rect key="frame" x="77.5" y="64.5" width="220" height="120"/>
+                                        <rect key="frame" x="77.5" y="88" width="220" height="120"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="120" id="Wed-0J-QV1"/>
                                             <constraint firstAttribute="width" secondItem="7Bo-iZ-t6K" secondAttribute="height" multiplier="50:50" constant="100" id="YmM-n7-vns"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Congratulations" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dj6-kG-Rvt" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
-                                        <rect key="frame" x="71" y="204.5" width="233" height="41"/>
+                                        <rect key="frame" x="127" y="228" width="121.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -536,7 +536,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loan Disbursed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jmJ-6v-J8n" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                        <rect key="frame" x="128" y="258" width="122" height="24"/>
+                                        <rect key="frame" x="129.5" y="261.5" width="119.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -554,7 +554,7 @@
                                                                 <rect key="frame" x="0.0" y="0.0" width="138" height="61.5"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PG3-RE-bP5" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
-                                                                        <rect key="frame" x="65" y="9.5" width="8.5" height="18"/>
+                                                                        <rect key="frame" x="64.5" y="10" width="9" height="17"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -568,7 +568,7 @@
                                                                         </userDefinedRuntimeAttributes>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loan Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wju-g4-vYL" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                                        <rect key="frame" x="26" y="33.5" width="86" height="19.5"/>
+                                                                        <rect key="frame" x="26.5" y="34.5" width="85.5" height="17"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -604,7 +604,7 @@
                                                                 <rect key="frame" x="142" y="0.0" width="138" height="61.5"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nhM-fM-unh" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
-                                                                        <rect key="frame" x="65" y="9.5" width="8.5" height="18"/>
+                                                                        <rect key="frame" x="64.5" y="10" width="9" height="17"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -618,7 +618,7 @@
                                                                         </userDefinedRuntimeAttributes>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Disburse Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HrG-ao-KdK" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                                        <rect key="frame" x="13.5" y="33.5" width="111.5" height="19.5"/>
+                                                                        <rect key="frame" x="13.5" y="34.5" width="111.5" height="17"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -666,7 +666,7 @@
                                                                 <rect key="frame" x="0.0" y="0.0" width="138" height="61.5"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sBQ-ak-pTX" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
-                                                                        <rect key="frame" x="65" y="9.5" width="8.5" height="18"/>
+                                                                        <rect key="frame" x="64.5" y="10" width="9" height="17"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -680,7 +680,7 @@
                                                                         </userDefinedRuntimeAttributes>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Next EMI date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pou-F4-zx9" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                                        <rect key="frame" x="24" y="33.5" width="90" height="19.5"/>
+                                                                        <rect key="frame" x="24" y="34.5" width="90.5" height="17"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -706,7 +706,7 @@
                                                                 <rect key="frame" x="142" y="0.0" width="138" height="61.5"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aQB-Zw-X6w" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
-                                                                        <rect key="frame" x="65" y="9.5" width="8.5" height="18"/>
+                                                                        <rect key="frame" x="64.5" y="10" width="9" height="17"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -720,7 +720,7 @@
                                                                         </userDefinedRuntimeAttributes>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EMI Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z02-Kx-CGl" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                                        <rect key="frame" x="29.5" y="33.5" width="79.5" height="19.5"/>
+                                                                        <rect key="frame" x="30" y="34.5" width="78.5" height="17"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -814,7 +814,9 @@
                         <outlet property="disburseAmountLabel" destination="nhM-fM-unh" id="YNs-e0-hN3"/>
                         <outlet property="doneBtn" destination="iRw-AA-fJU" id="bx4-Cl-zVa"/>
                         <outlet property="emiAmountLabel" destination="aQB-Zw-X6w" id="hab-PQ-nsT"/>
+                        <outlet property="emiAmountTitle" destination="Z02-Kx-CGl" id="Dcd-D1-s1u"/>
                         <outlet property="emiDateLabel" destination="sBQ-ak-pTX" id="6h9-oY-16i"/>
+                        <outlet property="emiDateTitle" destination="pou-F4-zx9" id="bmc-KK-anM"/>
                         <outlet property="loanAmountLabel" destination="PG3-RE-bP5" id="lSR-v8-Fye"/>
                     </connections>
                 </viewController>
@@ -824,11 +826,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="background" width="1081" height="1921"/>
-        <image name="card_gray" width="1061" height="669"/>
-        <image name="congratulation" width="69.120002746582031" height="69.120002746582031"/>
-        <image name="rflyrocket" width="83.519996643066406" height="80.639999389648438"/>
-        <image name="sign_up_1" width="114.48000335693359" height="114.48000335693359"/>
-        <image name="signdoc" width="89.760002136230469" height="27.120000839233398"/>
+        <image name="background" width="360.33334350585938" height="640.33331298828125"/>
+        <image name="card_gray" width="353.66665649414062" height="223"/>
+        <image name="congratulation" width="144" height="144"/>
+        <image name="rflyrocket" width="348" height="336"/>
+        <image name="sign_up_1" width="477" height="477"/>
+        <image name="signdoc" width="187" height="56.5"/>
     </resources>
 </document>

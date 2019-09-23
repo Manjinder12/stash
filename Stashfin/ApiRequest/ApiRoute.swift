@@ -21,7 +21,7 @@ enum APIRouter: URLRequestConvertible {
     case stasheasyApi(param:[String:Any])
     case androidApi(param:[String:Any])
     case v2Api(param:[String:Any])
-
+    
     // MARK: - HTTPMethod
     private var method: HTTPMethod {
         switch self {
@@ -48,23 +48,42 @@ enum APIRouter: URLRequestConvertible {
     
     // MARK: - Parameters
     private var parameters: String {
-        var params:String = ""
-         var paramString = ""
+        //        var params:String = ""
+        var paramString = ""
+        var paramsChecksum=""
         switch self {
         case .stasheasyApi(let param),.androidApi(let param),.v2Api(let param):
-             paramString = (param.compactMap({(key,value)->String in
+            paramString = (param.compactMap({(key,value)->(String) in
+                let values=getEncodedValue(value: "\(value)")
 //                if ("\(key)\(value)").count < 1000{
-//                    Log(" ************ Key: \(key) -----  Value: \(value)")
+//                    Log(" ************ Key: \(key)  -----  enc:  \(values)")
 //                }
+                return "\(key)=\(values)"
+            }) as Array).joined(separator: "&")
+            
+            paramsChecksum = (param.compactMap({(key,value)->(String) in
                 return "\(key)=\(value)"
             }) as Array).joined(separator: "&")
-            params = paramString
+        //            params = paramString
         default:
             return ""
         }
-        let checksum:String = params.hmac()
-        params = params + "&checksum=\(checksum)"
-        return params.replacingOccurrences(of: "+", with: "%2B")
+        
+        let checksum:String = paramsChecksum.hmac()
+//        if paramString.count>1000{
+//            Log(" ************ Key: checksum -----  Value: \(checksum)")
+//        }
+        paramString = paramString + "&checksum=\(checksum)"
+        return paramString
+    }
+    
+    private func getEncodedValue(value:String)->String{
+                 if let encodedString = value.addingPercentEncoding(withAllowedCharacters: CharacterSet(charactersIn: "!*'();:@&=+$,/?%#[]{} ").inverted){
+//        if let encodedString = value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed){
+            return encodedString
+        }else{
+            return value.replacingOccurrences(of: "+", with: "%2B")
+        }
     }
     
     // MARK: - URLRequestConvertible
@@ -87,6 +106,8 @@ enum APIRouter: URLRequestConvertible {
         Log("URLs: \(url.appendingPathComponent(path))")
         if parameters.count < 1000{
             Log("Parameters: \(parameters)")
+        }else{
+            Log("Parameters > 1k")
         }
         Log("Headers: \(String(describing: urlRequest.allHTTPHeaderFields!))")
         

@@ -20,9 +20,7 @@ class RejectViewController: BaseViewController {
         // Do any additional setup after loading the view.
     }
     
-    // MARK: - Init
-    
-    // MARK: - Properties
-    
-    // MARK: - Handlers
+    @IBAction func closeBtn(_ sender: UIButton) {
+        exit(0);
+    }
 }

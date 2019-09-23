@@ -16,11 +16,13 @@ class ApprovedViewController: BaseLoginViewController {
         return storyboard.instantiateViewController(withIdentifier: String(describing: self.classForCoder())) as! ApprovedViewController
     }
     
-    
     @IBOutlet weak var amount: CustomUILabel!
     @IBOutlet weak var tenure: CustomUILabel!
     @IBOutlet weak var emiAmount: CustomUILabel!
     var landing_page:String = ""
+    public var amountResponse:String=""
+    public var tenureResponse:String=""
+    public var emiAmountResponse:String=""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +33,11 @@ class ApprovedViewController: BaseLoginViewController {
             self.tenure.text = "3" + " Months"
             self.emiAmount.text = Constants.Values.RupeeSign + "173"
         }else{
-            checkPreApprovedApi()
+            
+            self.amount.text = Constants.Values.RupeeSign + amountResponse
+            self.tenure.text = tenureResponse + " Months"
+            self.emiAmount.text = Constants.Values.RupeeSign + emiAmountResponse
+          
         }
     }
     
@@ -48,6 +54,7 @@ class ApprovedViewController: BaseLoginViewController {
                     self.tenure.text = json["approved_tenure"].stringValue + " Months"
                     self.emiAmount.text = Constants.Values.RupeeSign + json["emi_amount"].stringValue
                     self.landing_page = json["landing_page"].stringValue
+                    self.submitDetails()
                 }
             case .errors(let errors):
                 self.showToast(errors)
@@ -66,7 +73,7 @@ class ApprovedViewController: BaseLoginViewController {
             self.changeViewController(controllerName: Constants.Controllers.PICKUP)
             
         }else{
-            submitDetails()
+            self.checkPreApprovedApi()
         }
     }
     

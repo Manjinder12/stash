@@ -64,7 +64,6 @@ class TransactionViewController: BaseLoginViewController, UITableViewDelegate,UI
             case .errors(let errors):
                 self.openHomePageDialog(title: "Card Transaction", message: errors)
                 
-               
             }
         }
     }

@@ -10,36 +10,13 @@ import UIKit
 import SwiftyJSON
 
 
-class AmountCollectionViewCell:UICollectionViewCell{
-    
-    @IBOutlet weak var amountLabel: UILabel!
-    
-}
-
-class LoadMyCardSlideViewController: BaseLoginViewController,UICollectionViewDelegate,UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "amountCell", for: indexPath) as! AmountCollectionViewCell
-        
-        // Configure the cell
-        // 3
-//        cell.backgroundColor = cellColor ? UIColor.red : UIColor.blue
-//        cellColor = !cellColor
-        
-        cell.amountLabel.text="\(Constants.Values.RupeeSign)\((max_amount/20)*(indexPath.row+1))"
-        return cell
-    }
-    
+class LoadMyCardSlideViewController: BaseLoginViewController{
     
     static func getInstance(storyboard: UIStoryboard) -> LoadMyCardSlideViewController{
         return storyboard.instantiateViewController(withIdentifier: String(describing: self.classForCoder())) as! LoadMyCardSlideViewController
     }
     
     
-    @IBOutlet weak var amountCollectionScroll: UICollectionView!
     @IBOutlet weak var amountSlider: UISlider!
     @IBOutlet weak var tenureSlider: UISlider!
     @IBOutlet weak var minAmountLabel: UILabel!
@@ -72,16 +49,6 @@ class LoadMyCardSlideViewController: BaseLoginViewController,UICollectionViewDel
             self.popGesture = navigationController!.interactivePopGestureRecognizer
             self.navigationController!.view.removeGestureRecognizer(navigationController!.interactivePopGestureRecognizer!)
         }
-        setLayoutHorizontal()
-    }
-//    amountCell
-    private func setLayoutHorizontal(){
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: UIScreen.main.bounds.width/3 - 15, height: 45)
-        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-        flowLayout.scrollDirection = .horizontal
-        flowLayout.minimumInteritemSpacing = 0.0
-        amountCollectionScroll.collectionViewLayout = flowLayout
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -119,9 +86,9 @@ class LoadMyCardSlideViewController: BaseLoginViewController,UICollectionViewDel
                     self.remainingBalanceLabel.text = Constants.Values.RupeeSign + json["remaining_loc"].stringValue
                     self.roi = json["rate_of_interest"].doubleValue
                     
-                    self.amountLabel.text = json["minimum_request_amount"].stringValue
-                    self.tenureLabel.text = json["min_tenure"].stringValue
-                    self.amountCollectionScroll.reloadData()
+                    self.amountLabel.text = "\(json["minimum_request_amount"].intValue)"
+                    self.tenureLabel.text = "\(json["min_tenure"].intValue)"
+                    
                     self.calculateEmi()
                 }
             case .errors(let error):
@@ -188,8 +155,10 @@ class LoadMyCardSlideViewController: BaseLoginViewController,UICollectionViewDel
                     self.minTenureLabel.text = "\(self.min_tenure)"
                     self.maxTenureLabel.text = json["max_tenure"].stringValue
                     self.tenureLabel.text = json["min_tenure"].stringValue
+                    self.tenureSlider.setValue(self.tenureSlider.minimumValue, animated: true)
+                    self.calculateEmi()
                     if let msg = json["msg"].string, msg.count>3{
-                        self.showToast(msg)
+                        self.showToast(msg,showDialog: true,title: "LOC Card")
                     }
                 }
                 
@@ -218,5 +187,5 @@ class LoadMyCardSlideViewController: BaseLoginViewController,UICollectionViewDel
             }
         }
     }
-   
+    
 }

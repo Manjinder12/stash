@@ -144,11 +144,18 @@ class RCButton: UIButton {
         setUpButton()
     }
 
+    @IBInspectable var textColors: UIColor? = UIColor.white {
+        didSet {
+//            self.textColors = textColors!
+            setTitleColor(textColors, for: [])
+        }
+    }
+    
     func setUpButton() {
         layer.cornerRadius = 0.50 * frame.height
         frame.size.height = 40
         self.clipsToBounds = true
-        setTitleColor(UIColor.white, for: [])
+//        setTitleColor(UIColor.white, for: [])
     }
 }
 
@@ -230,18 +237,61 @@ class CustomUILabelBold: UILabel {
             return self.font?.pointSize ?? 15.0
         }
         set{
-            self.font = UIFont(name: Fonts.avenirNextBold, size: newValue)
+            self.font = UIFont(name: Fonts.halventicBold, size: newValue)
             self.sizeToFit()
         }
     }
     //
     func setupField(){
-        font = UIFont(name: Fonts.avenirNextBold, size: fontSize)
+        font = UIFont(name: Fonts.halventicBold, size: fontSize)
         //        backgroundColor = UIColor(white: 1, alpha: 0.5)
         clipsToBounds = true
     }
 }
 
+
+@IBDesignable
+class CustomUILabelDemiBold: UILabel {
+    override init(frame: CGRect) {
+        super.init(frame:frame)
+        setupField()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder:aDecoder)
+        setupField()
+    }
+    
+    override func prepareForInterfaceBuilder() {
+        setupField()
+    }
+    
+    //    override func layoutSubviews() {
+    //        super.layoutSubviews()
+    //        setupField()
+    //    }
+    @IBInspectable var textColors: UIColor? = UIColor.black {
+        didSet {
+            self.textColor = textColors!
+        }
+    }
+    
+    @IBInspectable var fontSize:CGFloat{
+        get{
+            return self.font?.pointSize ?? 15.0
+        }
+        set{
+            self.font = UIFont(name: Fonts.halventicMedium, size: newValue)
+            self.sizeToFit()
+        }
+    }
+    //
+    func setupField(){
+        font = UIFont(name: Fonts.halventicMedium, size: fontSize)
+        //        backgroundColor = UIColor(white: 1, alpha: 0.5)
+        clipsToBounds = true
+    }
+}
 
 @IBDesignable
 class RoundPagerView: FSPagerView{
@@ -279,8 +329,9 @@ class RoundUIView: UIView {
 @IBDesignable
 class CardView: RoundUIView {
     
-    @IBInspectable var shadowOffsetWidth: Int = 0
-    @IBInspectable var shadowOffsetHeight: Int = 1
+//    @IBInspectable var shadowOffsetWidth: Int = 0
+//    @IBInspectable var shadowOffsetHeight: Int = 1
+    @IBInspectable var radius: CGFloat = 5.0
     @IBInspectable var shadowColor: UIColor? = .black
     @IBInspectable var shadowOpacity: Float = 0.2
     
@@ -290,9 +341,12 @@ class CardView: RoundUIView {
         
         layer.masksToBounds = false
         layer.shadowColor = shadowColor?.cgColor
-        layer.shadowOffset = CGSize(width: shadowOffsetWidth, height: shadowOffsetHeight);
+//        layer.shadowOffset = CGSize(width: shadowOffsetWidth, height: shadowOffsetHeight);
+        layer.shadowOffset = .zero
+        layer.shadowRadius=radius
         layer.shadowOpacity = shadowOpacity
         layer.shadowPath = shadowPath.cgPath
+//        layer.shouldRasterize=true
     }
     
 }

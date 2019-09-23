@@ -111,6 +111,14 @@ public class SessionManger {
         return getStringValue(key: Constants.SavedKeys.CardResponse.rawValue)
     }
     
+    func setBillGiftIntroShowed(status:Bool){
+         setBoolValue(key: Constants.SavedKeys.BillGiftintro.rawValue, value: status)
+    }
+    
+    func isBillGiftIntroShowed()->Bool{
+         return getBoolValue(key: Constants.SavedKeys.BillGiftintro.rawValue)
+    }
+    
     func saveLocResponse(locResponse:String){
         saveDefaultValue(key: Constants.SavedKeys.LocResponse.rawValue, value: locResponse)
     }
@@ -143,12 +151,71 @@ public class SessionManger {
         return getStringValue(key: Constants.SavedKeys.EMAIL.rawValue)
     }
     
+    
+    func saveNumber(number:String){
+        saveDefaultValue(key: Constants.SavedKeys.NUMBER.rawValue, value: number)
+    }
+    
+    public func getNumber()->String{
+        return getStringValue(key: Constants.SavedKeys.NUMBER.rawValue)
+    }
+    
+    func savePaybackValue(value:String){
+        saveDefaultValue(key: Constants.SavedKeys.PAYBACK_VALUE.rawValue, value: value)
+    }
+    
+    public func getPaybackValue()->String{
+        return getStringValue(key: Constants.SavedKeys.PAYBACK_VALUE.rawValue)
+    }
+    
+    func setUserType(value:String){
+        saveDefaultValue(key: Constants.SavedKeys.USER_TYPE.rawValue, value: value)
+    }
+    
+    public func getUserType()->String{
+        return getStringValue(key: Constants.SavedKeys.USER_TYPE.rawValue)
+    }
+    
+    func setReferralValue(value:String){
+        saveDefaultValue(key: Constants.SavedKeys.RefferalCode.rawValue, value: value)
+    }
+    
+    public func getRefferalValue()->String{
+         return getStringValue(key: Constants.SavedKeys.RefferalCode.rawValue)
+    }
+    
+    
+    func setSalesValue(value:String){
+        saveDefaultValue(key: Constants.SavedKeys.SalesCode.rawValue, value: value)
+    }
+    
+    public func getSalesValue()->String{
+        return getStringValue(key: Constants.SavedKeys.SalesCode.rawValue)
+    }
+    
+    
     func setDeviceSaved(status:Bool){
         setBoolValue(key: Constants.SavedKeys.DEVICE_SAVED.rawValue, value: status)
     }
     
     public func getDeviceSaved()->Bool{
         return getBoolValue(key: Constants.SavedKeys.DEVICE_SAVED.rawValue)
+    }
+    
+    func setPaybackStatus(status:Bool){
+        setBoolValue(key: Constants.SavedKeys.PAYBACK_STATUS.rawValue, value: status)
+    }
+    
+    public func getPaybackStatus()->Bool{
+        return getBoolValue(key: Constants.SavedKeys.PAYBACK_STATUS.rawValue)
+    }
+    
+    func setTranxHideStatus(status:Bool){
+        setBoolValue(key: Constants.SavedKeys.TranxStatus.rawValue, value: status)
+    }
+    
+    public func getTranxHideStatus() -> Bool{
+        return getBoolValue(key: Constants.SavedKeys.TranxStatus.rawValue)
     }
     
    
@@ -195,6 +262,23 @@ public class SessionManger {
         return getGlobalStringValue(key: Constants.SavedKeys.CUSTOMER_ID.rawValue)
     }
     
+    public func isBillCustomer() -> Bool{
+        return getGlobalBoolValue(key: Constants.SavedKeys.IsBillCustomer.rawValue)
+    }
+    
+    func setBillCustomer(status:Bool){
+        setGlobalBoolValue(key: Constants.SavedKeys.IsBillCustomer.rawValue, value: status)
+    }
+    
+    
+    public func isMpinActive() -> Bool{
+        return getGlobalBoolValue(key: Constants.SavedKeys.isMpinActive.rawValue)
+    }
+    
+    func setMpinActive(status:Bool){
+        setGlobalBoolValue(key: Constants.SavedKeys.isMpinActive.rawValue, value: status)
+    }
+    
     public func clearAllData(){
         saveCardResponse(cardResponse: "")
         saveAuthToken(token: "")
@@ -204,7 +288,7 @@ public class SessionManger {
         saveCustomerId(id: "")
         setTester(status: false)
         saveCardRequest(cardResponse: false)
-        saveEmail(email: "")
+//        saveEmail(email: "")
         saveOccupationStatus(status: "")
 //      resetDefaults()
     }

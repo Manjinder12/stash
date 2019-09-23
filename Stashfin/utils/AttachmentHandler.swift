@@ -210,7 +210,11 @@ extension AttachmentHandler: UIImagePickerControllerDelegate, UINavigationContro
     @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
         
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-             self.imagePickedBlock?(image)
+            if let fixedImage = image.upOrientationImage(){
+                self.imagePickedBlock?(fixedImage)
+            }else{
+                self.imagePickedBlock?(image)
+            }
         }
         currentVC?.dismiss(animated: true, completion: nil)
     }

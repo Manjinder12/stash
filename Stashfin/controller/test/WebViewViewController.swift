@@ -11,11 +11,12 @@ import WebKit
 import SwiftyJSON
 
 class PaymentAmountModel{
-    var amount, mode, paymentCode:String?
-    init(amount:String, mode:String, paymentCode:String) {
+    var amount, mode, paymentCode,billId:String?
+    init(amount:String, mode:String, paymentCode:String,billId:String) {
         self.amount=amount
         self.mode=mode
         self.paymentCode=paymentCode
+        self.billId=billId
     }
 }
 
@@ -78,6 +79,9 @@ class WebViewViewController: BaseLoginViewController {
         case "payment":
             checkPaymentApi()
             self.title = "Payment"
+        case "elv8One":
+            checkElv8PayApi()
+            self.title="Payment"
         default:
             Log("default \(urlType)")
         }
@@ -99,10 +103,33 @@ class WebViewViewController: BaseLoginViewController {
         
     }
    
+    private func checkElv8PayApi(){
+        let params=["mode":"registrationPay"]
+        ApiClient.getJSONResponses(route: APIRouter.stasheasyApi(param: params) ){
+            result, status in
+            switch status{
+            case .success:
+                Log(result)
+                if let json = try? JSON(data: result!){
+                    if let sts = json["payment_status"].string, sts == "success" {
+                        self.url = json["url"].stringValue
+                        self.loadUrl()
+                        self.return_url = json["return_url"].stringValue
+                    }
+                }
+                
+            case .errors(let error):
+                 self.goToNextPage(msg: error)
+            }
+        }
+    }
+    
     private func checkPaymentApi(){
         self.showProgress()
-        let params=["amount":paymentModel?.amount ?? "0","paymentCode":paymentModel?.paymentCode ?? "","flag":paymentModel?.mode ?? "","mode":"razorPayAmount"]
-        ApiClient.getJSONResponses(route: APIRouter.stasheasyApi(param: params)){
+
+           let params=["amount":paymentModel?.amount ?? "0","paymentCode":paymentModel?.paymentCode ?? "","flag":paymentModel?.mode ?? "","mode":"payBillEmi","bills":paymentModel?.billId ?? ""]
+ 
+        ApiClient.getJSONResponses(route: APIRouter.v2Api(param: params)){
             result, status in
             self.hideProgress()
             switch status{
@@ -122,6 +149,7 @@ class WebViewViewController: BaseLoginViewController {
     }
     
     func goToNextPage(msg:String=""){
+        self.hideProgress()
         DispatchQueue.main.async {
             switch self.urlType {
             case "chat":
@@ -149,6 +177,20 @@ class WebViewViewController: BaseLoginViewController {
                     self.hideProgress()
                     self.showHomePage()
                 })
+                
+            case "elv8One":
+                self.showProgress()
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5) , execute: {
+                    self.hideProgress()
+                    let alert = UIAlertController.init(title: "Payment", message: "\nIf you successfully paid amount. It may take some time to update  status.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction.init(title: "OK", style: .default, handler: {(_) ->
+                        Void in
+                        self.getLoginDataApi()
+                    }
+                    ))
+                    self.present(alert,animated: true,completion: nil)
+                })
+                
             default:
                 Log("default \(self.urlType)")
             }
@@ -178,13 +220,13 @@ extension WebViewViewController: WKUIDelegate {
 
 extension WebViewViewController: WKNavigationDelegate {
     open func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-//        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        self.showProgress()
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+//        self.showProgress()
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-//        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-        self.hideProgress()
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+//        self.hideProgress()
         if let url = webView.url?.absoluteString{
             if url.contains(return_url){
                 self.goToNextPage()

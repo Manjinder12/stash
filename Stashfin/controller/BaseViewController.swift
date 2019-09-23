@@ -15,7 +15,4 @@ class BaseViewController: BaseLoginViewController {
         super.viewDidLoad()
         self.addMenuBarButtonItem()
     }
-  
-    
- 
 }

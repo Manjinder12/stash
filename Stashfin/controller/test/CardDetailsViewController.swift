@@ -71,6 +71,10 @@ class CardDetailsViewController: BaseLoginViewController, FSPagerViewDataSource,
     private func updateCardResponse(){
         let json = JSON(parseJSON: SessionManger.getInstance.getCardResponse())
         
+        if SessionManger.getInstance.isBillCustomer(){
+            saveCardDetailsList(image: getCardImage(type: "bill_card"), cardType: "BillCard")
+        }
+        
         if json["cards"]["physical"].dictionary != nil{
             let otp_verified = json["cards"]["physical"]["otp_verified"].boolValue
             let card_registred = json["cards"]["physical"]["registered"].boolValue
@@ -88,8 +92,7 @@ class CardDetailsViewController: BaseLoginViewController, FSPagerViewDataSource,
             else{
                 saveCardDetailsList(image: getCardImage(type: "not_register"), cardType: "physicalNotRegister")
             }
-        }
-        else{
+        } else{
             saveCardDetailsList(image: getCardImage(type: ""), cardType: "physical")
         }
         
@@ -118,6 +121,8 @@ class CardDetailsViewController: BaseLoginViewController, FSPagerViewDataSource,
             self.cardPagerView.isInfinite = true
         }
         cardPagerView.reloadData()
+        
+//        cardPagerView.automaticSlidingInterval = 1
     }
     
     public func numberOfItems(in pagerView: FSPagerView) -> Int {
@@ -143,6 +148,8 @@ class CardDetailsViewController: BaseLoginViewController, FSPagerViewDataSource,
         if cardData.count>0{
             if cardData[index].cardType!.contains("Register"){
                 self.changeViewController(controllerName: Constants.Controllers.STASHFIN_CARD)
+            }else if cardData[index].cardType!.contains("BillCard"){
+                 self.changeViewController(controllerName: Constants.Controllers.BILL_INTRO)
             }
         }
     }
@@ -181,7 +188,7 @@ class CardDetailsViewController: BaseLoginViewController, FSPagerViewDataSource,
         return card_no
     }
     
-    private func saveCardDetailsList(image:UIImage, cardNo:String="xxxx   xxxx   xxxx   0000", cardName:String="Name", cardValidity:String="00 / 00", cvv:String="", cardType:String, cardRegister:Bool=false){
+    private func saveCardDetailsList(image:UIImage, cardNo:String="", cardName:String="", cardValidity:String="", cvv:String="", cardType:String, cardRegister:Bool=false){
         
         cardData.append(CardDataModel(image: image, cardNo: cardNo, cardName: cardName, cardValidity: cardValidity, cvv: cvv, cardType: cardType, cardRegister: cardRegister))
     }
@@ -191,6 +198,7 @@ class CardDetailsViewController: BaseLoginViewController, FSPagerViewDataSource,
         let M2P_FEDERAL = "m2p_federal";
         let MATCHMOVE_FEDERAL = "matchmove_federal";
         let NOT_REGISTER = "not_register";
+        let BILL_CARD = "bill_card";
         switch type {
         case M2P_DCB:
             return #imageLiteral(resourceName: "card_gray")
@@ -200,6 +208,8 @@ class CardDetailsViewController: BaseLoginViewController, FSPagerViewDataSource,
             return #imageLiteral(resourceName: "card_blue")
         case NOT_REGISTER:
             return #imageLiteral(resourceName: "new_lock_img")
+        case BILL_CARD:
+            return #imageLiteral(resourceName: "bill_card_offfer")
         default:
             return #imageLiteral(resourceName: "card_gray")
             

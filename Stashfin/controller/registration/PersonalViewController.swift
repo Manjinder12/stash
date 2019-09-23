@@ -26,7 +26,7 @@ class PersonalViewController: BaseLoginViewController {
     @IBOutlet weak var stateLabel: CustomUILabel!
     @IBOutlet weak var marritalMenu: DropDownBox!
     @IBOutlet weak var panBox: UITextField!
-    @IBOutlet weak var aadhaarBox: UITextField!
+    @IBOutlet weak var ovdDocBox: DropDownBox!
     @IBOutlet weak var cityBox: DropDownBox!
 //    @IBOutlet weak var stateLabel: CustomUILabel!
     @IBOutlet weak var stateListMenu: DropDownBox!
@@ -49,6 +49,10 @@ class PersonalViewController: BaseLoginViewController {
     @IBOutlet weak var maleBtn: UIButton!
     @IBOutlet weak var checkBoxBtn: UIButton!
     
+    @IBOutlet weak var ovdStackView: UIStackView!
+    @IBOutlet weak var ovdDocNumberLabel: CustomUILabel!
+    @IBOutlet weak var ovdDocNumber: CustomUITextField!
+    @IBOutlet weak var termsAndConditionLink: UILabel!
     
     var stateList:[String] = []
     var stateListIds:[Int] = []
@@ -57,11 +61,14 @@ class PersonalViewController: BaseLoginViewController {
     var genderValue:String=""
     var cityValue=""
     var checked=false
+    var ovdId=0
     
     @IBOutlet weak var nextButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        let tc = "I have read and agree to the End User License agreement, Privacy policy, Credit Line General terms and condition on the Stashfin App/ Website"
+//        termsAndConditionLink.hyperLink(originalText: tc, hyperLink: "website", urlString: "linkUrl")
         
         if cityValue.count>2{
             cityBox.text=cityValue
@@ -76,7 +83,7 @@ class PersonalViewController: BaseLoginViewController {
         permanentAddressSwitch.addTarget(self, action: #selector(stateChanged), for: .valueChanged)
         
         panBox.addTarget(self, action: #selector(checkValidNumber(field:)), for: .editingChanged)
-        aadhaarBox.addTarget(self, action: #selector(checkAadhaarValidation(field:)), for: .editingChanged)
+        ovdDocBox.addTarget(self, action: #selector(checkAadhaarValidation(field:)), for: .editingChanged)
         pinCodeBox.addTarget(self, action: #selector(pinCodeValidation(field:)), for: .editingChanged)
         permanentPinCodeBox.addTarget(self, action: #selector(pinCodeValidation(field:)), for: .editingChanged)
 
@@ -126,6 +133,7 @@ class PersonalViewController: BaseLoginViewController {
     
     private func setDropDownMenu(){
         marritalMenu.optionArray = ["Married","Unmarried"]
+        ovdDocBox.optionArray=["Aadhaar Card","Driving Licence","Passport","Voter ID"]
         employmentBox.optionArray = ["Salaried","Self Employed"]
         var month:Int = 1
         while month < 13
@@ -145,6 +153,13 @@ class PersonalViewController: BaseLoginViewController {
         marritalMenu.didSelect{(selectTedText,index) in
             self.marritalMenu.text = selectTedText
             
+        }
+        
+        ovdDocBox.didSelect{(selectedText,index) in
+            self.ovdDocBox.text=selectedText
+            self.ovdId=index+1
+            self.ovdStackView.isHidden=false
+            self.ovdDocNumberLabel.text="\(selectedText) Number"
         }
         occupiedSinceYear.didSelect{(selectedText,index) in
             self.occupiedSinceYear.text = selectedText
@@ -304,12 +319,12 @@ class PersonalViewController: BaseLoginViewController {
     }
     
     private func submitDetails(){
-        if emailBox.isEditBoxNotEmpty() && marritalMenu.isEditBoxNotEmpty() && panBox.isEditBoxNotEmpty() && aadhaarBox.isEditBoxNotEmpty() && employmentBox.isEditBoxNotEmpty() && residenceTypeMenu.isEditBoxNotEmpty() && cityBox.isEditBoxNotEmpty() && currentAddressBox.isEditBoxNotEmpty() && landmarkBox.isEditBoxNotEmpty() && pinCodeBox.isEditBoxNotEmpty() && occupiedSinceMonth.isEditBoxNotEmpty() && occupiedSinceYear.isEditBoxNotEmpty() {
+        if emailBox.isEditBoxNotEmpty() && marritalMenu.isEditBoxNotEmpty() && panBox.isEditBoxNotEmpty() && ovdDocBox.isEditBoxNotEmpty() && employmentBox.isEditBoxNotEmpty() && residenceTypeMenu.isEditBoxNotEmpty() && cityBox.isEditBoxNotEmpty() && currentAddressBox.isEditBoxNotEmpty() && landmarkBox.isEditBoxNotEmpty() && pinCodeBox.isEditBoxNotEmpty() && occupiedSinceMonth.isEditBoxNotEmpty() && occupiedSinceYear.isEditBoxNotEmpty() {
             if let dob = dobBox.titleLabel?.text{
                 if !genderValue.isEmpty{
                     if Utilities.isEmailValid(email: emailBox.text.isNilOrValue){
                         if panBox.text?.count == 10 {
-                            if aadhaarBox.text?.count == 12{
+                            if ovdDocNumber.text!.count > 7{
                                 if currentAddressBox.text.isNilOrValue.count>5{
                                     if landmarkBox.text.isNilOrValue.count>5{
                                         if pinCodeBox.text.isNilOrValue.count==6{
@@ -348,8 +363,8 @@ class PersonalViewController: BaseLoginViewController {
                                     self.showToast("Address is too short")
                                 }
                             }else{
-                                aadhaarBox.becomeFirstResponder()
-                                self.showToast("Aadhaar is not valid")
+                                ovdDocNumber.becomeFirstResponder()
+                                self.showToast("\(String(describing: self.ovdDocBox.text)) is not valid")
                             }
                         }else{
                             panBox.becomeFirstResponder()
@@ -372,7 +387,7 @@ class PersonalViewController: BaseLoginViewController {
             self.showToast("Please select terms and condition.")
             return
         }
-        let param:[String:String]=["mode":"personal_details","email":emailBox.text.isNilOrValue,"dob":dob,"pan_number":panBox.text.isNilOrValue,"aadhaar_number":aadhaarBox.text.isNilOrValue,"employement_type":employmentBox.text.isNilOrValue,"residence_type":residenceTypeMenu.text.isNilOrValue,"pincode":pinCodeBox.text.isNilOrValue,"address":currentAddressBox.text.isNilOrValue,"city_name":cityBox.text.isNilOrValue,"permanent_address":permanentAddressBox.text.isNilOrValue,"permanent_city_name":permanentCityMenu.text.isNilOrValue,"permanent_pincode":permanentPinCodeBox.text.isNilOrValue,"permanentAddressCheck":(permanentAddressStackView.isHidden ? "1" : "0"),"gender":genderValue,"month":occupiedSinceMonth.text.isNilOrValue,"year":occupiedSinceYear.text.isNilOrValue,"matital_status":marritalMenu.text.isNilOrValue,"landmark":landmarkBox.text.isNilOrValue,"permanent_landmark":permanentLandmarkBox.text.isNilOrValue]
+        let param:[String:String]=["mode":"personal_details","email":emailBox.text.isNilOrValue,"dob":dob,"pan_number":panBox.text.isNilOrValue,"employement_type":employmentBox.text.isNilOrValue,"residence_type":residenceTypeMenu.text.isNilOrValue,"pincode":pinCodeBox.text.isNilOrValue,"address":currentAddressBox.text.isNilOrValue,"city_name":cityBox.text.isNilOrValue,"permanent_address":permanentAddressBox.text.isNilOrValue,"permanent_city_name":permanentCityMenu.text.isNilOrValue,"permanent_pincode":permanentPinCodeBox.text.isNilOrValue,"permanentAddressCheck":(permanentAddressStackView.isHidden ? "1" : "0"),"gender":genderValue,"month":occupiedSinceMonth.text.isNilOrValue,"year":occupiedSinceYear.text.isNilOrValue,"matital_status":marritalMenu.text.isNilOrValue,"landmark":landmarkBox.text.isNilOrValue,"permanent_landmark":permanentLandmarkBox.text.isNilOrValue,"ovd_id":"\(ovdId)","ovd_number":ovdDocNumber.text.isNilOrValue]
         self.showProgress()
         ApiClient.getJSONResponses(route: APIRouter.v2Api(param: param)){
             result, code in

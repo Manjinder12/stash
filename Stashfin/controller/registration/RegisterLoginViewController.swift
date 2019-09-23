@@ -59,7 +59,7 @@ class RegisterLoginViewController :BaseLoginViewController,UITextFieldDelegate{
     }
     
     @IBAction func nextNutton(_ sender: UIButton) {
-        
+        SessionManger.getInstance.setMpinActive(status: false);
         if mobileNumberBox.isEditBoxNotEmpty() {
             if mobileNumberBox.text == "2222222222"{
                 #if DEBUG
@@ -77,7 +77,6 @@ class RegisterLoginViewController :BaseLoginViewController,UITextFieldDelegate{
                         result, code in
                         switch code{
                         case .success:
-                            
                             self.personalData = self.mobileNumberBox.text.isNilOrValue
                             self.changeViewController(controllerName:Constants.Controllers.REGISTER)
                         case .errors(let error):
@@ -89,13 +88,22 @@ class RegisterLoginViewController :BaseLoginViewController,UITextFieldDelegate{
         }
     }
     
+    private func openAlertRegister(){
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+            let alert = UIAlertController.init(title: "Registration ERROR!", message: "\nYou are already registered with us! Please login to continue.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction.init(title: "Login", style: .default, handler: {(_) -> Void in
+                self.changeViewController(controllerName: Constants.Controllers.LOGIN)
+            }))
+            alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     @IBAction func bacBtn(_ sender: UIButton) {
         onBackPressed()
     }
     
     @IBAction func ty(_ sender: UIButton) {
-        
-        
         if mobileNumberBox.isEditBoxNotEmpty()  {
             mobileNumber = mobileNumberBox.text.isNilOrValue
             if mobileNumber.count == 10{
@@ -111,7 +119,11 @@ class RegisterLoginViewController :BaseLoginViewController,UITextFieldDelegate{
                         self.showToast("OTP sent")
                         print("success otp")
                     case .errors(let error):
-                        self.showToast(error)
+                        if error.contains("already registered"){
+                            self.openAlertRegister()
+                        }else{
+                            self.showToast(error)
+                        }
                         print("error \(error)")
                     }
                 }

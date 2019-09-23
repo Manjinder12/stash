@@ -35,27 +35,42 @@ class CardCell: FSPagerViewCell{
         }
         if model.cardRegitster! {
             self.cellCardNumber.text = model.cardNumber
-//            self.cellCardNumber.text = "xxxx   xxxx   xxxx   1234"
+            //            self.cellCardNumber.text = "xxxx   xxxx   xxxx   1234"
             self.cellCardName.text = model.cardName?.uppercased()
             self.cellCardValidity.text = model.cardValidity
         }
-        if (cellCardImage.image==#imageLiteral(resourceName: "new_lock_img")){
+        if (cellCardImage.image==#imageLiteral(resourceName: "new_lock_img") || cellCardImage.image==#imageLiteral(resourceName: "bill_card_offfer") ){
             mm_yy_label.isHidden=true
             valid_upto_label.isHidden=true
             cellCardNumber.isHidden=true
             cellCardName.isHidden=true
             cellCardValidity.isHidden=true
+        }else{
+            mm_yy_label.isHidden=false
+            valid_upto_label.isHidden=false
+            cellCardNumber.isHidden=false
+            cellCardName.isHidden=false
+            cellCardValidity.isHidden=false
         }
         
         if model.cardType!.contains("physical"){
-             bannerImg.image = #imageLiteral(resourceName: "banner_physical")
+            bannerImg.image = #imageLiteral(resourceName: "banner_physical")
+            cvvStack.isHidden = true
+            bannerImg.isHidden=false
+            bannerLabel.isHidden=false
         }else if model.cardType!.contains("virtual"){
             bannerImg.image = #imageLiteral(resourceName: "banner_virtual")
+            bannerImg.isHidden=false
+            bannerLabel.isHidden=false
+        }else if model.cardType!.contains("BillCard"){
+            cvvStack.isHidden = true
+            bannerImg.isHidden=true
+            bannerLabel.isHidden=true
         }
         
         switch model.cardType {
         case "physicalRegisterError", "virtualRegisterError":
-             bannerLabel.text = "Activation ERROR!"
+            bannerLabel.text = "Activation ERROR!"
         case "physicalNotRegister", "virtualNotRegister":
             bannerLabel.text = "Activate Card"
         case "physical":
@@ -64,13 +79,14 @@ class CardCell: FSPagerViewCell{
             bannerLabel.text = "Virtual Card"
             if let cvvValue = model.cvv, cvvValue.count>2{
                 enableCvv(cvv: cvvValue)
+                cvvStack.isHidden = false
             }else{
                 cvvStack.isHidden = true
             }
         default:
-            Log("No card type \(String(describing: model.cardType))")
+            cvvStack.isHidden = true
+            Log("No card type \(model.cardType!)")
         }
-        
     }
     
     private func enableCvv(cvv:String){
@@ -93,10 +109,9 @@ class CardCell: FSPagerViewCell{
         labelSwitch.fullSizeTapEnabled=true
         self.cvvLabel.bounds = labelSwitch.frame
         cvvLabel.addSubview(labelSwitch)
-       
+        
         cvvStack.isHidden = false
         labelSwitch.lText = cvv
         
     }
-    
 }

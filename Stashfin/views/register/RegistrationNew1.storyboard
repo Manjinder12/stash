@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -545,7 +545,7 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                                             </textField>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aadhaar Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oyq-dD-dY8" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Official Valid Document" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oyq-dD-dY8" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="352" width="288" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="O3q-4s-EIA"/>
@@ -554,12 +554,32 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="q6e-4B-iNi" customClass="CustomUITextField" customModule="Stashfin" customModuleProvider="target">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="q6e-4B-iNi" customClass="DropDownBox" customModule="Stashfin" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="384" width="288" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             </textField>
+                                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="g6D-vh-EhO">
+                                                <rect key="frame" x="0.0" y="418" width="288" height="24"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Document Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gGn-JF-lhT" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="288" height="24"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="24" id="Ax9-FJ-waz"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5KY-sY-x9g" customClass="CustomUITextField" customModule="Stashfin" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="24" width="288" height="0.0"/>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                    </textField>
+                                                </subviews>
+                                            </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Employment Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IQ2-lj-djn" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="422" width="288" height="24"/>
                                                 <constraints>
@@ -860,7 +880,9 @@
                                             <constraint firstAttribute="width" secondItem="CVI-ax-2FI" secondAttribute="height" multiplier="200:35" id="xJ9-wS-i2c"/>
                                         </constraints>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" title="Next"/>
+                                        <state key="normal" title="Next">
+                                            <color key="titleColor" red="1" green="0.97028450320000004" blue="0.99326939650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
                                         <connections>
                                             <action selector="openProfessionalBtn:" destination="0qy-iQ-SWI" eventType="touchUpInside" id="eOU-vJ-33M"/>
                                         </connections>
@@ -895,7 +917,6 @@
                     </view>
                     <size key="freeformSize" width="320" height="1750"/>
                     <connections>
-                        <outlet property="aadhaarBox" destination="q6e-4B-iNi" id="CgY-JV-bJs"/>
                         <outlet property="checkBoxBtn" destination="A2D-UI-dya" id="JhF-7E-NIP"/>
                         <outlet property="cityBox" destination="tfx-pj-DKg" id="kPl-z0-BgX"/>
                         <outlet property="currentAddressBox" destination="g8a-0b-Om8" id="PxE-j9-aWG"/>
@@ -910,6 +931,10 @@
                         <outlet property="occupiedSinceMonth" destination="O4l-0r-JxV" id="lOJ-bJ-0NE"/>
                         <outlet property="occupiedSinceYear" destination="nfS-gA-gVb" id="nxQ-3K-3jZ"/>
                         <outlet property="occupiedStackView" destination="Gq2-mU-6c7" id="3C3-e2-dML"/>
+                        <outlet property="ovdDocBox" destination="q6e-4B-iNi" id="GwE-FT-aX1"/>
+                        <outlet property="ovdDocNumber" destination="5KY-sY-x9g" id="hYU-S2-5fm"/>
+                        <outlet property="ovdDocNumberLabel" destination="gGn-JF-lhT" id="Pnv-Zd-h6k"/>
+                        <outlet property="ovdStackView" destination="g6D-vh-EhO" id="640-gg-xUW"/>
                         <outlet property="panBox" destination="CPx-hc-K5m" id="WAj-SI-M5z"/>
                         <outlet property="permanenetStatemenu" destination="IGN-M7-FcK" id="RCn-cU-A5n"/>
                         <outlet property="permanentAddressBox" destination="fcX-Q0-snp" id="VYt-i1-kGy"/>
@@ -924,6 +949,7 @@
                         <outlet property="stackView" destination="png-jU-FCm" id="Cyc-Cf-0I9"/>
                         <outlet property="stateLabel" destination="es7-MU-5sh" id="7SX-AL-OVk"/>
                         <outlet property="stateListMenu" destination="fgL-vC-GIU" id="UMx-LA-Jzb"/>
+                        <outlet property="termsAndConditionLink" destination="p3T-x1-jBb" id="sPn-8O-xnv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WEf-Op-Snw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -935,7 +961,7 @@
             <objects>
                 <viewController storyboardIdentifier="ProfessionalViewController" id="i3H-ba-StW" customClass="ProfessionalViewController" customModule="Stashfin" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="slM-u5-9Vj">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="1107"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="1140"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ms4-ul-adL">
@@ -1013,19 +1039,19 @@
                                 </constraints>
                             </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fRx-ZN-YXJ">
-                                <rect key="frame" x="0.0" y="120" width="375" height="987"/>
+                                <rect key="frame" x="0.0" y="120" width="375" height="1020"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Wp4-6Q-QSn">
-                                        <rect key="frame" x="16" y="10" width="343" height="628"/>
+                                        <rect key="frame" x="16" y="10" width="343" height="652"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Company Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E8e-k7-KCg" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="23.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ziR-SF-FpO" customClass="CustomUITextField" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="30.5" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="33.5" width="343" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="D1g-n3-jem"/>
                                                 </constraints>
@@ -1034,79 +1060,79 @@
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Official Email ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xgD-LT-THL" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="70.5" width="343" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="73.5" width="343" height="23.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="I3V-Uh-LjH" customClass="CustomUITextField" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="101" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="107" width="343" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mode of Salary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EyJ-xa-DFI" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="141" width="343" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="147" width="343" height="23.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jJF-GP-LhR" customClass="DropDownBox" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="171.5" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="180.5" width="343" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Experience" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="07D-3r-do8" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="211.5" width="343" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="220.5" width="343" height="23.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="years" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PSL-DU-FXM" customClass="DropDownBox" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="242" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="254" width="343" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Office Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cr8-yd-SIm" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="282" width="343" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="294" width="343" height="23.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YSh-XY-88u" customClass="CustomUITextField" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="312.5" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="327.5" width="343" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Landmark" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="99v-ze-juL" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="352.5" width="343" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="367.5" width="343" height="23.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lB6-M7-UvP" customClass="CustomUITextField" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="383" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="401" width="343" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PIN Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SKD-Ja-z9r" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="423" width="343" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="441" width="343" height="23.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9QO-Oc-uk4" customClass="CustomUITextField" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="453.5" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="474.5" width="343" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" textContentType="postal-code"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="State" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WII-P4-0D7" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="493.5" width="343" height="24"/>
+                                                <rect key="frame" x="0.0" y="514.5" width="343" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="A9I-WZ-Vdl"/>
                                                 </constraints>
@@ -1115,19 +1141,19 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="l41-iH-5Rx" customClass="DropDownBox" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="527.5" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="548.5" width="343" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dxW-6F-fVW" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="567.5" width="343" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="588.5" width="343" height="23.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3VF-ea-h5a" customClass="DropDownBox" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="598" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="622" width="343" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
@@ -1139,13 +1165,15 @@
                                         </constraints>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="neS-XT-bPB" customClass="RCButton" customModule="Stashfin" customModuleProvider="target">
-                                        <rect key="frame" x="87.5" y="678" width="200" height="35"/>
+                                        <rect key="frame" x="87.5" y="702" width="200" height="35"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="fhj-dT-Wl3"/>
                                             <constraint firstAttribute="width" secondItem="neS-XT-bPB" secondAttribute="height" multiplier="200:35" id="uNX-gr-f6U"/>
                                         </constraints>
-                                        <state key="normal" title="Next"/>
+                                        <state key="normal" title="Next">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
                                         <connections>
                                             <action selector="submitButton:" destination="i3H-ba-StW" eventType="touchUpInside" id="WFX-Ju-woZ"/>
                                         </connections>
@@ -1162,7 +1190,7 @@
                                 </constraints>
                             </scrollView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="njd-gr-iah">
-                                <rect key="frame" x="0.0" y="125" width="375" height="982"/>
+                                <rect key="frame" x="0.0" y="125" width="375" height="1015"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="i5K-RB-Gbd">
                                         <rect key="frame" x="20" y="10" width="335" height="918"/>
@@ -1279,7 +1307,7 @@
                                                 <rect key="frame" x="0.0" y="426" width="335" height="60"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Is your current address same as permanent address" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="P3J-hg-htT" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                        <rect key="frame" x="5" y="9.5" width="268" height="41"/>
+                                                        <rect key="frame" x="5" y="7" width="268" height="46.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -1432,7 +1460,9 @@
                                             <constraint firstAttribute="height" constant="35" id="Qfq-de-of8"/>
                                             <constraint firstAttribute="width" secondItem="K8t-XR-RUf" secondAttribute="height" multiplier="200:35" id="vXh-zg-ejN"/>
                                         </constraints>
-                                        <state key="normal" title="Next"/>
+                                        <state key="normal" title="Next">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
                                         <connections>
                                             <action selector="submitButton:" destination="i3H-ba-StW" eventType="touchUpInside" id="LH0-7K-fJD"/>
                                         </connections>
@@ -1465,7 +1495,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="eF0-q8-Xj5"/>
                     </view>
-                    <size key="freeformSize" width="375" height="1107"/>
+                    <size key="freeformSize" width="375" height="1140"/>
                     <connections>
                         <outlet property="businessAddress" destination="oI3-L9-Ecc" id="rXc-9i-q69"/>
                         <outlet property="businessCity" destination="WbH-BG-uer" id="B8I-U6-PMu"/>
@@ -1504,7 +1534,7 @@
             <objects>
                 <viewController storyboardIdentifier="BankStatementUploadViewController" id="TFs-Cq-LRy" customClass="BankStatementUploadViewController" customModule="Stashfin" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ly8-oa-Gxz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="807"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hrv-Vq-34y">
@@ -1579,13 +1609,13 @@
                                 </constraints>
                             </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yi3-fp-x86">
-                                <rect key="frame" x="0.0" y="120" width="375" height="547"/>
+                                <rect key="frame" x="0.0" y="120" width="375" height="687"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iiv-Xj-7xD">
-                                        <rect key="frame" x="10" y="10" width="355" height="641"/>
+                                        <rect key="frame" x="10" y="10" width="355" height="698.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upload your Salary Account bank statement" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="KyV-Ny-Ei8" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="10" y="10" width="335" height="41"/>
+                                                <rect key="frame" x="10" y="10" width="335" height="49.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -1596,14 +1626,14 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="secure_new" translatesAutoresizingMaskIntoConstraints="NO" id="wxb-re-4rU">
-                                                <rect key="frame" x="115" y="66" width="125" height="75"/>
+                                                <rect key="frame" x="74.5" y="74.5" width="206.5" height="156.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="aLR-6q-VSs"/>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" secondItem="wxb-re-4rU" secondAttribute="height" multiplier="1:1" constant="50" id="dj6-P4-NU5"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100% safe and secure" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="57N-R8-oUm" customClass="CustomUILabelBold" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="93.5" y="166" width="168" height="21"/>
+                                                <rect key="frame" x="83" y="256" width="189.5" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="57N-R8-oUm" secondAttribute="height" multiplier="159:20" id="0Cu-s9-eF7"/>
                                                 </constraints>
@@ -1617,7 +1647,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="W0w-fr-1XJ" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="10" y="207" width="335" height="284.5"/>
+                                                <rect key="frame" x="10" y="300" width="335" height="249"/>
                                                 <string key="text">2,50,00+ users have submitted their bank statement securely via StashFin.
 
 Via quick net banking login you will be done within 30 seconds.
@@ -1635,25 +1665,29 @@ You will be required to login to your SALARY LINKED BANK ACCOUNT for verificatio
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lqo-pT-4C4" customClass="RCButton" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="77.5" y="521.5" width="200" height="35"/>
+                                                <rect key="frame" x="77.5" y="579" width="200" height="35"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="35" id="YLT-HX-Rs6"/>
                                                     <constraint firstAttribute="width" secondItem="lqo-pT-4C4" secondAttribute="height" multiplier="200:35" id="gex-Tv-mUw"/>
                                                 </constraints>
-                                                <state key="normal" title="Next"/>
+                                                <state key="normal" title="Next">
+                                                    <color key="titleColor" red="1" green="0.97028450320000004" blue="0.99326939650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
                                                 <connections>
                                                     <action selector="openWebViewBankPage:" destination="TFs-Cq-LRy" eventType="touchUpInside" id="rHm-Ff-TKb"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Td-t5-rvA" customClass="RCButton" customModule="Stashfin" customModuleProvider="target">
-                                                <rect key="frame" x="77.5" y="576.5" width="200" height="35"/>
+                                                <rect key="frame" x="77.5" y="634" width="200" height="35"/>
                                                 <color key="backgroundColor" red="1" green="0.024170271520000002" blue="0.0" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="2Td-t5-rvA" secondAttribute="height" multiplier="200:35" id="OI1-FW-ugc"/>
                                                     <constraint firstAttribute="height" constant="35" id="QiQ-6s-xBc"/>
                                                 </constraints>
-                                                <state key="normal" title="My Bank is not listed"/>
+                                                <state key="normal" title="My Bank is not listed">
+                                                    <color key="titleColor" red="1" green="0.97028450320000004" blue="0.99326939650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
                                                 <connections>
                                                     <action selector="skipBtn:" destination="TFs-Cq-LRy" eventType="touchUpInside" id="UWG-Lq-zPe"/>
                                                 </connections>
@@ -1690,7 +1724,7 @@ You will be required to login to your SALARY LINKED BANK ACCOUNT for verificatio
                                 </constraints>
                             </scrollView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mse-Yu-yC4">
-                                <rect key="frame" x="0.0" y="120" width="375" height="537"/>
+                                <rect key="frame" x="0.0" y="120" width="375" height="677"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gqr-9H-L43">
                                         <rect key="frame" x="330" y="10" width="30" height="30"/>
@@ -1727,6 +1761,7 @@ You will be required to login to your SALARY LINKED BANK ACCOUNT for verificatio
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bVb-Zi-kWv"/>
                     </view>
+                    <size key="freeformSize" width="375" height="807"/>
                     <connections>
                         <outlet property="descritionLabel" destination="W0w-fr-1XJ" id="cxk-Ic-eRp"/>
                         <outlet property="infoIconBtn" destination="gqr-9H-L43" id="BM0-bA-Qjk"/>
@@ -1893,7 +1928,9 @@ You will be required to login to your SALARY LINKED BANK ACCOUNT for verificatio
                                             <constraint firstAttribute="height" constant="35" id="1Ho-EG-pff"/>
                                             <constraint firstAttribute="width" secondItem="bPZ-Pm-TN0" secondAttribute="height" multiplier="200:35" id="otx-Cf-cc5"/>
                                         </constraints>
-                                        <state key="normal" title="Next"/>
+                                        <state key="normal" title="Next">
+                                            <color key="titleColor" red="1" green="0.97028450320000004" blue="0.99326939650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
                                         <connections>
                                             <action selector="nextBtnHandler:" destination="6Oh-0s-haL" eventType="touchUpInside" id="e3t-EF-db1"/>
                                         </connections>
@@ -2021,7 +2058,9 @@ You will be required to login to your SALARY LINKED BANK ACCOUNT for verificatio
                                     <constraint firstAttribute="height" constant="35" id="69d-2I-3PP"/>
                                     <constraint firstAttribute="width" secondItem="Ey0-CL-Hez" secondAttribute="height" multiplier="200:35" id="Hwm-hn-CFn"/>
                                 </constraints>
-                                <state key="normal" title="Next"/>
+                                <state key="normal" title="Next">
+                                    <color key="titleColor" red="1" green="0.97028450320000004" blue="0.99326939650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="nextDocBtn:" destination="yVE-IC-UkU" eventType="touchUpInside" id="Ay1-ko-JfH"/>
                                 </connections>
@@ -2038,7 +2077,7 @@ You will be required to login to your SALARY LINKED BANK ACCOUNT for verificatio
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Document" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="UUg-V5-QsP" customClass="CustomUILabel" customModule="Stashfin" customModuleProvider="target">
-                                                    <rect key="frame" x="10" y="5" width="79.5" height="50"/>
+                                                    <rect key="frame" x="10" y="5" width="67.5" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="TNA-ev-hNB"/>
                                                     </constraints>
@@ -2059,7 +2098,7 @@ You will be required to login to your SALARY LINKED BANK ACCOUNT for verificatio
                                                     </constraints>
                                                 </imageView>
                                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="select" translatesAutoresizingMaskIntoConstraints="NO" id="pxm-Q2-X4o">
-                                                    <rect key="frame" x="97.5" y="20" width="20" height="20"/>
+                                                    <rect key="frame" x="85.5" y="20" width="20" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="O1b-lp-ibd"/>
                                                         <constraint firstAttribute="width" secondItem="pxm-Q2-X4o" secondAttribute="height" multiplier="1:1" id="X4Y-hy-HP0"/>
@@ -2123,18 +2162,18 @@ You will be required to login to your SALARY LINKED BANK ACCOUNT for verificatio
     </scenes>
     <resources>
         <image name="ButtonBottomWhite" width="333.5" height="50"/>
-        <image name="back-white" width="180" height="180"/>
-        <image name="bank_detail" width="801" height="402"/>
-        <image name="box" width="8.1599998474121094" height="8.1599998474121094"/>
-        <image name="cam" width="16.319999694824219" height="16.079999923706055"/>
-        <image name="card" width="171.83999633789062" height="111.59999847412109"/>
-        <image name="female" width="40.319999694824219" height="16.079999923706055"/>
-        <image name="female_2" width="40.319999694824219" height="16.079999923706055"/>
-        <image name="info" width="7.1999998092651367" height="7.440000057220459"/>
-        <image name="male" width="40.319999694824219" height="16.079999923706055"/>
-        <image name="male_2" width="40.319999694824219" height="16.079999923706055"/>
-        <image name="secure_new" width="81.839996337890625" height="75.120002746582031"/>
-        <image name="select" width="128" height="128"/>
-        <image name="user-1" width="89.279998779296875" height="89.279998779296875"/>
+        <image name="back-white" width="25" height="25"/>
+        <image name="bank_detail" width="400.5" height="201"/>
+        <image name="box" width="17" height="17"/>
+        <image name="cam" width="34" height="33.5"/>
+        <image name="card" width="358" height="232.5"/>
+        <image name="female" width="84" height="33.5"/>
+        <image name="female_2" width="84" height="33.5"/>
+        <image name="info" width="15" height="15.5"/>
+        <image name="male" width="84" height="33.5"/>
+        <image name="male_2" width="84" height="33.5"/>
+        <image name="secure_new" width="170.5" height="156.5"/>
+        <image name="select" width="42.666667938232422" height="42.666667938232422"/>
+        <image name="user-1" width="186" height="186"/>
     </resources>
 </document>

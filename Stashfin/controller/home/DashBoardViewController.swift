@@ -16,12 +16,17 @@ class DashBoardViewController: BaseViewController {
     @IBOutlet weak var payNowViewClicked: UIView!
     @IBOutlet weak var outgoingEmiViewClicked: UIView!
     
+    @IBOutlet weak var billGiftIntroUiView: UIView!
     @IBOutlet weak var cardBalance: UILabel!
     @IBOutlet weak var emiDate: UILabel!
     @IBOutlet weak var emiAmount: UILabel!
     @IBOutlet weak var approvedLimit: UILabel!
     @IBOutlet weak var usedLimit: UILabel!
     @IBOutlet weak var availableLimit: UILabel!
+    @IBOutlet weak var loadCardView: UIView!
+    @IBOutlet weak var detailsStackView: UIStackView!
+    @IBOutlet weak var loadCardViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var payBillAndEmiLabel: CustomUILabel!
     
     var isLoadCardEnabled=false
     var cardErrorMessage="LOC is disabled, please contact us!"
@@ -29,14 +34,60 @@ class DashBoardViewController: BaseViewController {
     static func getInstance(storyboard: UIStoryboard) -> DashBoardViewController{
         return storyboard.instantiateViewController(withIdentifier: String(describing: self.classForCoder())) as! DashBoardViewController
     }
-    
+
     override func viewDidLoad() {
+        detailsStackView.layoutIfNeeded()
+        if SessionManger.getInstance.isBillCustomer(){
+//            payBillAndEmiLabel.text="Pay Bill & EMI"
+            if  !SessionManger.getInstance.isBillGiftIntroShowed(){
+                billGiftIntroUiView.isHidden=false
+            }else{
+                billGiftIntroUiView.isHidden=true
+            }
+        }
+//            loadCardViewHeight.constant = 50
+//            var cell:CGFloat=5
+//            let height=detailsStackView.frame.height
+//
+//            if height>350 {
+//                trnxViewClicked.isHidden=false
+//                cell=7
+//                SessionManger.getInstance.setTranxHideStatus(status: false)
+//            }else{
+//                trnxViewClicked.isHidden=true
+//                cell=6
+//                SessionManger.getInstance.setTranxHideStatus(status: true)
+//            }
+//            detailsStackView.layoutIfNeeded()
+//            let newHeight=((height-(8*cell))/cell)
+//            Log("height know more: \(height)..\(cell)..\(newHeight)")
+//
+//            loadCardViewHeight.constant=newHeight
+//            loadCardView.isHidden=false
+//            self.view.layoutIfNeeded()
+//
+//            Log("height know more : \(loadCardViewHeight.constant)")
+//
+//            if  !SessionManger.getInstance.isBillGiftIntroShowed(){
+//                billGiftIntroUiView.isHidden=false
+//            }else{
+//                billGiftIntroUiView.isHidden=true
+//            }
+//        }else{
+//            trnxViewClicked.isHidden=false
+//            loadCardView.isHidden = true
+//            loadCardViewHeight.constant = 0
+//        }
+        
         let loadMyCardView = UITapGestureRecognizer(target: self, action: #selector(openLocPage(_:)))
+        
+        let loadCardKnowMore=UITapGestureRecognizer(target: self, action: #selector(openKnowMoreIntro(_:)))
         
         let outgoingEmiView = UITapGestureRecognizer(target: self, action: #selector(openLocPage(_:)))
         let trnxView = UITapGestureRecognizer(target: self, action: #selector(openLocPage(_:)))
         let payNowView = UITapGestureRecognizer(target: self, action: #selector(openLocPage(_:)))
         
+        self.loadCardView.addGestureRecognizer(loadCardKnowMore)
         self.outgoingEmiViewClicked.addGestureRecognizer(outgoingEmiView)
         self.trnxViewClicked.addGestureRecognizer(trnxView)
         self.payNowViewClicked.addGestureRecognizer(payNowView)
@@ -56,11 +107,17 @@ class DashBoardViewController: BaseViewController {
         }
     }
     
+    @objc func openKnowMoreIntro(_ view:UITapGestureRecognizer){
+//           self.changeViewController(controllerName: Constants.Controllers.DASHBOARD_PAGE)
+        
+        self.changeViewController(controllerName: Constants.Controllers.BILL_INTRO)
+    }
+    
     @objc func openLocPage(_ view: UITapGestureRecognizer){
         switch view.view!.tag {
         case 1:
             if isLoadCardEnabled{
-                self.changeViewController(controllerName: Constants.Controllers.LOAD_MY_CARD)
+               self.openLoadMyCardPage()
             }else{
                 self.showToast(cardErrorMessage,showDialog: true,title: "LOC Card")
             }
@@ -72,9 +129,9 @@ class DashBoardViewController: BaseViewController {
             }
             
         case 3:
-            self.changeViewController(controllerName: Constants.Controllers.PAY_NOW)
+            self.openPaymentPage()
         case 4:
-            self.changeViewController(controllerName: Constants.Controllers.OUTGOING_EMI)
+            self.changeViewController(controllerName: Constants.Controllers.BILL_OUTGOING_EMI)
         default:
             Log("vies.... \(view)")
         }
@@ -115,5 +172,27 @@ class DashBoardViewController: BaseViewController {
             self.checkCardStatusApi()
         }
     }
+    
+    @IBAction func knowMorebtn(_ sender: UIButton) {
+        SessionManger.getInstance.setBillGiftIntroShowed(status: true)
+        self.changeViewController(controllerName: Constants.Controllers.BILL_INTRO)
+        billGiftIntroUiView.isHidden=true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        if SessionManger.getInstance.isBillCustomer(){
+            if  !SessionManger.getInstance.isBillGiftIntroShowed(){
+                  navigationController?.setNavigationBarHidden(true, animated: true)
+            }
+        }
+      
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
     
 }

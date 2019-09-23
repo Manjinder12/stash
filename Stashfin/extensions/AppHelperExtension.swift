@@ -124,3 +124,109 @@ extension String{
         return self.data(using: .utf8, allowLossyConversion: true)
     }
 }
+
+extension UIView {
+    
+    func roundCorners(_ corners: UIRectCorner, radius: CGFloat) {
+        let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        self.layer.mask = mask
+    }
+    
+}
+
+
+class Alerts {
+    static func showActionsheet(viewController: UIViewController, title: String, message: String, actions: [(String, UIAlertAction.Style)], completion: @escaping (_ index: Int) -> Void) {
+        let alertViewController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        for (index, (title, style)) in actions.enumerated() {
+            let alertAction = UIAlertAction(title: title, style: style) { (_) in
+                completion(index)
+            }
+            alertViewController.addAction(alertAction)
+        }
+        viewController.present(alertViewController, animated: true, completion: nil)
+    }
+}
+
+public class CustomTableView: UITableView {
+    
+    override public func reloadData() {
+        super.reloadData()
+        
+        if self.numberOfRows(inSection: 0) == 0 {
+            if self.viewWithTag(1111) == nil {
+                let noDataLabel = UILabel()
+                noDataLabel.textAlignment = .center
+                noDataLabel.text = "No Data Available"
+                noDataLabel.tag = 1111
+                noDataLabel.center = self.center
+                self.backgroundView = noDataLabel
+            }
+            
+        } else {
+            if self.viewWithTag(1111) != nil {
+                self.backgroundView = nil
+            }
+        }
+    }
+}
+
+
+extension UITextView {
+    
+    
+    func hyperLink(originalText: String, hyperLink: String, urlString: String) {
+        
+//        let style = NSMutableParagraphStyle()
+//        style.alignment = .left
+        
+        let attributedOriginalText = NSMutableAttributedString(string: originalText)
+        let linkRange = attributedOriginalText.mutableString.range(of: hyperLink)
+        let fullRange = NSMakeRange(0, attributedOriginalText.length)
+        
+        attributedOriginalText.addAttribute(NSAttributedString.Key.link, value: urlString, range: linkRange)
+//        attributedOriginalText.addAttribute(NSAttributedString.Key.paragraphStyle, value: style, range: fullRange)
+        attributedOriginalText.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: fullRange)
+        
+        attributedOriginalText.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.blue, range: linkRange)
+  attributedOriginalText.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 10), range: fullRange)
+        
+        self.linkTextAttributes = [
+            kCTForegroundColorAttributeName: UIColor.blue,
+            kCTUnderlineStyleAttributeName: NSUnderlineStyle.single.rawValue,
+            ] as [NSAttributedString.Key : Any]
+        
+        self.attributedText = attributedOriginalText
+    }
+    
+}
+
+//import CommonCrypto
+extension String {
+    func sha1() -> String {
+        let data = Data(self.utf8)
+        var digest = [UInt8](repeating: 0, count:Int(CC_SHA1_DIGEST_LENGTH))
+        data.withUnsafeBytes {
+            _ = CC_SHA1($0, CC_LONG(data.count), &digest)
+        }
+        let hexBytes = digest.map { String(format: "%02hhx", $0) }
+        return hexBytes.joined()
+    }
+}
+
+extension UIImage {
+    func upOrientationImage() -> UIImage? {
+        switch imageOrientation {
+        case .up:
+            return self
+        default:
+            UIGraphicsBeginImageContextWithOptions(size, false, scale)
+            draw(in: CGRect(origin: .zero, size: size))
+            let result = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            return result
+        }
+    }
+}

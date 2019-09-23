@@ -66,12 +66,19 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
     @IBOutlet weak var viewHeight: UIView!
     @IBOutlet weak var viewHeightConst: NSLayoutConstraint!
     
+    var docType=""
     var pageType=""
     var isSalaried = true
     let ovdDocument="Officially Valid ID Proof"
     let drivingLicense = "Driving Licence"
     let passprot="Passport"
     let voterId="Voter Id Card"
+    var ovdId=0
+    
+    let bankStatement="Bank Statement"
+    let cheque="Cheque"
+    let passbook="Passbook"
+    let bankingProof="Banking Proof"
     
     @IBOutlet weak var nextButtonHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var nextButton: UIButton!
@@ -159,13 +166,16 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
                     self.hideProgress()
                 })
                 
-                self.setDocumentData(result:result)
-                
+                if self.docType==Constants.Controllers.EL_DOC || self.docType==Constants.Controllers.EL_DOC_REJECT{
+                    self.setElv8DocumentData(result:result)
+                }else{
+                    self.setDocumentData(result:result)
+                }
             case .errors(let error):
                 if SessionManger.getInstance.isTester(){
                     self.documentList.append(DocumentUploadModel(documentName: "pan_proof", documentTitleName: "PAN Card", documentId: "pan_proof",documentImg:"", status: false, reset: false, isRequired:true))
                     
-                    self.documentList.append(DocumentUploadModel(documentName: "id_proof", documentTitleName: "Aadhaar Card", documentId: "id_proof",documentImg:"", status: false, reset: false, isRequired:true))
+                    self.documentList.append(DocumentUploadModel(documentName: "id_proof", documentTitleName: "Id Proof", documentId: "id_proof",documentImg:"", status: false, reset: false, isRequired:true))
                     self.tableViewHeros.reloadData()
                 }else{
                     self.showToast(error)
@@ -174,9 +184,57 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
         }
     }
     
+    private func setElv8DocumentData(result:Data?){
+        if  let json = try? JSON(data: result!){
+            ovdId=json["ovd_id"].intValue
+            if let otherDocs = json["other_selected_docs"].array{
+                for doc in otherDocs{
+                    self.otherDocumentList.append(DocumentUploadModel(documentName: "other", documentTitleName: doc["document_name"].stringValue, documentId: doc["id"].stringValue,documentImg:doc["document_path"].stringValue, status: !doc["document_path"].stringValue.isEmpty, reset: doc["document_status"].stringValue=="0"))
+                }
+            }
+            
+            let profilePicError:Bool = json["profile_pic_status"].stringValue == "0"
+            
+            if profilePicError{
+                self.documentList.append(DocumentUploadModel(documentName: "profile_pic", documentTitleName: "Profile Picture", documentId: "profile_pic",documentImg:json["docs"]["profile_pic"].stringValue, status: !json["docs"]["profile_pic"].stringValue.isEmpty, reset: json["docs"]["profile_pic_status"].stringValue=="0",isRequired:true))
+            }
+            
+            self.documentList.append(DocumentUploadModel(documentName: "pan_proof", documentTitleName: "PAN Card", documentId: "pan_proof",documentImg:json["docs"]["pan_proof"].stringValue, status: !json["docs"]["pan_proof"].stringValue.isEmpty, reset: json["docs"]["pan_status"].stringValue=="0",isRequired:true))
+            
+            self.documentList.append(DocumentUploadModel(documentName: "id_proof", documentTitleName: getOvdDoc(id: ovdId,appendString: "Front"), documentId: "id_proof", documentImg:json["docs"]["id_proof"].stringValue,status: !json["docs"]["id_proof"].stringValue.isEmpty, reset: json["docs"]["id_proof_status"].stringValue=="0",isRequired:true))
+            
+            //MARK: change this
+            let docAadhaar=self.getDocItem(itemName:"Aadhaar Card (Back)")
+            
+            docAadhaar.isRequired=true
+            self.documentList.append(docAadhaar)
+            
+            let statement=self.getDocItem(itemName: bankStatement)
+            if statement.documentId.isEmpty{
+                let chq=self.getDocItem(itemName: cheque)
+                if chq.documentId.isEmpty{
+                    let pass=self.getDocItem(itemName: passbook)
+                    if pass.documentId.isEmpty{
+                        let docBanking=self.getDocItem(itemName:self.bankingProof )
+                        docBanking.isRequired=true
+                        self.documentList.append(docBanking)
+                    }else{
+                        self.documentList.append(pass)
+                    }
+                }else{
+                    self.documentList.append(chq)
+                }
+            }else{
+                self.documentList.append(statement)
+            }
+        }
+        self.tableViewHeros.reloadData()
+    }
+    
     private func setDocumentData(result:Data?)
     {
         if  let json = try? JSON(data: result!){
+            ovdId=json["ovd_id"].intValue
             if let otherDocs = json["other_selected_docs"].array{
                 for doc in otherDocs{
                     self.otherDocumentList.append(DocumentUploadModel(documentName: "other", documentTitleName: doc["document_name"].stringValue, documentId: doc["id"].stringValue,documentImg:doc["document_path"].stringValue, status: !doc["document_path"].stringValue.isEmpty, reset: doc["document_status"].stringValue=="0"))
@@ -190,14 +248,17 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
             
             self.documentList.append(DocumentUploadModel(documentName: "pan_proof", documentTitleName: "PAN Card", documentId: "pan_proof",documentImg:json["docs"]["pan_proof"].stringValue, status: !json["docs"]["pan_proof"].stringValue.isEmpty, reset: json["docs"]["pan_status"].stringValue=="0",isRequired:true))
             
-            self.documentList.append(DocumentUploadModel(documentName: "id_proof", documentTitleName: "Aadhaar Card Front", documentId: "id_proof", documentImg:json["docs"]["id_proof"].stringValue,status: !json["docs"]["id_proof"].stringValue.isEmpty, reset: json["docs"]["id_proof_status"].stringValue=="0",isRequired:true))
+            //            "Aadhaar Card Front"
+            self.documentList.append(DocumentUploadModel(documentName: "id_proof", documentTitleName: getOvdDoc(id: ovdId,appendString: "Front"), documentId: "id_proof", documentImg:json["docs"]["id_proof"].stringValue,status: !json["docs"]["id_proof"].stringValue.isEmpty, reset: json["docs"]["id_proof_status"].stringValue=="0",isRequired:true))
             
-            self.documentList.append(self.getDocItem(itemName:"Aadhaar Card Back"))
+            //            self.documentList.append(self.getDocItem(itemName:"Aadhaar Card Back"))
             
-            self.documentList.append(DocumentUploadModel(documentName: "address_proof", documentTitleName: "Current Address Proof 1", documentId: "address_proof", documentImg:json["docs"]["address_proof"].stringValue,status: !json["docs"]["address_proof"].stringValue.isEmpty, reset: json["docs"]["address_status"].stringValue=="0",isRequired:true))
+            //            "Current Address Proof 1"
+            self.documentList.append(DocumentUploadModel(documentName: "address_proof", documentTitleName: getOvdDoc(id: ovdId,appendString: "Back"), documentId: "address_proof", documentImg:json["docs"]["address_proof"].stringValue,status: !json["docs"]["address_proof"].stringValue.isEmpty, reset: json["docs"]["address_status"].stringValue=="0",isRequired:true))
             
             
-            if bankStatementChoice == 1{ self.documentList.append(DocumentUploadModel(uploadModel: self.getDocItem(itemName:"Bank Statement"),isRequired:false))
+            if bankStatementChoice == 1{
+                self.documentList.append(DocumentUploadModel(uploadModel: self.getDocItem(itemName:"Bank Statement"),isRequired:false))
             }
             
             if permanentChoice == 1{
@@ -236,7 +297,6 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
             
             self.documentList.append(self.getDocItem(itemName:"Current Address Proof 2"))
             
-            self.documentList.append(self.getDocItem(itemName:"Business Address Proof"))
             
             if self.isSalaried {
                 
@@ -246,6 +306,8 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
                 
                 self.documentList.append(DocumentUploadModel(documentName: "salary_slip3", documentTitleName: "Salary Slip 3", documentId: "salary_slip3", status: !json["docs"]["salary_slip3"].stringValue.isEmpty, reset: (json["docs"]["salary_slip3_status"].stringValue=="0"),isRequired:false))
                 
+            }else{
+                 self.documentList.append(self.getDocItem(itemName:"Business Address Proof"))
             }
             
             for doc in self.otherDocumentList{
@@ -329,7 +391,7 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
         if  !self.ovdValue.isEmpty {
             params["ovd_id"] = self.ovdValue
         }
-        //
+        self.showProgress()
         ApiClient.getJSONResponses(route: APIRouter.v2Api(param: params)){
             result,status in
             self.hideProgress()
@@ -365,6 +427,8 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
                 openValidIdProofDialog(position: indexPath,document:doc)
             }else if doc.documentTitleName == "Add other document"{
                 showSigninForm(position: indexPath,document:doc,type: "new")
+            }else if doc.documentTitleName == bankingProof{
+                showActionSheetForElv8Banking(position: indexPath, document:doc)
             }
             else{
                 openCamera(position: indexPath, document:doc)
@@ -483,6 +547,57 @@ class DocumentUploadViewController: BaseLoginViewController,UITableViewDataSourc
     
     @objc func textChanged(sender:UITextField) {
         self.actionToEnable?.isEnabled = (sender.text!.count > 0)
+    }
+    
+    private func showActionSheetForElv8Banking(position: IndexPath, document:DocumentUploadModel){
+        
+        var actions: [(String, UIAlertAction.Style)] = []
+        actions.append((passbook, UIAlertAction.Style.default))
+        actions.append((cheque, UIAlertAction.Style.default))
+        actions.append((bankStatement, UIAlertAction.Style.default))
+        actions.append(("Cancel", UIAlertAction.Style.cancel))
+        
+        Alerts.showActionsheet(viewController: self, title:bankingProof , message: "Select type of banking proof", actions: actions) { (index) in
+            print("call action \(index)")
+            switch index{
+            case 0:
+                Log("passbook Action pressed")
+                document.documentTitleName=self.passbook
+                self.openCamera(position: position, document:document)
+            case 1:
+                document.documentTitleName=self.cheque
+                self.openCamera(position: position, document:document)
+                Log("cheque Action pressed")
+            case 2:
+                document.documentTitleName=self.bankStatement
+                self.openCamera(position: position, document:document)
+                Log("BankStatement Action pressed")
+            default:
+                Log("default banking")
+            }
+        }
+    }
+    
+    private func getOvdDoc(id:Int,appendString:String)->String{
+        var ovdName = "";
+        switch (id){
+        case 1:
+            ovdName = "Aadhaar Card";
+            break;
+        case 2:
+            ovdName = "Driving Licence";
+            break;
+        case 3:
+            ovdName = "Passport";
+            break;
+        case 4:
+            ovdName = "Voter Card";
+            break;
+        default:
+            ovdName = "Aadhaar Card";
+            break;
+        }
+        return "\(ovdName) \(appendString)";
     }
 }
 

@@ -40,6 +40,7 @@ class ActivateCardViewController: BaseLoginViewController {
             }
         }
     }
+    
     @IBAction func activateBtn(_ sender: UIButton) {
         if otpFeild.isEditBoxNotEmpty(){
             verifyOTP()

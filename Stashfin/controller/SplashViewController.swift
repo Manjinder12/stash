@@ -10,10 +10,12 @@ import UIKit
 import SwiftyJSON
 
 class SplashViewController: BaseLoginViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         assignbackground()
+        SessionManger.getInstance.setSalesValue(value: "")
+        SessionManger.getInstance.setReferralValue(value: "")
     }
     
     func assignbackground(){
@@ -30,40 +32,30 @@ class SplashViewController: BaseLoginViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-          makeServiceCall()
+        makeServiceCall()
     }
     
     private func makeServiceCall() {
         
+        guard  Utilities.isConnectedToNetwork() else {
+            self.showToast("No internet connection found!")
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
+                self.changeViewController(controllerName: Constants.Controllers.LOGIN)
+            }
+            return 
+        }
+        
+        SessionManger.getInstance.setTester(status: false);
+//        SessionManger.getInstance.setMpinActive(status: true);
+        
         DispatchQueue.main.async {
-//          self.changeViewController(controllerName: Constants.Controllers.APPROVED)
+//                        self.changeViewController(controllerName: Constants.Controllers.BANK_STATEMENT_SALARY)
             
-            if !SessionManger.getInstance.getAuthToken().isEmpty{
-//                self.showProgress()
-                    ApiClient.getLoginData(){
-                        result, status in
-//                    self.hideProgress()
-                    switch status{
-                    case .success:
-                        Log(result)
-                        if let json = try? JSON(data: result!){
-                            if json["landing_page"].string != nil{
-//                                self.dismiss(animated: true, completion: nil)
-                                self.parseResonse(result: result)
-                            }else{
-                                self.showLandingPage()
-                            }
-                        }else{
-                            self.showLandingPage()
-                        }
+            if Utilities.isMpinActive(){ AppDelegate.shared.rootViewController.showLoginScreen(mpinStatus:true)
+//                self.dismiss(animated: true, completion: nil)
 
-                    case .errors(let errors):
-                        Log(errors)
-                        self.showLandingPage()
-                    }
-                }
             }else{
-                self.showLandingPage()
+                self.getLoginDataApi()
             }
         }
     }

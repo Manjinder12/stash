@@ -177,18 +177,18 @@ class ProfileViewController: BaseViewController{
                     let name = json["customer_details"]["customer_name"].stringValue
                     let email = json["customer_details"]["email"].stringValue
                     let phone = json["customer_details"]["phone"].stringValue
-                    let dob = json["customer_details"]["dob"].stringValue
+                    let address = json["current_address"].stringValue
                     //                    let pan_number = json["customer_details"]["pan_number"].stringValue
                     //                    let aadhar_number = json["customer_details"]["aadhar_number"].stringValue
                     
-                    self.personalCellData = [DataName(key: "Name",value: name),DataName(key: "Email",value: email),DataName(key: "Phone",value: phone),DataName(key: "DOB",value: dob)]
+                    self.personalCellData = [DataName(key: "Name",value: name),DataName(key: "Email",value: email),DataName(key: "Phone",value: phone),DataName(key: "Address",value: address)]
                     
                     let company_name = json["professional_details"]["company_name"].stringValue
-                    let designation = json["professional_details"]["designation"].stringValue
-                    let workingSince = json["professional_details"]["workingSince"].stringValue
+                    let office_address = json["office_address"].stringValue
+                    let workExp = "\(json["professional_details"]["workExp"].intValue) years"
                     let officeEmail = json["professional_details"]["officeEmail"].stringValue
                     
-                    self.professionalCellData = [DataName(key: "Company Name",value: company_name),DataName(key: "Designation",value: designation),DataName(key: "Working Since",value: workingSince),DataName(key: "Office Email",value: officeEmail)]
+                    self.professionalCellData = [DataName(key: "Company Name",value: company_name), DataName(key: "Office Email",value: officeEmail), DataName(key: "Work Experience",value: workExp), DataName(key: "Office Address",value: office_address)]
                     
                     self.tableData = [DocumentModel(opened: false, title: "Personal", cellData: self.personalCellData), DocumentModel(opened: false, title: "Professional", cellData: self.professionalCellData)]
                     

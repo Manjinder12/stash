@@ -17,7 +17,6 @@ class BankStatementUploadViewController: BaseLoginViewController {
         return storyboard.instantiateViewController(withIdentifier: String(describing: self.classForCoder())) as! BankStatementUploadViewController
     }
     
-    
     var webView : WKWebView!
     var url = ""
     var return_url = ""
@@ -47,7 +46,7 @@ class BankStatementUploadViewController: BaseLoginViewController {
     
     You will be required to login to your
 """
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -84,21 +83,21 @@ class BankStatementUploadViewController: BaseLoginViewController {
         self.dropDown.anchorView = infoIconBtn
         //"Having problem? Open in External browser",
         self.dropDown.dataSource = ["Reload page"]
-//        dropDown.width = 200
+        //        dropDown.width = 200
         dropDown.selectionAction = {  (index: Int, item: String) in
             print("Selected item: \(item) at index: \(index)")
             switch index {
             case 0:
                 self.loadUrl()
-//            case 1:
-//                guard let url = URL(string: self.url) else { return }
-//                UIApplication.shared.open(url)
-//                self.webLoadView.isHidden = true
-//                self.introBankView.isHidden = false
-//            case 1:
-//
-//                self.webLoadView.isHidden = true
-//                self.introBankView.isHidden = false
+                //            case 1:
+                //                guard let url = URL(string: self.url) else { return }
+                //                UIApplication.shared.open(url)
+                //                self.webLoadView.isHidden = true
+                //                self.introBankView.isHidden = false
+                //            case 1:
+                //
+                //                self.webLoadView.isHidden = true
+            //                self.introBankView.isHidden = false
             default:
                 Log("no handle \(index)")
             }
@@ -125,22 +124,27 @@ class BankStatementUploadViewController: BaseLoginViewController {
             case .success:
                 if let json = try? JSON(data: result!){
                     self.response=result
-                    let skip = json["skip"].intValue
-                    if skip > 0{
-                        self.skipButton.isHidden = false
-                    }
-                    self.webLoadView.isHidden = true
-                    self.introBankView.isHidden = false
-//                    if json["status"].stringValue == "success"{
-//                        if json["message"].stringValue .contains("not uploaded"){
-//
-//                        }else{
+                    
+//                    if let page = json["landing_page"].string, page.count>2{
+//                        switch page{
+//                        case Constants.Controllers.BANK_STATEMENT_SALARY:
+//                            Log(Constants.Controllers.BANK_STATEMENT_SALARY)
+//                        case Constants.Controllers.BANK_STATEMENT_BUSINESS:
+//                            Log(Constants.Controllers.BANK_STATEMENT_BUSINESS)
+//                        default:
 //                            self.openNextPage()
 //                        }
 //                    }
+                    
+                    self.webLoadView.isHidden = true
+                    self.introBankView.isHidden = false
+                    let skip = json["skip"].intValue
+                    if skip == 1{
+                        self.skipButton.isHidden = false
+                    }
                 }
             case .errors(let errors):
-//                self.showToast(errors)
+                //                self.showToast(errors)
                 Log("Bank page: \(errors)")
             }
         }
@@ -156,7 +160,7 @@ class BankStatementUploadViewController: BaseLoginViewController {
     }
     
     @IBAction func openWebViewBankPage(_ sender: UIButton) {
-       
+        
         if SessionManger.getInstance.isTester(){
             if salariedType{
                 self.changeViewController(controllerName: Constants.Controllers.DOCUMENTS_SALARY)
@@ -239,7 +243,7 @@ extension BankStatementUploadViewController: WKNavigationDelegate{
         //        self.hideProgress()
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         //        self.hideProgress()
-        Log("didFailProvisionalNavigation load \(webView.url!.absoluteString) \(error.localizedDescription)")
+        Log("didFailProvisionalNavigation load \(String(describing: webView.url?.absoluteString)) \(error.localizedDescription)")
         
     }
     
@@ -254,10 +258,10 @@ extension BankStatementUploadViewController: WKNavigationDelegate{
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         print("finish to load \(webView.url!.absoluteString)")
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
-        //        self.hideProgress()
+        // self.hideProgress()
         if let url = webView.url?.absoluteString{
             if url.contains("returnToApp"){
-                checkBankStatus()
+                self.getLoginDataApi()
             }
         }
     }

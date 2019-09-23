@@ -41,19 +41,22 @@ class PayNowViewController: BaseLoginViewController {
     private func checkPaymentApi(){
         self.showProgress()
         let params=["mode":"emiPayment"]
-        ApiClient.getJSONResponses(route: APIRouter.stasheasyApi(param: params)){
+        ApiClient.getJSONResponses(route: APIRouter.v2Api(param: params)){
             result, status in
             self.hideProgress()
             switch status {
             case .success:
                 if let json = try? JSON(data: result!){
-                    if let dues = json["dues"].int, dues == 1{
-                        
+//                    if let dues = json["dues"].int, dues == 1{
+                    
                         //                        self.emiDateLabel.text = json["emi_date"].stringValue
                         self.principalLabel.text = Constants.Values.RupeeSign +  "\(json["principle"].doubleValue)"
                         self.interestLabel.text = Constants.Values.RupeeSign + "\(json["interest"].doubleValue)"
                         self.overdueLabel.text = Constants.Values.RupeeSign + "\(json["overdue"].doubleValue)"
-                        self.chargesLabel.text = Constants.Values.RupeeSign + "\(json["charges"].doubleValue)"
+                    
+                    self.chargesLabel.text = Constants.Values.RupeeSign + "\(json["charges"].doubleValue)"
+                    
+                    
                         self.payableAmountField.text = "\(json["total_pay_amount"].doubleValue)"
                         self.amountDue.text = Constants.Values.RupeeSign + "\(json["total_pay_amount"].doubleValue)"
                         self.foreCloseAmount=json["foreclose"].doubleValue
@@ -61,8 +64,8 @@ class PayNowViewController: BaseLoginViewController {
                         self.emiAmount=json["emi_amount"].doubleValue
                         
                         self.checkForecloseStatus()
-                        
-                    }else{
+                    
+                    if json["total_pay_amount"].doubleValue==0{
                         self.openHomePageDialog(title: "Pay EMI", message: "No paymnet due found!!\nPlease try later")
                     }
                 }
@@ -89,7 +92,7 @@ class PayNowViewController: BaseLoginViewController {
             let controller = WebViewViewController.getInstance(storyBoard: self.storyBoardMain)
             controller.url = ""
             controller.urlType = "payment"
-            controller.paymentModel = PaymentAmountModel(amount:"\(amount)", mode:EMI_MODE, paymentCode:"")
+            controller.paymentModel = PaymentAmountModel(amount:"\(amount)", mode:EMI_MODE, paymentCode:"",billId: "")
             self.goToNextViewController(controller:controller)
         }else{
             self.showToast("Amount should be more than \(Constants.Values.RupeeSign)100")
